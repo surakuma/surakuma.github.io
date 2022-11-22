@@ -1,12 +1,12 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <title>Data-aware parallel algorithms for matrix and tensor computations</title>
+  <title>Data-aware algorithms for matrix and tensor computations</title>
   <link rel="stylesheet" href="anne.css" />
 </head>
 <body bgcolor="#ffffff" text="#000000">
 
-<center><h1 class="title">Data-aware parallel algorithms for matrix and tensor computations</h1></center>
+<center><h1 class="title">Data-aware algorithms for matrix and tensor computations</h1></center>
 <center><h3>Instructor: <a href="https://surakuma.github.io/">Suraj Kumar</a>, Fall 2023 </h3></center><br><br>
 
 <!--
@@ -32,10 +32,8 @@ is to present a variety of such algorithms for matrix and tensor computations.
   The course will also discuss various approaches to compute communication lower
   bounds (that determine how much data transfers are required) for different matrix
   and tensor computations. Establishing communication lower bounds helps one to
-  identify efficient algorithms that exactly attains the bounds.
-</p>
-<p>
- Tensors are multi-dimensional arrays and arise in several domains, e.g., data
+  identify efficient algorithms that exactly attains the bounds. Tensors are
+  multi-dimensional arrays and arise in several domains, e.g., data
  mining, neurosciences, quantum computing, molecular dynamics and computer vision.
  <!--The course will also discuss how tensors are used to analyze multi-dimensional
  data sets. -->
@@ -48,7 +46,7 @@ is to present a variety of such algorithms for matrix and tensor computations.
 <h2>Part 1: Communication lower bounds and optimal algorithms for matrix computations</h2>
 <p> In this part, we will first study the seminal work of Hong and Kung (from 1960s)
   to determine the minimum data transfer between levels of a memory hierarchy on a
-  sequential machine (operations are performed on a single processor).
+  sequential machine (a single processor).
   After that, we will review other approaches to obtain communication lower bounds on sequential
   and parallel systems. We will also study some algorithms for both types of systems which attain the
   lower bounds.</p>
@@ -56,7 +54,7 @@ is to present a variety of such algorithms for matrix and tensor computations.
   <ul>
     <li> Matrix multiplications</li>
     <li> Pebble games </li>
-    <li> data transfer costs </li>
+    <li> Data transfer cost models </li>
     <li> Memory dependent and independent communication lower bounds
     <li> Communication avoiding sequential and parallel algorithms </li>
     <li> 2D/2.5D/3D algorithms
@@ -64,36 +62,92 @@ is to present a variety of such algorithms for matrix and tensor computations.
     <li> Matrix factorizations </li>
   </ul>
 
-<h2>Part 2: </h2>
+<h2>Part 2: Tensor computations</h2>
+<p> In this part, we will first look at tensor notations and different types of popular
+tensor operations. After that, we will study widely used tensor decompositions and
+different algorithms to compute them. We will also analyze the bottleneck computations
+of various tensor decomposition algorithms and discuss parallel and communication
+optimal approaches for those computations.</p>
+<ul>
+  <li> Tensor notations </li>
+  <li> Use of tensors in data analytics and quantum computing</li>
+  <li> Tensor decompositions: Canonical Polydiac, Tucker, Tensor train </li>
+  <li> Matricized tensor times Khatri-Rao product  computations </li>
+  <li> Multiple tensor times matrix computations </li>
+</ul>
 
+<h2>Part 3: Guest lectures on related popular topics</h2>
+ <p>We will have some lectures on related topics from experts.</p>
+ <ul>
+   <li> Sparse matrix and tensor computations </li>
+   <li> Hierarchical and block low-rank matrices </li>
+   <li> Randomized methods to improve algorithmic costs </li>
+ </ul>
+<!-- <br><br> -->
+
+ <p>If time permits, we will also look at various interesting research directions
+ related to tensor computations in high performance computing, machine learning,
+ data analytics, molecular simulations and quantum computing.</p>
+
+<br></br>
+
+
+<i>Prerequisite:</i> Experience with algorithm analysis and mathematical optimization
+will be helpful, but not required.
+
+<h3> Evaluation </h3>
+The evaluation will be based on the following weightings:
+<ul>
+  <li> 3 homework assignments (40%)</li>
+  <li> Project (60%): Each student has to analyze contributions of one research
+    paper (given). The output will be assessed based on a written report (in ACM
+    format: <a href="https://www.acm.org/publications/proceedings-template">https://www.acm.org/publications/proceedings-template </a>)
+    and an oral presentation.
+</ul>
+
+ <h3> Research papers for the project </h3>
+ <ul>
+   <li> Coming soon ...</li>
+ </ul>
+
+ <h3> Recommended reading (evolving) </h3>
+  <menu>
+ <li> Tight Memory-Independent Parallel Matrix Multiplication Communication Lower Bounds <br>
+ <i> Hussam Al Daas, Grey Ballard, Laura Grigori, Suraj Kumar, Kathryn Rouse </i><br>
+ ACM Symposium on Parallelism in Algorithms and Architectures, July 2022, Pages 445–448,
+ <a href="https://doi.org/10.1145/3490148.3538552"> Short version </a>,
+ <a href="https://arxiv.org/abs/2205.13407"> Extended version </a>.</li>
+  </menu>
+
+<!--https://dl.acm.org/doi/pdf/10.1145/3490148.3538552, https://arxiv.org/pdf/2205.13407 -->
+  <menu>
+    <li>Minimizing Communication in Numerical Linear Algebra <br>
+    <i> Grey Ballard, James Demmel, Olga Holtz, Oded Schwartz</i><br>
+    SIAM Journal on Matrix Analysis and Applications, Volume 32, Issue 3, pp. 866-901, 2011, <a href="https://doi.org/10.1137/090769156"> pdf </a>.
+   </li>
+  </menu>
+
+
+
+ <menu>
+   <li> Tensor Decompositions and Applications <br>
+    <i> Tamara G. Kolda and Brett W. Bader </i><br>
+    SIAM Review, Volume 51, Number 3, pp. 455-500, 2009, <a href="https://doi.org/10.1137/07070111X"> pdf </a>.</li>
+ </menu>
 <!--
-This course focuses on tensor decompositions as a tool to analyze multidimen-
-sional data sets. After taking the course, students will be able to describe
-tensor notation and various tensor decompositions, apply the decompositions
-to different types of data using existing software, evaluate results and interpret
-them when appropriate, analyze and evaluate existing algorithms for computing
-tensor decompositions, and design new algorithms for related problems. Stu-
-dents will program in MATLAB and/or Python. Background in numerical lin-
-ear algebra, numerical optimization, or basic statistical analysis (e.g., principle
-component analysis) will be helpful but not required.
+ <menu>
+   <li> Tensor-Train Decomposition <br>
+    <i> I. V. Oseledets </i><br>
+    SIAM Journal on Scientific Computing, Volume 33, Number 5, pp. 2295-2317, 2011, <a href="https://doi.org/10.1137/090752286"> pdf </a>.</li>
+ </menu>
+
+
+
+ <menu>
+   <li> Communication Lower Bounds and Optimal Algorithms for Multiple Tensor-Times-Matrix Computation <br>
+    <i> Hussam Al Daas, Grey Ballard, Laura Grigori, Suraj Kumar, Kathryn Rouse </i><br>
+    Available on arxiv, <a href="https://arxiv.org/abs/2207.10437"> pdf </a>.</li>
+ </menu>
 -->
-
-<i>Prerequisite:</i> Background in algorithms and their complexity analysis will be helpful but not required.
-
-<!--
-
-The project can be done individually or in groups of 2 and should either be
-connecting your research to topics in this class or digesting a topic of interest
-related to this class. The main output of the project is a report (in ACM format:
-https://www.acm.org/publications/proceedings-template) and a presen-
-tation to the class at the end of the semester. Projects must include theoretical
-analysis of a parallel algorithm or a parallel implementation (or both). They
-may focus on parallel computing pedagogy, along with some artifact (such as a
-lesson plan, assignment scaffolding, and/or demonstration).
-
--->
-
-<!-- Welcome to my course! -->
-
 </body>
 </html>
