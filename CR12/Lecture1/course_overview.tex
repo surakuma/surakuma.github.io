@@ -381,7 +381,7 @@
 \begin{minipage}{0.45\linewidth}
 	\begin{center}
 		\begin{figure}
-			\begin{tikzpicture}[scale=0.5, every node/.style={transform shape}]
+			\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
 			%%\tikzstyle{taskmemory}=[draw=black, minimum height=18mm, minimum width=18mm, fill=blue!40, text=black]
 			\tikzstyle{taskcompute}=[draw=black, minimum height=16mm, minimum width=16mm, fill=none, text=black, below]
 			
@@ -421,7 +421,7 @@
 	\item $\alpha$: per-message latency cost, $\beta$: per-word bandwidth cost, $\gamma$: per-operation arithmetic cost
 	\item An algorithm's total cost = $\alpha \cdot$ (\#messages) + $\beta\cdot$(\#data transfers) + $\gamma \cdot$ (\#computations)
 	\item For a parallel machine, we consider cost along the critical path
-%	\item  
+	\item Concentrate mainly on bandwidth costs throughout the course
 \end{itemize}
 \vfill
 {\footnotesize Sometimes computations can be overlapped with data transfers. However to keep the models simple we will not take that into account through out the course.} 

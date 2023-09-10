@@ -27,7 +27,9 @@
 \usetikzlibrary{matrix, decorations, patterns, positioning, shapes, calc, intersections, arrows, fit}
 
 \usetikzlibrary{patterns}
-\usetikzlibrary{fit,calc,positioning,decorations.pathreplacing,matrix}
+\usetikzlibrary{fit,calc,positioning,decorations.pathreplacing,matrix,3d, hobby}
+
+%, , 3d, hobby
 
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule for better rules in tables
 
@@ -41,6 +43,12 @@
 \definecolor{pastelgreen}{rgb}{0.47, 0.87, 0.47}
 \definecolor{pastelred}{rgb}{1.0, 0.41, 0.38}
 \colorlet{patternblue}{blue!60}
+
+
+\colorlet{darkred}{red!80!black}
+\colorlet{darkblue}{blue!80!black}
+\newcommand<>{\darkred}[1]{{\color{darkred}{#1}}}
+\newcommand<>{\darkblue}[1]{{\color#2{blue!50!black!100}{#1}}}
 
 \usetheme{Madrid}
 
@@ -76,7 +84,36 @@
 
 	
 
-
+\begin{frame}{Why so much stress on matrix multiplication?}
+	\begin{itemize}
+		\item Basic in almost all computational domains
+		\item Everyone knows about it
+		\begin{itemize}
+			\item Still there are many open research questions
+		\end{itemize}
+		\item Easy to understand and explain ideas with this computation
+	\end{itemize}
+\vfill
+\begin{block}{BLAS: Basic Linear Algebra Subprograms}
+\begin{itemize}
+	\item Introduced in the 80s as a standard for LA computations
+%	\item Library provided by the vendor to ease use of new machines
+	\item Organized by levels:
+	\begin{itemize}
+		\item Level 1: vector/vector operations ($x \cdot y$)
+		\item  Level 2: vector/matrix ($Ax$)
+		\item Level 3: matrix/matrix ($A B^T$, blocked algorithms)
+	\end{itemize}
+	\item Implementations:
+	\begin{itemize}
+		\item Vendors (MKL from Intel, CuBLAS from NVidia, etc.)
+		\item Automatic Tuning: ATLAS
+		\item GotoBLAS
+	\end{itemize}    
+\end{itemize}
+\end{block}
+	
+\end{frame}
 \section{Matrix multiplication}
 	\begin{frame}{Table of Contents}		
 	\tableofcontents[currentsection,hideallsubsections] % Output the table of contents (all sections on one slide)		
@@ -85,7 +122,7 @@
 \begin{frame}{Traditional matrix multiplication}
 	\begin{itemize}
 		\item $C= AB$, where $A \in\mathbb{R}^{m \times k}$, $B \in\mathbb{R}^{k \times n}$, and  $C$ $\in$ $\mathbb{R}^{m \times n}$.
-		\item $C_{ij} = \sum_p A_{ip}*B_{pj}$
+		\item $C_{ij} = \sum_\ell A_{i\ell} \cdot B_{\ell j}$
 	\end{itemize}
 	For simplicity, we assume $m=k=n$ throughout the presentation.
 	\begin{center}
@@ -263,7 +300,7 @@
 		%%	
 		\end{tikzpicture}
 	\end{center}
-	
+
 	\begin{center}
 		\begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
 		%%	\tikzstyle{taskr}=[draw=black, minimum height=18mm, minimum width=18mm, anchor=south west, fill=pastelgreen, text=black]
@@ -448,9 +485,9 @@
 	\begin{verbatim}
 	//implements C=C+AB
 	for i=1 to n
-	for j=1 to n
-	for k=1 to n
-	C(i,j) = C(i,j) + A(i,k) * B(k,j);
+	  for j=1 to n
+	    for k=1 to n
+	      C(i,j) = C(i,j) + A(i,k) * B(k,j);
 	\end{verbatim}
 	%%\only<2>{\begin{verbatim}
 	%%	//implements C =C+AB
@@ -470,34 +507,86 @@
 	\begin{verbatim}
 	//implements C=C+AB
 	for i=1 to n
-	// read row i of A into fast memory  (total n*n reads) 
-	for j=1 to n
-	// read row i of C into fast memory (total n*n reads)
-	// read column j of B into fast memory (total n*n*n reads)
-	for k=1 to n
-	C(i,j) = C(i,j) + A(i,k) * B(k,j);
-	// write row i of C back to slow memory (total n*n writes)
+	 // read row i of A into fast memory  (total n^2 reads) 
+	 for j=1 to n
+	  // read row i of C into fast memory (total n^2 reads)
+	  // read column j of B into fast memory (total n^3 reads)
+	  for k=1 to n
+	   C(i,j) = C(i,j) + A(i,k) * B(k,j);
+	 // write row i of C back to slow memory (total n^2 writes)
 	\end{verbatim}
 	\medskip
 	$n^3 + 3n^2$ reads/writes combined dominates $2n^3$ computations.
 \end{frame}
 
+\begin{frame}{Tiled matrix multiplication}
+	\begin{itemize}
+		\item A, B, C are  $n/b \times n/b$ matrices of $b \times b$ subblocks
+		\item $3$ $b \times b$ blocks fit in the fast memory
+	\end{itemize}
+\vfill
+
+\begin{tikzpicture}[scale=0.75, every node/.style={transform shape}]
+\foreach \x in {0,1,2,3,4}
+{ 
+	\draw  (0,\x) -- (4,\x);
+	\draw (\x, 0) -- (\x, 4);
+}
+
+\node[draw=none, text=black, scale=2] at (5.5,2) {$+=$};
+\draw [fill=red!75] (2,2) -- ++ (1,0) -- ++(0,1) --++(-1,0) -- cycle;
+%	\draw[blue,fill=pastelgreen] (0,0) -- node [below, scale=6, black] {Vector}++(-\rectx,0) -- ++(0,\recty) -- ++(\rectx, 0) -- cycle;
+
+
+
+\foreach \x in {0,1,2,3,4}
+	\draw  (7,\x) -- (11,\x);
+	
+\draw (7,0) -- (7,4);
+\draw (11,0) -- (11,4);
+
+\foreach \x in {0,1,2,3,4}
+\draw  (7+\x,2) -- (7+\x,3);
+
+\draw [fill=red!75] (8,2) -- ++ (1,0) -- ++(0,1) --++(-1,0) -- cycle;
+
+\foreach \x in {0,1,2,3,4}
+\draw  (12+\x,0) -- (12+\x,4);
+
+\draw (12,0) -- (16,0);
+\draw (12,4) -- (16,4);
+
+\foreach \x in {0,1,2,3,4}
+\draw  (14,\x) -- (15,\x);
+
+\draw [fill=red!75] (14,2) -- ++ (1,0) -- ++(0,1) --++(-1,0) -- cycle;
+
+
+	
+%		\draw (\x, 0) -- (\x, 4);
+
+\end{tikzpicture}
+
+
+\end{frame}
 \begin{frame}[fragile]{Tiled matrix multiplication}
+%	\vspace*{-0.25cm}
+%	//Consider A, B, C to be n/b X n/b matrices of b x b subblocks
+%	//Asumme 3 b x b blocks fit in fast memory
 	\begin{verbatim}
-	//Consider, A, B, C to be n/b X n/b matrices of b X b subblocks
-	//Asumme 3 bXb blocks fit in fast memory
 	for i=1 to n/b
-	for j=1 to n/b
-	// read block C(i,j) into fast memory 
-	// (total b*b*n/b*n/b = n*n reads)
-	for k=1 to n/b
-	// read block A(i,k) into fast memory 
-	// (total b*b*n/b*n/b*n/b = n*n*n/b reads)
-	// read block B(k,j) into fast memory 
-	// (total b*b*n/b*n/b*n/b = n*n*n/b reads)
-	C(i,j) = C(i,j) + A(i,k) * B(k,j); //Matrix multiplication in blocks
-	// write block C(i,j) into fast memory 
-	// (total b*b*n/b*n/b = n*n writes)
+	  for j=1 to n/b
+	    // read block C(i,j) into fast memory 
+	    // (total b^2 * n/b * n/b = n^2 reads)
+	    for k=1 to n/b
+	      // read block A(i,k) into fast memory 
+	      // (total b^2 * n/b * n/b * n/b = n^3/b reads)
+	      // read block B(k,j) into fast memory 
+	      // (total b^2 * n/b * n/b * n/b = n^3/b reads)
+	      //perform block matrix multiplication
+	      C(i,j) = C(i,j) + A(i,k) * B(k,j);
+	    // write block C(i,j) into fast memory 
+	    // (total b^2 * n/b * n/b = n^2 writes)
 	\end{verbatim}
 	\medskip
 	$\frac{2n^3}{b} + 2n^2$ reads/writes $<<$ $2n^3$ computations.
@@ -505,14 +594,283 @@
 
 \begin{frame}{Amount of volume in matrix multiplication }
 	\begin{itemize}
-		\item Make b as large as possible, 3$b^2 \le M$
-		\item Number of reads/writes $\ge 3^\frac{1}{2}n^3/M^\frac{1}{2} + 2n^2$
+		\item Let M be the size of the fast memory, make b as large as possible, 3$b^2 \le M$
+		\item Number of reads/writes $\ge2\sqrt{3}n^3/\sqrt{M} + 2n^2$
 	\end{itemize}
 	\vfill
 	\brown{Question}: Is this optimal?
 
 \end{frame}
+\begin{frame}[fragile]{Assignment 1 -- deadline Sept. 21}
+	\begin{verbatim}
+for i=1 to m
+  for j=1 to n
+    for k=1 to l
+      C(i,j) = C(i,j) + A(i,k) * B(k,j);
+\end{verbatim}
+Here $A \in\mathbb{R}^{m \times \ell}$, $B \in\mathbb{R}^{\ell \times n}$, and  $C$ $\in$ $\mathbb{R}^{m \times n}$. The computation is performed with infinite precision.
 
+\brown{Questions:}
+\begin{enumerate}
+	\item {\small Prove that all the $6$ permutations of the loops produce the same output.}
+	\item {\small Compute the number of cache misses for each permutation of the loops. All matrices are stored in the row-major order in the slow memory. Size of each cache line is $L$ and the cache capacity $< <$ $\min(m,n,l)$. Assume that the cache is fully associative and the least recently used (LRU) strategy is employed to evict a cache line.}
+\end{enumerate} 
+\end{frame}
+
+%		\item $C= AB$, where $A \in\mathbb{R}^{m \times k}$, $B \in\mathbb{R}^{k \times n}$, and  $C$ $\in$ $\mathbb{R}^{m \times n}$.
 \section{Communication bounds}
+\begin{frame}{Table of Contents}
+	\tableofcontents[currentsection,hideallsubsections]
+\end{frame}
+\begin{frame}{Approach to obtain communication lower bounds}
+	
+			\begin{itemize}
+				\item Loomis-Whitney inequalitiy: for $d-1$ dimensional projections
+				\begin{itemize}
+					\item For the $2$d object $G$, $ Area(G) \le \phi_x \phi_y$
+					\item For the $3$d object $H$, $Volume(H) \le \sqrt{\phi_{xy}\phi_{yz}\phi_{xz}}$
+					%%		\item $2$-dimensional object $A$ and its $1$-dimensional projections are $\phi_x$ and $\phi_y$, then $\phi_x \phi_y \ge Area(A)$
+					%%		\item $3$-dimensional object $B$ and its $2$-dimensional projections are $\phi_{xy}$, $\phi_{yz}$ and $\phi_{xz}$, then $(\phi_{xy}\phi_{yz}\phi_{xz})^\frac{1}{2} \ge Volume(B)$
+				\end{itemize}
+			\end{itemize}
+
+			\begin{center}
+				\begin{tikzpicture}[scale=0.35, every node/.style={transform shape}]
+				\draw (0,0) -- ++(5,0) -- ++(0, 5) -- ++(-5,0) -- cycle;
+				\draw [<->] (0,6) -- (0,0) -- (6,0);
+				\node [below right, scale=2] at (6,0) {$x$};
+				\node [left, scale=2] at (0,6) {$y$};
+				
+				\draw [fill=gray!70] (2,2.25) to [curve through={(2.4,3) .. (2.5,2.9) .. (2.8,3.8) .. (3.1,2.1) .. (2.6,1.7)}] (2,2.25);
+				
+				\node [scale=3] at (2.5,2.5) {$G$};
+				\draw [dotted] (1.7,2.25) -- (1.7,0);
+				\draw [dotted] (3.6,2.4) -- (3.6,0);
+				
+				\node[above, scale=3] at (2.6,0) {$\phi_x$};
+				
+				\draw [dotted] (2,1.75) -- (0,1.75);
+				\draw [dotted] (2.8,4) -- (0,4);
+				
+				\node[right, scale=3] at (0,3) {$\phi_y$};
+				\end{tikzpicture}
+				\begin{tikzpicture}[scale=0.35, every node/.style={transform shape}]
+				\draw (0,0) -- ++(5,0) -- ++(0, 5) -- ++(-5,0) -- cycle;
+				\draw (0,5,0) -- ++(0,0, -5) -- ++(5,0,0) -- ++(0,0,5) -- cycle;
+				\draw (5,0,0) -- ++(0,0,-5) -- ++(0,5,0) -- ++(0,0,5) -- cycle;
+				\draw (0,0,-5) -- ++(5,0,0) -- ++(0,5,0) -- ++(-5,0,0) -- cycle;
+				\draw [<->] (0,6) -- (0,0) -- (6,0);
+				\draw [->] (0,0,0) -- (0,0,-12);
+				\node [left, scale=2, rotate=0] at (0,0,-12) {$z$};
+				\node [below right, scale=2] at (6,0) {$x$};
+				\node [left, scale=2] at (0,6) {$y$};
+				
+				\draw [fill=gray!70] (2,2.25) to [curve through={(2.4,3) .. (2.5,3) .. (2.8,3.8) .. (3.1,2.1) .. (2.6,1.7)}] (2,2.25);
+				
+%				\node [scale=2] at (2.5,2.5) {$G$};
+				\draw [dotted] (1.7,2.25) -- (1.7,0.2);
+				\draw [dotted] (3.6,2.4) -- (3.6,0.3);
+				
+				\draw [fill=green!40] (1.75,0.25) to [curve through={(1.8, 0.35) .. (3.5, 0.65) .. (2,0.25)}] (1.75,0.25);
+				\node[above, scale=1.5] at (2.6,0,-0.75) {$\phi_{xz}$};
+				
+				\draw [dotted] (2,1.75) -- (0.3,1.75);
+				\draw [dotted] (2.8,4) -- (0.385,4);
+				
+				\draw [fill=red!40] (0.3, 1.75) to [curve through={(0.5,2) .. (1, 2.5) .. (1,3.95) .. (0.2, 2.5)}] (0.3,1.75);
+				\node[right, scale=1.5] at (0,3, -0.75) {$\phi_{yz}$};
+				
+				\draw [fill=yellow!40] (3.85,3.9) to [curve through={(3.7,3.8) .. (3.5,3.4) .. (3.45,3.2)}] (3.85, 3.9);
+				\node [scale=1.5] at (3.65,3.1,-1) {$\phi_{xy}$};
+				\draw [dotted] (2.8,4) -- (3.8,3.9);
+				\draw [dotted] (2.56,1.65) -- (4,2.5);
+				
+				\draw [fill=gray!70] (2,2.25) to [curve through={(2.4,3) .. (2.5,3) .. (2.8,3.8) .. (3.1,2.1) .. (2.6,1.7)}] (2,2.25);
+				
+				\node [scale=3] at (2.5,2.5) {$H$};
+				\end{tikzpicture}
+			\end{center}
+
+		\begin{itemize}
+			\item H\"{o}lder-Brascamp-Lieb (HBL) inequality -- generalization for arbitrary dimensional projections
+			\begin{itemize}
+				\item Provide exponent for each projection
+				
+			\end{itemize}
+		\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Number of iterations with a phases of $R$ reads ($\neq M$)}
+	
+	\begin{theorem}
+		During a phase of $R$ reads with memory $M$, the number of computed iterations is bounded by
+		$$
+		F_{M+R} \leq \left(\frac{1}{3}(M+R)\right)^{3/2}
+		$$    
+	\end{theorem}
+	
+	Maximize $F_{M+R}$ constrained by:
+	$$\left\{
+	\begin{array}[c]{l}
+	F_{M+R} \leq \sqrt{N_A N_B N_C}\\
+	0\leq N_A, N_B, N_C\\
+	N_A+N_B+N_C \leq M+R
+	\end{array}
+	\right.
+	$$
+	Using Lagrange multipliers, maximal value obtained when $N_A=N_B=N_C$
+	\vfill
+\end{frame}
+
+\begin{frame}[fragile]{Selection of $R$}
+	\begin{verbatim}
+	for i=1 to m
+	  for j=1 to n
+	    for k=1 to l
+	      C(i,j) = C(i,j) + A(i,k) * B(k,j);
+	\end{verbatim}
+
+
+	$\textnormal{Total number of iterations in one phase:~~}    F_{M+R} \leq \left(\frac{1}{3}(M+R)\right)^{3/2}$
+  
+  \vfill
+	
+	Total volume of reads:
+	$$V_{\textnormal{read}} \geq \left\lfloor \frac{mn\ell}{F_{M+R}} \right\rfloor \cdot R \geq \left( \frac{mn\ell}{F_{M+R}} -1 \right) \cdot R $$
+	Valid for all values of $R$, maximized when $R=2M$:
+	$$V_{\textnormal{read}} \geq 2mn\ell/\sqrt{M} -2M$$
+
+	
+\end{frame}
+\begin{frame}{Communication bounds}
+	
+	$$V_{\textnormal{read}} \geq 2mn\ell/\sqrt{M} -2M$$
+	
+	All elements of the output matrix are in the slow memory in the end. Each element of $C$ is written at least once: $V_{\textnormal{write}} \geq mn$\\
+	
+	\begin{theorem}
+		The total volume of I/Os is bounded by:
+		$$
+		V_{I/O} \geq  2mn\ell/\sqrt{M} + mn -2M
+		$$
+	\end{theorem}
+	
+\begin{block}{Our tiled algorithm (explained previously)}
+	\begin{itemize}
+		\item With square matrices, total number of reads/writes $\ge2\sqrt{3}n^3/\sqrt{M} + 2n^2$
+		\item How far it is from the lower bound?
+	\end{itemize}
+
+\end{block}
+
+\end{frame}
+\begin{frame}{Structure of the optimal algorithm (attaining the same constant for the leading term)}
+Consider the following algorithm sketch:
+\begin{itemize}
+	\item Partition $C$ into blocks of size $(\sqrt{M}-1)\times (\sqrt{M}-1)$
+	\item Partition $A$ into block-columns of size $(\sqrt{M}-1)\times 1$
+	\item Partition $B$ into block-rows of size $1 \times (\sqrt{M}-1)$
+	\item For each block $C_b$ of $C$:
+	\begin{itemize}
+		\item Load the corresponding blocks of $A$ and $B$ on after the
+		other
+		\item For each pair of blocks $A_b, B_b$, compute $C_b \gets C_b
+		+A_b B_b$
+		\item When all computations for $C_b$ are performed, write back $C_b$
+	\end{itemize}
+\end{itemize}
+
+\vfill
+\begin{tikzpicture}[scale=0.65, every node/.style={transform shape}]
+\foreach \x in {0,1,2,3,4}
+{ 
+	\draw  (0,\x) -- (4,\x);
+	\draw (\x, 0) -- (\x, 4);
+}
+
+\node[draw=none, text=black, scale=2] at (5.5,2) {$+=$};
+\draw [fill=red!75] (2,2) -- ++ (1,0) -- ++(0,1) --++(-1,0) -- cycle;
+%	\draw[blue,fill=pastelgreen] (0,0) -- node [below, scale=6, black] {Vector}++(-\rectx,0) -- ++(0,\recty) -- ++(\rectx, 0) -- cycle;
+
+
+
+\foreach \x in {0,1,2,3,4}
+\draw  (7,\x) -- (11,\x);
+
+\draw (7,0) -- (7,4);
+\draw (11,0) -- (11,4);
+
+\foreach \x in {0,0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75,4}
+\draw  (7+\x,2) -- (7+\x,3);
+
+\draw [fill=red!75] (8,2) -- ++ (0.25,0) -- ++(0,1) --++(-0.25,0) -- cycle;
+
+\foreach \x in {0,1,2,3,4}
+\draw  (12+\x,0) -- (12+\x,4);
+
+\draw (12,0) -- (16,0);
+\draw (12,4) -- (16,4);
+
+\foreach \x in {0,0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75,4}
+\draw  (14,\x) -- (15,\x);
+
+\draw [fill=red!75] (14,2.75) -- ++ (1,0) -- ++(0,0.25) --++(-1,0) -- cycle;
+
+
+
+%		\draw (\x, 0) -- (\x, 4);
+
+\end{tikzpicture}
+
+
+%Questions:
+%\begin{enumerate}
+%	\item Write a proper algorithm following these directions
+%	\item Compute the number of read and write operations
+%	\item Conclude that the algorithm is asymptotically optimal
+%\end{enumerate}
+
+\end{frame}
+
+
+%\subsection{Another approach}
+
+\begin{frame}{Another approach to computer communication bound}
+	\textbf{Red-Blue pebble game (Hong and Kung, 1981)}:
+	\begin{itemize}
+		\item \darkred{Red pebbles}: limited number $S$ (slots in fast memory)
+		\item \darkblue{Blue pebbles}: unlimited number, only for slow memory
+	\end{itemize}
+	\vfill
+	
+	\structure{Rules:}
+	\begin{enumerate}[(1)]
+		\item A \darkred{red} pebble may be placed on a vertex that has a \darkblue{blue} pebble.
+		\item A \darkblue{blue} pebble may be placed on a vertex that has a \darkred{red} pebble.
+		\item If all predecessors of a vertex $v$ have a \darkred{red} pebble, a \darkred{red}
+		pebble may be placed on $v$.
+		\item A pebble (\darkred{red} or \darkblue{blue}) may be removed at
+		any time.
+		\item No more than $S$ \darkred{red} pebbles may be used at any time.
+		\item A \darkblue{blue} pebble can be placed on an input vertex at any time
+	\end{enumerate}
+	\vfill
+	
+	\structure{Objective:} put a \darkred{red} pebble on each target (not necessary
+	simultaneously) using a minimum rules 1 and 2 (I/O operations)
+	\vfill
+\end{frame}
+
+\begin{frame}
+	\frametitle{Example: FFT graph}
+	
+	\centerline{\includegraphics[width=0.68\linewidth]{FFT.pdf}}
+	{\footnotesize $k$ levels,$n=2^{k}$ vertices at each level}\\
+	
+	Minimum number $S$ of \darkred{red} pebbles ? \\
+	How many I/Os for this minimum number $S$  ?
+\end{frame}
+
 
 \end{document} 
