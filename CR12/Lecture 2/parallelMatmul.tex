@@ -89,7 +89,7 @@
 	\begin{frame}{Matrix multiplication with 2D layout}
 		\begin{itemize}
 			\item Consider processors are arranged in a 2-dimensional grid
-			\item Processors can broadcast along rows and columns
+			\item Processors exchange data along rows and columns
 		\end{itemize}
 	\begin{center}
 		\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
@@ -126,6 +126,100 @@
 		\node [scale=0.8] at (\xstep+ \x+0.5 , 3.5-\y) {p(\x,\y)};
 		\end{tikzpicture}
 	\end{center}
+\begin{itemize}
+	\item $P$ processors are arranged in $\sqrt{P}\times\sqrt{P}$ grid
+\end{itemize}
+	\end{frame}
+\begin{frame}{\large Scalable Universal Matrix Multiplication Algorithm (SUMMA)}
+	\begin{center}
+	\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+	\def\xstep{0}
+	\foreach \x in {0,1,2,3, 4}
+	{
+		\draw (\xstep,\x) -- (\xstep+4,\x);
+		\draw (\xstep+\x,0) -- (\xstep+\x,4);
+	}
+%	\foreach \x in {0,1,2,3}
+%	\foreach \y in {0,1,2,3}
+%	\node [scale=0.8] at (\xstep+ \x+0.5 , 3.5-\y) {p(\x,\y)};
+	
+	\draw [fill=red] (1.3,0) -- ++ (0.2,0) -- ++ (0,4) -- ++ (-0.2,0) -- cycle;
+	\draw [thick, ->] (1.4, 1.5) to[out=60,in=90] (2.4,1.5);
+	\draw [thick, ->] (1.4, 1.5) to[out=60,in=90] (3.4,1.5);
+	\draw [thick, ->] (1.4, 1.5) to[out=120,in=90] (0.4,1.5);
+	
+	\node [scale=1.2] at (\xstep + 1.4, -0.5) {$b$};
+	
+	\node [scale=2] at (\xstep + 2, -1) {$A$};
+	
+	\def\xstep{5}
+	\foreach \x in {0,1,2,3, 4}
+	{
+		\draw (\xstep,\x) -- (\xstep+4,\x);
+		\draw (\xstep+\x,0) -- (\xstep+\x,4);
+	}
+	%	\foreach \x in {0,1,2,3}
+	%	\foreach \y in {0,1,2,3}
+	%	\node [scale=0.8] at (\xstep+ \x+0.5 , 3.5-\y) {p(\x,\y)};
+	
+	\draw [fill=blue] (\xstep,2.2) -- ++ (4,0) -- ++ (0,0.2) -- ++ (-4,0) -- cycle;
+	\draw [thick, ->] (\xstep+3.5, 2.3) to[out=180,in=-140] (\xstep+3.5,3.5);
+	\draw [thick, ->] (\xstep+3.5, 2.3) to[out=180,in=140] (\xstep+3.5,1.5);
+	\draw [thick, ->] (\xstep+3.5, 2.3) to[out=180,in=120] (\xstep+3.5,0.5);
+	
+	\node [scale=1.2,left] at (\xstep, 2.3) {$b$};
+	
+	\node [scale=2] at (\xstep + 2, -1) {$B$};
+	
+	
+	\def\xstep{10}
+	\foreach \x in {0,1,2,3, 4}
+	{
+		\draw (\xstep,\x) -- (\xstep+4,\x);
+		\draw (\xstep+\x,0) -- (\xstep+\x,4);
+	}
+
+	
+	\draw [fill=green] (\xstep+3,1) -- ++ (1,0) -- ++ (0,1) -- ++ (-1,0) -- cycle;
+	\draw [fill=red] (\xstep+3-0.2,1) -- ++ (0.2,0) -- ++ (0,1) -- ++ (-0.2,0) -- cycle;
+	\draw [fill=blue] (\xstep+3,2) -- ++ (1,0) -- ++ (0,0.2) -- ++ (-1,0) -- cycle;
+	\node [scale=1] at (\xstep+3.5,1.5) {$C_{23}$};
+	
+	\node [below,scale=1.2] at (\xstep+3-0.1,0.1) {$A_{tmp}$};
+	\draw [color=red,->] (\xstep+3-0.1,-0.1) -- (\xstep+3-0.1,1);
+	\node [scale=1.2] at (\xstep+5,2.1) {$B_{tmp}$};
+	\draw [color=blue,->] (\xstep+4.5,2.1) -- (\xstep+4,2.1);
+	
+	\node [scale=2] at (\xstep + 2, -1) {$C$};
+	
+	\end{tikzpicture}
+\end{center}
+\begin{itemize}
+	\item $P$ is arranged in $\sqrt{P}\times \sqrt{P}$ grid
+	\item Each processor owns $n/\sqrt{P} \times n/\sqrt{P}$ submatrices of $A$, $B$ and $C$
+	\item b=block size ($\le n/\sqrt{P}$)
+\end{itemize}
+\begin{block}{Algorithm structure}
+	\begin{itemize}
+		\item Each owner of $A$ block broadcasts it to whole processor row 
+		\item Each owner of $B$ block broadcasts it to whole processor column 
+		\item Receive block of $A$ in {\color{red}$A_{tmp}$}, receive block of $B$ in {\color{blue}$B_{tmp}$}
+		\item Compute $C_{local} += C_{local} +$ {\color{red}$A_{tmp}$} * {\color{blue}$B_{tmp}$}
+		
+	\end{itemize}
+\end{block}
+\end{frame}
+	\begin{frame}{Extension of sequential lower bounds}
+			\begin{itemize}
+				\item Sequential lower bound on bandwidth = $\Omega\left(\frac{2mn\ell}{\sqrt{M}}\right)$ = $\Omega\left(\frac{\textnormal{\#operations}}{\sqrt{M}}\right)$
+				\item Sequential lower bound on latency = $\Omega\left(\frac{\textnormal{\#operations}}{M^{3/2}}\right)$
+			\end{itemize}
+		\begin{block}{Extension to paralllel machines}
+			\begin{itemize}
+				\item With $n\times n$ square matrices, lower bound on bandwidth = $\Omega\left(\frac{n^3/P}{\sqrt{M}}\right)$
+				\item Lower bound on latency = $\Omega\left(\frac{n^3/P}{M^{3/2}}\right)$
+			\end{itemize}
+		\end{block}
 	\end{frame}
 	\section{Communication lower bounds}
 	\begin{frame}{Table of Contents}		
