@@ -362,7 +362,7 @@
 	\begin{itemize}
 		\item Assume $P$ is a perfect power of $2$
 		\item In each step $k(0\le k <\lg P)$, processes that are at $2^k$ distance exchange their data
-		\item $T_{rec\_dbl} = \lg P \alpha + \left(\frac{P-1}{P}\right)n\beta$ 
+		\item $T_{rec\_dbl} = (\lg P) \alpha + \left(\frac{P-1}{P}\right)n\beta$ 
 		\item Requires adaptation when $P$ is not a-power-of-two  
 	\end{itemize}
 	\end{minipage}
@@ -873,14 +873,14 @@ Alternative approach: Scatter + Allgather
 		\item In each step $k(1\le k \le P)$, processes that are at $\frac{P}{2^k}$ distance
 		exchange parts of their data
 		\item Each process sends the data needed by all processes in the other half, receives the data needed by all processes in its own half
-		\item $T_{rec\_half} = \lg P \alpha + \frac{P-1}{P} n \beta + \frac{P-1}{P} n \gamma$
+		\item $T_{rec\_half} = (\lg P ) \alpha + \frac{P-1}{P} n \beta + \frac{P-1}{P} n \gamma$
 		\item Requires adaptation when $P$ is not a power-of-two
 	\end{itemize}}
 \end{block}
 \vspace*{-0.15cm}
 \begin{block}{}
 \vspace*{-0.25cm}{\small\begin{itemize}
-	\item With an adaptation of Bruck's algorithm: $T_{bruck} = \lceil \lg P \rceil \alpha + \frac{P-1}{P} n \beta + \frac{P-1}{P} n \gamma$\vspace*{-0.1cm}
+	\item With an adaptation of Bruck's algorithm: {\footnotesize $T_{bruck} = \lceil \lg P \rceil \alpha + \frac{P-1}{P} n \beta + \frac{P-1}{P} n \gamma$\vspace*{-0.1cm}}
 \end{itemize}}
 \end{block}
 \end{frame}
