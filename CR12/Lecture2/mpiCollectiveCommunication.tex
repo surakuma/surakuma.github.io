@@ -83,12 +83,13 @@
 \begin{frame}{Cost model}
 	\begin{itemize}
 		\item The links of the network are bidirectional
-		\item Each process can send and receive one message at the same time
+		\item Each process can send and receive at-most one message at the same time
 		\item Time taken to send a message with $n$ bytes between any two nodes --  $T= \alpha + n\beta$
 		\begin{itemize}
 			\item $\alpha$: latency cost per message, $\beta$: transfer time per byte
 		\end{itemize}
-		\item In case of reduction operation, $\gamma$: computation cost per byte 		
+		\item In case of reduction operation, $\gamma$: computation cost per byte
+		\item $P$ is the total number of processes 		
 	\end{itemize}
 \end{frame}
 
@@ -107,7 +108,7 @@
 		
 		
 		\foreach \x in {0,1,2,3,4, 5}
-		\node [scale=2] at (1.5*\x+0.5 , 1.5) {P\x};
+		\node [scale=2] at (1.5*\x+0.5 , 1.5) {p\x};
 		
 		\node [scale=2] at (4, -1) {$\textnormal{Initial data}$};
 		\end{tikzpicture}
@@ -128,7 +129,7 @@
 		\node [scale=2] at (0.5, 0.5 + \x) {\val};
 		
 		\foreach \x in {0,1,2,3,4, 5}
-		\node [scale=2] at (1.5*\x+0.5 , 6.5) {P\x};
+		\node [scale=2] at (1.5*\x+0.5 , 6.5) {p\x};
 		
 		\def\xstep{1.5}
 		
@@ -183,9 +184,9 @@
 \vfill
 \begin{block}{Ring algorithm}
 	\begin{itemize}
-		\item Takes total $p-1$ steps
+		\item Takes total $P-1$ steps
 		\item In each step, process $i$ sends its contribution to process $i + 1$ and receives the contribution from process $i- 1$
-		\item $T_{ring} = (p-1)\alpha + \left(\frac{p-1}{p}\right)n\beta$
+		\item $T_{ring} = (P-1)\alpha + \left(\frac{P-1}{P}\right)n\beta$
 		\item $n$ is the total amount of data gathered on each processor 
 	\end{itemize}
 \end{block}
@@ -201,7 +202,7 @@
 	
 	
 	\foreach \x in {0,1,2,3,4,5,6,7}
-	\node [scale=2] at (1.5*\x+0.5 , 1.5) {P\x};
+	\node [scale=2] at (1.5*\x+0.5 , 1.5) {p\x};
 	
 	\node [scale=2] at (5, -1) {$\textnormal{Initial data}$};
 	
@@ -359,10 +360,10 @@
 	\end{minipage}
 	\begin{minipage}{0.525\linewidth}
 	\begin{itemize}
-		\item Assume $p$ is a perfect power of $2$
-		\item In each step $k(0\le k <\lg p)$, processes that are at $2^k$ distance exchange their data
-		\item $T_{rec\_dbl} = \lg p \alpha + \left(\frac{p-1}{p}\right)n\beta$ 
-		\item Requires adaptation when $p$ is not a-power-of-two  
+		\item Assume $P$ is a perfect power of $2$
+		\item In each step $k(0\le k <\lg P)$, processes that are at $2^k$ distance exchange their data
+		\item $T_{rec\_dbl} = \lg P \alpha + \left(\frac{P-1}{P}\right)n\beta$ 
+		\item Requires adaptation when $P$ is not a-power-of-two  
 	\end{itemize}
 	\end{minipage}
 \end{frame}
@@ -383,7 +384,7 @@
 
 
 \foreach \x in {0,1,2,3,4, 5}
-\node [scale=2] at (1.5*\x+0.5 , 6.5) {P\x};
+\node [scale=2] at (1.5*\x+0.5 , 6.5) {p\x};
 
 \foreach \x/\val in {0/$ $,1/$ $,2/$ $,3/$ $,4/$ $, 5/$a_0$}
 \node [scale=2] at (0.5, 0.5 + \x) {\val};
@@ -451,7 +452,7 @@
 \node [scale=2] at (0.5, 0.5 + \x) {\val};
 
 \foreach \x in {0,1,2,3,4, 5}
-\node [scale=2] at (1.5*\x+0.5 , 6.5) {P\x};
+\node [scale=2] at (1.5*\x+0.5 , 6.5) {p\x};
 
 \def\xstep{1.5}
 
@@ -516,7 +517,7 @@
 \node [scale=2] at (0.5, 0.5 + \x) {\val};
 
 \foreach \x in {0,1,2,3,4, 5}
-\node [scale=2] at (1.5*\x+0.5 , 6.5) {P\x};
+\node [scale=2] at (1.5*\x+0.5 , 6.5) {p\x};
 
 \def\xstep{1.5}
 
@@ -584,7 +585,7 @@
 	\node [scale=2] at (0.5, 0.5 + \x) {\val};
 	
 	\foreach \x in {0,1,2,3,4, 5}
-	\node [scale=2] at (1.5*\x+0.5 , 6.5) {P\x};
+	\node [scale=2] at (1.5*\x+0.5 , 6.5) {p\x};
 	
 	\def\xstep{1.5}
 	
@@ -648,7 +649,7 @@
 	\node [scale=2] at (0.5, 0.5 + \x) {\val};
 	
 	\foreach \x in {0,1,2,3,4, 5}
-	\node [scale=2] at (1.5*\x+0.5 , 6.5) {P\x};
+	\node [scale=2] at (1.5*\x+0.5 , 6.5) {p\x};
 	
 	\def\xstep{1.5}
 	
@@ -700,8 +701,11 @@
 	\end{tikzpicture}
 \end{minipage}
 
+\vfill
+
 \begin{itemize}
-	\item {\small In each step $k (0\le k \lceil \lg p \rceil)$, process $i$ send data to process $(i-2^k) \% p$ and receives data from process $(i+2^k) \% p$}
+	\item $T_{bruck} = \lceil \lg P \rceil \alpha + \frac{P-1}{P}n\beta$
+	\item {\small In each step $k (0\le k < \lceil \lg P \rceil)$, process $i$ sends data to process $(i-2^k) \% P$ and receives data from process $(i+2^k) \% P$}
 \end{itemize}
 \end{frame}
 
@@ -718,7 +722,7 @@ It broadcasts $n$ words from the root to all processes.
 	
 	
 	\foreach \x in {0,1,2,3,4, 5}
-	\node [scale=2] at (1.5*\x+0.5 , 1.5) {P\x};
+	\node [scale=2] at (1.5*\x+0.5 , 1.5) {p\x};
 	
 	\node [scale=2] at (4, -1) {$\textnormal{Initial setting}$};
 	\end{tikzpicture}$\qquad\qquad$
@@ -734,12 +738,12 @@ It broadcasts $n$ words from the root to all processes.
 	
 	
 	\foreach \x in {0,1,2,3,4, 5}
-	\node [scale=2] at (1.5*\x+0.5 , 1.5) {P\x};
+	\node [scale=2] at (1.5*\x+0.5 , 1.5) {p\x};
 	
 	\node [scale=2] at (4, -1) {$\textnormal{Data after operation}$};
 	\end{tikzpicture}
 \begin{block}{Bionomial tree algorithm}
-	In the first step, the root sends data to process $(root +\frac{p}{2})$. This process and the root then act as new roots and recursively continue this algorithm.
+	In the first step, the root sends data to process $(root +\frac{P}{2})$. This process and the root then act as new roots and recursively continue this algorithm.
 	
 	\begin{minipage}{0.56\linewidth}
 		\begin{center}
@@ -773,7 +777,7 @@ It broadcasts $n$ words from the root to all processes.
 	\end{minipage}\hfill
 	\begin{minipage}{0.4\linewidth}
 	\begin{itemize}
-		\item $T_{tree}=\lceil\lg p \rceil (\alpha + n\beta)$
+		\item $T_{tree}=\lceil\lg P \rceil (\alpha + n\beta)$
 	\end{itemize}
 	\end{minipage}		
 \end{block}	
@@ -793,7 +797,7 @@ Alternative approach: Scatter + Allgather
 			}
 			
 			\foreach \x in {0,1,2,3,4, 5}
-			\node [scale=2] at (1.5*\x+0.5 , 6.5) {P\x};
+			\node [scale=2] at (1.5*\x+0.5 , 6.5) {p\x};
 			
 			\node [scale=2] at (4, -1) {$\textnormal{Initial settings}$};
 			\end{tikzpicture}	
@@ -811,7 +815,7 @@ Alternative approach: Scatter + Allgather
 			}
 			
 			\foreach \x in {0,1,2,3,4, 5}
-			\node [scale=2] at (1.5*\x+0.5 , 6.5) {P\x};
+			\node [scale=2] at (1.5*\x+0.5 , 6.5) {p\x};
 			
 			\node [scale=2] at (4, -1) {$\textnormal{Data after operation}$};
 			\end{tikzpicture}
@@ -819,9 +823,9 @@ Alternative approach: Scatter + Allgather
 	\end{minipage}
 \begin{block}{Algorithm by Thakur et al.}
 	\begin{itemize}
-		\item In each step $k (1\le k\le p)$, process $i$ receives data from process $(i-k)\%p$ and send data to process $(i+k)\%p$
-		\item $T=(p-1)\alpha + n\beta$
-		\item $n$ is the total amount of data sent or received by any process
+		\item In each step $k (1\le k < P)$, process $i$ receives data from process $(i-k)\%P$ and send data to process $(i+k)\%P$
+		\item $T=(P-1)\alpha + \frac{P-1}{P}n\beta$
+		\item $n$ is the total amount of data on any process in the beginning or end
 	\end{itemize}
 \end{block}
 \end{frame}
@@ -837,7 +841,7 @@ Alternative approach: Scatter + Allgather
 			}
 			
 			\foreach \x in {0,1,2,3,4, 5}
-			\node [scale=2] at (1.5*\x+0.5 , 6.5) {P\x};
+			\node [scale=2] at (1.5*\x+0.5 , 6.5) {p\x};
 			
 			\node [scale=2] at (4, -1) {$\textnormal{Initial settings}$};
 			\end{tikzpicture}	
@@ -854,7 +858,7 @@ Alternative approach: Scatter + Allgather
 			}
 			
 			\foreach \x in {0,1,2,3,4, 5}
-			\node [scale=2] at (1.5*\x+0.5 , 1.5) {P\x};
+			\node [scale=2] at (1.5*\x+0.5 , 1.5) {p\x};
 			
 			\node [scale=2] at (4, -1) {$\textnormal{Data after operation}$};
 			\end{tikzpicture}
@@ -863,20 +867,20 @@ Alternative approach: Scatter + Allgather
 	{\small Each process has $n$ amount of data in the beginning.} 
 	\end{minipage}
 \vspace*{-0.25cm}
-\begin{block}{Recursive halving algorithm (Assuming $p$ is a perfect power of $2$)}
+\begin{block}{Recursive halving algorithm (Assuming $P$ is a perfect power of $2$)}
 	\vspace*{-0.15cm}{\small\begin{itemize}
 		\item Analogous to the recursive-doubling algorithm for Allgather
-		\item In each step $k(1\le k \le p)$, processes that are at $\frac{p}{2^k}$ distance
+		\item In each step $k(1\le k \le P)$, processes that are at $\frac{P}{2^k}$ distance
 		exchange parts of their data
 		\item Each process sends the data needed by all processes in the other half, receives the data needed by all processes in its own half
-		\item $T_{rec\_half} = \lg p \alpha + \frac{p-1}{p} n \beta + \frac{p-1}{p} n \gamma$
-		\item Requires adaptation when $p$ is not a power-of-two
+		\item $T_{rec\_half} = \lg P \alpha + \frac{P-1}{P} n \beta + \frac{P-1}{P} n \gamma$
+		\item Requires adaptation when $P$ is not a power-of-two
 	\end{itemize}}
 \end{block}
 \vspace*{-0.15cm}
 \begin{block}{}
 \vspace*{-0.25cm}{\small\begin{itemize}
-	\item With an adaptation of Bruck's algorithm: $T_{bruck} = \lg p \alpha + \frac{p-1}{p} n \beta + \frac{p-1}{p} n \gamma$\vspace*{-0.1cm}
+	\item With an adaptation of Bruck's algorithm: $T_{bruck} = \lceil \lg P \rceil \alpha + \frac{P-1}{P} n \beta + \frac{P-1}{P} n \gamma$\vspace*{-0.1cm}
 \end{itemize}}
 \end{block}
 \end{frame}
@@ -885,14 +889,14 @@ Each process has $n$ amount of data in the beginning.
 \vfill
 	\begin{block}{Reduce}
 		\begin{itemize}
-			\item With binomial tree algorithm, $T_tree = \lceil\lg p \rceil (\alpha+n\beta+n\gamma)$
-			\item With Reduce-Scatter(Bruck's algorithm) + Gather(Binomial tree), $T=2\lceil\lg p \rceil \alpha +  2\frac{p-1}{p} n \beta + \frac{p-1}{p} n \gamma$
+			\item With binomial tree algorithm, $T_{tree} = \lceil\lg P \rceil (\alpha+n\beta+n\gamma)$
+			\item With Reduce-Scatter(Bruck's algorithm) + Gather(Binomial tree), $T=2\lceil\lg P \rceil \alpha +  2\frac{P-1}{P} n \beta + \frac{P-1}{P} n \gamma$
 		\end{itemize}
 	\end{block}
 \vfill
 	\begin{block}{Allreduce}
 	\begin{itemize}
-	\item With Reduce-Scatter(Bruck's algorithm) + Allgather(Bruck's algorithm), $T=2\lceil\lg p \rceil \alpha +  2\frac{p-1}{p} n \beta + \frac{p-1}{p} n \gamma$
+	\item With Reduce-Scatter(Bruck's algorithm) + Allgather(Bruck's algorithm), $T=2\lceil\lg P \rceil \alpha +  2\frac{P-1}{P} n \beta + \frac{P-1}{P} n \gamma$
 	\end{itemize}
 	\end{block}
 \vfill
