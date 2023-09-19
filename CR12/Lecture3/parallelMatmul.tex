@@ -84,6 +84,18 @@
 	\begin{frame}
 		\titlepage % Output the title slide, automatically created using the text entered in the PRESENTATION INFORMATION block above
 	\end{frame}
+
+	\begin{frame}{Some teams in France who work on data-aware algorithms/computations}
+		\begin{itemize}
+			\item ROMA team (\url{https://www.ens-lyon.fr/LIP/ROMA}), Inria \& ENS Lyon
+			\vfill
+			\item CORSE team (\url{https://team.inria.fr/corse}), Inria Grenoble
+			\vfill
+			\item TOPAL team (\url{https://team.inria.fr/hiepacs}), STORM team (https://team.inria.fr/storm), Inria Bordeaux
+			\vfill
+			\item CAMUS team (https://team.inria.fr/camus), Strasbourg (Part of Inria Nancy)
+		\end{itemize}
+	\end{frame}
 %	\section{Popular data layouts}
 %\begin{frame}{Table of Contents}		
 %	\tableofcontents[currentsection,hideallsubsections] % Output the table of contents (all sections on one slide)		
@@ -673,7 +685,7 @@
 
 
 
-	\section{Communication lower bounds}
+	\section{Memory-independent communication lower bounds}
 	\begin{frame}{Table of Contents}		
 		\tableofcontents[currentsection,hideallsubsections] % Output the table of contents (all sections on one slide)		
 	\end{frame}
@@ -691,6 +703,7 @@
 						\begin{itemize}
 							\item There exists a processor whose input data at the start plus output data at the end  must be at most $\frac{d_1d_2+d_1d_3+d_2d_3}{P}$ words -- will analyze data transfers for this processor   
 						\end{itemize}
+						\item Each processor has large local memory -- enough to store all the required data
 						\item Focus on bandwidth cost (volume of data transfers)
 					\end{itemize}
 				\end{block}	
