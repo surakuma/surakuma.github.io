@@ -1,0 +1,69 @@
+%!TEX root = ../../book.tex
+
+% set relative sizes of m and n
+\pgfmathsetmacro{\mdim}{16}
+\pgfmathsetmacro{\ndim}{3}
+% set step shift and arrow offset and label scale
+\pgfmathsetmacro{\shft}{3.5}
+\pgfmathsetmacro{\offset}{.33}
+\pgfmathsetmacro{\lblscl}{2}
+
+% for drawing help	
+\newcommand{\drawgridhelp}{
+	\coordinate (ll) at (0,-1);
+	\coordinate (ur) at (5*\ndim+4*\shft,\mdim+2);
+	\draw[help lines,dashed] (ll) grid (ur);
+}	
+
+\begin{tikzpicture}[every node/.append style={transform shape},scale=.195]
+	%\drawgridhelp
+	
+	% initial matrix
+	\draw[xscale=\ndim,yscale=\mdim/4] (0,0) grid +(1,4);
+	\node[scale=\lblscl] at (\ndim/2,7*\mdim/8) {$\Mb{A}{1}$};
+	\node[scale=\lblscl] at (\ndim/2,5*\mdim/8) {$\Mb{A}{2}$};
+	\node[scale=\lblscl] at (\ndim/2,3*\mdim/8) {$\Mb{A}{3}$};
+	\node[scale=\lblscl] at (\ndim/2,\mdim/8) {$\Mb{A}{4}$};
+	
+	% 1st step
+	\begin{scope}[shift={(\ndim+\shft,\mdim)}]
+		\draw (0,0) -- (\ndim,0) -- (\ndim,-\ndim) -- (0,0);
+		\node[scale=\lblscl] at (3*\ndim/4,-\ndim/4) {$\Ms{R}{1}$};
+		\draw (0,-\mdim/4) rectangle +(\ndim,-\mdim/4);
+		\node[scale=\lblscl] at (\ndim/2,-3*\mdim/8) {$\Mb{A}{2}$};
+	\end{scope}
+	
+	% 2nd step
+	\begin{scope}[shift={(2*\ndim+2*\shft,\mdim)}]
+		\draw (0,0) -- (\ndim,0) -- (\ndim,-\ndim) -- (0,0);
+		\node[scale=\lblscl] at (3*\ndim/4,-\ndim/4) {$\Ms{R}{2}$};
+		\draw (0,-2*\mdim/4) rectangle +(\ndim,-\mdim/4);
+		\node[scale=\lblscl] at (\ndim/2,-5*\mdim/8) {$\Mb{A}{3}$};
+	\end{scope}
+	
+	% 3rd step
+	\begin{scope}[shift={(3*\ndim+3*\shft,\mdim)}]
+		\draw (0,0) -- (\ndim,0) -- (\ndim,-\ndim) -- (0,0);
+		\node[scale=\lblscl] at (3*\ndim/4,-\ndim/4) {$\Ms{R}{3}$};
+		\draw (0,-3*\mdim/4) rectangle +(\ndim,-\mdim/4);
+		\node[scale=\lblscl] at (\ndim/2,-7*\mdim/8) {$\Mb{A}{4}$};
+	\end{scope}
+	
+	% 4th step
+	\begin{scope}[shift={(4*\ndim+4*\shft,\mdim)}]
+		\draw (0,0) -- (\ndim,0) -- (\ndim,-\ndim) -- (0,0);
+		\node[scale=\lblscl] at (3*\ndim/4,-\ndim/4) {$\M{R}$};
+	\end{scope}
+	
+	% draw arrows
+	\draw[->] (\ndim+\offset,7*\mdim/8) -- +(\shft-2*\offset,0);
+	\draw[->] (2*\ndim+\shft+\offset,\mdim-\ndim/2) -- +(\shft-2*\offset,0);
+	\draw[->] (3*\ndim+2*\shft+\offset,\mdim-\ndim/2) -- +(\shft-2*\offset,0);
+	\draw[->] (4*\ndim+3*\shft+\offset,\mdim-\ndim/2) -- +(\shft-2*\offset,0);
+	\draw[->] (2*\ndim+\shft+\offset,5*\mdim/8) -- (2*\ndim+2*\shft-\offset,\mdim-\ndim/2-3*\offset);
+	\draw[->] (3*\ndim+2*\shft+\offset,3*\mdim/8) -- (3*\ndim+3*\shft-\offset,\mdim-\ndim/2-3*\offset);
+	\draw[->] (4*\ndim+3*\shft+\offset,\mdim/8) -- (4*\ndim+4*\shft-\offset,\mdim-\ndim/2-3*\offset);
+	\draw[->,dashed] (\ndim+\offset,5*\mdim/8) -- +(\shft-2*\offset,0);
+	\draw[->,dashed] (\ndim+\offset,3*\mdim/8) -- +(\ndim+2*\shft-2*\offset,0);
+	\draw[->,dashed] (\ndim+\offset,\mdim/8) -- +(2*\ndim+3*\shft-2*\offset,0);
+\end{tikzpicture}

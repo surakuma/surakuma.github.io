@@ -31,6 +31,7 @@
 
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule for better rules in tables
 \usepackage{bm}
+\usepackage{multirow}
 
 \newcommand{\brown}[1]{{\color{brown} #1 }}
 
@@ -55,6 +56,14 @@
 \newcommand{\vc}[1]{\bm{#1}}
 
 \usetheme{Madrid}
+
+\newcommand{\Tra}{{\sf T}} 
+
+
+\newcommand{\Ms}[2]{\mathbf{#1}^{(#2)}} 
+\newcommand{\M}[1]{\mathbf{#1}} 
+\newcommand{\Mb}[2]{\mathbf{#1}_{#2}} 
+\newcommand{\Mbs}[3]{\mathbf{#1}_{#2}^{(#3)}} 
 
 %\usepackage{enumitem}
 
@@ -88,17 +97,21 @@
 	\begin{frame}{Matrix factorizations}
 		\begin{itemize}
 			\item Useful to solve systems of linear equations $Ax=b$
+			\vfill
 			\item Popular factorizations
+			\vfill
 			\begin{itemize}
 				\item LU factorization
 				\item QR factorization
-				\item Cholesky factorization
-				\item Singular Value Decomposition (SVD)
+%				\item Cholesky factorization
+				\item Singular Value Decomposition
 			\end{itemize}
 		\end{itemize}
 	\end{frame}
 
-	\begin{frame}{Important norm definitions }
+	\begin{frame}{Important definitions}
+		
+\small
 		\begin{block}{Vector norm for $x\in \mathbb{R}^n$}
 %			Given a $x\in \mathbb{R}^n$, 
 %			n-dimension vector $\mathbf{x}=\begin{pmatrix}
@@ -117,7 +130,95 @@
 			\item[] $$\textnormal{Spectral norm, }||A||_2 = \textnormal{largest singular value of A}$$
 		\end{itemize}
 	\end{block}
+\vspace*{-0.1cm}
+\begin{block}{Orthogonal matrix}
+			An orthogonal matrix $Q$ satisfies $Q^TQ=QQ^T=I$ (the identity matrix)
+\begin{itemize}
+	%		\item $Q$ must be square
+	\item $Q$'s rows are orthogonal to each other and have unit norm
+	\item $Q$'s columns are orthogonal to each other and have unit norm
+\end{itemize}
+\end{block}
+
 	\end{frame}
+\section{Singular value decomposition}
+
+	\begin{frame}{Table of Contents}		
+	\tableofcontents[currentsection,hideallsubsections] % Output the table of contents (all sections on one slide)		
+\end{frame}
+
+\begin{frame}{Singular Value Decomposition (SVD)}
+	\begin{itemize}
+		\item It decomposes a matrix $A$ $\in$ $\mathbb{R}^{m \times n}$ to the form $U\Sigma V^T$
+		\begin{itemize}
+			\item $U$ is an $m\times m$ orthogonal matrix
+			\item $V$ is an $n\times n$ orthogonal matrix
+			\item $\Sigma$ is an $m\times n$ rectangular diagonal matrix
+		\end{itemize}
+	\vfill
+	\item The diagonal entries $\sigma_i=\Sigma_{ii}$ of $\Sigma$ are called singular values
+	\begin{itemize}
+		\item $\sigma_i\ge 0$ and $\sigma_1\le \sigma_2\le \cdots \le \sigma_{\min(m,n)}$
+	\end{itemize}
+	\vfill
+	\item Columns of $U$ and $V$ are known as left and right singular vectors respectively
+	\vfill
+	\item If $u_i, v_i$ are the $ith$ vector of $U$ and $V$, then = $A= \sum_{i=1}^{\min(m,n)} \sigma_i u_i v_i^T$
+	\vfill
+	\item The largest $r$ such that $\sigma_r\ne 0$ is called the rank of the matrix
+	\end{itemize}
+\end{frame}
+\begin{frame}{SVD and rank of a matrix}
+	
+	\small
+	\begin{itemize}
+	\item SVD represents a matrix as the sum of $r$ rank one matrices
+	%		\begin{itemize}
+	%			\item $A= \sum_i \Sigma(i;i)U_i V_i^T$
+	%			\item Minimum number of rank one matrices required in the sum is called the rank of the original matrix
+	%		\end{itemize}
+\end{itemize}
+\vfill
+\begin{center}
+	\begin{tikzpicture}[scale=0.275, every node/.style={transform shape}]
+	\pgfmathsetmacro{\cubex}{4}
+	\pgfmathsetmacro{\cubey}{4}
+	\pgfmathsetmacro{\cubez}{4}
+	\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+	%%\draw[blue,fill=pastelgreen] (0,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+	%%\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+	
+	\node[draw=none, text=black, scale=4] at (2,-3,-3) {$=$};
+	\pgfmathsetmacro{\smallwidth}{0.5}
+	\draw[blue,fill=pastelgreen] (\cubex+2,0,0) -- ++(-\smallwidth,0,0) -- ++(0,-\cubey,0) -- ++(\smallwidth,0,0) -- cycle;
+	\draw[blue,fill=pastelgreen] (\cubex+2 +\cubex + 0.5,0.75,0) -- ++(-\cubex,0,0) -- ++(0,-\smallwidth,0) -- ++(\cubex,0,0) -- cycle;
+	%%\draw[blue,fill=pastelgreen] (\cubex+2,0.5,0) -- ++(-\smallwidth,0,0) -- ++(0,0,-\cubez) -- ++(\smallwidth,0,0) -- cycle;
+	
+	\node[draw=none, text=black, scale=4] at (2+\cubex+4.25,-3,-3) {$+$};
+	
+	\draw[blue,fill=pastelgreen] (\cubex+2.5 + \cubex+2,0,0) -- ++(-\smallwidth,0,0) -- ++(0,-\cubey,0) -- ++(\smallwidth,0,0) -- cycle;
+	\draw[blue,fill=pastelgreen] (\cubex+2.5+\cubex+2 +\cubex + 0.5,0.75,0) -- ++(-\cubex,0,0) -- ++(0,-\smallwidth,0) -- ++(\cubex,0,0) -- cycle;
+	%%\draw[blue,fill=pastelgreen] (\cubex+2.5+\cubex+2,0.5,0) -- ++(-\smallwidth,0,0) -- ++(0,0,-\cubez) -- ++(\smallwidth,0,0) -- cycle;
+	
+	\node[draw=none, text=black, scale=4] at (2+\cubex+5 + \cubex+ 4.25, -3,-3) {$+$ $\cdots$ $+$};
+	
+	\draw[blue,fill=pastelgreen] (12 + \cubex+2.5 + \cubex+2,0,0) -- ++(-\smallwidth,0,0) -- ++(0,-\cubey,0) -- ++(\smallwidth,0,0) -- cycle;
+	\draw[blue,fill=pastelgreen] (12+\cubex+2.5+\cubex+2 +\cubex + 0.5,0.75,0) -- ++(-\cubex,0,0) -- ++(0,-\smallwidth,0) -- ++(\cubex,0,0) -- cycle;
+	%%\draw[blue,fill=pastelgreen] (12 + \cubex+2.5+\cubex+2,0.5,0) -- ++(-\smallwidth,0,0) -- ++(0,0,-\cubez) -- ++(\smallwidth,0,0) -- cycle;
+	\end{tikzpicture}
+\end{center}
+\vfill
+\begin{itemize}
+	\item $||A||_F^2 = \sum_{i=1}^{\min(m,n)} \sigma_i^2 = \sum_{i=1}^{r} \sigma_i^2$ 
+	\vfill
+	\item If $r'\le r$ and $\tilde{A}= \sum_{i=1}^{r'} \sigma_i u_i v_i^T$, then $$||A-\tilde{A}||_F^2 = \sum_{i=r'+1}^{\min(m,n)} \sigma_i^2 = \sum_{i=r'+1}^{r} \sigma_i^2$$
+	\vfill
+	\item Useful for compression, dimension reduction and low-rank approximation
+	\vfill
+	\item Expensive to compute and hard to parallelize	
+\end{itemize}
+\end{frame}
+
 	\section{LU factorization}
 	\begin{frame}{Table of Contents}		
 		\tableofcontents[currentsection,hideallsubsections] % Output the table of contents (all sections on one slide)		
@@ -277,8 +378,7 @@
 	\end{block}
 	\end{frame}
 
-	\begin{frame}
-	\frametitle{LU Factorization (1/2)}
+	\begin{frame}{LU factorization}
 	\begin{minipage}{0.65\linewidth}
 		LU factorization (Gaussian elimination):
 		\begin{itemize}
@@ -351,6 +451,10 @@
 	\end{enumerate}
 \end{frame}
 	\section{QR factorization}
+	
+		\begin{frame}{Table of Contents}		
+			\tableofcontents[currentsection,hideallsubsections] % Output the table of contents (all sections on one slide)		
+		\end{frame}
 	
 	\begin{frame}{Terminology related to QR factorization}
 		
@@ -520,12 +624,163 @@
 	\end{algorithmic}
 	
 \end{frame}
+\begin{frame}{Householder QR computational complexity}
+	
+	\small
+	Let $A \in \mathbb{R}^{m\times n}$, we count the number of operation to update $A$ ($A = (I-2u_iu_i^T)A=A-2u_iu_i^TA$) in each iteration $i$.
+	\begin{block}{Operations per iteration}
+		\begin{itemize}
+			\item Dot product $w= u_i^TA(i:m,i:n): 2(m-i)(n-i)$
+			\item Outer product $u_iw: (m-i)(n-i)$
+			\item Subtraction $A(i:m,i:n) = A(i:m,i:n) -2u_iw : (m-i)(n-i)$
+		\end{itemize}
+	The number of operations to multiply $2$ with $w$ is $(n-i)$, however it is a lower order term. Hence we do not consider it explicitly.
+	\end{block}
+	\vfill
+	\begin{block}{Operations in Householder QR factorization}
+		$$\sum_{i=1}^{n} = 4(m-i)(n-i) = 4 \sum_{i=1}^{n} = 4(mn - (m+n)i + i^2)$$
+		$$\approx 4mn^2 - 4(m+n)\frac{n^2}{2} + 4\frac{n^3}{3} = 2mn^2 - 2\frac{n^3}{3}$$
+	\end{block}
+\end{frame}
 
-	\section{SVD}
 
-%	\section{Popular data layouts}
-%\begin{frame}{Table of Contents}		
-%	\tableofcontents[currentsection,hideallsubsections] % Output the table of contents (all sections on one slide)		
-%\end{frame}
+\begin{frame}{QR factorization}
+\begin{itemize}
+	\item $Q$ can be stored in compact representation
+	\vfill
+	\item Structure of block QR algorithm is similar to the block LU algorithm
+	\vfill
+	\item Matrix communication lower bounds are also valid for the Householder/CGS/MGS QR factorization
+\end{itemize}
+\end{frame}
+\begin{frame}{QR factorization algorithms}
+	\begin{table}
+		\centering
+		\setlength\tabcolsep{2pt}
+		\def\arraystretch{1.5}
+		\begin{tabular}{|c|c|c|c|c|}
+			\hline
+			\textbf{Algorithm} & \textbf{\# flops} & \textbf{\# words} & \textbf{stability}  \\ \hline
+			CGS & \multirow{3}{*}{$2mn^2+O(n^3)$} & $O(mn^2)$ & Bad \\ \cline{1-1} \cline{3-4}
+			MGS &  & $O(mn^2)$ & Okay\\ \cline{1-1} \cline{3-4}
+			%		CholQR & & $O(mn)$ & Okay \\ \cline{1-1} \cline{3-4}
+			HouseholderQR & & $O(mn^2)$ & Good \\ \hline
+		\end{tabular}
+		%\caption{Algorithmic costs for various sequential orthogonalization routines for $m\times n$ matrix assuming $m> \sqrt M > n$.}
+		\label{tab:seq-qr}
+	\end{table}
+	
+\end{frame}
+\subsection{Tall Skinny QR (TSQR) factorization}
+	\begin{frame}{Table of Contents}		
+	\tableofcontents[currentsection] % Output the table of contents (all sections on one slide)		
+	\end{frame}
+\begin{frame}{TSQR: QR factorization of a tall skinny matrix}{QR factorization of a $m\times n$ matrix with $m >>n$}
+
+	
+
+		The goal and process of Householder QR: 
+		\begin{itemize}
+			\item annihilate entries below diagonal to obtain upper triangular form
+			\item work column-by-column, left-to-right
+		\end{itemize}
+		
+		\vfill
+
+	
+	Tall-Skinny QR idea (Demmel, Grigori, Hoemmen, Langou '12):
+	\begin{itemize}
+		\item change the order of annihilation to minimize communication
+		\item work row-by-row, top to bottom
+	\end{itemize}
+
+	\vfill
+	
+	
+	
+\end{frame}
+\begin{frame}{Algebra of TSQR}
+	\vspace*{-0.15cm}\begin{center}
+		\input{Images/TSQRpar.tex}
+	\end{center}
+{\small
+$$A=\begin{pmatrix}
+A_1\\
+A_2\\
+A_3\\
+A_4
+\end{pmatrix} = 
+\begin{pmatrix}
+\Mbs{Q}{1}{2}\Mbs{R}{1}{2}\\
+\Mbs{Q}{2}{2}\Mbs{R}{2}{2}\\
+\Mbs{Q}{3}{2}\Mbs{R}{3}{2}\\
+\Mbs{Q}{4}{2}\Mbs{R}{4}{2}
+\end{pmatrix} =
+\begin{pmatrix}
+\Mbs{Q}{1}{2} &&&\\
+&\Mbs{Q}{2}{2}&&\\
+&&\Mbs{Q}{3}{2}&\\
+&&&\Mbs{Q}{4}{2}\\
+\end{pmatrix}\begin{pmatrix}
+\Mbs{R}{1}{2}\\
+\Mbs{R}{2}{2}\\
+\Mbs{R}{3}{2}\\
+\Mbs{R}{4}{2}
+\end{pmatrix}$$
+$$\begin{pmatrix}
+\Mbs{R}{1}{2}\\
+\Mbs{R}{2}{2}\\
+\Mbs{R}{3}{2}\\
+\Mbs{R}{4}{2}
+\end{pmatrix}= \begin{pmatrix}
+\Mbs{Q}{1}{1}\Mbs{R}{1}{1}\\
+\Mbs{Q}{2}{1}\Mbs{R}{2}{1}
+\end{pmatrix} = \begin{pmatrix}
+\Mbs{Q}{1}{1}&\\
+&\Mbs{Q}{2}{1}
+\end{pmatrix}\begin{pmatrix}
+\Mbs{R}{1}{1}\\
+\Mbs{R}{2}{1}
+\end{pmatrix},\quad 
+\begin{pmatrix}
+\Mbs{R}{1}{1}\\
+\Mbs{R}{2}{1}
+\end{pmatrix} = \Mbs{Q}{1}{0}\Mbs{R}{1}{0} $$
+
+$Q$ is represented implicitly as a product.
+}
+\end{frame}
+\begin{frame}{Flexibility of TSQR}
+	\small
+\vspace*{-0.175cm}\begin{block}{Parallel TSQR}
+	\begin{minipage}{0.475\linewidth}
+		\begin{itemize}
+			\item Assuming block row layout on $P$ processors
+			\item Communication cost is that of binomial-tree reduction: $\beta \cdot O(n^2 \log P) + \alpha \cdot O(\log P)$
+		\end{itemize}
+	\end{minipage}
+	\begin{minipage}{0.475\linewidth}
+		\begin{center}
+			\input{Images/TSQRpar.tex}
+		\end{center}
+	\end{minipage}
+\end{block}
+\vspace*{-0.175cm}\begin{block}{Sequential TSQR}
+	\begin{minipage}{0.475\linewidth}
+			\begin{itemize}
+			\item Assuming cache size is $\Omega(n^2)$
+			\item It streams through matrix once achieving $O(mn)$ amount of data transfers 
+		\end{itemize}
+	\end{minipage}
+	\begin{minipage}{0.475\linewidth}
+	\begin{center}
+		\input{Images/TSQRseq.tex}
+	\end{center}
+	\end{minipage}
+
+\end{block}
+\end{frame}
+
+
 
 \end{document} 
