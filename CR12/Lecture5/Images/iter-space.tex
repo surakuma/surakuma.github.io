@@ -1,0 +1,69 @@
+%!TEX root = ../paper.tex
+
+\begin{tikzpicture}[scale=.35,every node/.append style={transform shape}]
+
+% set iteration space dimensions
+\pgfmathsetmacro{\idim}{4}
+\pgfmathsetmacro{\kdim}{6}
+
+% set internal vertex
+\pgfmathsetmacro{\ipt}{1.05*\idim/6}
+\pgfmathsetmacro{\jpt}{-\idim/4}
+\pgfmathsetmacro{\kpt}{-\kdim/3}
+
+\pgfmathsetmacro{\offset}{.33}
+
+	
+% right face of comp cube
+\begin{scope}[canvas is yz plane at x=0]
+	\draw[black,dashed] (0,-\idim) -- (\idim,-\idim);
+	\draw[black,fill=blue!10] (0,0) -- (0,-\idim) -- (\idim,0) -- cycle;
+	\node[rotate=-90,scale=2] at (7*\idim/16,-7*\idim/16) {\Large $\CC$};
+	\coordinate (c) at (\ipt,\jpt);
+	\node[rotate=-90,scale=1.5] at (c) {$C_{ij}$};
+	\coordinate (ct) at (\idim+\jpt,-\idim+\ipt);
+	\node[rotate=-90,scale=1.5] at (ct) {$C_{ji}$};
+\end{scope}
+% front face of comp cube
+\begin{scope}[canvas is xy plane at z=0]
+	\draw[black,fill=blue!10] (0,0) rectangle (-\kdim,\idim);
+	\node[scale=2] at (-\kdim/2,\idim/2) {\Large $\A$};
+	\node at (-\kdim/2,-\offset) {\Large $n_2$};
+	\node at (-\kdim-\offset,\idim/2) {\Large $n_1$};
+	\coordinate (a) at (\kpt,\ipt);
+	\node[scale=1.5] at (a) {\small $A_{ik}$};
+	\coordinate (at) at (\kpt,\idim+\jpt);
+	\node[scale=1.5] at (at) {\small $A_{jk}$};
+\end{scope}
+% bottom face of comp cube
+\begin{scope}[canvas is xz plane at y=0]
+	\node[yscale=-1,rotate=90,scale=2] at (-1.05*3*\kdim/5,-\idim/2) {\Large $\A^T$};
+	\coordinate (b) at (\kpt,\jpt);
+	\node[yscale=-1,rotate=90,scale=1.5] at (b) {\small $A_{jk}$};
+	\coordinate (bt) at (\kpt,-\idim+\ipt);
+	\node[yscale=-1,rotate=90,scale=1.5] at (bt) {\small $A_{ik}$};
+\end{scope}
+
+% label last dimension using absolute positioning
+\node at (1+\offset,1-\offset,0) {\Large $n_1$};
+
+% draw internal vertex and its projection lines
+\coordinate (v) at (\kpt,\ipt,\jpt);
+\node[above,scale=.75] at (v) {$(i,j,k)$};
+\draw[dotted,line width=1pt] (v) -- ($(v)!.85!(a)$); 
+\draw[dotted,line width=1pt] (v) -- ($(v)!.95!(b)$);
+\draw[dotted,line width=1pt] (v) -- ($(v)!.95!(c)$);
+
+% draw symmetric vertex and its projection lines
+\coordinate (vt) at (\kpt,\idim+\jpt,-\idim+\ipt);
+\node[above,scale=.75] at (vt) {$(j,i,k)$};
+\draw[dotted,line width=1pt] (vt) -- ($(vt)!.85!(at)$); 
+\draw[dotted,line width=1pt] (vt) -- ($(vt)!.95!(bt)$);
+\draw[dotted,line width=1pt] (vt) -- ($(vt)!.95!(ct)$); 
+ 
+ % draw hidden edges of triangular prism
+ \draw[black,dashed] (0,\idim,0) -- (0,\idim,-\idim) -- (-\kdim,\idim,-\idim) -- (-\kdim,\idim,0);
+\draw[black,dashed] (-\kdim,0,0) -- (-\kdim,0,-\idim) -- (0,0,-\idim);
+\draw[black,dashed] (-\kdim,\idim,0) -- (-\kdim,0,-\idim) -- (-\kdim,\idim,-\idim);
+
+\end{tikzpicture}
