@@ -100,13 +100,13 @@
 %	\tableofcontents[currentsection,hideallsubsections] % Output the table of contents (all sections on one slide)		
 %	\end{frame}
 
-\begin{frame}{Symmetric Rank-K (SYRK) update operation}
+\begin{frame}{Symmetric Rank-K (SYRK) update}
 	
 	\small
 	$C=A\cdot A^T$, where $A$ is an $n_1 \times n_2$ matrix and $C$ is an $n_1\times n_1$ symmetric matrix.
 \begin{itemize}
 	\item It multiplies a matrix with its transpose
-	\item It requires half of the computation of general matrix multiplication due to symmetry
+	\item It requires roughly half of the computation of general matrix multiplication due to symmetry
 	\item $C_{ij} = \sum_{k=0}^{n_2-1}A_{ik}A_{jk}$ for $0\le j \le i \le n_1$
 \end{itemize}
 \vfill
@@ -216,7 +216,7 @@ Here we assume that each $C[i][j]$ is initialized to $0$ in the beginning.
 Proof: Let $\tilde{V} = \{(i,j,k)\in \mathbb{Z}^3: (j,i,k) \in V\}$.
 \begin{itemize}
 	\item[] $|V|=|\tilde{V}|$ and $|V\cup\tilde{V}| = 2|V|$
-	\item[]  $\phi_{ij}(\tilde{V}) = \{(i,j): (j,i)\in \phi_{ij}(V)\}$ and $|\phi_{ij}(V) \cup \phi_{ij}(\tilde{V})| =  |2\phi_{ij}(V)|$
+	\item[]  $\phi_{ij}(\tilde{V}) = \{(i,j): (j,i)\in \phi_{ij}(V)\}$ and $|\phi_{ij}(V) \cup \phi_{ij}(\tilde{V})| =  2|\phi_{ij}(V)|$
 	\item[]  $\phi_{jk}(\tilde{V}) = \phi_{ik}(V)$, $\phi_{ik}(\tilde{V}) = \phi_{jk}(V)$ and $\phi_{ik}(V\cup\tilde{V}) = \phi_{jk}(V\cup\tilde{V}) = \phi_{jk}(V)\cup \phi_{ik}(V)$
 \end{itemize}
 \end{minipage}\hfill
@@ -289,7 +289,7 @@ SYR2K pseudo code:
 	\end{align*}
 \vfill
 \begin{block}{Assignment 3 -- deadline Oct 5}
-	\brown{Question:}Obtain memory-independent communication lower bound for the SYR2K computation. Assume that all the operations of each loop iteration are performed on the same processor, i.e, $A[i][k]*B[j][k]$ and $A[j][k]* B[i][k]$ are computed on one processor. 
+	\brown{Question:}Obtain memory-independent communication lower bound for SYR2K. Assume that all the operations of each loop iteration are performed on the same processor, i.e, $A[i][k]*B[j][k]$ and $A[j][k]* B[i][k]$ are computed on one processor. 
 \end{block}
 \end{frame}
 \end{document} 
