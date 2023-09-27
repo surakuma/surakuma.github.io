@@ -67,7 +67,7 @@
 
 %\usepackage{enumitem}
 
-\input{tensor_header}
+\input{../tensor_header}
 
 
 %----------------------------------------------------------------------------------------
@@ -96,6 +96,73 @@
 		\titlepage % Output the title slide, automatically created using the text entered in the PRESENTATION INFORMATION block above
 	\end{frame}
 
+
+\begin{frame}{Tensors ($n$-dimensional arrays)}
+	\begin{center}
+		\begin{tikzpicture}[scale=0.125, every node/.style={transform shape}]
+		\pgfmathsetmacro{\rectx}{4}
+		\pgfmathsetmacro{\recty}{0.5}
+		\draw[blue,fill=pastelgreen] (0,0) -- node [below, scale=6, black] {Vector}++(-\rectx,0) -- ++(0,\recty) -- ++(\rectx, 0) -- cycle;
+		\end{tikzpicture}$\;$
+		\begin{tikzpicture}[scale=0.125, every node/.style={transform shape}]
+		\pgfmathsetmacro{\rectx}{4}
+		\pgfmathsetmacro{\recty}{4}
+		\draw[blue,fill=pastelgreen] (0,0) -- node [below, scale=6, black] {Matrix}++(-\rectx,0) -- ++(0,\recty) -- ++(\rectx, 0) -- cycle;
+		%%\addvmargin{4};
+		\end{tikzpicture}$\;$
+		\begin{tikzpicture}[scale=0.125, every node/.style={transform shape}]
+		\pgfmathsetmacro{\cubex}{4}
+		\pgfmathsetmacro{\cubey}{4}
+		\pgfmathsetmacro{\cubez}{4}
+		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) --node [below, scale=6, black] {3-dimensional tensor} ++(\cubex,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+		\end{tikzpicture}$\;$
+		%%	\end{center}
+		%%	\begin{center}	
+		\begin{tikzpicture}[scale=0.125, every node/.style={transform shape}]
+		\pgfmathsetmacro{\cubex}{4}
+		\pgfmathsetmacro{\cubey}{4}
+		\pgfmathsetmacro{\cubez}{4}
+		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+		
+		\draw[blue,fill=pastelgreen] (\cubex +2,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (\cubex +2,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+		\draw[blue,fill=pastelgreen] (\cubex +2,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+		
+		\draw[blue,fill=pastelgreen] (\cubex +2 + \cubex +2,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (\cubex +2 + \cubex +2,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+		\draw[blue,fill=pastelgreen] (\cubex +2 + \cubex +2,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+		
+		\draw[blue, fill=none] (-\cubex -1, 2.5, 0) -- ++(0, -\cubey -3.5, 0) --node [below, scale=6, black] {4-dimensional tensor} ++(\cubex +2 + \cubex +2 + \cubex + \cubex,0,0) -- ++(0, \cubey +3.5, 0) -- cycle; 
+		
+		%%\node [scale=2] at (0, -8) {$hello$};
+		\end{tikzpicture}
+	\end{center}
+	
+	\vfill
+	\small
+	\begin{itemize}
+		\item \textbf{Neuroscience}: measure of calcium fluorescence in a particular pixel during a time step of a single trial (Pixel $\times$ Time $\times$ Trial)
+		\vfill
+		\item \textbf{Combustion simulation}: value of a variable in a spatial grid during a time step (Grid length $\times$ Grid width $\times$ Grid height $\times$ Variable $\times$ Time)
+		\vfill
+		\item \textbf{Media}: rating of a movie by a user during a time slice (User $\times$ Movie $\times$ Time)
+		\vfill
+		\item \textbf{Molecular/quantum simulations}: interaction of electrons in $d$ orbitals with a $4^d$ tensor
+		
+%		%%		\item \textbf{Transportation}: Pickup $\times$ Dropoff $\times$ Time
+%		\item  
+%		\item \textbf{Ecommerce}: User x Product x Time
+%		\item \textbf{Social-Network}: Person x Person x Time x Type
+%		%%		\item[$\textcolor{blue}{\bullet}$] \textbf{Social-Network}: Person x Person x Time x Type
+	\end{itemize}
+\vfill
+Notation convention: Matrix $A$, tensor $\T{A}$	
+\end{frame}
+
 \section{Tensor notations and some definitions}
 	\begin{frame}{Table of Contents}		
 	\tableofcontents[currentsection,hideallsubsections] % Output the table of contents (all sections on one slide)		
@@ -104,7 +171,7 @@
 
 \begin{frame}{Tensor notations (following [Kolda and Bader, 2009])}
 	\small
-Let $\T{A}$ be a $d$-dimensional tensor of size $n_1\times n_2\times n_d$, $\T{A} \in \mathbb{R}^{n_1\times n_2\times n_d}$.
+Let $\T{A}$ be a $d$-dimensional tensor of size $n_1\times n_2\times\cdots \times n_d$, $\T{A} \in \mathbb{R}^{n_1\times n_2\times n_d}$.
 \begin{itemize}
 	\item $d=1$ , first order tensors: vectors
 	\item $d=2$, second order tensors: matrices
@@ -147,7 +214,7 @@ The element of $\T{A}$ is denoted as $\T{A}(i_1,i_2,\ldots,i_d)$.
 		$$\langle \T{A},\T{B} \rangle = \sum_{i_1=1}^{n_1}\sum_{i_2=1}^{n_2}\cdots \sum_{i_d=1}^{n_d}\T{A}(i_1,i_2,\cdots,i_d)\T{B}(i_1,i_2,\cdots,i_d)$$
 	\end{itemize}
 \vfill
-		We can note that $\langle \T{A},\T{A} \rangle = ||A||^2$.
+		We can note that $\langle \T{A},\T{A} \rangle = ||\T{A}||^2$.
 \end{frame}
 \begin{frame}{Specific tensors}
 	\begin{itemize}
@@ -170,7 +237,7 @@ The element of $\T{A}$ is denoted as $\T{A}(i_1,i_2,\ldots,i_d)$.
 %		\vfill
 		\item The mode-$j$ unfolding of $\T{A} \in \mathbb{R}^{n_1\times n_2\times\cdots\times n_d}$ is represented by a matrix $A_{(j)} \in \mathbb{R}^{n_j \times n}$, where $n=n_1n_2\cdots n_{j-1}n_{j+1}\cdots n_d$
 		\vfill
-		\item Tensor element $\T{A}(i_1,i_2,\cdots,i_d)$ maps to matrix element $A_{(j)}(i_j,k)$, where $k=1+\sum_{\ell=1,\ell\ne j}^{d} (i_d-1)N_\ell$ with $N_\ell = \prod_{m=1, m\ne j}^{\ell-1}n_m$
+		\item Tensor element $\T{A}(i_1,i_2,\cdots,i_d)$ maps to matrix element $A_{(j)}(i_j,k)$, where $k=1+\sum_{\ell=1,\ell\ne j}^{d} (i_\ell-1)N_\ell$ with $N_\ell = \prod_{m=1, m\ne j}^{\ell-1}n_m$
 	\end{itemize}
 		Example with the frontal slices of $\T{A} \in \mathbb{R}^{4\times 2 \times 3}$:		
 {\footnotesize $$\T{A}(:,:,1) = \begin{pmatrix}
@@ -205,6 +272,17 @@ $$A_{(2)} = \begin{pmatrix}
 1 & 2 & 3 & 4 & 9 & 10 & 11 & 12 & 17 & 18 \quad  19 \quad  20\\
 5 & 6 & 7 & 8 & 13 & 14 & 15 & 16 & 21 & 22 \quad  23 \quad  24
 \end{pmatrix}$$}	
+\end{frame}
+\begin{frame}{Assignment 4 -- deadline Oct 10}
+	\brown{Question:} Write a program in your preferred programming language to obtain mode-$3$ unfolding of $\T{A}\in \mathbb{R}^{3\times 3\times 3}$. Elements of $\T{A}$ are defined in the following way:
+	$$\T{A}(i,j,k) = i+j^2 +k^3 \text{ for } 1\le i,j,k \le 3 \text.$$ 
+
+\vfill
+If your preferred language support $0$-based indexing then you can consider $0\le i,j,k \le 2$.
+
+\vfill
+
+\emph{Submission procedure} : send your code to my ENS email address (\href{mailto:suraj.kumar@ens-lyon.fr}{suraj.kumar@ens-lyon.fr}) by Oct 10. 
 \end{frame}
 \begin{frame}{Tensor multiplication along $j$-mode with a matrix}
 \small
@@ -317,6 +395,8 @@ $$\qquad\qquad\qquad\qquad \Leftrightarrow B_{(j)} = U_j A_{(j)}(U_d \otimes \cd
 
 \end{frame}
 
+
+
 \begin{frame}{Tensor decompositions}
 	
 	\small
@@ -420,7 +500,7 @@ CP and Tucker decompositions are well suited to work with small and moderate dim
 \end{frame}
 
 %------------------------------------------------
-\begin{frame}{Tensor Train (TT) decomposition: Product of matrices view}
+\begin{frame}{\large Tensor Train (TT) decomposition: Product of matrices view}
 	
 	\small
 	\begin{itemize}
