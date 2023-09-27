@@ -97,6 +97,99 @@
 	\begin{frame}
 		\titlepage % Output the title slide, automatically created using the text entered in the PRESENTATION INFORMATION block above
 	\end{frame}
+\begin{frame}{Recap on Singular Value Decomposition (SVD)}
+	\small
+	\begin{itemize}
+		\item It decomposes a matrix $A$ $\in$ $\mathbb{R}^{m \times n}$ to the form $U\Sigma V^T$
+		\begin{itemize}
+			\item $U$ is an $m\times m$ orthogonal matrix
+			\item $V$ is an $n\times n$ orthogonal matrix
+			\item $\Sigma$ is an $m\times n$ rectangular diagonal matrix
+		\end{itemize}
+		\vfill
+		\item The diagonal entries $\sigma_i=\Sigma_{ii}$ of $\Sigma$ are called singular values
+		\begin{itemize}
+			\item $\sigma_i\ge 0$ and $\sigma_1\le \sigma_2\le \cdots \le \sigma_{\min(m,n)}$
+		\end{itemize}
+		\vfill
+		\item The largest $r$ such that $\sigma_r\ne 0$ is called the rank of the matrix
+		\vfill
+		\item SVD represents a matrix as the sum of $r$ rank one matrices
+	\end{itemize}
+	\vfill
+	\begin{center}
+		\begin{tikzpicture}[scale=0.275, every node/.style={transform shape}]
+		\pgfmathsetmacro{\cubex}{4}
+		\pgfmathsetmacro{\cubey}{4}
+		\pgfmathsetmacro{\cubez}{4}
+		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+		%%\draw[blue,fill=pastelgreen] (0,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+		%%\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+		
+		\node[draw=none, text=black, scale=4] at (2,-3,-3) {$=$};
+		\pgfmathsetmacro{\smallwidth}{0.5}
+		\draw[blue,fill=pastelgreen] (\cubex+2,0,0) -- ++(-\smallwidth,0,0) -- ++(0,-\cubey,0) -- ++(\smallwidth,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (\cubex+2 +\cubex + 0.5,0.75,0) -- ++(-\cubex,0,0) -- ++(0,-\smallwidth,0) -- ++(\cubex,0,0) -- cycle;
+		%%\draw[blue,fill=pastelgreen] (\cubex+2,0.5,0) -- ++(-\smallwidth,0,0) -- ++(0,0,-\cubez) -- ++(\smallwidth,0,0) -- cycle;
+		
+		\node[draw=none, text=black, scale=4] at (2+\cubex+4.25,-3,-3) {$+$};
+		
+		\draw[blue,fill=pastelgreen] (\cubex+2.5 + \cubex+2,0,0) -- ++(-\smallwidth,0,0) -- ++(0,-\cubey,0) -- ++(\smallwidth,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (\cubex+2.5+\cubex+2 +\cubex + 0.5,0.75,0) -- ++(-\cubex,0,0) -- ++(0,-\smallwidth,0) -- ++(\cubex,0,0) -- cycle;
+		%%\draw[blue,fill=pastelgreen] (\cubex+2.5+\cubex+2,0.5,0) -- ++(-\smallwidth,0,0) -- ++(0,0,-\cubez) -- ++(\smallwidth,0,0) -- cycle;
+		
+		\node[draw=none, text=black, scale=4] at (2+\cubex+5 + \cubex+ 4.25, -3,-3) {$+$ $\cdots$ $+$};
+		
+		\draw[blue,fill=pastelgreen] (12 + \cubex+2.5 + \cubex+2,0,0) -- ++(-\smallwidth,0,0) -- ++(0,-\cubey,0) -- ++(\smallwidth,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (12+\cubex+2.5+\cubex+2 +\cubex + 0.5,0.75,0) -- ++(-\cubex,0,0) -- ++(0,-\smallwidth,0) -- ++(\cubex,0,0) -- cycle;
+		%%\draw[blue,fill=pastelgreen] (12 + \cubex+2.5+\cubex+2,0.5,0) -- ++(-\smallwidth,0,0) -- ++(0,0,-\cubez) -- ++(\smallwidth,0,0) -- cycle;
+		\end{tikzpicture}
+	\end{center}
+	
+\end{frame}
+
+\begin{frame}{Properties of SVD}
+	
+	\small
+	The SVD of $A \in \mathbb{R}^{m \times n}$ can be written as $A=U\Sigma V^T$. Here $U \in \mathbb{R}^{m \times m}$ and $V \in \mathbb{R}^{n \times n}$ are othogonal matrices and $\Sigma\mathbb{R}^{m \times n}$ is a rectangular diagonal matrix.
+	
+	\begin{itemize}
+		\item Columns of $U$ are also eigen vectors of $AA^T$
+		\item Similarly, columns of $V$ are eigen vectors of $A^TA$
+		\item If $\sigma_i > 0$ is a singular value of $A$ then $\sigma_i^2$ is an eigen value of $AA^T$ and $A^TA$
+	\end{itemize}
+	$\Sigma\Sigma^T$ and $\Sigma^T\Sigma$ are diagonal matrices. Their diagonal entries are the eigen values of $AA^T$ and $A^TA$, respectively.
+	\vfill
+	We can also express SVD as
+	$$A=\begin{pmatrix}
+	U_1 & U_2
+	\end{pmatrix} \begin{pmatrix}
+	\Sigma_1 & 0\\
+	0 & \Sigma_2
+	\end{pmatrix} \begin{pmatrix}
+	V_1 V_2
+	\end{pmatrix}^T = U_1\Sigma_1 V_1^T + U_2\Sigma_2 V_2^T \text.$$
+	 This is equivalent to
+	 
+	 $$A= U_1U_1^TA + U_2U_2^TA = AV_1V_1^T + AV_2V_2^T\text.$$
+\end{frame}
+
+\begin{frame}{Properties of matrix Frobenius norm for real matrices}
+	\small 
+	$$||A||_F^2 = \sum_{i,j}A^2(i,j) = Trace(AA^T) = Trace(A^TA)$$
+	\vfill
+	$$||A+B||_F^2 = ||A||_F^2 + ||B||_F^2 + 2 \langle A, B \rangle_F$$
+	
+	Here $\langle A, B \rangle_F$ is known as Frobenius inner product and defined as $\langle A, B \rangle_F = Trace(A^TB) = Trace(B^TA)$.
+	
+	\vfill
+	If $Q$ is an orthonormal matrix then,
+	
+	$$||A||_F^2  = ||QQ^TA||_F^2 + ||(I-QQ^T)A||_F^2 \text.$$
+	
+	
+	
+\end{frame}
 
 \section{CP decomposition}
 	\begin{frame}{Table of Contents}		
@@ -288,8 +381,8 @@ $$(A\odot B)^T(A\odot B) = A^TA * B^TB$$
 		\caption{CP-ALS method to compute CP decomposition\label{alg:canonicalals}}
 		%%				\caption{HOSVD Algorithm($\X$, $R_1$, $R_2$, $R_3$)}
 		\begin{algorithmic}
-			\Require input tensor $\T{A}\in \mathbb{R}^{n_1\times n_2\times\cdots \times n_d}$, desired rank $k$, initial factor matrices $U_j\in \mathbb{R}^{n_j\times k} \textnormal{ for } 1\le j \le d$
-			\Ensure $[[\lambda, U_1, \cdots, U_d]]$ : A rank-$k$ CP decomposition of $\T{A}$
+			\Require input tensor $\T{A}\in \mathbb{R}^{n_1\times \cdots \times n_d}$, desired rank $k$, initial factor matrices $U_j\in \mathbb{R}^{n_j\times k} \textnormal{ for } 1\le j \le d$
+			\Ensure $[[\lambda; U_1, \cdots, U_d]]$ : a rank-$k$ CP decomposition of $\T{A}$
 			\Repeat
 			\For{$i=1 \text{ to } d$}
 			\State $V\gets U_1^\Tra U_1*\cdots*U_{i-1}^\Tra U_{i-1} U_{i+1}^\Tra U_{i+1} *\cdots*U_d^\Tra U_d$
@@ -302,15 +395,21 @@ $$(A\odot B)^T(A\odot B) = A^TA * B^TB$$
 }\end{algorithm}
 
 \begin{itemize}
-	\item $U_j$ can be chosen or randomly or by setting $k$ left singular vectors of $A_{(j)}$ for $1\le j \le d$
+	\item $U_j$ can be chosen randomly or by setting $k$ left singular vectors of $A_{(j)}$ for $1\le j \le d$
 \end{itemize}
 
 \end{frame}
+
+\section{Tucker decomposition}
+\begin{frame}{Table of Contents}		
+	\tableofcontents[currentsection,hideallsubsections] % Output the table of contents (all sections on one slide)		
+\end{frame}
+
 \begin{frame}{Tucker decomposition of $\T{A} \in \mathbb{R}^{n_1\times n_2\times\cdots\times n_d}$}
 	
 	\small
-	It represents a tensor with $d$ matrices (usually orthogonal) and a small core tensor.
-	\begin{center}
+	It represents a tensor with $d$ matrices (usually orthonormal) and a small core tensor.
+	\vspace*{-0.25cm}\begin{center}
 		\begin{tikzpicture}[scale=0.25, every node/.style={transform shape}]
 		\pgfmathsetmacro{\cubex}{4}
 		\pgfmathsetmacro{\cubey}{4}
@@ -338,13 +437,149 @@ $$(A\odot B)^T(A\odot B) = A^TA * B^TB$$
 			{\footnotesize\vspace*{-0.1cm}$$\T{A} = \T{G} \times_1 U_1 \cdots \times_d U_d$$
 			$$\T{A}(i_1,\cdots,i_d) = \sum_{\alpha_1=1}^{r_1}\cdots\sum_{\alpha_d=1}^{r_d} \T{G}(\alpha_1,\cdots,\alpha_d)U_1(i_1,\alpha_1)\cdots U_d(i_d, \alpha_d)$$}
 			\vfill
-			Here $r_j$ for $1\le j\le d$ denote a set of ranks. Matrices $U_j \in \mathbb{R}^{n_j\times r_j}$ for $1\le j \le d$ are called factor matrices. The tensor $\T{G}\in \mathbb{R}^{r_1\times r_2\times\cdots\times r_d}$ is called the core tensor.
-			\vfill 
+			\justifying
+			It can be concisely expressed as $\T{A} = [[\T{G}; U_1, \cdots, U_d]]$.
+			\vfill
+			Here $r_j$ for $1\le j\le d$ denote a set of ranks. Matrices $U_j \in \mathbb{R}^{n_j\times r_j}$ for $1\le j \le d$ are usually orthonormal and known as factor matrices. The tensor $\T{G}\in \mathbb{R}^{r_1\times r_2\times\cdots\times r_d}$ is called the core tensor. 
+%			\vfill 
+%	\begin{itemize}
+%		\item ({\color{green}+}) SVD based stable algorithms to compute this decomposition
+%		\item ({\color{red}-}) The number of entries = $\mathcal{O}(n_1r_1 + \cdots + n_dr_d+ \prod_{j=1}^{d}r_j)$
+%%		\item ({\color{red}-}) For $n_1=n_2=\cdots n_d=n$ and $r_1=r_2=\cdots =r_d=r$, the number of entries = $\mathcal{O}(ndr+r^d)$
+%	\end{itemize}	
+\end{frame}
+
+\subsection{Computing Tucker decomposition}
+\begin{frame}{Table of Contents}		
+	\tableofcontents[currentsection] % Output the table of contents (all sections on one slide)		
+\end{frame}
+
+\begin{frame}{\large High Order SVD (HOSVD) for computing a Tucker decomposition}
+	\small
+		\begin{algorithm}[H]{
+			\caption{HOSVD method to compute a Tucker decomposition}
+			\begin{algorithmic}
+				\Require input tensor $\T{A}\in \mathbb{R}^{n_1\times \cdots \times n_d}$, desired rank $(r_1,\cdots, r_d)$
+				\Ensure  $\T{A} = \T{G} \times_1 U_1 \times_2 U_2  \cdots \times_d U_d$
+				\For{$k=1 \text{ to } d$}
+				\State $U_k \gets r_k$ leading left singular vectors of $A_{(k)}$
+				\EndFor
+				\State $\T{G} = \T{A} \times_1 U_1^\Tra \times_2 U_2^\Tra  \cdots \times_d U_d^\Tra$
+			\end{algorithmic}
+	}\end{algorithm}
+
+
+\vfill
+\begin{itemize}
+	\item When $r_i < rank(A_{(i)})$ for one or more $i$, the decomposition is called the truncated-HOSVD (T-HOSVD)
+	\vfill
+	\item Output of T-HOSVD can be used as a starting point for an ALS algorithm
+\end{itemize}
+\end{frame}
+
+\begin{frame}{\large Sequentially T-HOSVD (ST-HOSVD) for Tucker decomposition}
+	\small
 	\begin{itemize}
-		\item ({\color{green}+}) SVD based stable algorithms to compute this decomposition
-		\item ({\color{red}-}) The number of entries = $\mathcal{O}(n_1r_1 + \cdots + n_dr_d+ \prod_{j=1}^{d}r_j)$
-%		\item ({\color{red}-}) For $n_1=n_2=\cdots n_d=n$ and $r_1=r_2=\cdots =r_d=r$, the number of entries = $\mathcal{O}(ndr+r^d)$
-	\end{itemize}	
+		\item This method is more work efficient than T-HOSVD
+		\vfill
+		\item In each step, it reduces the size of one dimension of the tensor
+	\end{itemize}
+	
+	%	\small
+	\begin{algorithm}[H]{
+			\caption{ST-HOSVD method to compute a Tucker decomposition}
+			\begin{algorithmic}
+				\Require input tensor $\T{A}\in \mathbb{R}^{n_1\times \cdots \times n_d}$, desired rank $(r_1,\cdots, r_d)$
+				\Ensure  $[[\T{G}; U_1, \cdots, U_d]]$ : a $(r_1, \cdots, r_d)$-rank Tucker decomposition of $\T{A}$
+				\State $\T{B} \gets \T{A}$
+				\For{$k=1 \text{ to } d$}
+				\State $S\gets B_{(k)}B_{(k)}^T$
+				\State $U_k \gets r_k$ leading eigen vectors of $S$
+				\State $\T{B} \gets \T{B} \times_i U_i$
+				\EndFor
+				\State $\T{G} = \T{A} \times_1 U_1^\Tra \times_2 U_2^\Tra \cdots \times_d U_d^\Tra$
+			\end{algorithmic}
+	}\end{algorithm}
+	
+	
+%	\vfill
+%	\begin{itemize}
+%		\item When $r_i < rank(A_{(i)})$ for one or more $i$, the decomposition is called the truncated-HOSVD (T-HOSVD)
+%		\vfill
+%		\item Output of T-HOSVD can be used as a starting point for an ALS algorithm
+%	\end{itemize}
+\end{frame}
+
+\begin{frame}{\large Tucker decomposition optimization problem for a $3$-dimensional tensor}
+	\begin{center}
+	\begin{tikzpicture}[scale=0.2, every node/.style={transform shape}]
+	\pgfmathsetmacro{\cubex}{4}
+	\pgfmathsetmacro{\cubey}{4}
+	\pgfmathsetmacro{\cubez}{4}
+	\draw[blue,fill=pastelgreen] (-12,1,\cubez-2) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+	\draw[blue,fill=pastelgreen] (-12,1,\cubez-2) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+	\draw[blue,fill=pastelgreen] (-12,1,\cubez-2) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+	\node[draw=none, text=black, scale=4] at (-8,-1,0) {$\approx$};
+	
+	\pgfmathsetmacro{\cubex}{2}
+	\pgfmathsetmacro{\cubey}{2}
+	\pgfmathsetmacro{\cubez}{2}
+	\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+	\draw[blue,fill=pastelgreen] (0,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+	\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+	
+	\draw[blue,fill=pastelgreen] (-\cubex-1,1,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey-2,0) -- ++(\cubex,0,0) -- cycle;
+	\draw[blue,fill=pastelgreen] (\cubex+2+1,0,-\cubey) -- ++(-\cubex-2,0,0) -- ++(0,-\cubey,0) -- ++(\cubex+2,0,0) -- cycle;
+	
+	\draw[blue,fill=pastelgreen] (0,0,-\cubez-1) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez-2) -- ++(\cubex,0,0) -- cycle;
+	\end{tikzpicture}
+\end{center}
+\justifying
+For fixed ranks orthonormal matrices $U_1, U_2, U_3$, we want to solve
+$$\min_{U_1,U_2,U_3} ||\T{A} - \T{G} \times_1 U_1 \times_2 U_2 \times_3 U_3|| \textnormal {, where } \T{G}=\T{A}\times_1 U_1^T \times_2 U_2^T \times_3 U_3^T \text.$$
+\vfill
+This is equivalent to
+$$\max_{U_1,U_2,U_3} ||\T{A}\times_1 U_1^T \times_2 U_2^T \times_3 U_3^T ||\text.$$
+
+It is a nonlinear, nonconvex optimization problem.
+\end{frame}
+\begin{frame}{Higher-order orthogonal iteration (HOOI) method}
+	Fixing all but one factor matrix, we have a matrix problem:
+	$$\max_{\hat{U_1}} ||\T{A}\times_1 \hat{U_1}^T \times_2 U_2^T \times_3 U_3^T ||$$
+	
+	\vfill
+	HOOI works by alternating over factor matrices, updating one by computing left singular vectors
+\end{frame}
+
+
+\begin{frame}{HOOI method for computing a Tucker decomposition}
+	\small
+	\begin{algorithm}[H]{
+			\caption{HOOI method to compute Tucker decomposition}
+			\begin{algorithmic}
+				\Require input tensor $\T{A}\in \mathbb{R}^{n_1\times \cdots \times n_d}$, desired ranks $(r_1, \cdots, r_d)$, initial factor matrices $U_j\in \mathbb{R}^{n_j\times r_j} \textnormal{ for } 1\le j \le d$
+				\Ensure $[[\T{G}; U_1, \cdots, U_d]]$ : a $(r_1, \cdots, r_d)$-rank Tucker decomposition of $\T{A}$
+				\Repeat
+				\For{$i=1 \text{ to } d$}
+				\State $\T{B} \gets \T{A}\times_1 U_1^T  \cdots \times_{i-1} U_{i-1}^T \times_{i+1} U_{i+1}^T \cdots \times_d U_d^T$
+				\State $U_i\gets$ $r_i$ left singular vectors of $B_{(i)}$
+				\EndFor
+				\Until converge or the maximum number of iterations
+				\State $\T{G} \gets \T{A}\times_1 U_1^T \times_2 U_2^T \cdots  \times_d U_d^T$
+			\end{algorithmic}
+	}\end{algorithm}
+	
+	\vfill
+	\begin{itemize}
+		\item  Outputs of HOSVD ($U_j$ for $1\le j \le d$) can be used as a starting point for this method 
+	\end{itemize}
+	
+\end{frame}
+
+
+\section{Tensor Train decomposition}
+\begin{frame}{Table of Contents}		
+	\tableofcontents[currentsection,hideallsubsections] % Output the table of contents (all sections on one slide)		
 \end{frame}
 
 %------------------------------------------------
