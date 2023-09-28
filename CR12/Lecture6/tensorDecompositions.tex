@@ -151,7 +151,7 @@
 \begin{frame}{Properties of SVD}
 	
 	\small
-	The SVD of $A \in \mathbb{R}^{m \times n}$ can be written as $A=U\Sigma V^T$. Here $U \in \mathbb{R}^{m \times m}$ and $V \in \mathbb{R}^{n \times n}$ are othogonal matrices and $\Sigma\mathbb{R}^{m \times n}$ is a rectangular diagonal matrix.
+	The SVD of $A \in \mathbb{R}^{m \times n}$ can be written as $A=U\Sigma V^T$. Here $U \in \mathbb{R}^{m \times m}$ and $V \in \mathbb{R}^{n \times n}$ are orthogonal matrices and $\Sigma \in \mathbb{R}^{m \times n}$ is a rectangular diagonal matrix.
 	
 	\begin{itemize}
 		\item Columns of $U$ are also eigen vectors of $AA^T$
@@ -577,63 +577,63 @@ It is a nonlinear, nonconvex optimization problem.
 \end{frame}
 
 
-\section{Tensor Train decomposition}
-\begin{frame}{Table of Contents}		
-	\tableofcontents[currentsection,hideallsubsections] % Output the table of contents (all sections on one slide)		
-\end{frame}
-
-%------------------------------------------------
-\begin{frame}{\large Tensor Train (TT) decomposition: Product of matrices view}
-	
-	\small
-	\begin{itemize}
-		\item A $d$-dimensional tensor is represented with $2$ matrices and $d$-$2$ $3$-dimensional tensors.
-	\end{itemize}
-	\begin{figure}
-		\begin{center}	
-			\includegraphics[scale=0.325]{./ttentry.eps}
-		\end{center}
-	\end{figure}
-	\noindent An entry of $\T{A}$ $\in$ $\mathbb{R}^{n_1 \times \cdots \times n_d}$ is computed by multiplying corresponding matrix (or row/column) of each matrix/tensor.
-\end{frame}
-
-\begin{frame}{Tensor Train decomposition}
-	
-	\begin{block}{}
-		$\T{A}$ $\in$ $\mathbb{R}^{n_1 \times \cdots \times n_d}$ is represented with cores $\T{G}_k$$\in$ $\mathbb{R}^{r_{k-1}\times n_k\times r_k}$, $k$=$1,2,\cdots d$, $r_0$=$r_d$=$1$ and its elements satisfy the following expression:
-		{\small\begin{align*}
-			\T{A}(i_1,\cdots ,i_d) 
-			&= \sum_{\alpha_0 = 1}^{r_0} \cdots \sum_{\alpha_d = 1}^{r_d} \T{G}_1(\alpha_0, i_1, \alpha_1) \cdots \T{G}_d(\alpha_{d-1}, i_d, \alpha_d)\\
-			&= \sum_{\alpha_1 = 1}^{r_1} \cdots \sum_{\alpha_{d-1} = 1}^{r_{d-1}} \T{G}_1(1, i_1, \alpha_1) \cdots \T{G}_d(\alpha_{d-1}, i_d, 1)
-			\end{align*}}
-		\begin{center}
-			\begin{tikzpicture}[scale=0.625, every node/.style={transform shape}]
-			\tikzstyle{taskc}=[circle, draw=orange, minimum size=11mm, fill=none, dashed, ultra thick]
-			\tikzstyle{taskr}=[draw=black, minimum height=8mm, minimum width=15mm, anchor=south west, fill=pastelgreen, text=black]
-			
-			\node(t1) at (0,0) {};
-			\node [above right=0cm and 0cm of t1.mid,taskr](T1) {$\textcolor{blue}{i_1}\alpha_1$};
-			\node [above right=0cm and 0.8cm of T1.south east, taskc](C1) {$\alpha_1$};
-			\node [above right=0cm and 0.8cm of C1.south east, taskr](T2) {$\alpha_1\textcolor{blue}{i_2}\alpha_2$};
-			\node [above right=0cm and 0.8cm of T2.south east, taskc](C2) {$\alpha_2$};
-			
-			\node [above right=0cm and 4.5cm of T2.south east, taskc](Cd) {$\alpha_{d\text{-}1}$};
-			\node [above right=0cm and 0.8cm of Cd.south east, taskr](Td) {$\alpha_{d\text{-}1}\textcolor{blue}{i_d}$};
-			\draw (T1.east)--(C1.west);
-			\draw (C1.east)--(T2.west);
-			\draw (T2.east)--(C2.west);
-			\draw [dotted] (C2.east)--(Cd.west);
-			\draw (Cd.east)--(Td.west);
-			\path (-0.1, -0.4) -- (2.5, -0.4); 
-			%%\path (-0.1, -0.8) -- (2.5, -0.8); 
-			\end{tikzpicture}
-		\end{center}
-	\end{block}
-The ranks $r_k$ are called TT-ranks.
-	\begin{itemize}
-		\item The number of entries in this decomposition = $\mathcal{O}(n_1r_1 + n_2r_1r_2 + n_3r_2r_3+\cdots + n_{d-1}r_{d-2}r_{d-1} + n_dr_{d-1})$
-%		\item For $n_1=n_2=\cdots=n_d=n$ and $r_1=r_2=\cdots=r_{d-1}=r$, the number of entries = $\mathcal{O}(ndr^2)$
-	\end{itemize}
-\end{frame}
+%\section{Tensor Train decomposition}
+%\begin{frame}{Table of Contents}		
+%	\tableofcontents[currentsection,hideallsubsections] % Output the table of contents (all sections on one slide)		
+%\end{frame}
+%
+%%------------------------------------------------
+%\begin{frame}{\large Tensor Train (TT) decomposition: Product of matrices view}
+%	
+%	\small
+%	\begin{itemize}
+%		\item A $d$-dimensional tensor is represented with $2$ matrices and $d$-$2$ $3$-dimensional tensors.
+%	\end{itemize}
+%	\begin{figure}
+%		\begin{center}	
+%			\includegraphics[scale=0.325]{./ttentry.eps}
+%		\end{center}
+%	\end{figure}
+%	\noindent An entry of $\T{A}$ $\in$ $\mathbb{R}^{n_1 \times \cdots \times n_d}$ is computed by multiplying corresponding matrix (or row/column) of each matrix/tensor.
+%\end{frame}
+%
+%\begin{frame}{Tensor Train decomposition}
+%	
+%	\begin{block}{}
+%		$\T{A}$ $\in$ $\mathbb{R}^{n_1 \times \cdots \times n_d}$ is represented with cores $\T{G}_k$$\in$ $\mathbb{R}^{r_{k-1}\times n_k\times r_k}$, $k$=$1,2,\cdots d$, $r_0$=$r_d$=$1$ and its elements satisfy the following expression:
+%		{\small\begin{align*}
+%			\T{A}(i_1,\cdots ,i_d) 
+%			&= \sum_{\alpha_0 = 1}^{r_0} \cdots \sum_{\alpha_d = 1}^{r_d} \T{G}_1(\alpha_0, i_1, \alpha_1) \cdots \T{G}_d(\alpha_{d-1}, i_d, \alpha_d)\\
+%			&= \sum_{\alpha_1 = 1}^{r_1} \cdots \sum_{\alpha_{d-1} = 1}^{r_{d-1}} \T{G}_1(1, i_1, \alpha_1) \cdots \T{G}_d(\alpha_{d-1}, i_d, 1)
+%			\end{align*}}
+%		\begin{center}
+%			\begin{tikzpicture}[scale=0.625, every node/.style={transform shape}]
+%			\tikzstyle{taskc}=[circle, draw=orange, minimum size=11mm, fill=none, dashed, ultra thick]
+%			\tikzstyle{taskr}=[draw=black, minimum height=8mm, minimum width=15mm, anchor=south west, fill=pastelgreen, text=black]
+%			
+%			\node(t1) at (0,0) {};
+%			\node [above right=0cm and 0cm of t1.mid,taskr](T1) {$\textcolor{blue}{i_1}\alpha_1$};
+%			\node [above right=0cm and 0.8cm of T1.south east, taskc](C1) {$\alpha_1$};
+%			\node [above right=0cm and 0.8cm of C1.south east, taskr](T2) {$\alpha_1\textcolor{blue}{i_2}\alpha_2$};
+%			\node [above right=0cm and 0.8cm of T2.south east, taskc](C2) {$\alpha_2$};
+%			
+%			\node [above right=0cm and 4.5cm of T2.south east, taskc](Cd) {$\alpha_{d\text{-}1}$};
+%			\node [above right=0cm and 0.8cm of Cd.south east, taskr](Td) {$\alpha_{d\text{-}1}\textcolor{blue}{i_d}$};
+%			\draw (T1.east)--(C1.west);
+%			\draw (C1.east)--(T2.west);
+%			\draw (T2.east)--(C2.west);
+%			\draw [dotted] (C2.east)--(Cd.west);
+%			\draw (Cd.east)--(Td.west);
+%			\path (-0.1, -0.4) -- (2.5, -0.4); 
+%			%%\path (-0.1, -0.8) -- (2.5, -0.8); 
+%			\end{tikzpicture}
+%		\end{center}
+%	\end{block}
+%The ranks $r_k$ are called TT-ranks.
+%	\begin{itemize}
+%		\item The number of entries in this decomposition = $\mathcal{O}(n_1r_1 + n_2r_1r_2 + n_3r_2r_3+\cdots + n_{d-1}r_{d-2}r_{d-1} + n_dr_{d-1})$
+%%		\item For $n_1=n_2=\cdots=n_d=n$ and $r_1=r_2=\cdots=r_{d-1}=r$, the number of entries = $\mathcal{O}(ndr^2)$
+%	\end{itemize}
+%\end{frame}
 
 \end{document} 

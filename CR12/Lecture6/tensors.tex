@@ -97,7 +97,7 @@
 	\end{frame}
 
 
-\begin{frame}{Tensors ($n$-dimensional arrays)}
+\begin{frame}{Tensors (multidimensional arrays)}
 	\begin{center}
 		\begin{tikzpicture}[scale=0.125, every node/.style={transform shape}]
 		\pgfmathsetmacro{\rectx}{4}
@@ -171,7 +171,7 @@ Notation convention: Matrix $A$, tensor $\T{A}$
 
 \begin{frame}{Tensor notations (following [Kolda and Bader, 2009])}
 	\small
-Let $\T{A}$ be a $d$-dimensional tensor of size $n_1\times n_2\times\cdots \times n_d$, $\T{A} \in \mathbb{R}^{n_1\times n_2\times n_d}$.
+Let $\T{A}$ be a $d$-dimensional tensor of size $n_1\times n_2\times\cdots \times n_d$, $\T{A} \in \mathbb{R}^{n_1\times n_2\times \cdots \times n_d}$.
 \begin{itemize}
 	\item $d=1$ , first order tensors: vectors
 	\item $d=2$, second order tensors: matrices
@@ -274,15 +274,15 @@ $$A_{(2)} = \begin{pmatrix}
 \end{pmatrix}$$}	
 \end{frame}
 \begin{frame}{Assignment 4 -- deadline Oct 10}
-	\brown{Question:} Write a program in your preferred programming language to obtain mode-$3$ unfolding of $\T{A}\in \mathbb{R}^{3\times 3\times 3}$. Elements of $\T{A}$ are defined in the following way:
+	\brown{Question:}Write a program in your preferred programming language to obtain mode-$3$ unfolding of $\T{A}\in \mathbb{R}^{3\times 3\times 3}$. Elements of $\T{A}$ are defined in the following way:
 	$$\T{A}(i,j,k) = i+j^2 +k^3 \text{ for } 1\le i,j,k \le 3 \text.$$ 
 
 \vfill
-If your preferred language support $0$-based indexing then you can consider $0\le i,j,k \le 2$.
+If your preferred language supports $0$-based indexing then you can consider $0\le i,j,k \le 2$.
 
 \vfill
 
-\emph{Submission procedure} : send your code to my ENS email address (\href{mailto:suraj.kumar@ens-lyon.fr}{suraj.kumar@ens-lyon.fr}) by Oct 10. 
+\emph{Submission procedure}: Send your code to my ENS email address (\href{mailto:suraj.kumar@ens-lyon.fr}{suraj.kumar@ens-lyon.fr}) by Oct 10. 
 \end{frame}
 \begin{frame}{Tensor multiplication along $j$-mode with a matrix}
 \small
