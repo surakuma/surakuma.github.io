@@ -832,30 +832,59 @@ $$ A_k = [A_k(i_1, i_2,\cdots, i_k; i_{k+1},\cdots ,i_d)]$$
 %\end{itemize}
 \end{frame}
 
+%\begin{frame}{TT-SVD algorithm for TT approximation [Oseledets, 2011]}
+%	\small
+%	\vspace*{-0.25cm}\begin{algorithm}[H]
+%		\caption{TT-SVD algorithm}
+%		\begin{algorithmic}[1]
+%			\Require $d$-dimensional tensor $\T{A}$ and desired ranks ($r_1, r_2,\cdots r_{d-1}$) 
+%			\Ensure Cores $\T{G}_k(\alpha_{k-1}, n_k, \alpha_k) _{1\le k\le d}$ of a TT representation with $\alpha_k \le r_k$ and $\alpha_0 = \alpha_d=1$
+%			\State Temporary tensor: $\T{C} = \T{A}$, $\alpha_0=1$
+%			\For{$k=1:d-1$}
+%			\State $A_k$ = $reshape(\T{C}, \alpha_{k-1}n_{k} , \frac{numel(\T{C})}{\alpha_{k-1}n_{k}})$
+%			\State Compute SVD: $A_k = U \Sigma V^T$
+%			\State Compute rank of $\Sigma$, $\alpha_k=$ rank($\Sigma$)
+%			\State New core: $\T{G}_k$ := $reshape(U(;1:\alpha_k), \alpha_{k-1}, n_k, \alpha_k)$
+%			\State $\T{C}$ = $\Sigma(1:\alpha_k; 1:\alpha_k)V^T(1:\alpha_k;)$
+%			\EndFor
+%			\State $\T{G}_d = \T{C}$, $\alpha_{d}=1$
+%			\State return $\T{G}_1,\cdots,\T{G}_d$
+%		\end{algorithmic}
+%	\end{algorithm}
+%%\vfill
+%\vspace*{-0.315cm}{\color{blue}$\bullet$} $reshape(A,m_1,\cdots,m_l)$: rearranges array $A$ into a $m_1\times \cdots\times m_d$ array\\ 
+%{\color{blue}$\bullet$} $numel(A)$: number of elements of array $A$ 
+%\vfill
+%\end{frame}
+\subsection{Computing Tensor Train decomposition}
+\begin{frame}{Table of Contents}		
+	\tableofcontents[currentsection] % Output the table of contents (all sections on one slide)		
+\end{frame}
 \begin{frame}{TT-SVD algorithm for TT approximation [Oseledets, 2011]}
 	\small
 	\vspace*{-0.25cm}\begin{algorithm}[H]
 		\caption{TT-SVD algorithm}
 		\begin{algorithmic}[1]
-			\Require $d$-dimensional tensor $\T{A}$ and desired ranks ($r_1, r_2,\cdots r_{d-1}$) 
-			\Ensure Cores $\T{G}_k(\alpha_{k-1}, n_k, \alpha_k) _{1\le k\le d}$ of a TT representation with $\alpha_k \le r_k$ and $\alpha_0 = \alpha_d=1$
-			\State Temporary tensor: $\T{C} = \T{A}$, $\alpha_0=1$
+			\Require $d$-dimensional tensor $\T{A}$ and desired ranks ($r_0=1, r_1, r_2,\cdots r_{d-1}, r_d=1$) 
+			\Ensure Cores $\T{G}_k(r_{k-1}, n_k, r_k) _{1\le k\le d}$ of a TT representation
+			\State Temporary tensor: $\T{C} = \T{A}$
 			\For{$k=1:d-1$}
-			\State $A_k$ = $reshape(\T{C}, \alpha_{k-1}n_{k} , \frac{numel(\T{C})}{\alpha_{k-1}n_{k}})$
+			\State $A_k$ = $reshape(\T{C}, r_{k-1}n_{k} , \frac{numel(\T{C})}{r_{k-1}n_{k}})$
 			\State Compute SVD: $A_k = U \Sigma V^T$
-			\State Compute rank of $\Sigma$, $\alpha_k=$ rank($\Sigma$)
-			\State New core: $\T{G}_k$ := $reshape(U(;1:\alpha_k), \alpha_{k-1}, n_k, \alpha_k)$
-			\State $\T{C}$ = $\Sigma(1:\alpha_k; 1:\alpha_k)V^T(1:\alpha_k;)$
+%			\State Compute rank of $\Sigma$, $\alpha_k=$ rank($\Sigma$)
+			\State New core: $\T{G}_k$ := $reshape(U(;1:r_k), r_{k-1}, n_k, r_k)$
+			\State $\T{C}$ = $\Sigma(1:r_k; 1:r_k)V^T(1:r_k;)$
 			\EndFor
-			\State $\T{G}_d = \T{C}$, $\alpha_{d}=1$
+			\State $\T{G}_d = \T{C}$
 			\State return $\T{G}_1,\cdots,\T{G}_d$
 		\end{algorithmic}
 	\end{algorithm}
-%\vfill
-\vspace*{-0.315cm}{\color{blue}$\bullet$} $reshape(A,m_1,\cdots,m_l)$: rearranges array $A$ into a $m_1\times \cdots\times m_d$ array\\ 
-{\color{blue}$\bullet$} $numel(A)$: number of elements of array $A$ 
-\vfill
+	%\vfill
+	\vspace*{-0.315cm}{\color{blue}$\bullet$} $reshape(A,m_1,\cdots,m_l)$: rearranges array $A$ into a $m_1\times \cdots\times m_d$ array\\ 
+	{\color{blue}$\bullet$} $numel(A)$: number of elements of array $A$ 
+	\vfill
 \end{frame}
+
 \begin{frame}{Error with TT-SVD approximation}
 \small
 Suppose the unfolding matrices of $\T{A}$ satisfy the following:
@@ -967,55 +996,87 @@ Notation: Tensors are denoted by solid shapes and number of lines denote the dim
 
 \end{frame}
 
+\section{Miscellaneous}
+\subsection{Papers for the project}
+	\begin{frame}{Table of Contents}		
+	\tableofcontents[currentsection, currentsubsection] % Output the table of contents (all sections on one slide)		
+	\end{frame}
+
+\subsection{Randomized SVD}
+	\begin{frame}{Table of Contents}		
+	\tableofcontents[currentsection, currentsubsection] % Output the table of contents (all sections on one slide)		
+	\end{frame}
+\begin{frame}{Main idea of randomized SVD}
+	\small
+	We want to find $r$-rank approximation of $A\in \mathbb{R}^{m\times n}$. We select a matrix $Q$ with $\ell$ ($r\le \ell \le n$) orthonormal columns that well approximates the action of $A$, $A\approx QQ^TA$.
+	\begin{enumerate}
+		\item Construct $B=Q^TA$
+		\item Perform SVD of $B$, $B=\tilde{U}\Sigma V^T$
+		\item Set $U= Q\tilde{U}$
+		\item Return $U$, $\Sigma$, $V$
+	\end{enumerate}
+\vfill
+	\begin{block}{A simple way to find $Q$}
+		\begin{enumerate}
+			\item Construct a Gaussian random matrix $\Omega$ of $n\times \ell$ size
+			\item Form $X=A\Omega$
+			\item Obtain an orthonormal matrix using QR factorization, $X=QR$
+		\end{enumerate}
+	Usually $\ell -r$ is a small constant, such as $5$ or $10$. 
+	\end{block}
+\end{frame}
+\subsection{Strassen's algorithm: application of CP-decomposition}
+	\begin{frame}{Table of Contents}		
+	\tableofcontents[currentsection, currentsubsection] % Output the table of contents (all sections on one slide)		
+	\end{frame}
 
 
-%
-%\begin{frame}{Strassen's algorithm for matrix multiplication ($C= AB$)}
-%	\begin{itemize}
-%		%%	\item $C= AB$, where $A \in\mathbb{R}^{m \times k}$, $B \in\mathbb{R}^{k \times n}$, and  $C$ $\in$ $\mathbb{R}^{m \times n}$
-%		\item Matrix is divided into 2$\times$2 blocks
-%	\end{itemize}
-%	\begin{align*}
-%	\begin{pmatrix}
-%	C_{11} & C_{12} \\
-%	C_{21} & C_{22}
-%	\end{pmatrix}
-%	&
-%	=
-%	\begin{pmatrix}
-%	A_{11} & A_{12} \\
-%	A_{21} & A_{22}
-%	\end{pmatrix}
-%	\begin{pmatrix}
-%	B_{11} & B_{12} \\
-%	B_{21} & B_{22}
-%	\end{pmatrix}
-%	\end{align*}
-%	
-%	\begin{minipage}{0.45\columnwidth}
-%		\begin{align*}\small
-%		M_1 &= (A_{11} + A_{22})(B_{11}+B_{22})\\
-%		M_2 &= (A_{21} + A_{22})B_{11}\\
-%		M_3 &= A_{11} (B_{12}-B_{22})\\
-%		M_4 &= A_{22} (B_{21}-B_{11})\\
-%		M_5 &= (A_{11} +A_{12})B_{22}\\
-%		M_6 &= (A_{21}-A_{11})(B_{11} +B_{12})\\
-%		M_7 &= (A_{12}-A_{22})(B_{21} + B_{22}) 
-%		\end{align*}
-%	\end{minipage}
-%	\hfill
-%	\begin{minipage}{0.45\columnwidth}
-%		\begin{center}
-%			\begin{align*}
-%			C_{11} &= M_1 + M_4 -M_5 +M_7\\
-%			C_{12} &= M_3 + M_5\\
-%			C_{21} &= M_2 + M_4\\
-%			C_{22} &= M_1 -M_2 + M_3 + M_6
-%			\end{align*}
-%		\end{center}
-%	\end{minipage}
-%	
-%\end{frame}
+\begin{frame}{Strassen's algorithm for matrix multiplication ($C= AB$)}
+	\begin{itemize}
+		%%	\item $C= AB$, where $A \in\mathbb{R}^{m \times k}$, $B \in\mathbb{R}^{k \times n}$, and  $C$ $\in$ $\mathbb{R}^{m \times n}$
+		\item Matrix is divided into 2$\times$2 blocks
+	\end{itemize}
+	\begin{align*}
+	\begin{pmatrix}
+	C_{11} & C_{12} \\
+	C_{21} & C_{22}
+	\end{pmatrix}
+	&
+	=
+	\begin{pmatrix}
+	A_{11} & A_{12} \\
+	A_{21} & A_{22}
+	\end{pmatrix}
+	\begin{pmatrix}
+	B_{11} & B_{12} \\
+	B_{21} & B_{22}
+	\end{pmatrix}
+	\end{align*}
+	
+	\begin{minipage}{0.45\columnwidth}
+		\begin{align*}\small
+		M_1 &= (A_{11} + A_{22})(B_{11}+B_{22})\\
+		M_2 &= (A_{21} + A_{22})B_{11}\\
+		M_3 &= A_{11} (B_{12}-B_{22})\\
+		M_4 &= A_{22} (B_{21}-B_{11})\\
+		M_5 &= (A_{11} +A_{12})B_{22}\\
+		M_6 &= (A_{21}-A_{11})(B_{11} +B_{12})\\
+		M_7 &= (A_{12}-A_{22})(B_{21} + B_{22}) 
+		\end{align*}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{0.45\columnwidth}
+		\begin{center}
+			\begin{align*}
+			C_{11} &= M_1 + M_4 -M_5 +M_7\\
+			C_{12} &= M_3 + M_5\\
+			C_{21} &= M_2 + M_4\\
+			C_{22} &= M_1 -M_2 + M_3 + M_6
+			\end{align*}
+		\end{center}
+	\end{minipage}
+	
+\end{frame}
 %
 %
 %
@@ -1089,4 +1150,213 @@ Notation: Tensors are denoted by solid shapes and number of lines denote the dim
 %	\end{pmatrix}
 %	\end{align*}
 %\end{frame}
+
+
+
+\begin{frame}{$2\times 2$ Matrix multiplication as a tensor operation}
+	\begin{align*}
+	\begin{pmatrix}
+	C_{11} & C_{12} \\
+	C_{21} & C_{22}
+	\end{pmatrix}
+	&
+	=
+	\begin{pmatrix}
+	A_{11} & A_{12} \\
+	A_{21} & A_{22}
+	\end{pmatrix}
+	\begin{pmatrix}
+	B_{11} & B_{12} \\
+	B_{21} & B_{22}
+	\end{pmatrix}
+	\end{align*}
+	
+	We can write this multiplication as a tensor operation,
+	\begin{align*}
+	\T{T}\times_1 \begin{pmatrix}
+	A_{11}\\
+	A_{12}\\
+	A_{21}\\
+	A_{22}
+	\end{pmatrix}
+	\times_2 \begin{pmatrix}
+	B_{11}\\
+	B_{12}\\
+	B_{21}\\
+	B_{22}
+	\end{pmatrix}
+	&=\begin{pmatrix}
+	C_{11}\\
+	C_{12}\\
+	C_{21}\\
+	C_{22}
+	\end{pmatrix}
+	\end{align*}
+	\only<1>{
+		Where $\T{T}$ is a $4\times4\times4$ tensor with the following frontal slices:
+		\begin{align*}\tiny
+		T_1= \begin{pmatrix}
+		1&0&0&0\\
+		0&0&1&0\\
+		0&0&0&0\\
+		0&0&0&0
+		\end{pmatrix}
+		&\tiny
+		T_2= \begin{pmatrix}
+		0&1&0&0\\
+		0&0&0&1\\
+		0&0&0&0\\
+		0&0&0&0
+		\end{pmatrix}
+		&\tiny
+		T_3= \begin{pmatrix}
+		0&0&0&0\\
+		0&0&0&0\\
+		1&0&0&0\\
+		0&0&1&0
+		\end{pmatrix}
+		&\tiny
+		T_4= \begin{pmatrix}
+		0&0&0&0\\
+		0&0&0&0\\
+		0&1&0&0\\
+		0&0&0&1
+		\end{pmatrix}
+		\end{align*}
+	}
+	\only<2>{
+		For example,
+		\tiny
+		
+		\begin{align*}
+		T_2\times_1 \begin{pmatrix}
+		A_{11}\\
+		A_{12}\\
+		A_{21}\\
+		A_{22}
+		\end{pmatrix}
+		\times_2 \begin{pmatrix}
+		B_{11}\\
+		B_{12}\\
+		B_{21}\\
+		B_{22}
+		\end{pmatrix}
+		&=(
+		A_{11}\text{ }
+		A_{12}\text{ }
+		A_{21}\text{ }
+		A_{22})
+		\begin{pmatrix}
+		0&1&0&0\\
+		0&0&0&1\\
+		0&0&0&0\\
+		0&0&0&0
+		\end{pmatrix}
+		\begin{pmatrix}
+		B_{11}\\
+		B_{12}\\
+		B_{21}\\
+		B_{22}
+		\end{pmatrix}
+		=A_{11}B_{12} + A_{12}B_{22} =C_{12}
+		\end{align*}
+	}
+	
+	
+	
+\end{frame}
+\begin{frame}{Matrix multiplication with CP decomposition}
+	CP decomposition of $\T{T}$, $\T{T}=\llbracket U, V, W \rrbracket$  can be written as,
+	\begin{align*}
+	\T{T}&= \sum_{r=1}^{R}u_r \circ v_r \circ w_r
+	\end{align*}
+	Here $u_r$, $v_r$ and $w_r$ are the columns of $U$, $V$ and $W$, respectively. $R$ is the rank of $\T{T}$.
+	We can write matrix multiplication as,
+	{\tiny
+		\begin{align*}
+		\T{T}\times_1 \begin{pmatrix}
+		A_{11}\\
+		A_{12}\\
+		A_{21}\\
+		A_{22}
+		\end{pmatrix}
+		\times_2 \begin{pmatrix}
+		B_{11}\\
+		B_{12}\\
+		B_{21}\\
+		B_{22}
+		\end{pmatrix}
+		&= \sum_{r=1}^{R}(u_r \circ v_r \circ w_r)
+		\times_1 \begin{pmatrix}
+		A_{11}\\
+		A_{12}\\
+		A_{21}\\
+		A_{22}
+		\end{pmatrix}
+		\times_2 \begin{pmatrix}
+		B_{11}\\
+		B_{12}\\
+		B_{21}\\
+		B_{22}
+		\end{pmatrix}\\
+		&=\sum_{r=1}^{R}\Big[
+		\text{($A_{11}$ $A_{12}$ $A_{21}$ $A_{22}$)}u_r
+		\text{($B_{11}$ $B_{12}$ $B_{21}$ $B_{22}$)}v_r
+		\Big]w_r
+		=\begin{pmatrix}
+		C_{11}\\
+		C_{12}\\
+		C_{21}\\
+		C_{22}
+		\end{pmatrix}
+		\end{align*}
+	}
+\end{frame}
+\begin{frame}{Factor matrices and Strassen's algorithm}
+	
+	\begin{minipage}{0.45\linewidth}
+		{\small
+			Factor matrices,
+			\begin{align*}
+			U&=\begin{pmatrix}
+			1& 0& 1& 0& 1& -1& 0&\\
+			0& 0& 0& 0& 1& 0& 1&\\
+			0& 1& 0& 0& 0& 1& 0&\\
+			1& 1& 0& 1& 0& 0& -1&
+			\end{pmatrix}\\
+			V&=\begin{pmatrix}
+			1& 1& 0& -1& 0& 1& 0&\\
+			0& 0& 1& 0& 0& 1& 0&\\
+			0& 0& 0& 1& 0& 0& 1&\\
+			1& 0& -1& 0& 1& 0& 1&
+			\end{pmatrix}\\
+			W&=\begin{pmatrix}
+			1& 0& 0& 1& -1& 0& 1&\\
+			0& 0& 1& 0& 1& 0& 0&\\
+			0& 1& 0& 1& 0& 0& 0&\\
+			1& -1& 1& 0& 0& 1& 0&
+			\end{pmatrix}
+			\end{align*}}
+	\end{minipage}
+	\begin{minipage}{0.45\linewidth}
+		{\small Strassen's algorithm,
+			\begin{align*}\small
+			M_1 &= (A_{11} + A_{22})(B_{11}+B_{22})\\
+			M_2 &= (A_{21} + A_{22})B_{11}\\
+			M_3 &= A_{11} (B_{12}-B_{22})\\
+			M_4 &= A_{22} (B_{21}-B_{11})\\
+			M_5 &= (A_{11} +A_{12})B_{22}\\
+			M_6 &= (A_{21}-A_{11})(B_{11} +B_{12})\\
+			M_7 &= (A_{12}-A_{22})(B_{21} + B_{22}) 
+			\end{align*}
+			\begin{align*}
+			C_{11} &= M_1 + M_4 -M_5 +M_7\\
+			C_{12} &= M_3 + M_5\\
+			C_{21} &= M_2 + M_4\\
+			C_{22} &= M_1 -M_2 + M_3 + M_6
+			\end{align*}
+	}\end{minipage}
+	\vfill
+	Factor matrices $U$, $V$ and $W$ construct the algorithm.
+\end{frame}
 \end{document} 
