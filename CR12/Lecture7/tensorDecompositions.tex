@@ -116,12 +116,24 @@
 	If $Q$ is an orthonormal matrix then,
 	
 	$$||A||_F^2  = ||QQ^TA||_F^2 + ||(I-QQ^T)A||_F^2\text,$$
+		$$||QC||_F = ||C||_F \text,$$
 	$$||Q^TA||_F = ||QQ^TA||_F \le ||A||_F \text,$$
-	$$\langle A-QQ^TA, QQ^T \rangle_F = 0\text,$$
-	$$||QC||_F = ||C||_F \text.$$
+	$$\langle A-QQ^TA, QQ^TA \rangle_F = 0\text.$$
+
 	
 \end{frame}
 
+\begin{frame}{Tensor norm}
+
+	\small
+	\begin{itemize}
+		\item The norm of a tensor $\T{A} \in \mathbb{R}^{n_1\times n_2\times\cdots\times n_d}$ is analogous to the matrix Frobenius norm, and defined as 
+		$$||\T{A}||_F = \sqrt{\sum_{i_1=1}^{n_1}\sum_{i_2=1}^{n_2}\cdots \sum_{i_d=1}^{n_d}\T{A}^2(i_1,i_2,\cdots,i_d)}$$ 
+	\end{itemize}
+\vfill
+We will only focus on Frobenius norm in this course. 
+
+\end{frame}
 \begin{frame}{Singular Value Decomposition (SVD)}
 	\small
 	\begin{itemize}
@@ -391,7 +403,7 @@ i & -i
 	\end{tikzpicture}
 \end{center}
 For fixed rank $k$, we want to solve
-$$\min_{U_1,U_2U_3} ||\T{A} - \sum_{\alpha=1}^{k} \lambda_\alpha U_1(:,\alpha) \circ U_2(:,\alpha)\circ U_3(:,\alpha) ||.$$
+$$\min_{U_1,U_2U_3} ||\T{A} - \sum_{\alpha=1}^{k} \lambda_\alpha U_1(:,\alpha) \circ U_2(:,\alpha)\circ U_3(:,\alpha) ||_F.$$
 
 \vfill
 \begin{itemize}
@@ -405,9 +417,9 @@ $$\min_{U_1,U_2U_3} ||\T{A} - \sum_{\alpha=1}^{k} \lambda_\alpha U_1(:,\alpha) \
 
 \begin{frame}{Alternating Least Squares (ALS) method}
 Fixing all but one factor matrix, we have a linear least squares problem:
-$$\min_{\hat{U_1}}||\T{A} - \sum_{\alpha=1}^{k} \hat{U_1}(:,\alpha) \circ U_2(:,\alpha)\circ U_3(:,\alpha)||$$
+$$\min_{\hat{U_1}}||\T{A} - \sum_{\alpha=1}^{k} \hat{U_1}(:,\alpha) \circ U_2(:,\alpha)\circ U_3(:,\alpha)||_F$$
 or equivalently
-$$\min_{\hat{U_1}}||A_{(1)} - \hat{U_1}(U_3\odot U_2)^T||$$
+$$\min_{\hat{U_1}}||A_{(1)} - \hat{U_1}(U_3\odot U_2)^T||_F$$
 
 \vfill
 ALS works by alternating over factor matrices, updating one at a time.
@@ -430,7 +442,8 @@ Here $A^\dagger$ denotes the Moore--Penrose pseudoinverse of $A$. We use the fol
 $$(A\odot B)^T(A\odot B) = A^TA * B^TB$$
 \end{frame}
 \begin{frame}{ALS for computing a CP decomposition}
-	\begin{algorithm}[H]{
+	\small
+	\vspace*{-0.25cm}\begin{algorithm}[H]{
 		\caption{CP-ALS method to compute CP decomposition\label{alg:canonicalals}}
 		%%				\caption{HOSVD Algorithm($\X$, $R_1$, $R_2$, $R_3$)}
 		\begin{algorithmic}
@@ -446,8 +459,9 @@ $$(A\odot B)^T(A\odot B) = A^TA * B^TB$$
 			\Until converge or the maximum number of iterations
 		\end{algorithmic}
 }\end{algorithm}
-
+\vspace*{-0.375cm}
 \begin{itemize}
+	\item The collective operation $A_{(i)} (U_d\odot\cdots\odot U_{i+1}\odot U_{i-1}\odot U_1)$ is known as Matricized tensor times Khatri-Rao product (MTTKRP) computation
 	\item $U_j$ can be chosen randomly or by setting $k$ left singular vectors of $A_{(j)}$ for $1\le j \le d$
 \end{itemize}
 
@@ -567,6 +581,8 @@ U_3 = \frac{1}{5}\begin{pmatrix}
 	\item When $r_i < rank(A_{(i)})$ for one or more $i$, the decomposition is called the truncated-HOSVD (T-HOSVD)
 	\vfill
 	\item Output of T-HOSVD can be used as a starting point for an ALS algorithm
+	\vfill
+	\item The collective operation $\T{A} \times_1 U_1^\Tra \times_2 U_2^\Tra  \cdots \times_d U_d^\Tra$ is known as Multiple Tensor-Times-Matrix (Multi-TTM) computation
 \end{itemize}
 \end{frame}
 
@@ -613,7 +629,7 @@ Proof: $||\T{A} -\T{A} \times_i U_iU_i^\Tra||_F \le ||\T{A}-\T{A}_{best}||_F $ f
 				\State $U_k \gets r_k$ leading eigen vectors of $S$
 				\State $\T{B} \gets \T{B} \times_i U_i$
 				\EndFor
-				\State $\T{G} = \T{A} \times_1 U_1^\Tra \times_2 U_2^\Tra \cdots \times_d U_d^\Tra$
+				\State $\T{G} = \T{B}$
 			\end{algorithmic}
 	}\end{algorithm}
 	
@@ -679,16 +695,16 @@ Summing the above terms yields the specified inequality.
 \end{center}
 \justifying
 For fixed ranks orthonormal matrices $U_1, U_2, U_3$, we want to solve
-$$\min_{U_1,U_2,U_3} ||\T{A} - \T{G} \times_1 U_1 \times_2 U_2 \times_3 U_3|| \textnormal {, where } \T{G}=\T{A}\times_1 U_1^T \times_2 U_2^T \times_3 U_3^T \text.$$
+$$\min_{U_1,U_2,U_3} ||\T{A} - \T{G} \times_1 U_1 \times_2 U_2 \times_3 U_3||_F \textnormal {, where } \T{G}=\T{A}\times_1 U_1^T \times_2 U_2^T \times_3 U_3^T \text.$$
 \vfill
 This is equivalent to
-$$\max_{U_1,U_2,U_3} ||\T{A}\times_1 U_1^T \times_2 U_2^T \times_3 U_3^T ||\text.$$
+$$\max_{U_1,U_2,U_3} ||\T{A}\times_1 U_1^T \times_2 U_2^T \times_3 U_3^T ||_F\text.$$
 
 It is a nonlinear, nonconvex optimization problem.
 \end{frame}
 \begin{frame}{Higher-order orthogonal iteration (HOOI) method}
 	Fixing all but one factor matrix, we have a matrix problem:
-	$$\max_{\hat{U_1}} ||\T{A}\times_1 \hat{U_1}^T \times_2 U_2^T \times_3 U_3^T ||$$
+	$$\max_{\hat{U_1}} ||\T{A}\times_1 \hat{U_1}^T \times_2 U_2^T \times_3 U_3^T ||_F$$
 	
 	\vfill
 	HOOI works by alternating over factor matrices, updating one by computing left singular vectors
@@ -808,7 +824,7 @@ The ranks $r_k$ are called TT-ranks.
 	\vfill
 	Computation of $\T{A}(2,3,4)$,
 	\begin{align*}
-	\T{A}(2,3,4) = & \T{G}_1(2,:)\T{G}_2(:,3,:)\T{G}_3(,4)\\
+	\T{A}(2,3,4) = & \T{G}_1(2,:)\T{G}_2(:,3,:)\T{G}_3(:,4)\\
 	=& \begin{pmatrix} 2 & 1
 	\end{pmatrix}\begin{pmatrix} 1 & 1\\ 4 & 1
 	\end{pmatrix}\begin{pmatrix} 4\\1
@@ -866,8 +882,8 @@ $$ A_k = [A_k(i_1, i_2,\cdots, i_k; i_{k+1},\cdots ,i_d)]$$
 	\vspace*{-0.25cm}\begin{algorithm}[H]
 		\caption{TT-SVD algorithm}
 		\begin{algorithmic}[1]
-			\Require $d$-dimensional tensor $\T{A}$ and desired ranks ($r_0=1, r_1, r_2,\cdots r_{d-1}, r_d=1$) 
-			\Ensure Cores $\T{G}_k(r_{k-1}, n_k, r_k) _{1\le k\le d}$ of a TT representation
+			\Require $d$-dimensional tensor $\T{A}\in \mathbb{R}^{n_1 \times \cdots \times n_d}$ and desired ranks ($r_0=1,$ $ r_1, r_2,\cdots r_{d-1}, r_d=1$) 
+			\Ensure Cores $\T{G}_k \in \mathbb{R}^{r_{k-1}\times n_k\times r_k}$ for $1\le k\le d$ of a TT representation
 			\State Temporary tensor: $\T{C} = \T{A}$
 			\For{$k=1:d-1$}
 			\State $A_k$ = $reshape(\T{C}, r_{k-1}n_{k} , \frac{numel(\T{C})}{r_{k-1}n_{k}})$
@@ -881,7 +897,7 @@ $$ A_k = [A_k(i_1, i_2,\cdots, i_k; i_{k+1},\cdots ,i_d)]$$
 		\end{algorithmic}
 	\end{algorithm}
 	%\vfill
-	\vspace*{-0.315cm}{\color{blue}$\bullet$} $reshape(A,m_1,\cdots,m_l)$: rearranges array $A$ into a $m_1\times \cdots\times m_d$ array\\ 
+	\vspace*{-0.315cm}{\color{blue}$\bullet$} $reshape(A,m_1,\cdots,m_\ell)$: rearranges array $A$ into a $m_1\times \cdots\times m_\ell$ array\\ 
 	{\color{blue}$\bullet$} $numel(A)$: number of elements of array $A$ 
 	\vfill
 \end{frame}
@@ -889,7 +905,7 @@ $$ A_k = [A_k(i_1, i_2,\cdots, i_k; i_{k+1},\cdots ,i_d)]$$
 \begin{frame}{Error with TT-SVD approximation}
 \small
 Suppose the unfolding matrices of $\T{A}$ satisfy the following:
-\vspace*{-0.15cm}$$A_k = R_k+E_k \text, \quad R_k \textnormal{ is best $r_k$- rank approximation of }A_k, \quad \textnormal{for } 1\le k \le d-1\text.$$
+\vspace*{-0.15cm}$$A_k = R_k+E_k \text, \quad R_k \textnormal{ is the best $r_k$- rank approximation of }A_k, \quad \textnormal{for } 1\le k \le d-1\text.$$
 
 
 \vfill
@@ -914,7 +930,7 @@ This representation allows one to perform various basic linear algebra operation
 \begin{itemize}
 	\item \emph{Addition}: The addition of two tensors in the TT-representation ,
 	$$\T{A}=\T{A}_1(i_1)\cdots \T{A}_d(i_d), \quad \T{B}=\T{B}_1(i_1)\cdots \T{B}_d(i_d)\text,$$
-	requires to merge core for each mode. Auxiliary dimensions are added. The cores $\T{C}_k(i_k)$ of $\T{C}=\T{A}+\T{B}$ are defined as
+	requires to merge cores for each mode. Auxiliary dimensions are added. The cores $\T{C}_k(i_k)$ of $\T{C}=\T{A}+\T{B}$ are defined as
 	$$\T{C}_k(i_k) = \begin{pmatrix}
 	\T{A}_k(i_k) & 0\\
 	0 & \T{B}_k(i_k)
@@ -998,7 +1014,7 @@ Notation: Tensors are denoted by solid shapes and number of lines denote the dim
 \end{frame}
 
 \section{Miscellaneous}
-\subsection{Papers for the project}
+\subsection{Research topics/articles for the project}
 	\begin{frame}{Table of Contents}		
 	\tableofcontents[currentsection, currentsubsection] % Output the table of contents (all sections on one slide)		
 	\end{frame}
@@ -1012,7 +1028,7 @@ Notation: Tensors are denoted by solid shapes and number of lines denote the dim
 	\vfill
 	\item Presentation would be after Nov 6
 	\vfill
-	\item Email me your choices (atleast two) in preference order 
+	\item Email me your or your group choices (atleast two) in preference order 
 \end{itemize}
 \vfill
 If you want to propose another topic or article, your are more than welcome to discuss it with me.
@@ -1043,7 +1059,7 @@ If you want to propose another topic or article, your are more than welcome to d
 \begin{frame}{Research articles}
 \footnotesize
 \begin{itemize}
-	\item Obtain lower bounds on data transfers for various computations on a sequential machine. \href{https://dl.acm.org/doi/10.1145/3385412.3385989}{Automated Derivation of Parametric Data Movement Lower Bounds for Affine Programs}
+	\item Obtain lower bounds on data transfers for various computations on a sequential machine: \href{https://dl.acm.org/doi/10.1145/3385412.3385989}{Automated Derivation of Parametric Data Movement Lower Bounds for Affine Programs}
 	\vfill
 	\item Performance optimizations for TSQR algorithm: \href{https://ieeexplore.ieee.org/document/6877344}{Reconstructing Householder Vectors from Tall-Skinny QR}
 	\vfill
@@ -1064,7 +1080,7 @@ If you want to propose another topic or article, your are more than welcome to d
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Content of report for a research article}
+\begin{frame}{Contents of the report for a research article}
 	\small
 	\begin{itemize}
 		\item The general idea of the work
