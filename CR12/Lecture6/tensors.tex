@@ -284,11 +284,13 @@ If your preferred language supports $0$-based indexing then you can consider $0\
 
 \emph{Submission procedure}: Send your code to my ENS email address (\href{mailto:suraj.kumar@ens-lyon.fr}{suraj.kumar@ens-lyon.fr}) by Oct 10. 
 \end{frame}
-\begin{frame}{Tensor multiplication along $j$-mode with a matrix}
+\begin{frame}{\large Tensor multiplication (contraction) along $j$-mode with a matrix}
 \small
 The $j$-mode product of $\T{A} \in \mathbb{R}^{n_1\times n_2\times\cdots\times n_d}$ with $U \in \mathbb{R}^{K\times n_j}$ is denoted by  
 $\T{A}\times_j U$ and is of size $n_1\times\cdots n_{j-1}\times K \times n_{j+1}\times\cdots\times n_d$.
 $$(\T{A}\times_j U)(i_1,\cdots, i_{j-1}, k, i_{j+1}, \cdots i_d) = \sum_{i_j=1}^{n_j} \T{A}(i_1,\cdots,i_d)U(k,i_j)$$
+%\vfill
+This is also known as tensor-times-matrix (TTM) operation in the $j$th mode.
 \vfill
 In terms of unfolded tensors:
 $$\T{B}=\T{A}\times_j U \Leftrightarrow B_{(j)}= UA_{(j)}$$
@@ -298,6 +300,7 @@ Some properties of $j$-mode products:
 	\item $\T{A} \times_j U \times_k V = \T{A} \times_k V  \times_j U \quad \textnormal{($j\ne k$)}$
 	\item $\T{A} \times_j U \times_j V = \T{A} \times_j VU$
 \end{itemize}
+
 \end{frame}
 
 \begin{frame}{Matrix products}
