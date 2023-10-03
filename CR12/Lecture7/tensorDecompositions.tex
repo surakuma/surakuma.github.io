@@ -146,7 +146,7 @@ We will only focus on Frobenius norm in this course.
 		\vfill
 		\item The diagonal entries $\sigma_i=\Sigma_{ii}$ of $\Sigma$ are called singular values
 		\begin{itemize}
-			\item $\sigma_i\ge 0$ and $\sigma_1\le \sigma_2\le \cdots \le \sigma_{\min(m,n)}$
+			\item $\sigma_i\ge 0$ and $\sigma_1\ge \sigma_2 \ge \cdots \ge \sigma_{\min(m,n)}$
 		\end{itemize}
 		\vfill
 		\item The largest $r$ such that $\sigma_r\ne 0$ is called the rank of the matrix
@@ -187,7 +187,7 @@ We will only focus on Frobenius norm in this course.
 
 \begin{frame}{Low rank approximations of matrices using SVD}
 	\small	
-	\vspace*{-0.25cm}$$\textnormal{SVD decomposition: } A= U\Sigma V $$
+	\vspace*{-0.25cm}$$\textnormal{SVD decomposition: } A= U\Sigma V^T $$
 		Let $u_i$ and $v_i$ be the column vectors of $U$ and $V$, respectively.
 	\begin{block}{$r'$-rank approximation}
 	If $\tilde{A} = \sum_{i=1}^{r'}\sigma_iu_iv_i^T$, then $\tilde{A}$ is an $r'$-rank approximation of $A$.
@@ -796,7 +796,7 @@ The ranks $r_k$ are called TT-ranks.
 \end{frame}
 \begin{frame}{TT-decomposition: an example}
 	\small
-	Let $\T{A} \in \mathbb{R}^{3\times 4\times 5}$, $\T{G} \in \mathbb{R}^{2\times 2\times 2}$. $\T{G}_1 \in\mathbb{R}^{3\times 2}, \T{G}_2 \in\mathbb{R}^{2\times 4\times 2}$, and $\T{G}_3 \in\mathbb{R}^{2\times 5}$ are the cores of a TT-decomposition.
+	Let $\T{A} \in \mathbb{R}^{3\times 4\times 5}$. $\T{G}_1 \in\mathbb{R}^{3\times 2}, \T{G}_2 \in\mathbb{R}^{2\times 4\times 2}$, and $\T{G}_3 \in\mathbb{R}^{2\times 5}$ are the cores of a TT-decomposition.
 	$$\T{G}_1=\begin{pmatrix}
 	1 & 1\\
 	2 & 1\\
@@ -1007,7 +1007,7 @@ Notation: Tensors are denoted by solid shapes and number of lines denote the dim
 	
 	\draw (t0) --node[below] {$r_1$} (t1);
 	\draw (t1) --node[below] {$r_2$} (t2);
-	\draw (t2) --node[below] {$r_1$} (t3);
+	\draw (t2) --node[below] {$r_3$} (t3);
 	\end{tikzpicture}
 \end{tabular}
 
