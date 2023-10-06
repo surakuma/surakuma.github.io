@@ -311,8 +311,11 @@ Both lemmas can be proved with the Lagrange multipliers.
 \end{frame}
 \section{CP decomposition}
 	\begin{frame}{Table of Contents}		
-	\tableofcontents[currentsection,hideallsubsections] % Output the table of contents (all sections on one slide)		
-\end{frame}
+		\tableofcontents[currentsection,hideallsubsections] % Output the table of contents (all sections on one slide)		
+	\end{frame}
+
+
+
 \begin{frame}{CP decomposition of $\T{A} \in \mathbb{R}^{n_1\times n_2\times\cdots\times n_d}$}
 	\small
 	It factorizes a tensor into a sum of rank one tensors.
@@ -399,4 +402,25 @@ Both lemmas can be proved with the Lagrange multipliers.
 	\end{itemize}	
 \end{frame}
 
+\begin{frame}{Gradient based CP decomposition}
+	\small
+$$F=\min_{U_1,U_2U_3} ||\T{A} - \llbracket U_1, U_2, U_3 \rrbracket ||_F^2$$
+
+Gradients:
+$$\T{G} = 2(\T{A} - \llbracket U_1, U_2, U_3 \rrbracket)$$
+$$\frac{\partial F}{\partial U_1} = -G_{(1)}(U_3\odot U_2)$$
+$$\frac{\partial F}{\partial U_2} = -G_{(2)}(U_3\odot U_1)$$
+$$\frac{\partial F}{\partial U_3} = -G_{(3)}(U_2\odot U_1)$$
+
+
+\vfill
+Update $U_1, U_2$ and $U_3$ based on gradients until convergence or for the fixed number of iterations
+\vfill
+Gradient based algorithm also employs Matricized tensor times Khatri-Rao product computations.
+\end{frame}
+\section{Matricized tensor times Khatri-Rao product (MTTKRP)}
+
+\begin{frame}{Table of Contents}		
+	\tableofcontents[currentsection,hideallsubsections] % Output the table of contents (all sections on one slide)		
+\end{frame}
 \end{document} 
