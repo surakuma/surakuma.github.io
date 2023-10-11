@@ -567,7 +567,7 @@ We select $A$ such that the bound is maximum.
 	\begin{column}{0.485\linewidth}
 		Amount of data transfer is bounded by $$N + \left\lceil\frac{n_1}{b}\right\rceil \cdots  \left\lceil\frac{n_d}{b}\right\rceil \cdot R (d+1)b \text.$$
 		
-		With $b \approx M^{1/N}$, data transfer cost = $$\mathcal{O}\left(N + \frac{dNR}{M^{1-1/d}}\right)$$
+		With $b \approx M^{1/d}$, data transfer cost = $$\mathcal{O}\left(N + \frac{dNR}{M^{1-1/d}}\right)$$
 	\end{column}\hfill
 	\begin{column}{0.4\linewidth}
 		\begin{block}{}
@@ -701,7 +701,7 @@ We select $A$ such that the bound is maximum.
 		\item One copy of data is in the system
 		\begin{itemize}
 			\item There exists a processor whose input data at the start plus output data
-			at the end must be at most $\frac{N + \sum_{i=1}^{d}n_iR }{P}$ words – will analyze data
+			at the end must be at most $\frac{N + \sum_{i=1}^{d}n_iR }{P}$ words – will analyze amount of data
 			transfers for this processor
 		\end{itemize}
 	\end{itemize}
@@ -914,7 +914,7 @@ Assume that the required rank ($R$) is small. We do not need to communicate tens
 		\begin{algorithm}[H]{\footnotesize
 				\caption{Parallel MTTKRP algorithm}
 				\begin{algorithmic}[1]
-					\Require input tensor $\T{A}\in \mathbb{R}^{n_1\times \cdots \times n_d}$, factor matrices $U_j\in \mathbb{R}^{n_j\times R} \textnormal{ for } 1\le j \le d$, mode $j$, $P$ processors are logically arranged in $p_0\times p_1\times \cdots\times p_d$ logical processor grid
+					\Require input tensor $\T{A}\in \mathbb{R}^{n_1\times \cdots \times n_d}$, factor matrices $U_j\in \mathbb{R}^{n_j\times R} \textnormal{ for } 1\le j \le d$, mode $j$, $P$ processors are arranged in $p_0\times p_1\times \cdots\times p_d$ logical processor grid
 					\Ensure Updated $U_j$
 					\State $(p_0^\prime, p_1^\prime,\cdots, p_d^\prime)$ is my processor id
 					\State //All-gather input tensor
@@ -933,11 +933,23 @@ Assume that the required rank ($R$) is small. We do not need to communicate tens
 
 \begin{frame}{Communication cost}
 	\small
-	We set $p_0 \approx \frac{(dR)^\frac{d}{2d-1}}{(N/P)^\frac{d}{2d-1}}$ and $p_k \approx \frac{n_k}{(Np_0/P)^\frac1d}$ for $k\in [d]$. 
+	We set $p_0 \approx \frac{(dR)^\frac{d}{2d-1}}{(N/P)^\frac{d-1}{2d-1}}$ and $p_k \approx \frac{n_k}{(Np_0/P)^\frac1d}$ for $k\in [d]$. 
 	
 	\vfill
 	
 	Communication cost of the algorithm with the above processor grid is $$\mathcal{O}\left(\frac{dNR}{P}\right)^\frac{d}{2d-1}\text.$$
 \end{frame}
 
+\begin{frame}{Perspectives}
+	\small
+	\begin{itemize}
+		\item Tight communication lower bounds for MTTKRP with small $P$ and rectangular factor matrices
+		\vfill
+		\item Cost analysis of several ways to perform MTTKRP
+		\vfill
+		\item Amount of reuse across multiple MTTKRPs
+		\vfill
+		\item Optimal cost of CP-ALS algorithm for an iteration (or for a set of $d$-iterations)
+	\end{itemize}
+\end{frame}
 \end{document} 
