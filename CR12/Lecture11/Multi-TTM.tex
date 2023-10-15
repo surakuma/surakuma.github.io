@@ -76,6 +76,11 @@
 
 \input{../tensor_header}
 
+\newcommand{\X}{\T{X}}
+\newcommand{\Y}{\T{Y}}
+
+\newcommand{\starontop}[1]{{#1}^*}
+
 \hypersetup{linkcolor=blue}
 
 %----------------------------------------------------------------------------------------
@@ -191,14 +196,18 @@
 We can note that ST-HOSVD also performs Multi-TTM computation by doing a sequence of TTM operations, i.e, $\T{G} =((\T{A} \times_1 U_1)\times_2 U_2) \cdots \times_d U_d $.
 \end{frame}
 
-\begin{frame}{Bottleneck computations for algorithms to compute Tucker decompositions}
+\begin{frame}{\large Bottlenecks for algorithms to compute Tucker decompositions}
+	\vfill
 	\begin{itemize}
 		\item Multi-TTM becomes the overwhelming bottleneck computation when
+		\vfill
 		\begin{itemize}
 			\item Matrix SVD costs are reduced using randomization via sketching or
+			\vfill
 			\item $U_k$ are computed with eigen value decompositions of $B_{(k)}B_{(k)}^T$
-		\end{itemize}  --  
+		\end{itemize}   
 	\end{itemize}
+\vfill
 \end{frame}
 %\begin{frame}{}
 %	content...
@@ -206,9 +215,132 @@ We can note that ST-HOSVD also performs Multi-TTM computation by doing a sequenc
 
 
 
-\section{CP decomposition}
+\begin{frame}{Multi-TTM computation}
+	\small
+	Let $\Y\in \mathbb{R}^{r_1\times\cdots\times r_d}$ be the output tensor, $\X\in \mathbb{R}^{n_1\times\cdots\times n_d}$ be the input tensor, and $\Mn{A}{k} \in \mathbb{R}^{n_k\times r_k}$ be the matrix of the $k$th mode. Then the Multi-TTM computation can be represented as 
+	\vspace*{-0.25cm}$$\Y = \X \times_1 {\Mn{A}{1}}^\Tra \cdots \times_d {\Mn{A}{d}}^\Tra$$
+	$$\text{ or }\X = \Y \times_1 {\Mn{A}{1}} \cdots \times_d {\Mn{A}{d}}\text.$$
+	
+	We will focus only on the first representation in this course. Our results and analysis extend straightforwardly to the latter case.
+	
+	\vfill
+	\emph{Two approaches to perform this computation}:
+	\begin{itemize}
+		\item TTM-in-Sequence approach -- performed by a sequence of TTM operations
+		\vspace*{-0.15cm}$$\Y = ((\X \times_1 {\Mn{A}{1}}^\Tra)\times_2 {\Mn{A}{2}}^\Tra) \cdots \times_d {\Mn{A}{d}}^\Tra$$
+	\vfill
+		\item All-at-once approach
+		\vspace*{-0.15cm}$$\Y(r_1^\prime,\ldots,r_d^\prime) = \sum_{\{n_k^\prime \in [n_k]\}_{k \in [d]}} \X(n_1^\prime,\ldots,n_d^\prime) \prod_{j \in [d]} \Mn{A}{j}(n_j^\prime,r_j^\prime)$$
+	\end{itemize}
+	\vfill
+	$[d]$ denotes $\{1,2,\cdots, d\}$. We represent $n_1n_2\cdots n_d$ and $r_1r_2\cdots r_d$  by $n$ and $r$ respectively. We mainly focus on all-at-once approach.
+%	 This approach reduces communication.
+\end{frame}
+
+\begin{frame}{Final assignment -- deadline Oct 24}
+	\vfill
+\brown{Question:} Let $\Y\in \mathbb{R}^{r\times r \times r \times r}$, $\X\in \mathbb{R}^{n \times n \times n \times n}$ and $A \in \mathbb{R}^{n\times r}$. What are the different approaches to perform the following Multi-TTM computation: 
+$$\Y = \X \times_1 A^\Tra \times_2 A^\Tra \times_3 A^\Tra  \times_4 A^\Tra $$
+Compute the exact number of arithmetic operation for each approach.
+\vfill
+\end{frame}
+
+
+
+\section{Parallel Multi-TTM computation}
 	\begin{frame}{Table of Contents}		
-		\tableofcontents[currentsection,hideallsubsections] % Output the table of contents (all sections on one slide)		
+		\tableofcontents[currentsection,hideallsubsections] % Output the table of contents (all sections on one slide)
+		\begin{block}{Settings to compute parallel communication lower bound}
+			\small
+			\begin{itemize}
+				\item Without loss of generality, we assume that $n_1r_1\le n_2r_2\le \cdots \le n_dr_d$
+				\vfill
+				\item The input tensor is larger than the output tensor, i.e., $n\ge r$
+				\vfill
+				\item The algorithm load balances the computation -- each processor performs $1/P$th number of loop iterations
+				\vfill
+				\item One copy of data is in the system
+				\begin{itemize}
+					\item There exists a processor whose input data at the start plus output data
+					at the end must be at most $\frac{n + r + \sum_{i=1}^{d}n_ir_i }{P}$ words – will analyze amount of data
+					transfers for this processor
+				\end{itemize}
+			\end{itemize}
+		\end{block}		
 	\end{frame}
+
+\subsection{$3$-dimensional Multi-TTM}
+	\begin{frame}{Table of Contents}		
+	\tableofcontents[currentsection,currentsubsection] % Output the table of contents (all sections on one slide)		
+\end{frame}
+
+\begin{frame}{Optimization problems (Ballard et. al., 2023)}
+	\footnotesize
+\vspace*{-0.25cm}\begin{lemma}
+	Consider the following optimization problem:
+	\vspace*{-0.15cm}$$\min_{x,y,z} x+y+z \text{ such that }$$ 
+	\vspace*{-0.15cm}$$\frac{nr}{P} \le xyz, \quad
+	0 \le \phantom{y}x\phantom{z} \le n_1r_1,\quad
+	0 \le \phantom{x}y\phantom{z} \le n_2r_2, \quad 
+	0 \le \phantom{x}z\phantom{y} \le n_3r_3,$$
+%	\begin{align*}
+%	\frac{nr}{P} &\le xyz  \\ 
+%	,
+%	\end{align*}
+	where $n_1r_1 \le n_2r_2 \le n_3r_3$, and $n_1,n_2,n_3,r_1,r_2,r_3,P \ge 1$.
+	The optimal solution $(\starontop{x},\starontop{y},\starontop{z})$ depends on the relative values of the constraints, yielding three cases:
+	\begin{enumerate}
+		\item if $P < \frac{n_3r_3}{n_2r_2}$, then $\starontop{x}=n_1r_1$, $\starontop{y}=n_2r_2$, $\starontop{z}=\frac{n_3r_3}{P}$;
+		\item if $\frac{n_3r_3}{n_2r_2}\le P < \frac{n_2n_3r_2r_3}{n_1^2r_1^2}$, then $\starontop{x}=n_1r_1$, $\starontop{y}=\starontop{z}= \big(\frac{n_2n_3r_2r_3}{P}\big)^{\frac{1}{2}}$;
+		\item if $\frac{n_2n_3r_2r_3}{n_1^2r_1^2} \le P$, then $\starontop{x}=\starontop{y}=\starontop{z}= \big(\frac{nr}{P}\big)^{\frac{1}{3}}$;
+	\end{enumerate}
+	which can be visualized as follows.
+	\vspace*{-0.35cm}\begin{center}
+		\begin{tikzpicture}[scale=0.815, every node/.style={transform shape}]
+		\draw [->, thick] (-0.1,0) -- (14,0) node [below right, scale=1.2] {$P$};
+		\draw (0, 0.1) -- node [below, pastelred, scale=1.2]{$1$}(0,-0.1);
+		\draw (5, 0.1) -- node [below, pastelred, scale=1.2]{$\frac{n_3r_3}{n_2r_2}$}(5,-0.1);
+		\draw (10, 0.1) -- node [below, pastelred, scale=1.2] {$\frac{n_2n_3r_2r_3}{n_1^2r_1^2}$}(10,-0.1);
+		
+		\node[align=left,below,scale=1.2] at (2.5, -0.4) {$\starontop{x}=n_1r_1$\\ $\starontop{y}=n_2r_2$\\ $\starontop{z}=\frac{n_3r_3}{P}$};
+		\node[align=left,below,scale=1.2] at (7.5, -0.6) {$\starontop{x}=n_1r_1$\\$\starontop{y}=\starontop{z}= \big(\frac{n_2n_3r_2r_3}{P}\big)^{1/2}$};
+		\node[align=center,below,scale=1.2] at (12.5, -0.6) {$\starontop{x}=\starontop{y}=\starontop{z}=$\\ $\qquad\quad \big(\frac{nr}{P}\big)^{1/3}$};	
+		\end{tikzpicture}
+	\end{center} 
+\end{lemma}
+\end{frame}
+\begin{frame}{Optimization problems (Ballard et. al., 2023)}
+	\footnotesize
+	\begin{lemma}
+		Consider the following optimization problem:
+		\vspace*{-0.15cm}$$\min_{u,v} u+v \text{ such that }$$
+		\vspace*{-0.15cm}$$\frac{nr}{P} \le uv, \quad 
+		0 \le \;u\; \le r, \quad 
+		0 \le \;v\; \le n,$$
+		where $n\geq r$, and $n,r,P \ge 1$.
+		The optimal solution $(\starontop{u},\starontop{v})$ depends on the relative values of the constraints, yielding two cases:
+		\begin{enumerate}
+			\item if $P < \frac{n}{r}$, then $\starontop{u}= r$, $\starontop{v} = \frac{n}{P}$;
+			\item if $ \frac{n}{r} \le P$, then $\starontop{u}=\starontop{v}= \big(\frac{nr}{P}\big)^{\frac{1}{2}}$;
+		\end{enumerate}
+		which can be visualized as follows.
+		\vspace*{-0.35cm}\begin{center}
+			\begin{tikzpicture}[scale=0.815, every node/.style={transform shape}]
+			\draw [->, thick] (-0.1,0) -- (14,0) node [below right, scale=1.2] {$P$};
+			\draw (0, 0.1) -- node [below, pastelred, scale=1.2]{$1$}(0,-0.1);
+			\draw (7.5, 0.1) -- node [below, pastelred, scale=1.2]{$\frac{n}{r}$}(7.5,-0.1);
+			
+			\node[align=left,below,scale=1.2] at (3.75, -0.325) {$\starontop{u}= r$\\ $\starontop{v} = \frac{n}{P}$};
+			\node[align=left,below,scale=1.2] at (11.25, -0.5) {$\starontop{u}=\starontop{v}= \big(\frac{nr}{P}\big)^{1/2}$};
+			\end{tikzpicture}
+		\end{center} 
+	\end{lemma}
+	Both lemma can be proved using the KKT conditions.
+\end{frame}
+
+\subsection{$d$-dimensional Multi-TTM}
+\begin{frame}{Table of Contents}		
+	\tableofcontents[currentsection,currentsubsection] % Output the table of contents (all sections on one slide)		
+\end{frame}
 
 \end{document} 
