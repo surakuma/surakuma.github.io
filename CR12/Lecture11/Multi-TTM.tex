@@ -228,7 +228,7 @@ We can note that ST-HOSVD also performs Multi-TTM computation by doing a sequenc
 	\vfill
 	\emph{Two approaches to perform this computation}:
 	\begin{itemize}
-		\item TTM-in-Sequence approach -- performed by a sequence of TTM operations
+		\item TTM-in-sequence approach -- performed by a sequence of TTM operations
 		\vspace*{-0.15cm}$$\Y = ((\X \times_1 {\Mn{A}{1}}^\Tra)\times_2 {\Mn{A}{2}}^\Tra) \cdots \times_d {\Mn{A}{d}}^\Tra$$
 	\vfill
 		\item All-at-once approach
@@ -734,26 +734,27 @@ It uses a $\tilde{p_1}\times \tilde{p_2}\times \tilde{p_3}$ logical processor gr
 The parallel computational cost is 
 $$2 \left( \frac{r_1n_1n_2n_3+r_1r_2n_2n_3+r_1r_2r_3n_3}{P}\right)\text.$$
 \end{frame}
-\begin{frame}{Comparison of All-at-once and TTM-in-Sequence}
+\begin{frame}{Comparison of All-at-once and TTM-in-sequence}
 	\small
 \begin{figure}
 	\begin{center}
 %		\includegraphics[scale=0.195]{./legend-comm-comp.png}
-		\includegraphics[scale=0.195]{./all-at-once-seq-label.png}
+%		\includegraphics[scale=0.195]{./all-at-once-seq-label.png}
+		\includegraphics[scale=0.135]{./course-label.png}
 	\end{center}\setcounter{subfigure}{0}
-	\vspace*{-0.375cm}\begin{center}
+	\vspace*{-0.575cm}\begin{center}
 		\subfloat[$n_i=2^{8}$, $r_i=2^{3}$.]{\includegraphics[width=0.32\linewidth]{./A@O-vs-Seq-logscale-comparison-with-comp-8-8-8-3-3-3.eps}}\hfill
 		\subfloat[$n_i=2^{11}$, $r_i=2^{5}$.]{\includegraphics[width=0.32\linewidth]{./A@O-vs-Seq-logscale-comparison-with-comp-11-11-11-5-5-5.eps}}\hfill
 		\subfloat[$n_i=2^{15}$, $r_i=2^{6}$.]{	\includegraphics[width=0.32\linewidth]{./A@O-vs-Seq-logscale-comparison-with-comp-15-15-15-6-6-6.eps}}
 	\end{center}
 \end{figure}
-		\only<1>{Communication cost comparison of all-at-once approach (the presented algorithm) and TTM-in-Sequence approach (of TuckerMPI). $Comp$-$Overhead$ shows the percentage of computational overhead of the all-at-once approach with respect to the TTM-in-Sequence approach. Cost of an approach represents the minimum cost among all possible processor configurations.}
+		\only<1>{Communication cost comparison of all-at-once approach (the presented algorithm) and TTM-in-sequence approach (of TuckerMPI). $Comp$-$Overhead$ shows the percentage of computational overhead of the all-at-once approach with respect to the TTM-in-sequence approach. Cost of an approach represents the minimum cost among all possible processor configurations.}
 		\only<2>{
 		\begin{itemize}
 			\item Not any clear winner for all settings
 			\item All-at-once approach performs significantly less communication for small $P$ 
 			\item Computational overhead of all-at-once approach is negligible for small $P$
-			\item TTM-in-Sequence approach is better for large $P$
+			\item TTM-in-sequence approach is better for large $P$
 		\end{itemize}
 		}
 \end{frame}
