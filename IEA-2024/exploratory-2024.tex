@@ -1,0 +1,179 @@
+\input{ERCstyle}
+\chead{\fancyplain{}{Part B1}}
+
+\begin{document}
+\begin{titlepage}
+\thispagestyle{empty}
+\begin{center}
+\textbf{ERC Starting Grant 2023}\\
+\textbf{Research proposal [Part B1]}\\
+\vspace*{2cm}
+\begin{LARGE}
+\textbf{\prnamelong{}}\\
+\textbf{\prname{}}\\
+\end{LARGE}
+\vspace*{2cm}
+\begin{Large}
+\begin{tabular}{rl}
+Principal investigator: & \piname{}\\
+Host institution:&  \hi{}\\
+Duration:& 60 months
+\end{tabular}
+\end{Large}
+\date{}
+\end{center}
+\vspace*{2cm}
+\input{ERCsummary}
+\end{titlepage}
+\clearpage
+\newpage
+
+
+
+\section{Evaluation Criteria}
+\subsection{Research Project}
+Ground-breaking nature, ambition and feasibility
+
+\paragraph{Ground-breaking nature and potential impact of the research project}
+\begin{enumerate}
+	\item To what extent does the proposed research address important challenges?
+	\item To what extent are the objectives ambitious and beyond the state of the art (e.g. novel concepts and
+	approaches or development between or across disciplines)?
+	\item To what extent is the proposed research high risk-high gain (i.e. if successful the payoffs will be very
+	significant, but there is a high risk that the research project does not entirely fulfill its aims)?
+\end{enumerate}
+\paragraph{Scientific Approach}
+\begin{enumerate}
+	\item To what extent is the outlined scientific approach feasible bearing in mind the extent that the
+	proposed research is high risk/high gain (based on the Extended Synopsis)?
+	\item To what extent are the proposed research methodology and working arrangements appropriate to
+	achieve the goals of the project (based on the full Scientific Proposal)?
+	\item To what extent does the proposal involve the development of novel methodology (based on the full
+	Scientific Proposal)?
+	\item To what extent are the proposed timescales, resources and PI commitment adequate and properly
+	justified (based on the full Scientific Proposal)?
+\end{enumerate}
+\subsection{Principal Investigator}
+Intellectual capacity and creativity
+
+\begin{enumerate}
+	\item To what extent has the PI demonstrated the ability to conduct ground-breaking research?
+	\item To what extend does the PI provide evidence of creative independent thinking?
+	\item To what extent does the PI have the required scientific expertise and capacity to successfully execute
+	the project?
+\end{enumerate}
+
+Keywords: Feasibility, Independence, multi-disciplinary 
+Hiring: 4 PhD students + 2 Postdocs
+\section*{B1.a. Extended synopsis}
+
+\textit{The extended synopsis should have a maximum of 5 pages, not including references.}\\
+
+The Extended Synopsis should give a concise presentation of the scientific proposal, with particular attention to the ground-breaking nature of the research project, which will allow evaluation panels to assess, in Step 1 of the evaluation, the feasibility of the outlined scientific approach. Describe the proposed work in the context of the state of the art of the field. References to literature should also be included. Please use a reference style that is commonly used in your discipline such as American Chemical Society (ACS) style, American Medical Association (AMA) style, Modern Language Association (MLA) style, etc. and that allows the evaluators to easily retrieve each reference.
+%\input{B1A}
+
+
+Deep neural networks  (DNNs) are currently the state-of-the-art models to classify objects in several domains, such as computer vision, speech recognition, text processing etc. Thanks to improved computational capability, we witnessed several popular complex and deeper DNNs. For example, AlexNet is 8 layers deep, while ResNet employs short connections and is represented with 152 layers. Both have about 60M parameters. ResNet is about a 10\% better in terms of accuracy. As  ResNet has more number of layers, therefore its computational requirements are (about $10\times$) more than AlexNet. Generative Pre-trained Transformer (GPT) models are now the state-of-the-art in Natural Language Processing, being deep and wide at the same time, having large number of parameters. For  example, GPT-4 has about 175B parameters. Its successor, GPT-4, has 100T parameters. Working (Training and prediction) with such models requires significant amount of computing resources. It is therefore necessary to devise parallel approaches which can exploit the full capabilities of the modern computing systems.    
+
+
+GPUs deliver increased processing capabilities and superior energy efficiency compared to CPUs. Therefore, they have become a crucial element of many computing systems over the past decade. The traditional computing cores of GPUs provide the accuracy and precision for the mathematical operations. These cores take huge amount of time for deep learning models as they require to process massive datasets. Thus, GPU vendors recently introduced Tensor (or Matrix) cores. These cores can perform multiple operations per cycle at the cost of limited precision, whereas traditional cores perform one operation per cycle with very accurate results. For deep learning models, the newly added Tensor/Matrix are much effective in terms of both cost and computation speed. Hence these are the preferred choice for these models. However such approaches do not make full utilization of other resources. Thus, it is paramount to devise approaches that can exploit the maximum potential of the computing systems to process deep learning models.
+
+
+Recent contributions have been made to replace dense weight matrices of the fully connected layers of a deep neural network by tensor representations. This approach drastically reduces the number of parameters of the network while achieving the similar accuracy. This representation also enables one to apply more ideas and algorithms from physics and chemistry to train the network efficiently. For example, the network trained using the density matrix renormalization group (DMRG, a popular algorithm in the molecular simulation community) achieves superior accuracy compared to the conventional methods. Tensors based neural networks are much simpler than the conventional networks. Hence interpretation of these networks is relatively less complex and allows one to obtain more insight of the networks.
+
+%TODO: CNN work by Oseledets
+
+\subsection*{State of the art}
+\textbf{Recommended length: 1.5 pages}\\
+
+\textit{What is the problem that is addressed in this project? Describe the state of the art and explain why the current state of the art is not sufficient to solve the problem addressed in the project.} 
+
+
+\begin{itemize}
+	\item Details of CNN network
+	\item Current work on replacing some parts of CNN with popular low-rank tensor representations for training
+	\item Tucker tensor decomposition and Tensor train decomposition
+	\item Growing popularity of low-rank tensor representation and their applications in neural networks
+\end{itemize}
+%\subsection*{Target: Aug 12}
+%\begin{itemize}
+%	\item Popularity of neural networks (Resnet)
+%	\item Number of neurons in the network
+%	\item Optional: A bit may be about ChatGPT
+%	\item Processing in Parallel
+%	\item GPU is an essential component (Neural network centeric)
+%	\item Some recent work: Inspiration from quantum inspired networks, parameter sizes, CNN (Convolution neural networks)
+%	
+%\end{itemize}
+
+
+\subsection*{Objectives}
+\textbf{Recommended length: 1 page}\\
+
+\textit{Clearly state the objectives beyond the state of the art and the challenges that these objectives will raise.}
+
+%\subsection*{Target}
+%\begin{itemize}
+%	\item Understanding and quicker training/inference of the networks
+%\end{itemize}
+%\subsection*{Selling points}
+%\begin{itemize}
+%	\item Simplicity and analysis capability
+%	\item Reduction of parameters
+%	\item Parallel algorithms for training and prediction
+%\end{itemize}
+%Inference is about understanding the relationship between the response and the predictor variables.
+
+The state-of-the-art neural network models are very complex to understand. The high level objective of this project is to express neural network models with simpler tensor based networks. 
+%This approach will also improve training and prediction time for the networks. 
+The \prname project aims to drastically improve the following features of the neural network models.
+\begin{itemize}
+	\item \emph{Simplicity and analysis capability} : The neural networks represented with different tensor factorizations are simpler. Therefore it will allow one to gain more insights of the tensorized neural networks and describe what happens in each layer.
+	\item \emph{Reduction of parameters} : Some researchers have replaced the certain portions of the neural networks with smaller tensor networks~\cite{bibid}. This approach drastically reduces the number of parameters while achieving the similar accuracies. The \prname project explores this direction with the aim to represent the complete neural networks by a network of smaller tensors. 
+	\item \emph{Parallel algorithms for training and prediction} : Representing the neural networks with tensor based networks will allow one to take advantage of the existing tensor algorithms. Now a days parallelization is ubiquitous in most computing systems. State-of-the-art neural networks usually rely on the efficient parallel implementation of matrix multiplication for parallelization. This approach processes only one layer at a time in backward or forward propagation. Tensor based neural networks enable one to apply different parallelization schemes from Physics and Chemistry for training and prediction.
+\end{itemize}
+
+
+\subsection*{Methodology} 
+\textbf{Recommended length: 1.5 pages}\\
+
+\textit{Provide an overview of the methodology that is planned to be developed. You may split the methodology into work-packages, clearly identify which are the objectives/challenges addressed by each work-package.}
+
+\begin{itemize}
+	\item Combine both approaches one after another with a help of an intermediate layer
+	\item Replace both structure with a small tensor network
+	\item Take advantage of existing work on parallelization of tensor operation and apply in our framework
+	\item Implementation of the proposed algorithm
+	\item Offload some operations on GPUs
+\end{itemize}
+
+\subsection*{Risk and impact}
+\textbf{Recommended length: 0.7 pages}\\
+
+\textit{Describe the scientific risks associated with your ambitious objectives and means to mitigate the risks (your past and recent expertise, your capacity to solve difficult problems, etc. Try to answer the following questions: if successful, what would be the impact of the project? what we would have at the end of the project that we don't have today, and why is it necessary to reach the project objectives, from a scientific point of view? Which will be the benefits for the society?}
+
+	\begin{itemize}
+	\item Need new training methods
+	\item Challenges with the parallelization of the proposed approaches
+	\item Close dependences on tasks
+\end{itemize}
+
+\subsection*{Resources}
+\textbf{Recommended length: 0.3 pages}\\
+
+\textit{Briefly describe the resources to be committed: human resources allocated to the project (including the commitment of the PI), laboratory equipment (available and to be purchased), external collaborators, etc.}
+
+\begin{itemize}
+	\item One PhD student (36 months)
+	\item One engineer (18 months)
+\end{itemize}
+
+Extension of this work:
+\begin{itemize}
+	\item Processing RNN models
+	\item Meaning of the proposed models
+\end{itemize}
+
+
+\end{document}
+
