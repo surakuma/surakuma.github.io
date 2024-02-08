@@ -89,11 +89,32 @@ Recent contributions have been made to replace dense weight matrices of the full
 \textit{What is the problem that is addressed in this project? Describe the state of the art and explain why the current state of the art is not sufficient to solve the problem addressed in the project.} 
 
 
+%\begin{itemize}
+%	\item Details of CNN network
+%	\item Current work on replacing some parts of CNN with popular low-rank tensor representations for training
+%	\item Tucker tensor decomposition and Tensor train decomposition
+%	\item Growing popularity of low-rank tensor representation and their applications in neural networks
+%\end{itemize}
+
+
+Convolution neural networks  (CNNs) are currently the state-of-the-art models to classify objects in several domains, such as computer vision, speech recognition, text processing etc. Thanks to improved computational capability, we witnessed several popular complex and deeper DNNs. For example, AlexNet is 8 layers deep, while ResNet employs short connections and is represented with 152 layers. Both have about 60M parameters. ResNet is about a 10\% better in terms of accuracy. As  ResNet has more number of layers, therefore its computational requirements are (about $10\times$) more than AlexNet. Generative Pre-trained Transformer (GPT) models are now the state-of-the-art in Natural Language Processing, being deep and wide at the same time, having large number of parameters. For  example, GPT-4 has about 175B parameters. Its successor, GPT-4, has 100T parameters. Working (Training and prediction) with such models requires significant amount of computing resources. It is therefore necessary to devise parallel approaches which can exploit the full capabilities of the modern computing systems.    
+
+
+
+Tensors are a natural way to represent high dimensional data for numerous applications in computational science and data science. Tensor decompositions help to identify inherent structure of data, achieve data compression and enable various ways of data analysis. CP, Tucker and Tensor Train are the widely used tensor decomposition methods in the literature. These decompositions represent a high dimensional object with a small set of low dimensional objects. These decompositions can be viewed as high order generalization of Singular Value Decomposition (SVD). CP decomposition is used to understand the latent components of the data and well suited for tensors with small dimensions. Tucker decomposition is considered to be more appropriate for compression and multi-modal data analysis of small and moderate dimensional tensors. Tensor train decomposition captures the entanglement among dimensions and appropriate to work with high dimensional tensors.
+
+
+Representing a high dimensional tensor with a set of small dimensional objects drastically reduces the overall number of parameters. This led to the use of low-rank tensor representations at different layers of CNNs. For example, it has been shown that replacing convolution kernels of ResNet with their low-rank approximations in Tucker representations significantly reduces the number of parameters and improves the overall performance. In a separate work, recent contributions have been made to replace dense weight matrices of the fully connected layers of AlexNet by their approximations in Tensor-Train format. This approach also significantly reduces the number of parameters while achieving the similar accuracy. Replacing a layer in CNN with its low-rank approximation requires to re-tune the network parameters and both the mentioned work adapted the existing training methods for tensor representations. The above work strongly advocates to employ the low-rank tensor representations in CNNs. We view the full CNN as a big tensor and aim to replace it with a set of smaller tensors. However the training methods for this big tensor and the decomposition structure is not intuitive to estimate. Therefore, we plan to follow bottom-up approach and represent combine layers of existing successful CNN architectures -- AlexNet and Resnet, with their low-rank tensor representations.
+
+
+
+
+
+Low level details:
 \begin{itemize}
-	\item Details of CNN network
-	\item Current work on replacing some parts of CNN with popular low-rank tensor representations for training
-	\item Tucker tensor decomposition and Tensor train decomposition
-	\item Growing popularity of low-rank tensor representation and their applications in neural networks
+	\item Datasets: Start with MNSIT, and then think about CIFAR and Imagenet
+	\item Architecture: Alexnet (5+3 layers) and Resnet (152 layers)
+	\item Methodology: Start with Alexnet, replace convolution layers and fully connected layers
 \end{itemize}
 %\subsection*{Target: Aug 12}
 %\begin{itemize}
