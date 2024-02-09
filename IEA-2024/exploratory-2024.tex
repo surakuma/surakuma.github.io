@@ -104,18 +104,13 @@ Convolution neural networks  (CNNs) are currently the state-of-the-art models to
 Tensors are a natural way to represent high dimensional data for numerous applications in computational science and data science. Tensor decompositions help to identify inherent structure of data, achieve data compression and enable various ways of data analysis. CP, Tucker and Tensor Train are the widely used tensor decomposition methods in the literature. These decompositions represent a high dimensional object with a small set of low dimensional objects. These decompositions can be viewed as high order generalization of Singular Value Decomposition (SVD). CP decomposition is used to understand the latent components of the data and well suited for tensors with small dimensions. Tucker decomposition is considered to be more appropriate for compression and multi-modal data analysis of small and moderate dimensional tensors. Tensor train decomposition captures the entanglement among dimensions and appropriate to work with high dimensional tensors.
 
 
-Representing a high dimensional tensor with a set of small dimensional objects drastically reduces the overall number of parameters. This led to the use of low-rank tensor representations at different layers of CNNs. For example, it has been shown that replacing convolution kernels of ResNet with their low-rank approximations in Tucker representations significantly reduces the number of parameters and improves the overall performance. In a separate work, recent contributions have been made to replace dense weight matrices of the fully connected layers of AlexNet by their approximations in Tensor-Train format. This approach also significantly reduces the number of parameters while achieving the similar accuracy. Replacing a layer in CNN with its low-rank approximation requires to re-tune the network parameters and both the mentioned work adapted the existing training methods for tensor representations. The above work strongly advocates to employ the low-rank tensor representations in CNNs. We view the full CNN as a big tensor and aim to replace it with a set of smaller tensors. However the training methods for this big tensor and the decomposition structure is not intuitive to estimate. Therefore, we plan to follow bottom-up approach and represent combine layers of existing successful CNN architectures -- AlexNet and Resnet, with their low-rank tensor representations.
+Representing a high dimensional tensor with a set of small dimensional objects drastically reduces the overall number of parameters. This led to the use of low-rank tensor representations at different layers of CNNs. For example, it has been shown that replacing convolution kernels of ResNet with their low-rank approximations in Tucker representations significantly reduces the number of parameters and improves the overall performance~\cite{PSSEG+-ECCV2020}. In a separate work, recent contributions have been made to replace dense weight matrices of the fully connected layers of AlexNet by their approximations in Tensor-Train format~\cite{NPOV-NIPS2015}. This approach also significantly reduces the number of parameters while achieving the similar accuracy. Replacing a layer in CNN with its low-rank approximation requires to re-tune the network parameters and both the mentioned work adapted the existing training methods for tensor representations. The above work strongly advocates to employ the low-rank tensor representations in CNNs. We view the full CNN as a big tensor and aim to replace it with a set of smaller tensors. However the training methods for this big tensor and the decomposition structure is not intuitive to estimate. Therefore, we plan to follow bottom-up approach and represent combine layers of existing successful CNN architectures -- AlexNet and Resnet, with their low-rank tensor representations.
 
 
 
 
 
-Low level details:
-\begin{itemize}
-	\item Datasets: Start with MNSIT, and then think about CIFAR and Imagenet
-	\item Architecture: Alexnet (5+3 layers) and Resnet (152 layers)
-	\item Methodology: Start with Alexnet, replace convolution layers and fully connected layers
-\end{itemize}
+
 %\subsection*{Target: Aug 12}
 %\begin{itemize}
 %	\item Popularity of neural networks (Resnet)
@@ -160,13 +155,29 @@ The \prname project aims to drastically improve the following features of the ne
 
 \textit{Provide an overview of the methodology that is planned to be developed. You may split the methodology into work-packages, clearly identify which are the objectives/challenges addressed by each work-package.}
 
-\begin{itemize}
-	\item Combine both approaches one after another with a help of an intermediate layer
-	\item Replace both structure with a small tensor network
-	\item Take advantage of existing work on parallelization of tensor operation and apply in our framework
-	\item Implementation of the proposed algorithm
-	\item Offload some operations on GPUs
-\end{itemize}
+As mentioned earlier, this project aims to represent the complete CNN by a network of smaller tensors and we plan to achieve in a bottom-up fashion. In the beginning, we plan to focus on AlexNet architecture. It has 5 convolution layers and 3 fully connected layers. We plan first to replace convolution layers with a network of smaller tensors and then replace the fully connected layers with another network of smaller tensors. This will require us to re-tune the parameters of the full network. To do this, we plan to adapt Gradient-descent method for training. We also plan to take advantage of the existing training methods for tensor network based models in physic or chemistry. For example, density matrix renormalization group (DMRG) is a popular algorithm in molecular simulation community and it has demonstrated initial success to train neural networks~\cite{SS-NIPS2016}. Once we have a working architecture with low rank representations of two large tensors, then our next step would be to replace both tensors with a single one. Here first we plan to represent the large tensor in one of the popular low-rank tensor representations. Depends on the challenges faced at this level, we also plan to consider combination of more than one low-rank tensor representations.    
+
+
+We first will work with  MNSIT dataset for our training. After that we will also CIFAR and Imagenet datasets. 
+
+After exploring AlexNet architecture, we will consider ResNet architecture in the next step. In general, ResNet is more complex and consists of 152 convolution layers. Here we plan to replace 4-5 layers at once with a smaller tensor network and then re-tune the parameters. Based on the outcome of this step, we plan to iterate this approach until we represent the full network with a low-rank representation of a large tensor.  
+
+Once we present the whole network with a small tensor network. We aim to take advantage of the parallel tensor theory and apply in our framework to improve the training time. At this end, we also plan to implement parallel version of the proposed algorithms (or use them if they already exist). We also aim to offload some of the compute intensive operations on GPUs.   
+
+%\begin{itemize}
+%	\item Combine both approaches one after another with a help of an intermediate layer
+%	\item Replace both structure with a small tensor network
+%	\item Take advantage of existing work on parallelization of tensor operation and apply in our framework
+%	\item Implementation of the proposed algorithm
+%	\item Offload some operations on GPUs
+%\end{itemize}
+
+%Low level details:
+%\begin{itemize}
+%	\item Datasets: Start with MNSIT, and then think about CIFAR and Imagenet
+%	\item Architecture: Alexnet (5+3 layers) and Resnet (152 layers)
+%	\item Methodology: Start with Alexnet, replace convolution layers and fully connected layers
+%\end{itemize}
 
 \subsection*{Risk and impact}
 \textbf{Recommended length: 0.7 pages}\\
@@ -195,6 +206,7 @@ Extension of this work:
 	\item Meaning of the proposed models
 \end{itemize}
 
-
+\bibliographystyle{abbrv}
+\bibliography{explore}
 \end{document}
 
