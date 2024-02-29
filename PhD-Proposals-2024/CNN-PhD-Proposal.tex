@@ -1,0 +1,70 @@
+\documentclass[a4paper]{article}
+
+
+\usepackage[margin=1in,footskip=0.25in]{geometry}
+\usepackage{hyperref}
+%\usepackage{url}
+%opening
+%%\title{Parallel Tensor Decompositions for Data Analytics}
+%%\author{}
+\date{}
+\pagenumbering{gobble}
+\begin{document}
+%%\maketitle
+\noindent\textbf{PhD subject}: \emph{Low-rank Tensor Representations of Convolutional Neural Networks }\newline
+\textbf{Advisors}: Suraj Kumar and Loris Marchal\newline
+\textbf{Location}: ROMA team, Inria Lyon, France
+\section*{Context}
+Convolutional neural networks (CNNs) are currently the state-of-the-art models to classify objects in several domains, such as computer vision, speech recognition, text processing etc. Thanks to improved computational capability, we witness several popular complex and deeper CNNs. For example, AlexNet is 8 layers deep, while ResNet employs short connections and is represented with 152 layers. Both have about 60M parameters. CNNs have intensive computational requirements due to their huge complexity and large number of parameters. 
+
+
+
+Tensors are a natural way to represent high dimensional data for numerous applications in computational science and data science~\cite{KB-SIAMReview2009}. CP, Tucker and Tensor Train are the widely used tensor decomposition methods in the literature. These decompositions represent a high dimensional object with a small set of low dimensional objects.
+
+
+
+Representing a high dimensional tensor with a set of smaller dimensional objects drastically reduces the overall number of parameters. This led to the use of low-rank tensor representations at different layers of CNNs. For example, it has been shown that replacing convolution kernels of ResNet with their low-rank approximations in Tucker tensor representations significantly reduces the number of parameters and improves the overall performance~\cite{PSSEG+-ECCV2020}. In a separate work, contributions have been made to replace dense weight matrices of the fully connected layers of AlexNet by their approximations in Tensor-train format~\cite{NPOV-NIPS2015}. This approach also significantly reduces the number of parameters while achieving the similar accuracy. The above contributions strongly advocate to employ the low-rank tensor representations in CNNs. We view the full CNN as a large tensor and aim to replace it with a set of smaller tensors.
+
+
+\section*{Assignment}
+
+%CNNs have intensive computational requirements due to the large number of parameters as mentioned earlier. 
+
+We view CNN models as large tensors and plan to represent them with their low-rank tensor representations. The main goal of this PhD thesis is to take advantage of parallel work on tensor computations and various methods to iteratively train tensor based frameworks for the efficient training and prediction with popular CNN models.
+
+
+This PhD thesis will be held in the ROMA Inria team at LIP, ENS Lyon under the supervision of Suraj Kumar and Loris Marchal.
+
+\section*{Main Activities}
+
+The candidate is expected to perform the following activities:
+\begin{itemize}
+	\item Analyze existing training methods for CNNs and adapt them for tensor based models
+	\item Represent popular CNN models with low-rank tensor representations
+	\item Evaluate proposed models for MNSIT, CIFAR and ImageNet datasets
+	\item Design parallel algorithms for the proposed models
+\end{itemize}
+
+\section*{Skills}
+
+The candidate must have a Master's degree  in Computer Science, Computational Sciences, Applied Mathematics, or a related technical field.\newline
+Familiarity with Linear Algebra computations and Neural Networks will be much appreciated. 
+
+
+
+%%\section*{Benefits Package}
+%%\begin{itemize}
+%%	\item Subsidized Lunches
+%%	\item Partial reimbursement of public transport costs
+%%	\item Social security coverage under conditions
+%%\end{itemize}
+%%
+%%\section*{Remuneration}
+%%	\textbf{1st and 2nd year}: 2 051 euros gross salary /month\newline
+%%	\textbf{3rd year}: 2 158 euros gross salary / month
+
+\bibliographystyle{IEEEtranS}
+\footnotesize \bibliography{CNN-tensor}
+
+
+\end{document}

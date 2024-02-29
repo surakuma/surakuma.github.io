@@ -1,0 +1,149 @@
+\input{ERCstyle}
+%\chead{\fancyplain{}{Part B1}}
+\usepackage{xspace}
+%\usepackage{enumitem}
+\pagenumbering{gobble} 
+
+
+
+\begin{document}
+%\begin{titlepage}
+%\thispagestyle{empty}
+%\begin{center}
+%\textbf{ERC Starting Grant 2023}\\
+%\textbf{Research proposal [Part B1]}\\
+%\vspace*{2cm}
+%\begin{LARGE}
+%\textbf{\prnamelong{}}\\
+%\textbf{\prname{}}\\
+%\end{LARGE}
+%\vspace*{2cm}
+%\begin{Large}
+%\begin{tabular}{rl}
+%Principal investigator: & \piname{}\\
+%Host institution:&  \hi{}\\
+%Duration:& 60 months
+%\end{tabular}
+%\end{Large}
+%\date{}
+%\end{center}
+%\vspace*{2cm}
+%\input{ERCsummary}
+%\end{titlepage}
+%\clearpage
+%\newpage
+
+\renewcommand{\prname}{LOTCON\xspace}
+\renewcommand{\piname}{PI: Suraj KUMAR (LIP, ENS \& Inria Lyon)}
+
+%\begin{Large}
+\noindent \textbf{Title: {LOw-rank Tensor representations of CONvolutional neural networks (LOTCON)}}
+
+% \begin{tabular}{rl}
+%Project: & {\sc LOw-rank Tensor representations of CONvolution neural networks (LOTCON)}
+%%PI: & Suraj KUMAR (LIP, ENS \& Inria Lyon)
+%%\\
+%%Host institution:&  LIP, ENS \& Inria Lyon
+%\end{tabular}
+%%\end{Large}
+
+
+\bigskip
+
+\noindent \textbf{Summary}: \emph{Convolutional neural networks are currently the most popular models to classify objects in the field of computer vision and image recognition. However the computational requirements of these networks are very demanding. This limits their use on low-end devices. Recent work has demonstrated that replacing some parts of popular models with their low-rank tensor representations drastically improves the number of parameters and achieves similar accuracy. Inspired by this progress, we view full models as large tensors and plan to represent them with their low-rank representations. This will enable us to take advantage of parallel work on tensor computations and various methods to iteratively train tensor based frameworks for the efficient training and inference of the models.}
+
+%\begin{abstract}
+%
+%\end{abstract}
+
+\subsection*{Motivation}
+
+Convolutional neural networks  (CNNs) are currently the state-of-the-art models to classify objects in several domains, such as computer vision, speech recognition, text processing etc. Thanks to improved computational capability, we witnessed several popular complex and deeper CNNs. For example, AlexNet is 8 layers deep, while ResNet employs short connections and is represented with 152 layers. Both have about 60M parameters. CNNs have intensive computational requirements due to their huge complexity and large number of parameters. 
+
+%GPUs deliver increased processing capabilities and superior energy efficiency compared to CPUs. Therefore, they are preferred to run compute intensive operations of CNNs. 
+
+
+
+
+%Generative Pre-trained Transformer (GPT) models are now the state-of-the-art in Natural Language Processing, being deep and wide at the same time, having large number of parameters. For  example, GPT-3 has about 175B parameters. Its successor, GPT-4, has 100T parameters. Working (training and inference) with such models requires significant amount of computing resources. It is therefore necessary to devise parallel approaches which can exploit the full capabilities of the modern computing systems.    
+
+
+%GPUs deliver increased processing capabilities and superior energy efficiency compared to CPUs. Therefore, they have become a crucial element of many computing systems over the past decade. The traditional computing cores of GPUs provide the accuracy and precision for the mathematical operations. These cores take huge amount of time for deep learning models as they require to process massive datasets. Thus, GPU vendors recently introduced Tensor (or Matrix) cores. These cores can perform multiple operations per cycle at the cost of limited precision, whereas traditional cores perform one operation per cycle with very accurate results. For deep learning models, the newly added Tensor/Matrix are much effective in terms of both cost and computation speed. Hence these are the preferred choice for these models. However such approaches do not make full utilization of other resources. Thus, it is paramount to devise approaches that can exploit the maximum potential of the computing systems for CNNs.
+
+
+
+Tensors are a natural way to represent high dimensional data for numerous applications in computational science and data science~\cite{KB-SIAMReview2009}. 
+%Tensor decompositions help to identify inherent structure of data, achieve data compression and enable various ways of data analysis. 
+CP, Tucker and Tensor Train are the widely used tensor decomposition methods in the literature. These decompositions represent a high dimensional object with a small set of low dimensional objects.
+
+%These decompositions can be viewed as high order generalization of singular value decomposition. CP decomposition is used to understand the latent components of the data and well suited for tensors with small dimensions. Tucker decomposition is considered to be more appropriate for compression and multi-modal data analysis of small and moderate dimensional tensors. Tensor-train decomposition captures the entanglement among dimensions and appropriate to work with high dimensional tensors.
+
+
+Representing a high dimensional tensor with a set of smaller dimensional objects drastically reduces the overall number of parameters. This led to the use of low-rank tensor representations at different layers of CNNs. For example, it has been shown that replacing convolution kernels of ResNet with their low-rank approximations in Tucker tensor representations significantly reduces the number of parameters and improves the overall performance~\cite{PSSEG+-ECCV2020}. In a separate work, contributions have been made to replace dense weight matrices of the fully connected layers of AlexNet by their approximations in Tensor-train format~\cite{NPOV-NIPS2015}. This approach also significantly reduces the number of parameters while achieving the similar accuracy. Replacing a layer in CNN with its low-rank approximation requires to re-tune the network parameters and both the mentioned works adapted the existing training methods for low-rank tensor representations. The above contributions strongly advocate to employ the low-rank tensor representations in CNNs. We view the full CNN as a large tensor and aim to replace it with a set of smaller tensors. However the training methods for this large tensor and the decomposition structure is not intuitive to estimate. Therefore, we plan to follow bottom-up approach and represent multiple layers of existing successful CNN architectures -- AlexNet and ResNet, with their low-rank tensor representations.
+
+
+
+\subsection*{Objectives}
+
+%The state-of-the-art CNNs are very complex to understand. The high level objective of this project is to express neural network models with simpler tensor based networks. 
+The \prname project aims to drastically improve the following features of CNNs:
+\begin{itemize}
+	\item \emph{Simplicity and analysis capability} : CNNs represented with different tensor factorizations are simpler. Therefore it will allow one to gain more insights of the networks.
+%	tensorized neural networks and describe what happens in each layer.
+%	We though do not explicitly focus on this aspect in \prname project and it is a part of our future work.
+	\item \emph{Reduction of parameters} : Some researchers have replaced the certain portions of CNNs with  networks of smaller tensors and achieved  similar accuracies with significantly less number of parameters, as mentioned earlier. The \prname project explores this direction with the aim to represent a full CNN by a network of smaller tensors. 
+	\item \emph{Parallel algorithms for training and prediction} : Representing CNNs with tensor based networks will allow one to take advantage of the existing parallel tensor algorithms.
+%	Now a days parallelization is ubiquitous in most computing systems. State-of-the-art neural networks usually rely on the efficient parallel implementation of matrix multiplication for parallelization. This approach processes only one layer at a time in backward or forward propagation. Tensor based neural networks enable one to apply different parallelization schemes from Physics and Chemistry for training and inference.
+\end{itemize}
+
+
+\subsection*{Methodology} 
+
+As mentioned earlier, this project aims to represent the full CNN by a network of smaller tensors and we plan to achieve it in a bottom-up fashion. In the beginning, we plan to focus on AlexNet architecture. It has 5 convolution layers and 3 fully connected layers. We first plan to replace convolution layers with a network of smaller tensors and then replace the fully connected layers with another network of smaller tensors. This will require us to re-tune the parameters of the full network. To do this, we plan to adapt Gradient-descent method for training. We also plan to take advantage of the existing training methods for tensor network based frameworks in physic or chemistry. For example, density matrix renormalization group is a popular algorithm in molecular simulation community and it has demonstrated initial success to train neural networks~\cite{SS-NIPS2016}. Once we have a working architecture with low rank representations of two large tensors, then our next step would be to replace both tensors with a single one. Here first we plan to represent the large tensor in one of the popular low-rank tensor representations. Depending on the challenges faced at this level, we also plan to consider combination of more than one low-rank tensor representation.    
+
+
+We first will work with  MNSIT dataset for our training. After that we will also work with CIFAR and ImageNet datasets. After exploring AlexNet architecture, we will focus on ResNet architecture in the next step. In general, ResNet is more complex and consists of 152 convolution layers. Here we plan to replace 4-5 layers at once with a network of smaller tensors and then re-tune the parameters. Based on the outcome of this step, we plan to iterate this approach until we represent the full network with a low-rank representation of a large tensor. We also aim to take advantage of the  work on parallel tensor computation and apply in our framework to improve the training/inference time.
+
+%Once we present the whole network with a small tensor network. We aim to take advantage of the parallel tensor theory and apply in our framework to improve the training time.
+%%At this end, we also plan to implement parallel version of the proposed algorithms (or use them if they already exist). 
+%We also aim to offload some of the compute intensive operations on GPUs.   
+
+%\subsection*{Risk and impact}
+%
+%There are two main risks associated with this project, but we believe they are not critical to its success. Here we also mention how do we plan to mitigate the impact of these risks.
+%
+%\begin{itemize}
+%	\item \emph{Design of new training methods} : As mentioned in the methodology section that we plan to modify the structure of CNNs with low-rank tensor representations and this approach requires to re-tune the parameters. We plan to design new training methods by adapting the present popular algorithms for CNNs or tensor based networks. we also need to validate the robustness of the proposed methods. To achieve this, in the beginning of the project, we plan to work with an intern and analyze what are the possible ways to adapt the popular training methods for tensor-based networks. The goal of this step is to decide certain methods and try to obtain theoretical or probabilistic guarantees on the convergence of those methods.
+%	
+%	\item \emph{Parallelization of the proposed training methods} : The proposed training methods may have limited parallelism. For example, it is well known that the DMRG method that is used in molecular simulation to work with tensor networks is hard to parallelize. To overcome this limitation, we plan to consider/develop methods that have enough work at each step or can be parallelized in a tree structure. We also plan to design our methods in a modular structure. This will allow us to offload compute intensive components to GPUs.        
+%\end{itemize}
+
+
+\subsection*{Resources}
+%\textbf{Recommended length: 0.3 pages}\\
+
+The PI will actively work on this project in the next 3-4 years. This project also involves other permanent members of the team. We plan to request for a PHD student and an engineer for 18 months through Inria Exploratory Action call. We seek maximum possible support (5K \euro) from LIP for the following events:
+
+
+\begin{itemize}
+	\item The PI plans to give talks at IIT Patna and IIT Kanpur in India. This will help us to initiate collaboration with these institutes and advertise possible PhD openings to their Master students. In future, we also want to create an Inria associate team with them. (Expected cost: 1.5K\euro)
+
+	\item The PI will give a talk at SIAM LA 2024 in Paris. This will help us to start more collaborations and fruitful discussions on tensor computations. (Expected cost: 1K\euro)
+	
+	\item TOPAL team of Inria Bordeaux is also interested to work on efficient training of deep learning models. The PI plans to visit them and start a collaboration aligned with this project. (Expected cost: 500\euro)
+	
+	\item We want partial support to hire an intern for $6$ months to work on the analysis of all the popular training methods for tensor based models. (Expected cost: 2K\euro)
+%	\item We also plan to organize a 2-day tensor workshop in Lyon in 2025/2026. The PI requested partial budget for this through his ANR JCJC 2024 proposal. This proposal aims to parallelize popular tensor operations for data analysis.
+\end{itemize} 
+
+
+%The major recruitments of this project are a PhD student and an engineer. The PhD student is expected to join the project from the beginning and  will focus on replacing the full CNNs  with low-rank based tensor representations and design new robust training methods. The engineer is expected to be hired for 18 months, starting around 24th month of the project. He/She will extend the proposed algorithms for parallel machine and efficiently implement them. The project also includes one master-level research intern. He/She is expected to join the project from the beginning and work on devising new training methods for tensor based CNNs and proving guarantees for them.
+%
+%We plan to submit another proposal whose aim would be to get more insight of the network, for example what is the role of each component in the full network. We are also interested to extend our framework for recurrent neural network models in future. 
+
+
+
+\bibliographystyle{unsrt}
+{\footnotesize \bibliography{explore}}
+\end{document}
+
