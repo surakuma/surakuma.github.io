@@ -1,0 +1,94 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{babel}
+\usepackage{eurosym}
+
+\title{Action Exploratoire (AEx) \\
+ {\normalsize Pour toute question, contacter : \texttt{aex-contact@inria.fr}} \\
+  {\normalsize Soumission à \texttt{aex-contact@inria.fr}} \\ {\normalsize avec en copie REP, DCR, DS et DS~adjoint.} }
+\author{}
+\date{}
+\begin{document}
+\maketitle
+
+
+\newcommand{\prname}{LOTUS\xspace}
+
+%\begin{Large}
+	\begin{tabular}{rl}
+		Project: & {\sc LOw-rank Tensor representations of}\\
+		& {\sc convolUtion neural networkS (LOTUS)}\\
+		Principal investigator (PI): & Suraj KUMAR\\
+		Project team :&  ROMA\\
+		Centre :& Inria Lyon
+	\end{tabular}
+%\end{Large}
+%\paragraph{Acronyme \& nom du projet :} 
+%\paragraph{Porteur(s):}
+%\paragraph{\'Equipe-projet(s):}
+%\paragraph{Centre(s):}
+
+%\section*{Résumé {\small (5 lignes au maximum)}}
+
+\section*{Summary}
+%\begin{abstract}
+	\emph{Convolutional neural networks are currently the most popular models to classify objects in the field of computer vision and image recognition. However the computational requirements of these networks are very demanding. This limits their use on low-end devices. Recent work has demonstrated that replacing some parts of popular models with their low-rank tensor representations drastically improves the number of parameters and achieves similar accuracy. Inspired by this progress, we view full models as large tensors and plan to represent them with their low-rank representations. This will enable us to take advantage of parallel work on tensor computations and various methods to iteratively train tensor based frameworks for the efficient training and inference of the models.}
+%\end{abstract}
+\section{Project description}
+%\section{Description du projet {\small (1 page minimum, 3 pages maximum)}}
+%\section{Ressources demandées {\small (avec quelques lignes d'explication)}}
+
+
+\section{Requested resource}
+The recruitments of this project are a research intern (6 months), a PhD student  (36 months)and an engineer (18 months). The  research intern is expected to join the project from the beginning and work on the analysis of all the popular training methods for tensor based models. The PhD student is expected to join the project around the 6th month. He/She will focus on replacing the full CNNs  with low-rank based tensor representations and design new robust training methods. The engineer is expected to be hired for 18 month, starting around 32nd month of the project. He/She will extend the proposed algorithms for parallel machines and efficiently implement them. 
+
+
+We ask funding for the research intern and the PhD student through this call. We will look for some other funding sources to hire the engineer.  We request k\euro and Table \ref{tab:reqcost} shows the breakdown of the requested amount.
+
+\begin{table}
+	\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+& Amount\\ \hline
+Research intern & 3.3k \euro \\ \hline
+PhD student & 120k \euro \\ \hline
+Inward billing (1 laptop) & 2.5k \euro \\ \hline
+Travel costs (missions) & 10k \euro \\ \hline
+\textbf{Requested} & k\euro\\ \hline
+\end{tabular}
+	\caption{Requested amount for the project through this call.\label{tab:reqcost}}
+\end{center}
+\end{table}
+
+
+
+
+%The project also includes one master-level research intern. He/She is expected to join the project from the beginning and work on devising new training methods for tensor based CNNs and proving guarantees for them.
+
+%The major recruitments of this project are a PhD student and an engineer. The PhD student is expected to join the project from the beginning and  will focus on replacing the full CNNs  with low-rank based tensor representations and design new robust training methods. The engineer is expected to be hired for 18 month, starting around 24th month of the project. He/She will extend the proposed algorithms for parallel machine and efficiently implement them. The project also includes one master-level research intern. He/She is expected to join the project from the beginning and work on devising new training methods for tensor based CNNs and proving guarantees for them.
+
+
+
+
+
+
+
+
+
+%\section{En quoi le projet est-il exploratoire? {\small (0.5 page
+%    maximum. On pourra se référer à la note de la DGD-S de octobre 2021 sur les Actions Exploratoires)}}
+\section{How is the project exploratory?}
+
+The PI is an expert in tensor computations and have limited knowledge of neural networks. In the last decade,  CNNs have achieved tremendous success to classify objects in several domains. It is important to run them efficiently with limited resources. As mentioned earlier, in some recent works, some layers of CNNs are replaced with their low-rank tensor representations . This approach drastically reduces the number of parameters and achieves similar accuracies. Inspired by this progress, we view a full CNN as a large tensor and aim to represent it with its low-rank tensor representation. This idea seems very encouraging and requires to explore several underneath issues, such as how to design efficient methods to train tensor based models that are easy to parallelize, what low-rank tensor representations to select for a portion of CNN, and how to combine  two different low-rank tensor representations  to represent a large portion of CNN, to name a few.
+%\section{Quelle suite est envisagée ? {\small (section optionnelle, 0.5 page maximum)}}
+
+\section{Follow-up of this project}
+As mentioned earlier, we plan to look for other funding sources to hire an engineer who will work on the parallelization of the proposed models. Towards the end of this project, we also plan to submit a proposal whose aim would be to get good interpretation of the proposed models, for example what is the role of each component in the full network. We are also interested to extend our framework for recurrent neural network models in future. 
+
+Upon successful completion of the project, we plan to adapt our models to work efficiently on low-end devices. This will enable us to  identify objects quickly on any device. We will explore applications of our framework in several domains and aim to create a startup.
+
+
+%\bibliographystyle{abbrv}
+%\bibliography{explore}
+\end{document}
