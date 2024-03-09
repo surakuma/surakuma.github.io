@@ -1,20 +1,47 @@
 \documentclass[11pt]{article}
+%
+\oddsidemargin -4.0mm
+\evensidemargin -4.0mm
+\topmargin -25.0mm
+\headsep 6.0mm
+\textwidth 174.0mm
+\textheight 240.0mm
+\headheight 15.0mm
+\footskip 5.0mm
+\leftmargin 0.0mm
+%
+
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{babel}
 \usepackage{eurosym}
 \usepackage{xspace}
+\usepackage{hyperref}
 
-\title{Action Exploratoire (AEx) \\
- {\normalsize Pour toute question, contacter : \texttt{aex-contact@inria.fr}} \\
-  {\normalsize Soumission à \texttt{aex-contact@inria.fr}} \\ {\normalsize avec en copie REP, DCR, DS et DS~adjoint.} }
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\lhead{\fancyplain{}{\prname{} }}
+\rhead{\fancyplain{}{\piname{} }}
+\lfoot{}
+\cfoot{\fancyplain{}{\thepage}}
+\rfoot{}
+
+\newcommand{\prname}{LOTUS\xspace}
+\newcommand{\piname}{Suraj KUMAR}
+\title{Action Exploratoire (AEx)}
+%\title{Action Exploratoire (AEx) \\
+% {\normalsize Pour toute question, contacter : \texttt{aex-contact@inria.fr}} \\
+%  {\normalsize Soumission à \texttt{aex-contact@inria.fr}} \\ {\normalsize avec en copie REP, DCR, DS et DS~adjoint.} }
 \author{}
 \date{}
 \begin{document}
-\maketitle
+%\maketitle
 
+   \begin{center}
+		\Large\textbf{Action Exploratoire (AEx)}
+	\end{center}
 
-\newcommand{\prname}{LOTUS\xspace}
 %\newcommand{\prname}{LOTUS}
 %\begin{Large}
 	\begin{tabular}{rl}
@@ -40,9 +67,9 @@
 %\section{Description du projet {\small (1 page minimum, 3 pages maximum)}}
 %\section{Ressources demandées {\small (avec quelques lignes d'explication)}}
 
-Convolutional neural networks  (CNNs) are currently the state-of-the-art models to classify objects in several domains, such as computer vision, speech recognition, text processing etc. Thanks to improved computational capability, we witnessed several popular complex and deeper CNNs. For example, AlexNet is 8 layers deep, while ResNet employs short connections and is represented with 152 layers. Both have about 60M parameters. CNNs have intensive computational requirements due to their huge complexity and large number of parameters. 
+Convolutional neural networks  (CNNs) are currently the state-of-the-art models to classify objects in several domains, such as computer vision, speech recognition, text processing etc. Thanks to improved computational capability, we witness several popular complex and deeper CNNs. For example, AlexNet is 8 layers deep, while ResNet employs short connections and is represented with 152 layers. Both have about 60M parameters. CNNs have intensive computational requirements due to their huge complexity and large number of parameters. 
 
-Tensors are a natural way to represent high dimensional data for numerous applications in computational science and data science. Tensor decompositions help to identify inherent structure of data, achieve data compression and enable various ways of data analysis~\cite{KB-SIAMReview2009}. CP, Tucker and Tensor Train are the widely used tensor decomposition methods in the literature. These decompositions represent a high dimensional object with a small set of low dimensional objects. These decompositions can be viewed as high order generalization of Singular Value Decomposition (SVD). CP decomposition is used to understand the latent components of the data and well suited for tensors with small dimensions. Tucker decomposition is considered to be more appropriate for compression and multi-modal data analysis of small and moderate dimensional tensors. Tensor train decomposition captures the entanglement among dimensions and appropriate to work with high dimensional tensors.
+Tensors are a natural way to represent high dimensional data for numerous applications in computational science and data science. Tensor decompositions help to identify inherent structure of data, achieve data compression and enable various ways of data analysis~\cite{KB-SIAMReview2009}. CP, Tucker and Tensor Train are the widely used tensor decomposition methods in the literature. These decompositions represent a high dimensional object with a small set of low dimensional objects. These decompositions can be viewed as high order generalization of singular value decomposition. CP decomposition is used to understand the latent components of the data and well suited for tensors with small dimensions. Tucker decomposition is considered to be more appropriate for compression and multi-modal data analysis of small and moderate dimensional tensors. Tensor train decomposition captures the entanglement among dimensions and appropriate to work with high dimensional tensors.
 
 Representing a high dimensional tensor with a set of smaller dimensional objects drastically reduces the overall number of parameters. This led to the use of low-rank tensor representations at different layers of CNNs. For example, it has been shown that replacing convolution kernels of ResNet with their low-rank approximations in Tucker tensor representations significantly reduces the number of parameters and improves the overall performance~\cite{PSSEG+-ECCV2020}. In a separate work, contributions have been made to replace dense weight matrices of the fully connected layers of AlexNet by their approximations in Tensor-train format~\cite{NPOV-NIPS2015}. This approach also significantly reduces the number of parameters while achieving the similar accuracy. Replacing a layer in CNN with its low-rank approximation requires to re-tune the network parameters and both the mentioned works adapted the existing training methods for low-rank tensor representations. The above contributions strongly advocate to employ the low-rank tensor representations in CNNs. We view the full CNN as a large tensor and aim to replace it with a set of smaller tensors. However the training methods for this large tensor and the decomposition structure is not intuitive to estimate. Therefore, we plan to follow bottom-up approach and represent multiple layers of existing successful CNN architectures -- AlexNet and ResNet, with their low-rank tensor representations.
 
@@ -50,7 +77,7 @@ Representing a high dimensional tensor with a set of smaller dimensional objects
 
 
 \subsection{Objectives}
-The state-of-the-art CNNk models are very complex to understand. The high level objective of this project is to express CNN models with simpler tensor based networks.  The \prname project aims to drastically improve the following features of CNNs.
+The state-of-the-art CNN models are very complex to understand. The high level objective of this project is to express CNN models with simpler tensor based networks.  The \prname project aims to drastically improve the following features of CNNs.
 \begin{itemize}
 	\item \emph{Simplicity and analysis capability} :  CNNs represented with different tensor factorizations are simpler. Therefore it will allow one to gain more insights of the networks and describe what happens in each layer. We though do not explicitly focus on this aspect in \prname project and it is a part of our future work.
 	\item \emph{Reduction of parameters} : Some researchers have replaced the certain portions of CNNs with  networks of smaller tensors and achieved  similar accuracies with significantly less number of parameters, as mentioned earlier. The \prname project explores this direction with the aim to represent a full CNN by a network of smaller tensors. 
@@ -72,21 +99,22 @@ We first will work with  MNSIT dataset for our training. After that we will also
 There are two main risks associated with this project. Here we mention how do we plan to mitigate the impact of these risks.
 
 \begin{itemize}
-	\item \emph{Design of new training methods} : As mentioned in the methodology section that we plan to modify the structure of CNNs with low-rank tensor representations and this approach requires to re-tune the parameters. We plan to design new training methods by adapting the present popular algorithms for CNN sor tensor based networks. we also need to validate the robustness of the proposed methods. To achieve this, in the beginning of the project, we plan to work with an intern and analyze what are the possible ways to adapt the popular training methods for tensor-based networks. The goal of this step is to decide certain methods and try to obtain theoretical or probabilistic guarantees on the convergence of those methods.
+	\item \emph{Design of new training methods} : As mentioned in the methodology section that we plan to modify the structure of CNNs with low-rank tensor representations and this approach requires to re-tune the parameters. It requires to design new training methods. We plan to adapt the present popular algorithms for CNNs or tensor based networks. We also need to validate the robustness of the new adapted methods. To achieve this, in the beginning of the project, we plan to work with an intern and analyze what are the possible ways to adapt the popular training methods for tensor based networks. The goal of this step is to decide certain methods and try to obtain theoretical or probabilistic guarantees on the convergence of those methods.
 	
-	\item \emph{Parallelization of the proposed training methods} : The proposed training methods may have limited parallelism. For example, it is well known that the DMRG method that is used in molecular simulation to work with tensor networks is hard to parallelize. To overcome this limitation, we plan to consider/develop methods that have enough work at each step or can be parallelized in a tree structure. We also plan to design our methods in a modular structure. This will allow us to offload compute intensive components to GPUs.        
+	\item \emph{Parallelization of the proposed training methods} : The proposed training methods may have limited parallelism. For example, it is well known that the DMRG method that is used in molecular simulation to work with tensor based networks is hard to parallelize. To overcome this limitation, we plan to consider/develop methods that have enough work at each step or can be parallelized in a tree structure.
+%	We also plan to design our methods in a modular structure. This will allow us to offload compute intensive components to GPUs.        
 \end{itemize}
 
 \subsection{Extension of our framework for heterogeneous systems}
-GPUs deliver increased processing capabilities and superior energy efficiency compared to CPUs. Therefore, they have become a crucial element of many computing systems over the past decade. The traditional computing cores of GPUs provide the accuracy and precision for the mathematical operations. These cores take huge amount of time for deep learning models as they require to process massive datasets. Thus, GPU vendors recently introduced Tensor (or Matrix) cores. These cores can perform multiple operations per cycle at the cost of limited precision, whereas traditional cores perform one operation per cycle with very accurate results. For deep learning models, the newly added Tensor/Matrix are much effective in terms of both cost and computation speed. Hence these are the preferred choice for these models. However such approaches do not make full utilization of other resources. Thus, it is paramount to devise approaches that can exploit the maximum potential of the computing systems for CNNs.
+GPUs deliver increased processing capabilities and superior energy efficiency compared to CPUs. Therefore, they have become a crucial element of many computing systems over the past decade. The traditional computing cores of GPUs provide the accuracy and precision for the mathematical operations. These cores take huge amount of time for deep learning models as they require to process massive datasets. Thus, GPU vendors recently introduced Tensor (or Matrix) cores. These cores can perform multiple operations per cycle at the cost of limited precision, whereas traditional cores perform one operation per cycle with very accurate results. For deep learning models, the newly added Tensor/Matrix cores are much effective in terms of both cost and computation speed. Hence these cores are the preferred choice for CNN models~\cite{KSH-Resnet-2017}. However such approaches do not make full utilization of other units of a heterogeneous system. We also plan to parallelize our models for a heterogenous systems composed of CPUs and GPUs. Task based runtime systems are a popular way to make efficient utilization of heterogenous resources~\cite{ATNW-Euro-Par-2009}. We intend to express computations of our parallel models in terms of tasks such that we can run them efficiently on a heterogenous system with popular runtime systems, such as \href{https://starpu.gitlabpages.inria.fr}{StarPU}.
 
 
 
 \section{Requested resource}
-The recruitments of this project are a research intern (6 months), a PhD student  (36 months)and an engineer (18 months). The  research intern is expected to join the project from the beginning and work on the analysis of all the popular training methods for tensor based models. The PhD student is expected to join the project around the 6th month. He/She will focus on replacing the full CNNs  with low-rank based tensor representations and design new robust training methods. The engineer is expected to be hired for 18 month, starting around 32nd month of the project. He/She will extend the proposed algorithms for parallel machines and efficiently implement them. 
+The recruitments of this project are a research intern (6 months), a PhD student  (36 months) and an engineer (18 months). The  research intern is expected to join the project from the beginning and work on the analysis of all the popular training methods for tensor based models. The PhD student is expected to join the project around the 6th month. He/She will focus on replacing the full CNNs  with low-rank based tensor representations and design new robust training methods. The engineer is expected to be hired for 18 month, starting around 32nd month of the project. He/She will extend the proposed algorithms for parallel machines and efficiently implement them. 
 
 
-We ask funding for the research intern and the PhD student through this call. We will look for some other funding sources to hire the engineer.  We request k\euro and Table \ref{tab:reqcost} shows the breakdown of the requested amount.
+We ask funding for the research intern and the PhD student through this call. We will look for some other funding sources to hire the engineer.  We request 135.8k\euro\xspace and Table \ref{tab:reqcost} shows the breakdown of the requested amount.
 
 \begin{table}
 	\begin{center}
@@ -97,7 +125,7 @@ Research intern & 3.3k \euro \\ \hline
 PhD student & 120k \euro \\ \hline
 Inward billing (1 laptop) & 2.5k \euro \\ \hline
 Travel costs (missions) & 10k \euro \\ \hline
-\textbf{Requested} & k\euro\\ \hline
+\textbf{Requested} & 135.8k\euro\\ \hline
 \end{tabular}
 	\caption{Requested amount for the project through this call.\label{tab:reqcost}}
 \end{center}
@@ -130,7 +158,8 @@ As mentioned earlier, we plan to look for other funding sources to hire an engin
 
 Upon successful completion of the project, we plan to adapt our models to work efficiently on low-end devices. This will enable us to  identify objects quickly on any device. We will explore applications of our framework in several domains and aim to create a startup.
 
-
-%\bibliographystyle{abbrv}
-%\bibliography{explore}
+{\footnotesize
+\bibliographystyle{abbrv}
+\bibliography{explore}
+}
 \end{document}
