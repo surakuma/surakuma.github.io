@@ -371,14 +371,13 @@ colorlinks]{hyperref}
 
 	
 	Algorithm~\ref{alg:hosvd} computes a $(R_1, R_2, \cdots, R_d)$-rank Tucker decomposition of a $d$-dimensional tensor $\X$~\cite{KB-SIAM-2009}. $\Mn{A}{k}$ is a tall-skinny factor matrix corresponding to mode $k$, and $\times_k$ denotes the \linebreak tensor-times-matrix (TTM)\footnote{TTM in the $k$th mode is the multiplication of a tensor $\X$ with a matrix $A$, denoted by $\Z=\X \times_k A^\Tra$. In the element-wise notation, it is defined as $\Z_{i_1\cdots i_{k-1}ri_{k+1}\cdots i_d} = \sum_{i_k}\X_{i_1\cdots i_{k-1}i_ki_{k+1}\cdots i_d}A_{i_k r}$.} computation in the $k$th mode.
-%%	It computes the product of a tensor along the $k$th mode with a matrix. \sk{Not sure TTM definition is clear.}
-%%	\bora{maybe say what is a TTM?}
+
 	$X_{(k)}$ denotes a matrix representation of $\X$ and is obtained by considering the $k$th dimension as the rows and collapsing the remaining dimensions as the columns. The collective operation of Line~\ref{alg:hosvd:multiTTM} to compute the core tensor $\Y$ is known as the Multi-TTM computation~\cite{ABGKR-SIMAX-2024}. When the computational costs of the matrix SVDs (Line~\ref{alg:hosvd:SVDs}) are reduced using randomization, Multi-TTM becomes the overwhelming bottleneck computation~\cite{MSK-SIAM-2020,SGLTU-SIAM-2020,AAAMCPTO-ACCESS-2021}.
 		
 	
 	One approach to perform the Multi-TTM computation is in sequence, i.e., $\Y = ((\X \times_1 {\Mn{A}{1}}^\Tra )\times_2 {\Mn{A}{2}}^\Tra)\cdots \times_d {\Mn{A}{d}}^\Tra$. TuckerMPI is a state-of-the-art library to compute Tucker decomposition~\cite{BKK-TOMS-2020}. The sequence approach is parallelized in this library. In~\cite{ABGKR-SIMAX-2024}, we proposed to compute the Multi-TTM with all the inputs at once. For the 3-dimensional computation, our approach can be expressed as $\Y_{r_1r_2r_3} = \sum_{i_1i_2i_3}\X_{i_1i_2i_3}\cdot\Mn{A}{1}_{i_1r_1}\cdot \Mn{A}{2}_{i_2r_2}\cdot \Mn{A}{3}_{i_3r_3}$. Figure~\ref{fig:compAllatonceInseq} shows our preliminary results for both approaches. It exhibits that the all at once approach reduces communication significantly compared to the sequence approach when the output tensor is much smaller than the input tensor on small and moderate number of processors. 
 
-%%\bora{Not sure if the figure's description explains in enough detail so that the reader understands. This figure could perhaps be used to describe gains/objectives.}
+
 	
 	\begin{figure}[htb]
 		\begin{center}
@@ -395,35 +394,12 @@ colorlinks]{hyperref}
 		\end{center}		
 	\end{figure}
 
-	This result also exhibits that neither is better than the other in terms of communication costs for all inputs. It indicates that by combining both of these approaches we can obtain better gains. This encourages us to study how to perform this computation such that the communication is optimal. There are many ways to perform this computation. With 3-dimensional cubic input and output tensors, here are some ways to perform this computation:	
-%%	$$\Y=\seqstart\seqstart\seqstart\X\times_1{\Mn{A}{1}}^\Tra \seqend\times_2{\Mn{A}{2}}^\Tra\seqend\times_3{\Mn{A}{3}}^\Tra\seqend,$$
-%%	$$\Y=\allatoncestart\seqstart\X \times_1 {\Mn{A}{1}}^\Tra \seqend \times_2 {\Mn{A}{2}}^\Tra \times_3 {\Mn{A}{3}}^\Tra \allatonceend,$$
-%%	$$\Y = \seqstart\allatoncestart\X \times_1 {\Mn{A}{1}}^\Tra \times_2 {\Mn{A}{2}}^\Tra\allatonceend \times_3 {\Mn{A}{3}}^\Tra\seqend,$$
-%%	
-%%	$$\Y = \allatoncestart\X \times_1 {\Mn{A}{1}}^\Tra \times_2 {\Mn{A}{2}}^\Tra \times_3 {\Mn{A}{3}}^\Tra\allatonceend.$$	
-
-	\begin{align*}
-	\Y&=\seqstart\seqstart\seqstart\X\times_1{\Mn{A}{1}}^\Tra \seqend\times_2{\Mn{A}{2}}^\Tra\seqend\times_3{\Mn{A}{3}}^\Tra\seqend,\\
-	\Y&=\allatoncestart\seqstart\X \times_1 {\Mn{A}{1}}^\Tra \seqend \times_2 {\Mn{A}{2}}^\Tra \times_3 {\Mn{A}{3}}^\Tra \allatonceend,\\
-	\Y &= \seqstart\allatoncestart\X \times_1 {\Mn{A}{1}}^\Tra \times_2 {\Mn{A}{2}}^\Tra\allatonceend \times_3 {\Mn{A}{3}}^\Tra\seqend,\\
-	\Y &= \allatoncestart\X \times_1 {\Mn{A}{1}}^\Tra \times_2 {\Mn{A}{2}}^\Tra \times_3 {\Mn{A}{3}}^\Tra\allatonceend.
-	\end{align*}
-	
-%%	$$\Y={\color{blue}(((}\X\times_1{\Mn{A}{1}}^\Tra {\color{blue})}\times_2{\Mn{A}{2}}^\Tra{\color{blue})}\times_3{\Mn{A}{3}}^\Tra{\color{blue})},$$
-%%	$$\Y={\color{green}(}{\color{blue}(}\X \times_1 {\Mn{A}{1}}^\Tra {\color{blue})} \times_2 {\Mn{A}{2}}^\Tra \times_3 {\Mn{A}{3}}^\Tra {\color{green})},$$
-%%	$$\Y = {\color{blue}(}{\color{green}(}\X \times_1 {\Mn{A}{1}}^\Tra \times_2 {\Mn{A}{2}}^\Tra{\color{green})} \times_3 {\Mn{A}{3}}^\Tra{\color{blue})},$$
-%%	$$\Y = {\color{green}(}\X \times_1 {\Mn{A}{1}}^\Tra \times_2 {\Mn{A}{2}}^\Tra \times_3 {\Mn{A}{3}}^\Tra{\color{green})}.$$
-	Here purple parenthesis indicates that the whole computation inside it will be computed with the all at once approach and blue parenthesis denotes a single TTM computation. Note that here we follow the order of matrices. Changing the order for the rectangular dimensions may minimize the overall communication. It is also reasonable to first operate only with some matrices and then combine the intermediate results with the remaining computations. Our goal is to find the minimal communication cost of this computation and how it should be performed. We will study all possible ways to perform $3$ and $4$-dimensional Multi-TTM computations in detail as the number of ways are limited. After that, we will generalize our findings and create a dynamic programming based approach to determine how to perform $d$-dimensional Multi-TTM.
-	
-	
-	The amount of operations for Multi-TTM depends on how it is performed, i.e, how factor matrices are operated with the input tensor. Figure~\ref{fig:compAllatonceInseq} shows that the all at once approach increases the amount of operations compared to the sequence approach. It is significantly higher for large number of processors. Therefore, it is also important to study the computation-communication tradeoff for the Multi-TTM. We will model both communication and computation costs for the Multi-TTM and devise new parallel algorithms such that the overall completion time is minimal. 
+	This result also exhibits that neither is better than the other in terms of communication costs for all inputs. It indicates that by combining both of these approaches we can obtain better gains. This encourages us to study how to perform this computation such that the communication is optimal. 
 	
 	
 	
-	As mentioned earlier, Multi-TTM is the bottleneck computation of the HOSVD method. After performing detailed study of Multi-TTM, we will design parallel algorithms such that the overall completion times of HOSVD are minimal. We will implement our algorithms for homogeneous systems and test them on various datasets. 
 	
-	
-	Sequentially truncated HOSVD is another popular method to compute Tucker decomposition~\cite{VVM-SIAM-2012}. After each SVD computation, it performs a single TTM and work on the reduce data for the next SVD computation. Therefore, it performs less computations than the original HOSVD. However when the computational costs of the matrix SVDs are reduced using randomization, costs for both methods are dominated by the Multi-TTM computation. HOSVD is well suited for parallelization as different SVDs can be computed in parallel and also provides flexibility in the computation of Multi-TTM. Therefore, we focus on this method to compute Tucker decomposition in the proposal.		
+	Sequentially truncated HOSVD is another popular method to compute Tucker decomposition~\cite{VVM-SIAM-2012}. After each SVD computation, it performs a single TTM and work on the reduce data for the next SVD computation. Therefore, it performs less computations than the original HOSVD. However when the computational costs of the matrix SVDs are reduced using randomization, costs for both methods are dominated by the Multi-TTM computation. HOSVD is well suited for parallelization as different SVDs can be computed in parallel. It also provides flexibility in the computation of Multi-TTM (see Section˜\ref{sec:methodology}). Therefore, we focus on this method to compute Tucker decomposition in the proposal.		
 	
 	\subsection{State of the art approaches for CP decomposition}
 	\label{sec:context:soa:Canonical}
@@ -431,7 +407,6 @@ colorlinks]{hyperref}
 	
 	\begin{algorithm}[H]{
 			\caption{CP-ALS method to compute CP decomposition\label{alg:canonicalals}}
-			%%				\caption{HOSVD Algorithm($\X$, $R_1$, $R_2$, $R_3$)}
 			\begin{algorithmic}[1]
 				\Require input tensor $\X$, desired rank $R$, initial factor matrices $\Mn{A}{1}, \cdots, \Mn{A}{d}$
 				\Ensure $\big[\lambda, \Mn{A}{1}, \cdots, \Mn{A}{d}]$ : A rank-R Canonical decomposition of $\X$
@@ -451,21 +426,68 @@ colorlinks]{hyperref}
 	A popular choice to compute MTTKRP is to first calculate the explicit Khatri-Rao products and then apply the matricized tensor in a single matrix multiplication~\cite{BK-SIAM-2008}. Another approach is to work with all the inputs at once without forming an intermediate: 
 	$$\Mn{A}{j}_{lr} = \sum_{i_1,\cdots,i_{j-1},i_{j+1},\cdots i_d}\X_{i_1,\cdots,i_{j-1},l,i_{j+1},\cdots i_d}\prod_{k\in{\{1,\cdots,j-1,j+1,\cdots,d\}}}\Mn{A}{k}_{i_k r}.$$
 	
-	Ballard et al.~\cite{BNR-IPDPS-2018} show that the latter approach significantly reduces communication compared to the former one. There are many ways to perform this computation. Similar to Multi-TTM, our goal is to find the minimal communication cost of MTTKRP. We will study all possible ways to perform $3$ and $4$-dimensional computations. After that, we will generalize our finding and create a dynamic programming based approach to determine how to perform this computation.
+	Ballard et al.~\cite{BNR-IPDPS-2018} show that the latter approach significantly reduces communication compared to the former one. There are many ways to perform this computation. Similar to Multi-TTM, our goal is to find the minimal communication cost of MTTKRP. 
 	
-	
-	The amount of operations in the MTTKRP computation also depends on how factor matrices are operated with the original tensor. We will study communication-computation tradeoff for MTTKRP.
-	
-	
-	
-	We can note that the intermediate Khatri-Rao products may be used between different iterations in Algorithm~\ref{alg:canonicalals}. With 4-dimensional tensors, MTTKRP corresponding to both 1st and 2nd iterations need $\Mn{A}{4}\odot\Mn{A}{3}$. If we store this result in the 1st iteration then it can be reused in the 2nd one. Therefore, at last our goal is to study tradeoff among communications, computations and reuse of intermediate results for a single iteration (Lines~\ref{method:canonical:oneiter:start}--\ref{method:canonical:oneiter:end}) of CP-ALS method and devise an algorithm which achieves the optimal completion time. We will implement our algorithms for homogeneous systems and test them on various datasets.
 	
 	Another state-of-the-art approach to compute a CP decomposition is based on gradients. MTTKRP is also the bottleneck computation for this approach. Hence, improving the performance of MTTKRP will also accelerate gradient-based approach to compute the decomposition.
 	
 	
 	\subsection{Technical challenges in combining all at once and sequence approaches}
 	\label{sec:challenges}
-	\subsection{Our methodology}
+	\subsection{Combining all at once and sequence approaches}
+	As mentioned in the previous subsection, neither approach is better than the other for Multi-TTM with all inputs in terms of communication costs.  It advocates to combine both approaches. There are many ways to perform Multi-TTM computation.  We present some of them below for  3-dimensional cubic input and output tensors.	 
+	
+	\begin{align*}
+		\Y&=\seqstart\seqstart\seqstart\X\times_1{\Mn{A}{1}}^\Tra \seqend\times_2{\Mn{A}{2}}^\Tra\seqend\times_3{\Mn{A}{3}}^\Tra\seqend,\\
+		\Y&=\allatoncestart\seqstart\X \times_1 {\Mn{A}{1}}^\Tra \seqend \times_2 {\Mn{A}{2}}^\Tra \times_3 {\Mn{A}{3}}^\Tra \allatonceend,\\
+		\Y &= \seqstart\allatoncestart\X \times_1 {\Mn{A}{1}}^\Tra \times_2 {\Mn{A}{2}}^\Tra\allatonceend \times_3 {\Mn{A}{3}}^\Tra\seqend,\\
+		\Y &= \allatoncestart\X \times_1 {\Mn{A}{1}}^\Tra \times_2 {\Mn{A}{2}}^\Tra \times_3 {\Mn{A}{3}}^\Tra\allatonceend.
+	\end{align*}
+	
+	
+	Here purple parenthesis indicates that the whole computation inside it will be computed with the all at once approach and blue parenthesis denotes a single TTM computation.  Note that here we follow the order of matrices. Changing the order for the rectangular dimensions may minimize the overall communication. It is also reasonable to first operate only with some matrices and then combine the intermediate results with the remaining computations. Our goal is to find the minimal communication cost of this computation and how it should be performed. 
+	
+
+	A preliminary study by the PI shows that a combined approach reduces communication more than the original ones for some inputs (see Figure˜\ref{fig:compCombinedAllatonceseq}). It validates our intuitions and boosts our goal to analyze all possible ways to perform  Multi-TTM computations.
+
+
+
+\begin{figure}[htb]
+	%		\begin{center}
+		%%			\includegraphics[scale=0.215]{./plots/all-at-once-seq-label.png}
+		%		\end{center}
+	\begin{center}
+		\includegraphics[width=0.45\linewidth]{./plots/AAO-vs-Seq-logscale-comparison-with-coup.eps}
+		\caption{Comparison of all at once and sequence approaches with a combined approach for the second example of Figure˜\ref{fig:compAllatonceInseq}. Here in the combined approach,  all at once approach is applied with first two matrices and then a single TTM is performed with the intermediate  result and the last matrix ($\Y = \seqstart\allatoncestart\X \times_1 {\Mn{A}{1}}^\Tra \times_2 {\Mn{A}{2}}^\Tra\allatonceend \times_3 {\Mn{A}{3}}^\Tra\seqend$). \label{fig:compCombinedAllatonceseq}}
+	\end{center}		
+\end{figure}
+	
+
+	
+	We will study all possible ways to perform $3$ and $4$-dimensional Multi-TTM computations in detail as the number of ways are limited. After that, we will generalize our findings and create a dynamic programming based approach to determine how to perform $d$-dimensional Multi-TTM.
+	
+	
+	The amount of operations for Multi-TTM depends on how it is performed, i.e, how factor matrices are operated with the input tensor. Figure~\ref{fig:compAllatonceInseq} shows that the all at once approach increases the amount of operations compared to the sequence approach. It is significantly higher for large number of processors. Therefore, it is also important to study the computation-communication tradeoff for the Multi-TTM. We will model both communication and computation costs for the Multi-TTM and devise new parallel algorithms such that the overall completion time is minimal. 
+	
+	
+	
+	As mentioned in the previous section, Multi-TTM is the bottleneck computation of the HOSVD method. After performing detailed study of Multi-TTM, we will design parallel algorithms such that the overall completion times of HOSVD are minimal. We will implement our algorithms for homogeneous systems and test them on various datasets. 
+	
+	
+	
+	Similar to Multi-TTM, we will study all possible ways to perform $3$ and $4$-dimensional MTTKRP computations. After that, we will generalize our finding and create a dynamic programming based approach to determine how to perform this computation. The amount of operations in the MTTKRP computation also depends on how factor matrices are operated with the original tensor. We will study communication-computation tradeoff for MTTKRP. We can note that the intermediate Khatri-Rao products may be used between different iterations in Algorithm~\ref{alg:canonicalals}. With 4-dimensional tensors, MTTKRP corresponding to both 1st and 2nd iterations need $\Mn{A}{4}\odot\Mn{A}{3}$. If we store this result in the 1st iteration then it can be reused in the 2nd one. Therefore, at last our goal is to study tradeoff among communications, computations and reuse of intermediate results for a single iteration (Lines~\ref{method:canonical:oneiter:start}--\ref{method:canonical:oneiter:end}) of CP-ALS method and devise an algorithm which achieves the optimal completion time. We will implement our algorithms for homogeneous systems and test them on various datasets.
+	
+	
+	We need to tackle the following challenges in order to take benefits of both all at once and sequential approaches.
+	\begin{itemize}
+		\item Determine communication costs for all possible ways to perform Multi-TTM and MTTKRP  computations
+		\item Investigate tradeoff among amount of operations, communications and data reuse for both computations
+		\item Design parallel algorithms for both computations
+		\item Design and implement parallel HOSVD and CP-ALS methods and test on various datasets
+		\item Analytically determine  arrangement of logical processor grid for better performance
+	\end{itemize}
+	
+	\subsection{Our approach to tackle the challenges}
 	\label{sec:methodology}
 	
 	\subsubsection*{Parallelization strategy}
