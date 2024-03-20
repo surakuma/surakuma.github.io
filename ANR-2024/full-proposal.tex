@@ -44,6 +44,8 @@
 \usepackage{mdframed}
 
 
+\usepackage{IEEEtrantools}
+
 \input{./tensor_header}
 \newcommand{\X}{\T{X}}
 \newcommand{\Y}{\T{Y}}
@@ -256,6 +258,10 @@ colorlinks]{hyperref}
 	%%2 Master interns -- Funded by ANR -- 2*6=12 PM	
 	\tableofcontents
 	\newpage
+	
+	
+	\bstctlcite{IEEEexample:BSTcontrol}
+	
 	
 	\textbf{Abstract}: \emph{Tensors are multi-dimensional arrays and used to store data in several domains, e.g., data mining, neuroscience, scientific simulations and computer vision. Tensor decompositions help to identify inherent structure of data, achieve data compression and enable various ways of data analysis. The computational and memory requirements of tensor operations grow exponentially with the number of dimensions. It is paramount to devise parallel tensor decomposition algorithms which make effective utilization of the modern computing systems. The principal challenges are data transfer costs of tensor operations and limited parallelism exposed by most existing algorithms. This project aims at solving these challenges and proposing new decomposition algorithms which scale well on current and future computing systems. Finally, the proposed algorithms will be implemented for large scale distributed systems and evaluated on several real-world tensors.}
 	
