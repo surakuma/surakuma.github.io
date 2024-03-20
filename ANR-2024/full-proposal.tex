@@ -501,7 +501,13 @@ colorlinks]{hyperref}
 	
 	
 	
-	\subsubsection*{Parallelization strategy}
+	\subsubsection*{Strategy for parallel implementation}
+	In the beginning, we plan to implement our parallel algorithms using MPI. All the communications of this implementation would be performed with collectives. This is a simple and popular strategy to minimize communication for many linear algebra kernels on homogeneous systems~\cite{ABK-IPDPS-2016,BKK-TOMS-2020}.
+	
+	
+	\todo{Clarify how much is expected from the postdoc here.}
+	As MPI collectives are based on global synchronization, they may not make effective utilizations of all the resources. Therefore, later in the project, while working with heterogeneous resources, we will express our parallel algorithms in task-based structure . This will enable us to run them efficiently with popular  runtime systems such as StarPU on modern computing platforms.
+	  
 	
 	
 	\subsubsection*{Extending our framework for heterogeneous systems}
