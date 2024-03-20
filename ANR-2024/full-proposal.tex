@@ -177,7 +177,7 @@ colorlinks]{hyperref}
 		%%        {\LARGE \sc to enhance Low-Rank Compression}\\
 		{\large \sc Décompositions de tenseurs évolutives pour l'analyse de données}\\[0.2cm]
 		{\normalsize CES46 $>$ Axe E.05 $>$ Modèles numériques, simulation, applications}\\
-		{\normalsize AAPG 2024 / JCJC 48 months/ Budget 296 689 \euro}
+		{\normalsize AAPG 2024 / JCJC 48 months/ Budget 298 387 \euro}
 		%%		{\normalsize AAPG 2023 / JCJC 48 months / Budget 283K\euro\bora{no need for budget here}}
 		\vspace*{0.2\baselineskip}
 	\end{mdframed}
@@ -488,9 +488,9 @@ colorlinks]{hyperref}
 	\subsubsection{Challenges and our approaches to tackle them}
 	We need to tackle the following challenges in order to take benefits of both all at once and sequential approaches.
 	\begin{itemize}
-		\item Determine communication costs for all possible ways to perform Multi-TTM and MTTKRP  computations
+		\item Analyze communication costs for all possible ways to perform Multi-TTM and MTTKRP  computations
 		\item Investigate tradeoff among amount of operations, communications and data reuse for both computations
-		\item Design parallel algorithms for both computations
+		\item Design communication optimal parallel algorithms for both computations
 %		\item Design and implement parallel HOSVD and CP-ALS methods and test on various datasets
 %		\item Analytically determine  arrangement of logical processor grid for better performance
 	\end{itemize}
@@ -501,7 +501,7 @@ colorlinks]{hyperref}
 	
 	As mentioned in the previous section, Multi-TTM and MMTKRP are  the bottleneck computations of HOSVD and CP-ALS methods, respectively. After performing detailed study of Multi-TTM and MTTKRP, we will design parallel algorithms such that the overall completion times of HOSVD and CP-ALS are minimal. We will implement our algorithms for homogeneous systems and test them on various datasets. 
 	
-	In Figures~\ref{fig:compAllatonceInseq} and \ref{fig:compCombinedAllatonceseq}, we used exhaustive search to determine the arrangement of processors that minimizes the cost of each approach. In order to avoid exhaustive search, we plan to determine processor grid dimensions analytically based on the components of communication lower bounds. To achieve this, we will equate communication cost expression of each matrix/tensor with their corresponding lower bounds and slove them such that all (or most of ) the constraints are satisfied.
+	In Figures~\ref{fig:compAllatonceInseq} and \ref{fig:compCombinedAllatonceseq}, we used exhaustive search to determine the arrangement of processors that minimizes the cost of each approach. In order to avoid exhaustive search, we plan to determine processor grid dimensions analytically based on the components of communication lower bounds. To achieve this, we will equate communication cost expression of each matrix/tensor with their corresponding lower bounds and slove them such that all (or most of) the constraints are satisfied.
 	
 %	
 %	Similar to Multi-TTM, we will study all possible ways to perform $3$ and $4$-dimensional MTTKRP computations. After that, we will generalize our finding and create a dynamic programming based approach to determine how to perform this computation. The amount of operations in the MTTKRP computation also depends on how factor matrices are operated with the original tensor. We will study communication-computation tradeoff for MTTKRP. We can note that the intermediate Khatri-Rao products may be used between different iterations in Algorithm~\ref{alg:canonicalals}. With 4-dimensional tensors, MTTKRP corresponding to both 1st and 2nd iterations need $\Mn{A}{4}\odot\Mn{A}{3}$. If we store this result in the 1st iteration then it can be reused in the 2nd one. Therefore, at last our goal is to study tradeoff among communications, computations and reuse of intermediate results for a single iteration (Lines~\ref{method:canonical:oneiter:start}--\ref{method:canonical:oneiter:end}) of CP-ALS method and devise an algorithm which achieves the optimal completion time. We will implement our algorithms for homogeneous systems and test them on various datasets.
@@ -514,103 +514,11 @@ colorlinks]{hyperref}
 	
 	\todo{Clarify how much is expected from the postdoc here.}
 	
-	As MPI collectives are based on global synchronization, they may not make effective utilizations of all the resources. Therefore, later in the project, while working with heterogeneous resources, we will express our parallel algorithms in task-based structure . This will enable us to run them efficiently with popular  runtime systems such as StarPU~\cite{ATNW-CCPE-2011} on modern computing platforms.
+	As MPI collectives are based on global synchronization, they may not make effective utilization of all the resources. Therefore, later in the project, while working with heterogeneous resources (see Section~\ref{sec:heterogeneoussystem}), we will design our parallel algorithms in task-based structure. This will enable one to run them efficiently with popular runtime systems such as StarPU~\cite{ATNW-CCPE-2011} on modern computing platforms.
 	  
 	
 	
-	\subsubsection*{Extending our framework for heterogeneous systems}
-	In the beginning of this project, we will mainly focus on designing optimal algorithms for homogeneous systems. After that, we plan to extend our framework for heterogeneous systems with CPUs and GPUs. We will mainly consider the following three types of systems:
-	
-	\begin{figure}[htb]
-		\begin{center}
-			\subfigure[A single node with one CPU and one GPU.\label{system:onecpugpu}]
-			{\begin{tikzpicture}[scale=0.7, every node/.style={transform shape}]
-					\tikzstyle{cpunode}=[draw=black, minimum height=16mm, minimum width=16mm, fill=none, text=black, below]
-					\tikzstyle{gpunode}=[draw=black, minimum height=12mm, minimum width=12mm, fill=none, text=black]
-					
-					\tikzstyle{memorynode}=[draw=black, minimum height=4mm, minimum width=4mm, fill=none, text=black]
-					
-					\node (t0) at (0,0) [cpunode] {$CPU$}; 
-					\node (t1) at (0,-4) [gpunode] {};
-					
-					\node (t1G) at (t1.mid) [below] {$GPU$};
-					\node (td0)  at (t0.mid) [below=0.275cm,memorynode,scale=0.6] {$Memory$};
-					\node (td1)  at (t1.north) [below=0.15cm,memorynode,scale=0.5] {$Memory$};
-					\draw [<->, line width=1.5, orange] (td0) -- (td1);
-					\path (-2.25,0) -- (2.08,0);
-			\end{tikzpicture}}$\quad$
-			\subfigure[A single node with one CPU and multiple GPUs.\label{system:onecpumultiplegpus}]
-			{\begin{tikzpicture}[scale=0.7, every node/.style={transform shape}]
-					\tikzstyle{cpunode}=[draw=black, minimum height=16mm, minimum width=16mm, fill=none, text=black, below]
-					\tikzstyle{gpunode}=[draw=black, minimum height=12mm, minimum width=12mm, fill=none, text=black]
-					
-					\tikzstyle{memorynode}=[draw=black, minimum height=4mm, minimum width=4mm, fill=none, text=black]
-					
-					
-					
-					\node (t0) at (0,0) [cpunode] {$CPU$}; 
-					\node (t1) at (-2,-4) [gpunode] {};
-					\node (t2) at (2,-4) [gpunode] {};
-					
-					\node (t1G) at (t1.mid) [below] {$GPU$};
-					\node (t2G) at (t2.mid) [below] {$GPU$};
-					
-					\node (td0)  at (t0.mid) [below=0.275cm,memorynode,scale=0.6] {$Memory$};
-					\node (td1)  at (t1.north) [below=0.15cm,memorynode,scale=0.5] {$Memory$};
-					\node (td2)  at (t2.north) [below=0.15cm,memorynode,scale=0.5] {$Memory$};
-					
-					\draw [<->, line width=1.5, red] (td1) -- (td2);
-					\draw [<->, line width=1.5, orange] (td0) -- (td1);
-					\draw [<->, line width=1.5, orange] (td0) -- (td2);
-					
-			\end{tikzpicture}}$\qquad$
-			\subfigure[Multiple nodes where each node has one CPU and atleast one GPU.\label{system:gen}]
-			{\begin{tikzpicture}[scale=0.7, every node/.style={transform shape}]
-					\tikzstyle{cpunode}=[draw=black, minimum height=16mm, minimum width=16mm, fill=none, text=black, below]
-					\tikzstyle{gpunode}=[draw=black, minimum height=12mm, minimum width=12mm, fill=none, text=black]
-					
-					\tikzstyle{memorynode}=[draw=black, minimum height=4mm, minimum width=4mm, fill=none, text=black]
-					
-					
-					
-					\node (t0) at (0,0) [cpunode] {$CPU$}; 
-					\node (t1) at (-2,-4) [gpunode] {};
-					\node (t2) at (2,-4) [gpunode] {};
-					
-					\node (t1G) at (t1.mid) [below] {$GPU$};
-					\node (t2G) at (t2.mid) [below] {$GPU$};
-					
-					\node (td0)  at (t0.mid) [below=0.275cm,memorynode,scale=0.6] {$Memory$};
-					\node (td1)  at (t1.north) [below=0.15cm,memorynode,scale=0.5] {$Memory$};
-					\node (td2)  at (t2.north) [below=0.15cm,memorynode,scale=0.5] {$Memory$};
-					
-					\draw [<->, line width=1.5, red] (td1) -- (td2);
-					\draw [<->, line width=1.5, orange] (td0) -- (td1);
-					\draw [<->, line width=1.5, orange] (td0) -- (td2);
-					
-					
-					\node (t20) at (6,0) [cpunode] {$CPU$};
-					\node (t21) at (4,-4) [gpunode] {};
-					\node (t22) at (8,-4) [gpunode] {}; 
-					
-					\node (t21G) at (t21.mid) [below] {$GPU$};
-					\node (t22G) at (t22.mid) [below] {$GPU$};
-					
-					\node (td20)  at (t20.mid) [below=0.275cm,memorynode,scale=0.6] {$Memory$};
-					\node (td21)  at (t21.north) [below=0.15cm,memorynode,scale=0.5] {$Memory$};
-					\node (td22)  at (t22.north) [below=0.15cm,memorynode,scale=0.5] {$Memory$};
-					\draw [<->, line width=1.5, purple] (td0) -- (td20);
-					
-					\draw [<->, line width=1.5, red] (td21) -- (td22);
-					\draw [<->, line width=1.5, orange] (td20) -- (td21);
-					\draw [<->, line width=1.5, orange] (td20) -- (td22);
-			\end{tikzpicture}}
-			\caption{Different types of heterogeneous systems.\label{fig:heterogeneousSystems}}
-		\end{center}		
-	\end{figure}
-	
-	Usually there are many processing units attached to a particular memory module. However to simplify the model, we view them as a single big computing unit.
-	The project will first study different metrics to express the communication and complete costs on the above types of systems. After that we will focus on the first type of system. We will study tradeoff among computations, communications and data reuse for both tensor decompositions and design algorithms which achieve optimal completion times. Next, we will expand our framework for the other two types of heterogeneous systems. Implementation of the proposed algorithms for heterogeneous systems is out of scope of this project. We will submit another proposal to hire an engineer for that work. 
+	 
 	
 	\subsection{Tensor decompositions on heterogeneous systems}
 	\label{sec:heterogeneous}
@@ -620,6 +528,100 @@ colorlinks]{hyperref}
 	There is limited work on performing dense tensor decompositions on heterogeneous systems. Choi et al.~\cite{CLC-SC-2018} implemented the dense Tucker decomposition method on GPUs and achieved significant speedup over CPU-only implementations. Bin et al.~\cite{BKL-SENSORS-2020} proposed a GPU based framework to accelerate tensor decompositions for image sensor data. Li et al.~\cite{li2020atucker} proposed a framework to handle diversities of the input tensors for Tucker decomposition on CPUs and GPUs and showed that it outperforms the existing approaches. These works implemented the existing algorithms for GPUs and applied different types of optimizations to improve the performance. Their approaches perform well for the considered tensors, however they lack provable guarantees for communication/computation/overall costs. The SCATE project addresses this concern.
 	
 		
+	\subsection{Extending our framework for heterogeneous systems}
+	\label{sec:heterogeneoussystem}
+	In the beginning of this project, we will mainly focus on designing optimal algorithms for homogeneous systems. After that, we plan to extend our framework for heterogeneous systems with CPUs and GPUs. We will mainly consider the following three types of systems:
+	
+	\begin{figure}[htb]
+		\begin{center}
+			\subfigure[A single node with one CPU and one GPU.\label{system:onecpugpu}]
+			{\begin{tikzpicture}[scale=0.7, every node/.style={transform shape}]
+				\tikzstyle{cpunode}=[draw=black, minimum height=16mm, minimum width=16mm, fill=none, text=black, below]
+				\tikzstyle{gpunode}=[draw=black, minimum height=12mm, minimum width=12mm, fill=none, text=black]
+				
+				\tikzstyle{memorynode}=[draw=black, minimum height=4mm, minimum width=4mm, fill=none, text=black]
+				
+				\node (t0) at (0,0) [cpunode] {$CPU$}; 
+				\node (t1) at (0,-4) [gpunode] {};
+				
+				\node (t1G) at (t1.mid) [below] {$GPU$};
+				\node (td0)  at (t0.mid) [below=0.275cm,memorynode,scale=0.6] {$Memory$};
+				\node (td1)  at (t1.north) [below=0.15cm,memorynode,scale=0.5] {$Memory$};
+				\draw [<->, line width=1.5, orange] (td0) -- (td1);
+				\path (-2.25,0) -- (2.08,0);
+				\end{tikzpicture}}$\quad$
+			\subfigure[A single node with one CPU and multiple GPUs.\label{system:onecpumultiplegpus}]
+			{\begin{tikzpicture}[scale=0.7, every node/.style={transform shape}]
+				\tikzstyle{cpunode}=[draw=black, minimum height=16mm, minimum width=16mm, fill=none, text=black, below]
+				\tikzstyle{gpunode}=[draw=black, minimum height=12mm, minimum width=12mm, fill=none, text=black]
+				
+				\tikzstyle{memorynode}=[draw=black, minimum height=4mm, minimum width=4mm, fill=none, text=black]
+				
+				
+				
+				\node (t0) at (0,0) [cpunode] {$CPU$}; 
+				\node (t1) at (-2,-4) [gpunode] {};
+				\node (t2) at (2,-4) [gpunode] {};
+				
+				\node (t1G) at (t1.mid) [below] {$GPU$};
+				\node (t2G) at (t2.mid) [below] {$GPU$};
+				
+				\node (td0)  at (t0.mid) [below=0.275cm,memorynode,scale=0.6] {$Memory$};
+				\node (td1)  at (t1.north) [below=0.15cm,memorynode,scale=0.5] {$Memory$};
+				\node (td2)  at (t2.north) [below=0.15cm,memorynode,scale=0.5] {$Memory$};
+				
+				\draw [<->, line width=1.5, red] (td1) -- (td2);
+				\draw [<->, line width=1.5, orange] (td0) -- (td1);
+				\draw [<->, line width=1.5, orange] (td0) -- (td2);
+				
+				\end{tikzpicture}}$\qquad$
+			\subfigure[Multiple nodes where each node has one CPU and atleast one GPU.\label{system:gen}]
+			{\begin{tikzpicture}[scale=0.7, every node/.style={transform shape}]
+				\tikzstyle{cpunode}=[draw=black, minimum height=16mm, minimum width=16mm, fill=none, text=black, below]
+				\tikzstyle{gpunode}=[draw=black, minimum height=12mm, minimum width=12mm, fill=none, text=black]
+				
+				\tikzstyle{memorynode}=[draw=black, minimum height=4mm, minimum width=4mm, fill=none, text=black]
+				
+				
+				
+				\node (t0) at (0,0) [cpunode] {$CPU$}; 
+				\node (t1) at (-2,-4) [gpunode] {};
+				\node (t2) at (2,-4) [gpunode] {};
+				
+				\node (t1G) at (t1.mid) [below] {$GPU$};
+				\node (t2G) at (t2.mid) [below] {$GPU$};
+				
+				\node (td0)  at (t0.mid) [below=0.275cm,memorynode,scale=0.6] {$Memory$};
+				\node (td1)  at (t1.north) [below=0.15cm,memorynode,scale=0.5] {$Memory$};
+				\node (td2)  at (t2.north) [below=0.15cm,memorynode,scale=0.5] {$Memory$};
+				
+				\draw [<->, line width=1.5, red] (td1) -- (td2);
+				\draw [<->, line width=1.5, orange] (td0) -- (td1);
+				\draw [<->, line width=1.5, orange] (td0) -- (td2);
+				
+				
+				\node (t20) at (6,0) [cpunode] {$CPU$};
+				\node (t21) at (4,-4) [gpunode] {};
+				\node (t22) at (8,-4) [gpunode] {}; 
+				
+				\node (t21G) at (t21.mid) [below] {$GPU$};
+				\node (t22G) at (t22.mid) [below] {$GPU$};
+				
+				\node (td20)  at (t20.mid) [below=0.275cm,memorynode,scale=0.6] {$Memory$};
+				\node (td21)  at (t21.north) [below=0.15cm,memorynode,scale=0.5] {$Memory$};
+				\node (td22)  at (t22.north) [below=0.15cm,memorynode,scale=0.5] {$Memory$};
+				\draw [<->, line width=1.5, purple] (td0) -- (td20);
+				
+				\draw [<->, line width=1.5, red] (td21) -- (td22);
+				\draw [<->, line width=1.5, orange] (td20) -- (td21);
+				\draw [<->, line width=1.5, orange] (td20) -- (td22);
+				\end{tikzpicture}}
+			\caption{Different types of heterogeneous systems.\label{fig:heterogeneousSystems}}
+		\end{center}		
+	\end{figure}
+	
+	Usually there are many processing units attached to a particular memory module. However to simplify the model, we view them as a single big computing unit.
+	The project will first study different metrics to express the communication and complete costs on the above types of systems. After that we will focus on the first type of system. We will study tradeoff among computations, communications and data reuse for both tensor decompositions and design algorithms which achieve optimal completion times. Next, we will expand our framework for the other two types of heterogeneous systems. Implementation of the proposed algorithms for heterogeneous systems is out of scope of this project. We will submit another proposal to hire an engineer for that work.
 	
 	\subsection{Objectives}
 	\label{sec:context:obj}
