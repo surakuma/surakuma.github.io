@@ -432,9 +432,10 @@ colorlinks]{hyperref}
 	Another state-of-the-art approach to compute a CP decomposition is based on gradients. MTTKRP is also the bottleneck computation for this approach. Hence, improving the performance of MTTKRP will also accelerate gradient-based approach to compute the decomposition.
 	
 	
-	\subsection{Technical challenges in combining all at once and sequence approaches}
-	\label{sec:challenges}
+%	\subsection{Technical challenges in combining all at once and sequence approaches}
+%	\label{sec:challenges}
 	\subsection{Combining all at once and sequence approaches}
+	\label{sec:combinedapproach}
 	As mentioned in the previous subsection, neither approach is better than the other for Multi-TTM with all inputs in terms of communication costs.  It advocates to combine both approaches. There are many ways to perform Multi-TTM computation.  We present some of them below for  3-dimensional cubic input and output tensors.	 
 	
 	\begin{align*}
@@ -451,7 +452,7 @@ colorlinks]{hyperref}
 	A preliminary study by the PI shows that a combined approach reduces communication compared to the original ones for some inputs (see Figure~\ref{fig:compCombinedAllatonceseq}). It validates our intuitions and boosts our goal to analyze all possible ways to perform  Multi-TTM computations.
 
 
-~ 
+
 \begin{figure}[htb]
 	%		\begin{center}
 		%%			\includegraphics[scale=0.215]{./plots/all-at-once-seq-label.png}
@@ -471,8 +472,8 @@ colorlinks]{hyperref}
 	
 %	We will model both communication and computation costs for the Multi-TTM and devise new parallel algorithms such that the overall completion time is minimal. 
 	
-	
-	Similar to Multi-TTM, we will study all possible ways to perform $3$ and $4$-dimensional MTTKRP computations. After that, we will generalize our finding and create a dynamic programming based approach to determine how to perform this computation. T
+%	
+%	Similar to Multi-TTM, we will study all possible ways to perform $3$ and $4$-dimensional MTTKRP computations. After that, we will generalize our finding and create a dynamic programming based approach to determine how to perform this computation. T
 	
 	Similar to Multi-TTM, the communication and computation costs of  MTTKRP  depend on how factor matrices are operated with the original tensor. Therefore it is also important to study communication-computation tradeoff for MTTKRP. We can note that the intermediate Khatri-Rao products may be used between different iterations in Algorithm~\ref{alg:canonicalals}. With 4-dimensional tensors, MTTKRP corresponding to both 1st and 2nd iterations need $\Mn{A}{4}\odot\Mn{A}{3}$. If we store this result in the 1st iteration then it can be reused in the 2nd one. Therefore, it is essential to study tradeoff among communications, computations and reuse of intermediate results for a single iteration (Lines~\ref{method:canonical:oneiter:start}--\ref{method:canonical:oneiter:end}) of CP-ALS method.
 	
@@ -494,7 +495,7 @@ colorlinks]{hyperref}
 	
 	As mentioned in the previous section, Multi-TTM and MMTKRP are  the bottleneck computations of HOSVD and CP-ALS methods, respectively. After performing detailed study of Multi-TTM and MTTKRP, we will design parallel algorithms such that the overall completion times of HOSVD and CP-ALS are minimal. We will implement our algorithms for homogeneous systems and test them on various datasets. 
 	
-	In Figures~\ref{fig:compAllatonceInseq} and \ref{fig:compCombinedAllatonceseq}, we use exhaustive search to determine the arrangement of processors that minimizes the cost of each approach. In order to avoid exhaustive search, we plan to determine processor grid dimensions analytically based on the components of communication lower bounds. To achieve this, we will equate communication cost expression of each matrix/tensor with their corresponding lower bounds and slove them such that all (or most of ) the constraints are satisfied.
+	In Figures~\ref{fig:compAllatonceInseq} and \ref{fig:compCombinedAllatonceseq}, we used exhaustive search to determine the arrangement of processors that minimizes the cost of each approach. In order to avoid exhaustive search, we plan to determine processor grid dimensions analytically based on the components of communication lower bounds. To achieve this, we will equate communication cost expression of each matrix/tensor with their corresponding lower bounds and slove them such that all (or most of ) the constraints are satisfied.
 	
 %	
 %	Similar to Multi-TTM, we will study all possible ways to perform $3$ and $4$-dimensional MTTKRP computations. After that, we will generalize our finding and create a dynamic programming based approach to determine how to perform this computation. The amount of operations in the MTTKRP computation also depends on how factor matrices are operated with the original tensor. We will study communication-computation tradeoff for MTTKRP. We can note that the intermediate Khatri-Rao products may be used between different iterations in Algorithm~\ref{alg:canonicalals}. With 4-dimensional tensors, MTTKRP corresponding to both 1st and 2nd iterations need $\Mn{A}{4}\odot\Mn{A}{3}$. If we store this result in the 1st iteration then it can be reused in the 2nd one. Therefore, at last our goal is to study tradeoff among communications, computations and reuse of intermediate results for a single iteration (Lines~\ref{method:canonical:oneiter:start}--\ref{method:canonical:oneiter:end}) of CP-ALS method and devise an algorithm which achieves the optimal completion time. We will implement our algorithms for homogeneous systems and test them on various datasets.
@@ -506,7 +507,8 @@ colorlinks]{hyperref}
 	
 	
 	\todo{Clarify how much is expected from the postdoc here.}
-	As MPI collectives are based on global synchronization, they may not make effective utilizations of all the resources. Therefore, later in the project, while working with heterogeneous resources, we will express our parallel algorithms in task-based structure . This will enable us to run them efficiently with popular  runtime systems such as StarPU on modern computing platforms.
+	
+	As MPI collectives are based on global synchronization, they may not make effective utilizations of all the resources. Therefore, later in the project, while working with heterogeneous resources, we will express our parallel algorithms in task-based structure . This will enable us to run them efficiently with popular  runtime systems such as StarPU~\cite{ATNW-CCPE-2011} on modern computing platforms.
 	  
 	
 	
@@ -766,7 +768,7 @@ colorlinks]{hyperref}
 		\end{tabular}
 	\end{table}
 	
-	\newpage
+%	\newpage
 	\subtask{Subtask A1.1: Multi-TTM minimum communication costs}
 	\begin{description}
 		\item[] \goal To obtain communication lower bounds for Multi-TTM.
@@ -1197,23 +1199,23 @@ colorlinks]{hyperref}
 				\toprule
 				\multicolumn{1}{l}{}&& Inria Lyon \\\midrule
 				\multirow{3}{3.8cm}{Staff expenses}  & PhD student &   120k\euro \\\cline{2-3}
-				& Postdoctoral researcher  &100.8k\euro \\ \cline{2-3}
+				& Postdoctoral researcher  &100k\euro \\ \cline{2-3}
 				& 2 Research interns  & 6.6k\euro \\\hline
 				\multicolumn{2}{p{7cm}}{Inward billing (2 laptops)}    &    5k\euro \\\hline
 				\multirow{3}{3.8cm}{General and administrative costs \& other
 					operating expenses}  & Travel costs (international and local missions)  &  26.5k\euro \\\cline{2-3}
 				& Partial cost to organize a workshop  &  2.5k\euro \\\cline{2-3}
 				& Administrative management and\newline
-				structure costs& 35 289\euro \\\midrule
-				\multicolumn{2}{l}{\bf Requested} &\multicolumn{1}{r}{296 689\euro} \\
+				structure costs& 37 787\euro \\\midrule
+				\multicolumn{2}{l}{\bf Requested} &\multicolumn{1}{r}{298 387\euro} \\
 				\bottomrule
 			\end{tabular}
 		\end{center}
 		\caption{Estimated cost of the project.}
 		\label{tab:costs}
 	\end{table}
-%%	\sk{The actual cost is 296,689\euro. Is it ok to mention 296.7k\euro?}
-	%%\sk{Verify the overall cost in the end.}
+
+
 	\subsubsection*{Costs not supported by ANR proposal}
 	\paragraph{Experimental resources} We will initially use the machines available at ENS Lyon for our experiments. We also plan to ask compute-hours on GENCI to test scalability of our proposed algorithms.
 	
@@ -1224,7 +1226,7 @@ colorlinks]{hyperref}
 	
 	\paragraph{Additional visits and workshop} We will look for additional funding from Inria/CNRS for a three month scientific visit for the PhD student to launch new collaborations (for instance around the Cyclops~\cite{SMHD-IPDPS-2013}/TuckerMPI~\cite{BKK-TOMS-2020}/Deinsum~\cite{ZKBSH-SC-2022} library team) and to broaden his future perspectives. We will also seek additional funding to organize another workshop at the end of Year 4.
 	
-	\paragraph{Hiring of an engineer} This project (\textbf{Task B}) will develop provable algorithms for heterogeneous systems. We will submit another proposal to hire an engineer who will work on the implementation of these algorithms.
+	\paragraph{Hiring of an engineer} This project (\textbf{Task B}) will develop provable algorithms for heterogeneous systems. We will submit another proposal to hire an engineer who will work on the implementation of these algorithms. The engineer will also work on combining our and TuckerMPI softwares (and other popular ones provided we manage to get good support from their contributors) in a unified framework.
 	
 %%	• Project contribution to the coordinator’s empowerment and team development
 %%Demonstrate the project contribution to the young researcher’s empowerment and team development.sec:org:growth
@@ -1262,6 +1264,7 @@ colorlinks]{hyperref}
 	We expect to publish the obtained results in major scientific conferences (SC, IPDPS, SPAA, EuroPar) and journals (SIMAX, SISC, TOMS, TPDS). Preliminary results such as implementation prototypes, simulation results of cost models will be presented in poster sessions and demos co-located with major scientific conferences. SIAM conferences and workshops are very valuable events and most of them are without published proceeding. We also plan to present our work there. The algorithms that will be developed in this project will be freely available. We will publish the code under a free license. We will provide documentation and keep it up-to-date. This will create opportunities for outside people to use our code and engage with us.
 	
 	The PI offers  \emph{Data-aware algorithms for matrix and tensor computations} course for the 2nd year master students at ENS Lyon. He also plans to offer a course on multi-dimensional data analysis. All materials of these courses will be available on the PI's personal webpage.
+	
 	
 %%	The lectures of this course will be recorded and will be available on the PI's personal webpage.
 
