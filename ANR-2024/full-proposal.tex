@@ -405,7 +405,7 @@ colorlinks]{hyperref}
 	
 	
 	
-	Sequentially truncated HOSVD is another popular method to compute Tucker decomposition~\cite{VVM-SIAM-2012}. After each SVD computation, it performs a single TTM and work on the reduce data for the next SVD computation. Therefore, it performs less computations than the original HOSVD. However when the computational costs of the matrix SVDs are reduced using randomization, costs for both methods are dominated by the Multi-TTM computation. HOSVD is well suited for parallelization as different SVDs can be computed in parallel. It also provides flexibility in the computation of Multi-TTM (see Section˜\ref{sec:methodology}). Therefore, we focus on this method to compute Tucker decomposition in the proposal.		
+	Sequentially truncated HOSVD is another popular method to compute Tucker decomposition~\cite{VVM-SIAM-2012}. After each SVD computation, it performs a single TTM and work on the reduce data for the next SVD computation. Therefore, it performs less computations than the original HOSVD. However when the computational costs of the matrix SVDs are reduced using randomization, costs for both methods are dominated by the Multi-TTM computation. HOSVD is well suited for parallelization as different SVDs can be computed in parallel. It also provides flexibility in the computation of Multi-TTM (see Section~\ref{	sec:combinedapproach}). Therefore, we focus on this method to compute Tucker decomposition in the proposal.		
 	
 	\subsection{State of the art approaches for CP decomposition}
 	\label{sec:context:soa:Canonical}
@@ -459,13 +459,11 @@ colorlinks]{hyperref}
 
 
 
+\sk{insert a good label name for the presented combined approach.}
 \begin{figure}[htb]
-	%		\begin{center}
-		%%			\includegraphics[scale=0.215]{./plots/all-at-once-seq-label.png}
-		%		\end{center}
 	\begin{center}
 		\includegraphics[width=0.45\linewidth]{./plots/AAO-vs-Seq-logscale-comparison-with-coup.eps}
-		\caption{Comparison of all at once and sequence approaches with a combined approach for the second example of Figure~\ref{fig:compAllatonceInseq}. Here in the combined approach,  all at once approach is applied with first two matrices and then a single TTM is performed with the intermediate  result and the last matrix, $\Y = \seqstart\allatoncestart\X \times_1 {\Mn{A}{1}}^\Tra \times_2 {\Mn{A}{2}}^\Tra\allatonceend \times_3 {\Mn{A}{3}}^\Tra\seqend$. \label{fig:compCombinedAllatonceseq}}
+		\caption{Comparison of all at once and sequence approaches with a combined approach for the second example of Figure~\ref{fig:compAllatonceInseq}. Input and output tensor dimensions are $13\times13\times13$ and $6\times6\times6$, respectively. Here in the combined approach,  all at once approach is applied with first two matrices and then a single TTM is performed with the intermediate  result and the last matrix, $\Y = \seqstart\allatoncestart\X \times_1 {\Mn{A}{1}}^\Tra \times_2 {\Mn{A}{2}}^\Tra\allatonceend \times_3 {\Mn{A}{3}}^\Tra\seqend$. \label{fig:compCombinedAllatonceseq}}
 	\end{center}		
 \end{figure}
 	
@@ -486,7 +484,11 @@ colorlinks]{hyperref}
 	
 	
 	\subsubsection{Challenges and our approaches to tackle them}
-	We need to tackle the following challenges in order to take benefits of both all at once and sequential approaches.
+	
+	As mentioned earlier, the amount of computations and communications for Multi-TTM and MTTKRP  depend on how we perform them. If we do not select it carefully, they may be very far from optimal completion times. Even when we decide how we want to perform the computations,  using one approach after the other in a straightforward way will only work if data distributions of inputs and temporaries between both approaches are compatible. However we can not expect any guarantee with respect to the optimal communication/computation cost.  Considering optimal data distributions for only one approach may induce significant data movements  for the other approach. Using optimal data distributions for both approaches may not be compatible or require significant data movement during the transition of the approach. Therefore, in order to take benefits of both all at once and sequential approaches, it is important to theoretical study all possible ways to combine them in detail. More precisely, we need to perform the following tasks to design a efficient combined approach.
+	
+	
+%	We need to tackle the following challenges in order to take benefits of both all at once and sequential approaches.
 	\begin{itemize}
 		\item Analyze communication costs for all possible ways to perform Multi-TTM and MTTKRP  computations
 		\item Investigate tradeoff among amount of operations, communications and data reuse for both computations
@@ -499,7 +501,7 @@ colorlinks]{hyperref}
 	We will study all possible ways to perform $3$ and $4$-dimensional Multi-TTM and MTTKRP computations in detail as the number of ways are limited. After that, we will generalize our findings and create a dynamic programming based approach to determine how to perform $d$-dimensional Multi-TTM and MTTKRP computations.
 	
 	
-	As mentioned in the previous section, Multi-TTM and MMTKRP are  the bottleneck computations of HOSVD and CP-ALS methods, respectively. After performing detailed study of Multi-TTM and MTTKRP, we will design parallel algorithms such that the overall completion times of HOSVD and CP-ALS are minimal. We will implement our algorithms for homogeneous systems and test them on various datasets. 
+	As mentioned in the previous section, Multi-TTM and MTTKRP are  the bottleneck computations of HOSVD and CP-ALS methods, respectively. After performing detailed study of Multi-TTM and MTTKRP, we will design parallel algorithms such that the overall completion times of HOSVD and CP-ALS are minimal. We will implement our algorithms for homogeneous systems and test them on various datasets. 
 	
 	In Figures~\ref{fig:compAllatonceInseq} and \ref{fig:compCombinedAllatonceseq}, we used exhaustive search to determine the arrangement of processors that minimizes the cost of each approach. In order to avoid exhaustive search, we plan to determine processor grid dimensions analytically based on the components of communication lower bounds. To achieve this, we will equate communication cost expression of each matrix/tensor with their corresponding lower bounds and slove them such that all (or most of) the constraints are satisfied.
 	
