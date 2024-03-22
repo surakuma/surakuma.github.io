@@ -427,7 +427,7 @@ colorlinks]{hyperref}
 			\end{algorithmic}
 	}\end{algorithm}
 	
-	In Line~\ref{alg:canonicalals:mttkrp}, the matricized tensor is multiplied with the Khatri-Rao product and this collective operation is known as the matricized-tensor times Khatri-Rao products (MTTKRP) computation~\cite{LCPSV-IPDPS-2017}. This is the bottleneck computation of the CP-ALS method.
+	In Line~\ref{alg:canonicalals:mttkrp}, the matricized tensor is multiplied with the Khatri-Rao product and this collective operation is known as the matricized-tensor times Khatri-Rao products (MTTKRP) computation~\cite{LCPSV-IPDPS-2017}. This is the bottleneck computation of the CP-ALS method~\cite{BNR-IPDPS-2018,LCPSV-IPDPS-2017}.
 	
 	A popular choice to compute MTTKRP is to first calculate the explicit Khatri-Rao products and then apply the matricized tensor in a single matrix multiplication~\cite{BK-SIAM-2008}. Another approach is to work with all the inputs at once without forming an intermediate: 
 	$$\Mn{A}{j}_{lr} = \sum_{i_1,\cdots,i_{j-1},i_{j+1},\cdots i_d}\X_{i_1,\cdots,i_{j-1},l,i_{j+1},\cdots i_d}\prod_{k\in{\{1,\cdots,j-1,j+1,\cdots,d\}}}\Mn{A}{k}_{i_k r}.$$
@@ -459,9 +459,13 @@ colorlinks]{hyperref}
 
 
 
-\sk{insert a good label name for the presented combined approach.}
+%\sk{insert a good label name for the presented combined approach.}
+
 \begin{figure}[htb]
 	\begin{center}
+		\includegraphics[scale=0.12]{./plots/all-at-once-seq-combined-label.png}
+	\end{center}
+	\vspace*{-1cm}\begin{center}
 		\includegraphics[width=0.45\linewidth]{./plots/AAO-vs-Seq-logscale-comparison-with-coup.eps}
 		\caption{Comparison of all at once and sequence approaches with a combined approach for the second example of Figure~\ref{fig:compAllatonceInseq}. Input and output tensor dimensions are $13\times13\times13$ and $6\times6\times6$, respectively. Here in the combined approach,  all at once approach is applied with first two matrices and then a single TTM is performed with the intermediate  result and the last matrix, $\Y = \seqstart\allatoncestart\X \times_1 {\Mn{A}{1}}^\Tra \times_2 {\Mn{A}{2}}^\Tra\allatonceend \times_3 {\Mn{A}{3}}^\Tra\seqend$. \label{fig:compCombinedAllatonceseq}}
 	\end{center}		
@@ -485,14 +489,14 @@ colorlinks]{hyperref}
 	
 	\subsubsection{Challenges and our approaches to tackle them}
 	
-	As mentioned earlier, the amount of computations and communications for Multi-TTM and MTTKRP  depend on how we perform them. If we do not select it carefully, they may be very far from optimal completion times. Even when we decide how we want to perform the computations,  using one approach after the other in a straightforward way will only work if data distributions of inputs and temporaries between both approaches are compatible. However we can not expect any guarantee with respect to the optimal communication/computation cost.  Considering optimal data distributions for only one approach may induce significant data movements  for the other approach. Using optimal data distributions for both approaches may not be compatible or require significant data movement during the transition of the approach. Therefore, in order to take benefits of both all at once and sequential approaches, it is important to theoretical study all possible ways to combine them in detail. More precisely, we need to perform the following tasks to design a efficient combined approach.
+	As mentioned earlier, the amount of computations and communications for Multi-TTM and MTTKRP  depend on how we perform them. If we do not select it carefully, they may be very far from optimal completion times. Even when we decide how we want to perform the computations,  using one approach after the other in a straightforward way will only work if data distributions of inputs and temporaries between both approaches are compatible. However we can not expect any guarantee with respect to the optimal communication/computation cost.  Considering optimal data distributions for only one approach may induce significant data movements  for the other approach. Using optimal data distributions for both approaches may not be compatible or require significant data movement during the transition of the approach. Therefore, in order to take benefits of both all at once and sequential approaches, it is important to theoretical study all possible ways to combine them in detail. More precisely, we need to perform the following tasks to design an efficient combined approach:
 	
 	
 %	We need to tackle the following challenges in order to take benefits of both all at once and sequential approaches.
 	\begin{itemize}
-		\item Analyze communication costs for all possible ways to perform Multi-TTM and MTTKRP  computations
-		\item Investigate tradeoff among amount of operations, communications and data reuse for both computations
-		\item Design communication optimal parallel algorithms for both computations
+		\item Analyze communication costs for all possible ways to perform Multi-TTM and MTTKRP 
+		\item Investigate tradeoff among amount of operations, communications and data reuse
+		\item Design communication optimal parallel algorithms
 %		\item Design and implement parallel HOSVD and CP-ALS methods and test on various datasets
 %		\item Analytically determine  arrangement of logical processor grid for better performance
 	\end{itemize}
@@ -505,16 +509,14 @@ colorlinks]{hyperref}
 	
 	In Figures~\ref{fig:compAllatonceInseq} and \ref{fig:compCombinedAllatonceseq}, we used exhaustive search to determine the arrangement of processors that minimizes the cost of each approach. In order to avoid exhaustive search, we plan to determine processor grid dimensions analytically based on the components of communication lower bounds. To achieve this, we will equate communication cost expression of each matrix/tensor with their corresponding lower bounds and slove them such that all (or most of) the constraints are satisfied.
 	
-%	
-%	Similar to Multi-TTM, we will study all possible ways to perform $3$ and $4$-dimensional MTTKRP computations. After that, we will generalize our finding and create a dynamic programming based approach to determine how to perform this computation. The amount of operations in the MTTKRP computation also depends on how factor matrices are operated with the original tensor. We will study communication-computation tradeoff for MTTKRP. We can note that the intermediate Khatri-Rao products may be used between different iterations in Algorithm~\ref{alg:canonicalals}. With 4-dimensional tensors, MTTKRP corresponding to both 1st and 2nd iterations need $\Mn{A}{4}\odot\Mn{A}{3}$. If we store this result in the 1st iteration then it can be reused in the 2nd one. Therefore, at last our goal is to study tradeoff among communications, computations and reuse of intermediate results for a single iteration (Lines~\ref{method:canonical:oneiter:start}--\ref{method:canonical:oneiter:end}) of CP-ALS method and devise an algorithm which achieves the optimal completion time. We will implement our algorithms for homogeneous systems and test them on various datasets.
-	
+
 	
 	
 	\subsubsection*{Strategy for parallel implementation}
 	In the beginning, we plan to implement our parallel algorithms using MPI. All the communications of this implementation would be performed with collectives. This is a simple and popular strategy to minimize communication for many linear algebra kernels on homogeneous systems~\cite{ABK-IPDPS-2016,BKK-TOMS-2020}.
 	
 	
-	\todo{Clarify how much is expected from the postdoc here.}
+%	\todo{Clarify how much is expected from the postdoc here.}
 	
 	As MPI collectives are based on global synchronization, they may not make effective utilization of all the resources. Therefore, later in the project, while working with heterogeneous resources (see Section~\ref{sec:heterogeneoussystem}), we will design our parallel algorithms in task-based structure. This will enable one to run them efficiently with popular runtime systems such as StarPU~\cite{ATNW-CCPE-2011} on modern computing platforms.
 	  
