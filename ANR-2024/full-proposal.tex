@@ -20,7 +20,7 @@
 \usepackage{algpseudocode}
 
 \usepackage{etoolbox}
-%%\usepackage{enumitem}
+\usepackage{enumitem}
 \patchcmd\section{2.3ex}{1.8ex}{}{}
 
 %%\usepackage[backend=bibtex,maxbibnames=99,
@@ -138,7 +138,8 @@ colorlinks]{hyperref}
 \fi
 
 
-\usepackage{color,xspace,paralist}
+%\usepackage{color,xspace,paralist}
+\usepackage{color,xspace}
 \definecolor{blue}{rgb}{0,0,1}
 \newcommand{\blue}[1]{{\color{blue} #1}}
 
@@ -405,7 +406,7 @@ colorlinks]{hyperref}
 	
 	
 	
-	Sequentially truncated HOSVD is another popular method to compute Tucker decomposition~\cite{VVM-SIAM-2012}. After each SVD computation, it performs a single TTM and work on the reduce data for the next SVD computation. Therefore, it performs less computations than the original HOSVD. However when the computational costs of the matrix SVDs are reduced using randomization, costs for both methods are dominated by the Multi-TTM computation. HOSVD is well suited for parallelization as different SVDs can be computed in parallel. It also provides flexibility in the computation of Multi-TTM (see Section~\ref{	sec:combinedapproach}). Therefore, we focus on this method to compute Tucker decomposition in the proposal.		
+	Sequentially truncated HOSVD is another popular method to compute Tucker decomposition~\cite{VVM-SIAM-2012}. After each SVD computation, it performs a single TTM and work on the reduce data for the next SVD computation. Therefore, it performs less computations than the original HOSVD. However when the computational costs of the matrix SVDs are reduced using randomization, costs for both methods are dominated by the Multi-TTM computation. HOSVD is well suited for parallelization as different SVDs can be computed in parallel. It also provides flexibility in the computation of Multi-TTM (see Section~\ref{sec:combinedapproach}). Therefore, we focus on this method to compute Tucker decomposition in the proposal.		
 	
 	\subsection{State of the art approaches for CP decomposition}
 	\label{sec:context:soa:Canonical}
@@ -681,7 +682,7 @@ colorlinks]{hyperref}
 	
 %%	Yes, maybe at the end of 2.2 (or at the end of 2.3). Explain how you will deal if the first WP (A1-A3, B1-B3) fails to bring sufficient bounds/algorithms or give facts proving you can be confident they can give sufficient input for the next WPs.
 
-
+\newpage
 
 
 
@@ -782,9 +783,9 @@ colorlinks]{hyperref}
 	
 %	\newpage
 	\subtask{Subtask A1.1: Multi-TTM minimum communication costs}
-	\begin{description}
+	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To obtain communication lower bounds for Multi-TTM.
-		\item[] \dwp A key question would be to understand what is the minimum amount of data transfer is required to perform Multi-TTM in parallel. As mentioned in Section~\ref{sec:context:soa:Tucker}, there are multiple ways to perform this computation. We will look at all possible ways (as these are limited) to perform 3 and 4-dimensional computations. For each way, we will represent the amount of access of every input/output on a processor with one variable and construct an optimization problem whose objective function is convex and all the constraints can be expressed with quasiconvex functions. After that we will analytically solve the optimization problem with the help of Lagrange multipliers methods and Karush-Kuhn-Tucker (KKT) conditions, similar to the ones used in~\cite{ABGKR-SPAA-2022,ABGKR-SIMAX-2024}.
+		\item[] \dwp A key question would be to understand what is the minimum amount of data transfer is required to perform Multi-TTM in parallel. As mentioned in Section~\ref{sec:context:soa:Tucker}, there are multiple ways to perform this computation. We will look at all possible ways (as these are limited) to perform 3 and 4-dimensional computations. For each way, we will represent the amount of access of every input/output on a processor with one variable and construct an optimization problem whose objective function is convex and all the constraints can be expressed with quasiconvex functions. After that we will analytically solve the optimization problem with the help of Lagrange multipliers methods and Karush-Kuhn-Tucker (KKT) conditions, similar to the ones used in~\cite{ABGKR-SIMAX-2024}.
 		
 		
 		It is sometimes hard to directly compare analytical solutions of several approaches. Therefore we will graphically plot them to have better understanding of how different factors influence the amount of data transfers. Following that we will generalize the analytical solutions for higher dimensions. 
@@ -796,17 +797,19 @@ colorlinks]{hyperref}
 		T0+6: A description of the dynamic programming based approach to determine the minimum communication cost of Multi-TTM (report)
 %%		\newline
 %%		T0+6: An implementation of the approach (software)
-	\end{description}
+	\end{itemize}
 	
 	\subtask{Subtask A1.2: MTTKRP minimum communication costs}
-	\begin{description}
+	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To obtain communication lower bounds for MTTKRP.
 		\item[] \dwp Similar to the previous subtask, we will analyze data transfer costs of all possible ways to perform MTTKRP involving 3 and 4-dimensional tensors. After that, we will generalize our observations for the computations involving higher dimensions and create a dynamic programming based approach to determine the minimum communication cost.
 		\item[] \deliverables
 		
 		T0+9: A description of the dynamic programming based approach to determine how MTTKRP should be performed to minimize the communication cost (report)\newline
 		T0+9: An implementation of the approach for Multi-TTM and MTTKRP (software)
-	\end{description}
+		
+		
+	\end{itemize}
 	
 	\subsubsection{\textbf{WPA2}: Tradeoff among communications, computations and reuse}
 	\begin{table}[H]
@@ -821,16 +824,16 @@ colorlinks]{hyperref}
 		\end{tabular}
 	\end{table}
 	\subtask{Subtask A2.1: Cost modeling for Multi-TTM and MTTKRP}
-	\begin{description}
+	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To analyze amount of operations and communication costs for Multi-TTM and MTTKRP. 
 		\item[] \dwp As mentioned earlier, the amount of operations and data transfers for both Multi-TTM and MTTKRP depend on how they are performed. This subtask intends to take advantage of \textbf{WPA1} and add the amount of operations in dynamic programming approach. Here we note that it is possible that once the data transfer costs among processors are determined then rearranging local computations may minimize the amount of operations. This is what we observed for Multi-TTM with the all at once approach in our preliminary study~\cite{ABGKR-SIMAX-2024}. We will express the overall cost as $\alpha\cdot$ amount of operations + $\beta\cdot$ amount of data transfers. Here $\alpha$ and $\beta$ represent the weight of the processing power (arithmetic cost per unit operation) and transfer capability (transfer cost per unit data ) of a system. We will analyze this cost for various practical values of $\alpha$ and $\beta$.
 		\item[] \deliverables\newline
 		T0+14: A description of the overall cost models for Multi-TTM and MTTKRP (report)
 %%		\newline
 %%		T0+14: Include this model in the existing implementation of dynamic programming based approach (software)
-	\end{description}
+	\end{itemize}
 	\subtask{Subtask A2.2: Cost modeling for HOSVD and CP-ALS methods}
-	\begin{description}
+	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To study comprise among computations, communications and data reuse for both methods. 
 		\item[] \dwp The previous subtask analyzes costs of the bottleneck computations of both methods. This subtask focuses on the full methods. For HOSVD, we will determine the cost of each computation and then sum them to obtain the overall cost. This will be an expression in terms of amount of operations and data transfers. This expression may not be very precise when two significant computations require different data distributions. However for HOSVD, when we employ randomized SVDs to compute factor matrices then the overall cost is dominated by Multi-TTM.
 		
@@ -838,7 +841,7 @@ colorlinks]{hyperref}
 		\item[] \deliverables\newline
 		T0+18: A description of the overall costs of HOSVD and CP-ALS methods (report)\newline
 		T0+18: An implementation of the dynamic programming based approach to express the overall costs for both methods (software)
-	\end{description}
+	\end{itemize}
 	
 	\subsubsection{\textbf{WPA3}: Design new parallel algorithms}
 	\begin{table}[H]
@@ -853,7 +856,7 @@ colorlinks]{hyperref}
 		\end{tabular}
 	\end{table}
 	%%\subtask{Subtask}
-	\begin{description}
+	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal Develop new parallel algorithms for both methods.
 		\item[] \dwp The previous task \textbf{WPA2} specifies how different computations should be performed in both methods. Based on this information, \textbf{WPA3} designs parallel algorithm. Here the aim is that computation/communication cost corresponding to a particular variable (matrix or tensor) should be same as in \textbf{WPA2}. It may require to logically view the processors in a multi-dimensional grid. The previous work packages determine minimum communication costs by solving constrained optimization problems and have used only one variable for each input/output. An input/output usually has more than one dimension. Therefore we need to interpret the solutions of constrained optimization problems in multiple dimensions. This requires us to look at all the variables in a solution at once and determine how to partition each dimension to devise an algorithm. It may not always result in reasonable partitions. Recently we show that determining processor grid dimensions from the communication lower bounds of Multi-TTM in the all at once approach may require some extra adaptation~\cite{ABGKR-SIMAX-2024}. However we observe that we can bound overall communication cost of any variable in terms of that of the largest tensor. We plan to prove theoretical guarantees of the new algorithms in similar ways.
 		
@@ -861,7 +864,7 @@ colorlinks]{hyperref}
 		\item[] \deliverables\newline
 		T0+24: A description of the parallel HOSVD algorithm and its optimality proof (report)\newline
 		T0+27: A description of the parallel CP-ALS algorithm and its optimality proof (report) 
-	\end{description}
+	\end{itemize}
 	
 	\subsubsection{\textbf{WPA4}: Experimental evaluation of the proposed algorithms}
 	\begin{table}[H]
@@ -876,19 +879,19 @@ colorlinks]{hyperref}
 		\end{tabular}
 	\end{table}
 	\subtask{Subtask A4.1: Implementation of the algorithms}
-	\begin{description}
+	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To implement the proposed algorithms and run them on GENCI machines.
 		\item[] \dwp This subtasks implements the proposed algorithms in \textbf{WPA3} for both HOSVD and CP-ALS methods. Initially it will use machines available at ENS Lyon for debugging and execution. It will verify the scalability of the proposed algorithms by running them on GENCI machines for several datasets including the ones mentioned in Section~\ref{sec:context:datasets}. The code will be made available under a free software license.
 		\item[] \deliverables\newline
 		T0 +36: Implementation of the proposed algorithms for both methods (software)	
-	\end{description}
+	\end{itemize}
 		\subtask{Subtask A4.2: Storing real dense tensor datasets}
-	\begin{description}
+	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To setup a repository to store dense real-world tensors.
 		\item[] \dwp This subtask aims to create a public repository and to store all the used real-world tensors in the project to that repository. We will also request other researchers to store\linebreak similar tensors there. It will serve as a benchmark and will help the whole tensor community.
 		\item[] \deliverables\newline
 		T0 +42: A repository to store dense tensor data of real applications (repository)	
-	\end{description}
+	\end{itemize}
 
 	\subsubsection{\textbf{WPA5}: Numerical robustness of the proposed algorithms}
 	\begin{table}[H]
@@ -903,12 +906,12 @@ colorlinks]{hyperref}
 		\end{tabular}
 	\end{table}
 	%%\subtask{Subtask}
-	\begin{description}
+	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To study numerical robustness of the algorithms developed in \textbf{WPA3}.
 		\item[] \dwp Computations may be arranged differently than the conventional ways in the previous work packages. This will also change the numerical robustness of the algorithms. \textbf{WPA5} aims to study and compare numerical properties of our algorithms with the state of the art. 
 		\item[] \deliverables\newline
 		T0+36: Numerical guarantees of the proposed algorithms (report)
-	\end{description}
+	\end{itemize}
 	\subsubsection{\textbf{WPA6}: Applying mixed precision arithmetic}
 	\begin{table}[H]
 		\begin{tabular}{lll}
@@ -922,12 +925,12 @@ colorlinks]{hyperref}
 		\end{tabular}
 	\end{table}
 	%%\subtask{Subtask}
-	\begin{description}
+	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To apply mixed precision arithmetic to further improve our algorithms.
 		\item[] \dwp Performing mixed precision arithmetic is a promising direction to improve performance of many scientific computations. \textbf{WPA6} explores how to apply mixed precision arithmetic to further improve our algorithms.
 		\item[] \deliverables\newline
 		T0+39: Improved algorithms for both methods (report)
-	\end{description}
+	\end{itemize}
 	
 	
 	\subsection{Description of the work packages for heterogeneous systems}
@@ -948,12 +951,12 @@ colorlinks]{hyperref}
 		\end{tabular}
 	\end{table}
 	%%\subtask{Subtask B1.1: }
-	\begin{description}
+	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To study different parameters to formulate costs on heterogeneous systems.
 		\item[] \dwp This subtask analyzes different hardware characteristics such as processing and transfer capabilities, network topology in detail for all the three types of systems of Figure~\ref{fig:heterogeneousSystems}. The main purpose of this subtask is to propose simplified models for communication, computation and overall costs. 
 		\item[] \deliverables\newline
 		T0 +26: A description of the cost models for heterogeneous systems (report) 
-	\end{description}
+	\end{itemize}
 	
 	\subsubsection{\textbf{WPB2}: Costs on a single simple heterogeneous node}
 	\begin{table}[H]
@@ -967,14 +970,14 @@ colorlinks]{hyperref}
 			\hline
 		\end{tabular}
 	\end{table}
-	\begin{description}
+	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To develop minimum cost expressions for both decomposition methods. 
 		\item[] \dwp \textbf{WPB2} focuses on Figure~\ref{system:onecpugpu} type of system (a single simple heterogeneous node). It will first obtain expressions for Multi-TTM and MTTKRP computations. Due to heterogeneity, we need to solve optimization problems with more variables and constraints to determine the minimum communication costs. If all the constraints can not be expressed with quasiconvex function then we may not obtain analytical solutions. In such cases we plan to employ optimization softwares to solve them.
 		Following that, we plan to study tradeoff among computations, communication and reuse for both HOSVD and CP-ALS methods, and derive the minimum cost expressions in terms of amount of computations and communications. 
 		\item[] \deliverables\newline
 		T0+29: A description of the cost expressions for Multi-TTM and MTTKRP (report)\newline
 		T0+ 33: A description of the cost expression for the complete methods (report)
-	\end{description}
+	\end{itemize}
 	
 	\subsubsection{\textbf{WPB3}: Devise new algorithms}
 	\begin{table}[H]
@@ -989,12 +992,12 @@ colorlinks]{hyperref}
 		\end{tabular}
 	\end{table}
 	%%\subtask{Subtask B1.1: }
-	\begin{description}
+	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To design new algorithms for both methods. 
 		\item[] \dwp This task intends to take advantage of the knowledge obtained in \textbf{WPB2} and design new algorithms whose completion times are optimal for a single simple heterogeneous node.
 		\item[] \deliverables\newline
 		T0 +36: A description of the complete algorithms for HOSVD and CP-ALS methods (report)
-	\end{description}
+	\end{itemize}
 	
 	\subsubsection{\textbf{WPB4}: Algorithms for more than one GPU}
 	\begin{table}[H]
@@ -1009,19 +1012,19 @@ colorlinks]{hyperref}
 		\end{tabular}
 	\end{table}
 	\subtask{Subtask B4.1: Devise algorithms for a single heterogeneous node.}
-	\begin{description}
+	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To extend \textbf{WPB2} and \textbf{WPB3} for more than one GPU of a single node.
 		\item[] \dwp This subtask focuses on Figure~\ref{system:onecpumultiplegpus} type of system. It expands the results of the previous two work packages to a node with multiple GPUs. It will develop complete algorithms for HOSVD and CP-ALS methods that achieve optimal completion times.
 		\item[] \deliverables\newline
 		T0 +41: A description of the complete algorithms for both methods (report)
-	\end{description}
+	\end{itemize}
 	\subtask{Subtask B4.2: Devise algorithms for multiple heterogeneous nodes.}
-	\begin{description}
+	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To extend \textbf{WPB2} and \textbf{WPB3} for general heterogeneous systems.
 		\item[] \dwp This subtask focuses on Figure~\ref{system:gen} type of system, which is very common in HPC. Multiple GPUs are connected to each node and nodes are connected among themselves. Similar to the previous subtask, it will develop complete algorithms for both methods that achieve optimal completion times on multiple heterogeneous nodes.
 		\item[] \deliverables\newline
 		T0 +44: A description of the complete algorithms for HOSVD and CP-ALS methods (report) 
-	\end{description}
+	\end{itemize}
 	
 
 	
@@ -1169,12 +1172,12 @@ colorlinks]{hyperref}
 		\end{tabular}
 	\end{table}
 	%%\subtask{Subtask B1.1: }
-	\begin{description}
+	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To include factual system information in our algorithms.
 		\item[] \dwp This work package is exploratory in nature. It intends to include more empirical information, such as efficiency of a processing unit, saturation level of bandwidth links, missing link between two nodes, in our algorithms. It will also investigate energy costs of our algorithms and propose strategies to make them energy optimal.
 		\item[] \deliverables\newline
 		T0 +48: Energy analysis of our algorithms (report) 
-	\end{description}
+	\end{itemize}
 	
 	
 	
