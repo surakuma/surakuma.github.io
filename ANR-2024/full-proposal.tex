@@ -345,6 +345,7 @@ colorlinks]{hyperref}
 	
 	Figure~\ref{fig:CTdecompositions} shows visual representations of both tensor decompositions for a 3-dimensional tensor. CP decomposition represents a tensor with the sum of rank one tensors. Whereas Tucker decomposition represents a tensor with multiple factor matrices and a much smaller core tensor. The number of dimensions for the core tensor and the original tensor are same. As mentioned earlier, tensors are used to store data in several domains. For example, in neuroscience, a single trial to observe behaviors of neurons over time can be stored in a matrix and data of multiple trials in a 3-dimensional tensor. CP decomposition is a popular method to analyse such neuroscience data~\cite{WKV-Neuron-2018,HKD-SIAM-2020}. Similarly, a single experiment in combustion simulations or electron microscopy produces terabytes of data. For instance, tracking 64 variables on a 512$\times$512$\times$512 three-dimensional spatial grid for 128 time steps in a simulation requires to store $2^{40}$ entries. It is very difficult to transfer and analyze data of these experiments. Tucker decomposition is an appealing practice to compress data of such experiments before different types of analysis can be performed, including computing a CP decomposition, for example~\cite{ABK-IPDPS-2016,BKK-TOMS-2020,RC-CILS-1998}.
 	
+	
 	 
 	Tensor Train is another popular tensor decomposition~\cite{O-SIAM-2011}. It represents a $d$-dimensional tensor with two matrices and $d$-$2$ three-dimensional tensors. This representation is very well suited to work with high dimensional tensors and used more often in molecular and quantum simulations. However, this has limited use in data analytics as it is hard to interpret its different components. There have been some recent contributions to replace dense weight matrices of the fully connected layers of deep neural networks by tensor train representations~\cite{NPOV-NIPS-2015}. This approach reduces the number of parameters and allows one to work with simpler networks. Still there is little progress on understanding the components of such tensor train based networks. Therefore, we focus on CP and Tucker decompositions which are widely used for data analytics. 
 	
@@ -443,7 +444,7 @@ colorlinks]{hyperref}
 %	\label{sec:challenges}
 	\subsection{Combining all at once and sequence approaches}
 	\label{sec:combinedapproach}
-	As mentioned in the previous subsection, neither approach is better than the other for Multi-TTM with all inputs in terms of communication costs.  It advocates to combine both approaches. There are many ways to perform Multi-TTM computation.  We present some of them below for  3-dimensional cubic input and output tensors.	 
+	As mentioned in Section~\ref{sec:context:soa:Tucker}, neither approach is better than the other for Multi-TTM with all inputs in terms of communication costs.  It advocates to combine both approaches. There are many ways to perform Multi-TTM computation.  We present some of them below for  3-dimensional cubic input and output tensors.	 
 	
 	\begin{align*}
 		\Y&=\seqstart\seqstart\seqstart\X\times_1{\Mn{A}{1}}^\Tra \seqend\times_2{\Mn{A}{2}}^\Tra\seqend\times_3{\Mn{A}{3}}^\Tra\seqend,\\
@@ -490,12 +491,12 @@ colorlinks]{hyperref}
 	
 	\subsubsection{Challenges and our approaches to tackle them}
 	
-	As mentioned earlier, the amount of computations and communications for Multi-TTM and MTTKRP  depend on how we perform them. If we do not select it carefully, they may be very far from optimal completion times. Even when we decide how we want to perform the computations,  using one approach after the other in a straightforward way will only work if data distributions of inputs and temporaries between both approaches are compatible. However we can not expect any guarantee with respect to the optimal communication/computation cost.  Considering optimal data distributions for only one approach may induce significant data movements  for the other approach. Using optimal data distributions for both approaches may not be compatible or require significant data movement during the transition of the approach. Therefore, in order to take benefits of both all at once and sequential approaches, it is important to theoretical study all possible ways to combine them in detail. More precisely, we need to perform the following tasks to design an efficient combined approach:
+	As mentioned earlier, the amount of computations and communications for Multi-TTM and MTTKRP  depend on how we perform them. If we do not select it carefully, their completion times may be very far from optimal ones. Even when we decide how we want to perform the computations,  using one approach after the other in a straightforward way will only work if data distributions of inputs and temporaries between both approaches are compatible. However we can not expect any guarantee with respect to the optimal communication/computation cost.  Considering optimal data distributions for only one approach may induce significant data movements  for the other approach. Using optimal data distributions for both approaches may not be compatible or require significant data movement during the transition of the approach. Therefore, in order to take benefits of both all at once and sequential approaches, it is important to theoretical study all possible ways to combine them in detail. More precisely, we need to perform the following tasks to design efficient combined approaches for Multi-TTM and MTTKRP:
 	
 	
 %	We need to tackle the following challenges in order to take benefits of both all at once and sequential approaches.
 	\begin{itemize}
-		\item Analyze communication costs for all possible ways to perform Multi-TTM and MTTKRP 
+		\item Analyze communication costs for all possible ways to perform them 
 		\item Investigate tradeoff among amount of operations, communications and data reuse
 		\item Design communication optimal parallel algorithms
 %		\item Design and implement parallel HOSVD and CP-ALS methods and test on various datasets
@@ -505,10 +506,11 @@ colorlinks]{hyperref}
 	
 	We will study all possible ways to perform $3$ and $4$-dimensional Multi-TTM and MTTKRP computations in detail as the number of ways are limited. After that, we will generalize our findings and create a dynamic programming based approach to determine how to perform $d$-dimensional Multi-TTM and MTTKRP computations.
 	
+	\subsubsection*{Design optimal algorithms for complete methods}
+
+	As mentioned in the previous subsections, Multi-TTM and MTTKRP are  the bottleneck computations of HOSVD and CP-ALS methods, respectively. After performing detailed study of Multi-TTM and MTTKRP, we will design parallel algorithms such that the overall completion times of HOSVD and CP-ALS are minimal. We will implement our algorithms for homogeneous systems and test them on various datasets. 
 	
-	As mentioned in the previous section, Multi-TTM and MTTKRP are  the bottleneck computations of HOSVD and CP-ALS methods, respectively. After performing detailed study of Multi-TTM and MTTKRP, we will design parallel algorithms such that the overall completion times of HOSVD and CP-ALS are minimal. We will implement our algorithms for homogeneous systems and test them on various datasets. 
-	
-	In Figures~\ref{fig:compAllatonceInseq} and \ref{fig:compCombinedAllatonceseq}, we used exhaustive search to determine the arrangement of processors that minimizes the cost of each approach. In order to avoid exhaustive search, we plan to determine processor grid dimensions analytically based on the components of communication lower bounds. To achieve this, we will equate communication cost expression of each matrix/tensor with their corresponding lower bounds and slove them such that all (or most of) the constraints are satisfied.
+	In Figures~\ref{fig:compAllatonceInseq} and \ref{fig:compCombinedAllatonceseq}, we used exhaustive search to determine the arrangement of processors that minimizes the cost of each approach. In order to avoid exhaustive search, we plan to determine processor grid dimensions analytically based on the components of communication lower bounds. To achieve this, we will equate communication cost expression of each matrix/tensor with their corresponding lower bounds and solve them such that all (or most of) the constraints are satisfied.
 	
 
 	
@@ -733,7 +735,7 @@ colorlinks]{hyperref}
 	
 	The project also includes two master-level research interns. They are expected to join the project towards the end of 3rd year and will wok on the algorithms developed by the PhD student. The first intern will study numerical guarantees of the proposed algorithms and the second intern will explore how to apply mixed precision arithmetic to further improve the algorithms.
 			
-	\subsection{Project structure}
+	\vspace*{-0.15cm}\subsection{Project structure}
 	\label{sec:org:projstructure}
 	The SCATE project has two tasks. \textbf{Task A} focuses on homogeneous systems and \textbf{Task B} targets heterogeneous systems. \textbf{Task A} is further subdivided into six main work packages.
 	\begin{itemize}
@@ -764,12 +766,12 @@ colorlinks]{hyperref}
 	
 	
 	The work packages \textbf{WPA1} -- \textbf{WPA6} address homogeneous systems and \textbf{WPB1} -- \textbf{WPB5} target heterogeneous systems.
-	\subsection{Description of the work packages for homogeneous systems}
+	\vspace*{-0.15cm}\subsection{Description of the work packages for homogeneous systems}
 	\label{sec:org:wp:homo}
 	
 	
 	\subsubsection{\textbf{WPA1}: Bottleneck computations of both decompositions}
-	\begin{table}[H]
+	\vspace*{-0.385cm}\begin{table}[H]
 		\begin{tabular}{lll}
 			\hline
 			\cellcolor{blue2}
@@ -779,12 +781,15 @@ colorlinks]{hyperref}
 			Involvement      & 4 PM            & 8 PM \\
 			\hline
 		\end{tabular}
-	\end{table}
+	\end{table}\vspace*{-0.25cm}
 	
 %	\newpage
 	\subtask{Subtask A1.1: Multi-TTM minimum communication costs}
-	\begin{itemize}[leftmargin=-1pt]
+	\vspace*{-0.15cm}\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To obtain communication lower bounds for Multi-TTM.
+	\end{itemize}
+	\begin{itemize}[leftmargin=-1pt]
+%		\item[] \goal To obtain communication lower bounds for Multi-TTM.
 		\item[] \dwp A key question would be to understand what is the minimum amount of data transfer is required to perform Multi-TTM in parallel. As mentioned in Section~\ref{sec:context:soa:Tucker}, there are multiple ways to perform this computation. We will look at all possible ways (as these are limited) to perform 3 and 4-dimensional computations. For each way, we will represent the amount of access of every input/output on a processor with one variable and construct an optimization problem whose objective function is convex and all the constraints can be expressed with quasiconvex functions. After that we will analytically solve the optimization problem with the help of Lagrange multipliers methods and Karush-Kuhn-Tucker (KKT) conditions, similar to the ones used in~\cite{ABGKR-SIMAX-2024}.
 		
 		
@@ -792,9 +797,7 @@ colorlinks]{hyperref}
 		
 		Finally we will create a dynamic programming based approach to determine the minimum amount of data transfers for a Multi-TTM computation and how it should be performed. The code for this approach will be made available under a free software license.
 		
-		\item[] \deliverables
-		
-		T0+6: A description of the dynamic programming based approach to determine the minimum communication cost of Multi-TTM (report)
+		\item[] \deliverables T0+6: A description of the dynamic programming based approach to determine the minimum communication cost of Multi-TTM (report)
 %%		\newline
 %%		T0+6: An implementation of the approach (software)
 	\end{itemize}
@@ -803,12 +806,8 @@ colorlinks]{hyperref}
 	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To obtain communication lower bounds for MTTKRP.
 		\item[] \dwp Similar to the previous subtask, we will analyze data transfer costs of all possible ways to perform MTTKRP involving 3 and 4-dimensional tensors. After that, we will generalize our observations for the computations involving higher dimensions and create a dynamic programming based approach to determine the minimum communication cost.
-		\item[] \deliverables
-		
-		T0+9: A description of the dynamic programming based approach to determine how MTTKRP should be performed to minimize the communication cost (report)\newline
-		T0+9: An implementation of the approach for Multi-TTM and MTTKRP (software)
-		
-		
+		\item[] \deliverables T0+9: A description of the dynamic programming based approach to determine how MTTKRP should be performed to minimize the communication cost (report)\newline
+		T0+9: An implementation of the approach for Multi-TTM and MTTKRP (software)	
 	\end{itemize}
 	
 	\subsubsection{\textbf{WPA2}: Tradeoff among communications, computations and reuse}
@@ -827,8 +826,7 @@ colorlinks]{hyperref}
 	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To analyze amount of operations and communication costs for Multi-TTM and MTTKRP. 
 		\item[] \dwp As mentioned earlier, the amount of operations and data transfers for both Multi-TTM and MTTKRP depend on how they are performed. This subtask intends to take advantage of \textbf{WPA1} and add the amount of operations in dynamic programming approach. Here we note that it is possible that once the data transfer costs among processors are determined then rearranging local computations may minimize the amount of operations. This is what we observed for Multi-TTM with the all at once approach in our preliminary study~\cite{ABGKR-SIMAX-2024}. We will express the overall cost as $\alpha\cdot$ amount of operations + $\beta\cdot$ amount of data transfers. Here $\alpha$ and $\beta$ represent the weight of the processing power (arithmetic cost per unit operation) and transfer capability (transfer cost per unit data ) of a system. We will analyze this cost for various practical values of $\alpha$ and $\beta$.
-		\item[] \deliverables\newline
-		T0+14: A description of the overall cost models for Multi-TTM and MTTKRP (report)
+		\item[] \deliverables T0+14: A description of the overall cost models for Multi-TTM and MTTKRP (report)
 %%		\newline
 %%		T0+14: Include this model in the existing implementation of dynamic programming based approach (software)
 	\end{itemize}
@@ -882,15 +880,13 @@ colorlinks]{hyperref}
 	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To implement the proposed algorithms and run them on GENCI machines.
 		\item[] \dwp This subtasks implements the proposed algorithms in \textbf{WPA3} for both HOSVD and CP-ALS methods. Initially it will use machines available at ENS Lyon for debugging and execution. It will verify the scalability of the proposed algorithms by running them on GENCI machines for several datasets including the ones mentioned in Section~\ref{sec:context:datasets}. The code will be made available under a free software license.
-		\item[] \deliverables\newline
-		T0 +36: Implementation of the proposed algorithms for both methods (software)	
+		\item[] \deliverables T0 +36: Implementation of the proposed algorithms for both methods (software)	
 	\end{itemize}
 		\subtask{Subtask A4.2: Storing real dense tensor datasets}
 	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To setup a repository to store dense real-world tensors.
 		\item[] \dwp This subtask aims to create a public repository and to store all the used real-world tensors in the project to that repository. We will also request other researchers to store\linebreak similar tensors there. It will serve as a benchmark and will help the whole tensor community.
-		\item[] \deliverables\newline
-		T0 +42: A repository to store dense tensor data of real applications (repository)	
+		\item[] \deliverables T0 +42: A repository to store dense tensor data of real applications (repository)	
 	\end{itemize}
 
 	\subsubsection{\textbf{WPA5}: Numerical robustness of the proposed algorithms}
@@ -928,8 +924,7 @@ colorlinks]{hyperref}
 	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To apply mixed precision arithmetic to further improve our algorithms.
 		\item[] \dwp Performing mixed precision arithmetic is a promising direction to improve performance of many scientific computations. \textbf{WPA6} explores how to apply mixed precision arithmetic to further improve our algorithms.
-		\item[] \deliverables\newline
-		T0+39: Improved algorithms for both methods (report)
+		\item[] \deliverables T0+39: Improved algorithms for both methods (report)
 	\end{itemize}
 	
 	
@@ -954,8 +949,7 @@ colorlinks]{hyperref}
 	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To study different parameters to formulate costs on heterogeneous systems.
 		\item[] \dwp This subtask analyzes different hardware characteristics such as processing and transfer capabilities, network topology in detail for all the three types of systems of Figure~\ref{fig:heterogeneousSystems}. The main purpose of this subtask is to propose simplified models for communication, computation and overall costs. 
-		\item[] \deliverables\newline
-		T0 +26: A description of the cost models for heterogeneous systems (report) 
+		\item[] \deliverables T0 +26: A description of the cost models for heterogeneous systems (report) 
 	\end{itemize}
 	
 	\subsubsection{\textbf{WPB2}: Costs on a single simple heterogeneous node}
@@ -995,8 +989,7 @@ colorlinks]{hyperref}
 	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To design new algorithms for both methods. 
 		\item[] \dwp This task intends to take advantage of the knowledge obtained in \textbf{WPB2} and design new algorithms whose completion times are optimal for a single simple heterogeneous node.
-		\item[] \deliverables\newline
-		T0 +36: A description of the complete algorithms for HOSVD and CP-ALS methods (report)
+		\item[] \deliverables T0 +36: A description of the complete algorithms for HOSVD and CP-ALS methods (report)
 	\end{itemize}
 	
 	\subsubsection{\textbf{WPB4}: Algorithms for more than one GPU}
@@ -1022,10 +1015,41 @@ colorlinks]{hyperref}
 	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To extend \textbf{WPB2} and \textbf{WPB3} for general heterogeneous systems.
 		\item[] \dwp This subtask focuses on Figure~\ref{system:gen} type of system, which is very common in HPC. Multiple GPUs are connected to each node and nodes are connected among themselves. Similar to the previous subtask, it will develop complete algorithms for both methods that achieve optimal completion times on multiple heterogeneous nodes.
-		\item[] \deliverables\newline
-		T0 +44: A description of the complete algorithms for HOSVD and CP-ALS methods (report) 
+		\item[] \deliverables T0 +44: A description of the complete algorithms for HOSVD and CP-ALS methods (report) 
 	\end{itemize}
 	
+		\subsubsection{\textbf{WPB5}: Incorporate empirical information}
+\begin{table}[H]
+	\begin{tabular}{lll}
+		\hline
+		\cellcolor{blue2}
+		Members involved & Suraj Kumar & Postdoctoral Researcher \\
+		\hline
+		\cellcolor{orange2}
+		Involvement      & 4 PM     & 4 PM \\
+		\hline
+	\end{tabular}
+\end{table}
+%%\subtask{Subtask B1.1: }
+\begin{itemize}[leftmargin=-1pt]
+	\item[] \goal To include factual system information in our algorithms.
+	\item[] \dwp This work package is exploratory in nature. It intends to include more empirical information, such as efficiency of a processing unit, saturation level of bandwidth links, missing link between two nodes, in our algorithms. It will also investigate energy costs of our algorithms and propose strategies to make them energy optimal.
+	\item[] \deliverables T0 +48: Energy analysis of our algorithms (report) 
+\end{itemize}
+
+
+
+\subsection{Task schedule and deliverables}
+\label{sec:org:taskschedule}
+We present a tentative schedule of the work packages and their subtasks in Table~\ref{tab:gantt} and summarize the different deliverables in Table~\ref{tab:deliverables}.
+
+
+
+
+\subsection{Resource management}
+\label{sec:org:costs}
+\subsubsection*{Costs supported by ANR proposal}
+\paragraph{Staff} A PhD student (36 months), a postdoctoral researcher (24 months) and two research interns (master-level, 6 months) will be hired for the project. 
 
 	
 	
@@ -1159,44 +1183,8 @@ colorlinks]{hyperref}
 	\end{table}
 	
 	
-		\subsubsection{\textbf{WPB5}: Incorporate empirical information}
-	\begin{table}[H]
-		\begin{tabular}{lll}
-			\hline
-			\cellcolor{blue2}
-			Members involved & Suraj Kumar & Postdoctoral Researcher \\
-			\hline
-			\cellcolor{orange2}
-			Involvement      & 4 PM     & 4 PM \\
-			\hline
-		\end{tabular}
-	\end{table}
-	%%\subtask{Subtask B1.1: }
-	\begin{itemize}[leftmargin=-1pt]
-		\item[] \goal To include factual system information in our algorithms.
-		\item[] \dwp This work package is exploratory in nature. It intends to include more empirical information, such as efficiency of a processing unit, saturation level of bandwidth links, missing link between two nodes, in our algorithms. It will also investigate energy costs of our algorithms and propose strategies to make them energy optimal.
-		\item[] \deliverables\newline
-		T0 +48: Energy analysis of our algorithms (report) 
-	\end{itemize}
-	
-	
-	
-	%%\newpage
-	\subsection{Task schedule and deliverables}
-	\label{sec:org:taskschedule}
-	We present a tentative schedule of the work packages and their subtasks in Table~\ref{tab:gantt} and summarize the different deliverables in Table~\ref{tab:deliverables}.
-	
-	
-	
-	
-	\subsection{Resource management}
-	\label{sec:org:costs}
-	\subsubsection*{Costs supported by ANR proposal}
-	\paragraph{Staff} A PhD student (36 months), a postdoctoral researcher (24 months) and two research interns (master-level, 6 months) will be hired for the project. 
-	
-%%	The PhD student will join the project in the beginning 
-	
-%%	\sk{More details on when they will start and how they are going to synchronize.}
+
+
 	
 	\paragraph{Mission, traveling} The project also includes funding to participate to international/national conferences/workshops. The traveling costs for these are evaluated as follows:
 	\begin{itemize}
@@ -1212,7 +1200,7 @@ colorlinks]{hyperref}
 		\begin{center}
 			\begin{tabular}{p{3.8cm}p{8.25cm}r}
 				\toprule
-				\multicolumn{1}{l}{}&& Inria Lyon \\\midrule
+%				\multicolumn{1}{l}{}&& Inria Lyon \\\midrule
 				\multirow{3}{3.8cm}{Staff expenses}  & PhD student &   120k\euro \\\cline{2-3}
 				& Postdoctoral researcher  &100k\euro \\ \cline{2-3}
 				& 2 Research interns  & 6.6k\euro \\\hline
@@ -1239,7 +1227,7 @@ colorlinks]{hyperref}
 	
 	
 	
-	\paragraph{Additional visits and workshop} We will look for additional funding from Inria/CNRS for a three month scientific visit for the PhD student to launch new collaborations (for instance around the Cyclops~\cite{SMHD-IPDPS-2013}/TuckerMPI~\cite{BKK-TOMS-2020}/Deinsum~\cite{ZKBSH-SC-2022} library team) and to broaden his future perspectives. We will also seek additional funding to organize another workshop at the end of Year 4.
+	\paragraph{Additional visits and workshop} We will look for additional funding from Inria/CNRS for a three month scientific visit for the PhD student to launch new collaborations (for instance around the Cyclops~\cite{SMHD-IPDPS-2013}/TuckerMPI~\cite{BKK-TOMS-2020}/Deinsum~\cite{ZKBSH-SC-2022} library team) and to broaden his future perspectives. We will also seek additional funding to organize another workshop at the end of $4$th Year.
 	
 	\paragraph{Hiring of an engineer} This project (\textbf{Task B}) will develop provable algorithms for heterogeneous systems. We will submit another proposal to hire an engineer who will work on the implementation of these algorithms. The engineer will also work on combining our and TuckerMPI softwares (and other popular ones provided we manage to get good support from their contributors) in a unified framework.
 	
