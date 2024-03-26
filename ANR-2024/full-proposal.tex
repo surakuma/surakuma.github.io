@@ -343,8 +343,9 @@ colorlinks]{hyperref}
 	
 	
 	
-	Figure~\ref{fig:CTdecompositions} shows visual representations of both tensor decompositions for a 3-dimensional tensor. CP decomposition represents a tensor with the sum of rank one tensors. Whereas Tucker decomposition represents a tensor with multiple factor matrices and a much smaller core tensor. The number of dimensions for the core tensor and the original tensor are same. As mentioned earlier, tensors are used to store data in several domains. For example, in neuroscience, a single trial to observe behaviors of neurons over time can be stored in a matrix and data of multiple trials in a 3-dimensional tensor. CP decomposition is a popular method to analyse such neuroscience data~\cite{WKV-Neuron-2018,HKD-SIAM-2020}. Similarly, a single experiment in combustion simulations or electron microscopy produces terabytes of data. For instance, tracking 64 variables on a 512$\times$512$\times$512 three-dimensional spatial grid for 128 time steps in a simulation requires to store $2^{40}$ entries. It is very difficult to transfer and analyze data of these experiments. Tucker decomposition is an appealing practice to compress data of such experiments before different types of analysis can be performed, including computing a CP decomposition, for example~\cite{ABK-IPDPS-2016,BKK-TOMS-2020,RC-CILS-1998}.
+	Figure~\ref{fig:CTdecompositions} shows visual representations of both tensor decompositions for a 3-dimensional tensor. CP decomposition represents a tensor with the sum of rank one tensors. Whereas Tucker decomposition represents a tensor with multiple factor matrices and a much smaller core tensor. The number of dimensions for the core tensor and the original tensor are same. As mentioned earlier, tensors are used to store data in several domains. For example, in neuroscience, a single trial to observe behaviors of neurons over time can be stored in a matrix and data of multiple trials in a 3-dimensional tensor. CP decomposition is a popular method to analyse such neuroscience data~\cite{HKD-SIAM-2020}. Similarly, a single experiment in combustion simulations or electron microscopy produces terabytes of data. For instance, tracking 64 variables on a 512$\times$512$\times$512 three-dimensional spatial grid for 128 time steps in a simulation requires to store $2^{40}$ entries. It is very difficult to transfer and analyze data of these experiments. Tucker decomposition is an appealing practice to compress data of such experiments before different types of analysis can be performed, including computing a CP decomposition, for example~\cite{ABK-IPDPS-2016,BKK-TOMS-2020,RC-CILS-1998}.
 	
+%	WKV-Neuron-2018,
 	
 	 
 	Tensor Train is another popular tensor decomposition~\cite{O-SIAM-2011}. It represents a $d$-dimensional tensor with two matrices and $d$-$2$ three-dimensional tensors. This representation is very well suited to work with high dimensional tensors and used more often in molecular and quantum simulations. However, this has limited use in data analytics as it is hard to interpret its different components. There have been some recent contributions to replace dense weight matrices of the fully connected layers of deep neural networks by tensor train representations~\cite{NPOV-NIPS-2015}. This approach reduces the number of parameters and allows one to work with simpler networks. Still there is little progress on understanding the components of such tensor train based networks. Therefore, we focus on CP and Tucker decompositions which are widely used for data analytics. 
@@ -521,7 +522,7 @@ colorlinks]{hyperref}
 	
 %	\todo{Clarify how much is expected from the postdoc here.}
 	
-	As MPI collectives are based on global synchronization, they may not make effective utilization of all the resources. Therefore, later in the project, while working with heterogeneous resources (see Section~\ref{sec:heterogeneoussystem}), we will design our parallel algorithms in task-based structure. This will enable one to run them efficiently with popular runtime systems such as StarPU~\cite{ATNW-CCPE-2011} on modern computing platforms.
+	As MPI collectives are based on global synchronization, they may not make effective utilization of all the resources. Therefore, later in the project, while working with heterogeneous resources (see Section~\ref{sec:extension:heterogeneoussystem}), we will design our parallel algorithms in task-based structure. This will enable one to run them efficiently with popular runtime systems such as StarPU~\cite{ATNW-CCPE-2011} on modern computing platforms.
 	  
 	
 	
@@ -530,13 +531,15 @@ colorlinks]{hyperref}
 	\subsection{Tensor decompositions on heterogeneous systems}
 	\label{sec:heterogeneous}
 	
-	Accelerators such as GPU provide massive computational power at limited cost and energy, therefore they have become a crucial element of many present HPC systems~\cite{top500}. A significant amount of research has been conducted on optimizing sparse MTTKRP, TTM and tensor decompositions on heterogeneous systems~\cite{NLSVS-IPDPS-2019,LWSD-CLUSTER-2017,parti,NHCLTSRPC-ICS-2022}. 
+	Accelerators such as GPU provide massive computational power at limited cost and energy, therefore they have become a crucial element of many present HPC systems~\cite{top500}. A significant amount of research has been conducted on optimizing sparse MTTKRP, TTM and tensor decompositions on heterogeneous systems~\cite{NLSVS-IPDPS-2019,LWSD-CLUSTER-2017,parti}. 
+	
+%	,NHCLTSRPC-ICS-2022
 	
 	There is limited work on performing dense tensor decompositions on heterogeneous systems. Choi et al.~\cite{CLC-SC-2018} implemented the dense Tucker decomposition method on GPUs and achieved significant speedup over CPU-only implementations. Bin et al.~\cite{BKL-SENSORS-2020} proposed a GPU based framework to accelerate tensor decompositions for image sensor data. Li et al.~\cite{li2020atucker} proposed a framework to handle diversities of the input tensors for Tucker decomposition on CPUs and GPUs and showed that it outperforms the existing approaches. These works implemented the existing algorithms for GPUs and applied different types of optimizations to improve the performance. Their approaches perform well for the considered tensors, however they lack provable guarantees for communication/computation/overall costs. The SCATE project addresses this concern.
 	
 		
 	\subsection{Extending our framework for heterogeneous systems}
-	\label{sec:heterogeneoussystem}
+	\label{sec:extension:heterogeneoussystem}
 	In the beginning of this project, we will mainly focus on designing optimal algorithms for homogeneous systems. After that, we plan to extend our framework for heterogeneous systems with CPUs and GPUs. We will mainly consider the following three types of systems:
 	
 	\begin{figure}[htb]
@@ -677,12 +680,11 @@ colorlinks]{hyperref}
 	
 	There are two main risks with this project, but we believe they are not critical to its success.
 	
-	The first risk is that our algorithms may not improve the state of the art. As mentioned in Section~\ref{sec:context:soa:Tucker}, we have done preliminary study with the sequence approach and the all at once approach for Multi-TTTM. We observed that neither one is always superior for all inputs. This indicates that by combining both of these approaches we can improve the state of the art. In this project we plan to unifying many such approaches.
+	The first risk is that our algorithms may not improve the state of the art for all settings. As mentioned in Section~\ref{sec:combinedapproach}, in our preliminary study we observed that a simple combined approach is better than individual sequence and all at once approaches for some inputs. This indicates that by unifying all possible ways to combine both approaches we will be equal or better than the state of the art for all settings.
 %%	Therefore we believe that our algorithms will significantly outperform all existing ones.
 	
 	The second risk is that some of our algorithms may perform more communication than the proposed lower bounds. We aim to obtain all parameters of an algorithm from different terms of the corresponding lower bound. However this may not always be possible as it requires to match multiple terms with reasonable values. In such scenarios we aim to exactly match the larger terms and bound the increase in the smaller terms by the larger terms. This approach will provide the parameters of our algorithms with which they attain the lower bounds within a constant factor.
 	
-%%	Yes, maybe at the end of 2.2 (or at the end of 2.3). Explain how you will deal if the first WP (A1-A3, B1-B3) fails to bring sufficient bounds/algorithms or give facts proving you can be confident they can give sufficient input for the next WPs.
 
 \newpage
 
@@ -713,11 +715,11 @@ colorlinks]{hyperref}
 					\bottomrule
 			\end{tabular}}
 		\end{center}
-		\caption{Human resources.}
+		\vspace*{-0.35cm}\caption{Human resources.}
 		\label{tab:human}
 	\end{table}
 	
-	\subsection{The principal investigator and his team}
+	\vspace*{-0.35cm}\subsection{The principal investigator and his team}
 	\label{sec:org:team}
 	Suraj Kumar holds an Inria Starting Faculty Position (ISFP) since October 2022 in the ROMA Inria team, which is hosted at École Normale Supérieure de Lyon (ENS Lyon). He is an expert in tensor computations, communication avoiding algorithms and efficient utilization of resources on heterogeneous systems. He defended his thesis in April 2017 on Scheduling of Dense Linear Algebra Kernels on Heterogeneous Resources. After that, he joined Ericsson Research, India as an engineer and worked on the use of remote GPUs in cloud. He was a post-doctorate researcher at Pacific Northwest National Laboratory, USA from May 2018 to October 2019. He worked there on \href{https://www.exascaleproject.org/research-project/nwchemex}{NWChemEx} project, whose main goal was to run molecular simulations efficiently on exascale computers. He also worked at Inria Paris from November 2019 to September 2022 as a postdoctoral researcher on the design of parallel and communication optimal algorithms for Multi-TTM computations and tensor-train decompositions. He has collaborated with over 25 researchers all over the world. In particular he has an active collaboration with Grey Ballard of Wake Forest University, USA, who is an expert in the design of communication-efficient algorithms, that will be beneficial to the implementation of the project. The PI will dedicate 75\% of his research time on this project.
 	
@@ -785,12 +787,12 @@ colorlinks]{hyperref}
 	
 %	\newpage
 	\subtask{Subtask A1.1: Multi-TTM minimum communication costs}
-	\vspace*{-0.15cm}\begin{itemize}[leftmargin=-1pt]
-		\item[] \goal To obtain communication lower bounds for Multi-TTM.
-	\end{itemize}
 	\begin{itemize}[leftmargin=-1pt]
+		\item[] \goal To obtain communication lower bounds for Multi-TTM.
+%	\end{itemize}
+%	\begin{itemize}[leftmargin=-1pt]
 %		\item[] \goal To obtain communication lower bounds for Multi-TTM.
-		\item[] \dwp A key question would be to understand what is the minimum amount of data transfer is required to perform Multi-TTM in parallel. As mentioned in Section~\ref{sec:context:soa:Tucker}, there are multiple ways to perform this computation. We will look at all possible ways (as these are limited) to perform 3 and 4-dimensional computations. For each way, we will represent the amount of access of every input/output on a processor with one variable and construct an optimization problem whose objective function is convex and all the constraints can be expressed with quasiconvex functions. After that we will analytically solve the optimization problem with the help of Lagrange multipliers methods and Karush-Kuhn-Tucker (KKT) conditions, similar to the ones used in~\cite{ABGKR-SIMAX-2024}.
+		\item[] \dwp A key question would be to understand what is the minimum amount of data transfer is required to perform Multi-TTM in parallel. As mentioned in Section~\ref{sec:combinedapproach}, there are multiple ways to perform this computation. We will look at all possible ways (as these are limited) to perform 3 and 4-dimensional computations. For each way, we will represent the amount of access of every input/output on a processor with one variable and construct an optimization problem whose objective function is convex and all the constraints can be expressed with quasiconvex functions. After that we will analytically solve the optimization problem with the help of Lagrange multipliers methods and Karush-Kuhn-Tucker (KKT) conditions, similar to the ones used in~\cite{ABGKR-SIMAX-2024}.
 		
 		
 		It is sometimes hard to directly compare analytical solutions of several approaches. Therefore we will graphically plot them to have better understanding of how different factors influence the amount of data transfers. Following that we will generalize the analytical solutions for higher dimensions. 
@@ -835,14 +837,13 @@ colorlinks]{hyperref}
 		\item[] \goal To study comprise among computations, communications and data reuse for both methods. 
 		\item[] \dwp The previous subtask analyzes costs of the bottleneck computations of both methods. This subtask focuses on the full methods. For HOSVD, we will determine the cost of each computation and then sum them to obtain the overall cost. This will be an expression in terms of amount of operations and data transfers. This expression may not be very precise when two significant computations require different data distributions. However for HOSVD, when we employ randomized SVDs to compute factor matrices then the overall cost is dominated by Multi-TTM.
 		
-		A single iteration of the CP-ALS method performs $d$ MTTKRPs. As mentioned in Section~\ref{sec:context:soa:Canonical}, some intermediate computations between MTTKRPs can be reused. This will reduce the total amount of operations. Recently, Kaya and Ucar~\cite{KU-SISC-2018} used dimension trees to exploit reuse among all the MTTKRPs of a single iteration. This subtask intends to apply dimension tree approach to reduce the computations in all possible ways to perform MTTKRPs and then determine the overall cost of a single iteration in terms of amount of operations and data transfers.
-		\item[] \deliverables\newline
-		T0+18: A description of the overall costs of HOSVD and CP-ALS methods (report)\newline
+		A single iteration of the CP-ALS method performs $d$ MTTKRPs. As mentioned in Section~\ref{sec:combinedapproach}, some intermediate computations between MTTKRPs can be reused. This will reduce the total amount of operations. Recently, Kaya and Ucar~\cite{KU-SISC-2018} used dimension trees to exploit reuse among all the MTTKRPs of a single iteration. This subtask intends to apply dimension tree approach to reduce the computations in all possible ways to perform MTTKRPs and then determine the overall cost of a single iteration in terms of amount of operations and data transfers.
+		\item[] \deliverables T0+18: A description of the overall costs of HOSVD and CP-ALS methods (report)\newline
 		T0+18: An implementation of the dynamic programming based approach to express the overall costs for both methods (software)
 	\end{itemize}
 	
 	\subsubsection{\textbf{WPA3}: Design new parallel algorithms}
-	\begin{table}[H]
+	\vspace*{-0.375cm}\begin{table}[H]
 		\begin{tabular}{llll}
 			\hline
 			\cellcolor{blue2}
@@ -852,20 +853,19 @@ colorlinks]{hyperref}
 			Involvement      & 2 PM            & 2 PM & 7 PM \\
 			\hline
 		\end{tabular}
-	\end{table}
+	\end{table}\vspace*{-0.25cm}
 	%%\subtask{Subtask}
 	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal Develop new parallel algorithms for both methods.
 		\item[] \dwp The previous task \textbf{WPA2} specifies how different computations should be performed in both methods. Based on this information, \textbf{WPA3} designs parallel algorithm. Here the aim is that computation/communication cost corresponding to a particular variable (matrix or tensor) should be same as in \textbf{WPA2}. It may require to logically view the processors in a multi-dimensional grid. The previous work packages determine minimum communication costs by solving constrained optimization problems and have used only one variable for each input/output. An input/output usually has more than one dimension. Therefore we need to interpret the solutions of constrained optimization problems in multiple dimensions. This requires us to look at all the variables in a solution at once and determine how to partition each dimension to devise an algorithm. It may not always result in reasonable partitions. Recently we show that determining processor grid dimensions from the communication lower bounds of Multi-TTM in the all at once approach may require some extra adaptation~\cite{ABGKR-SIMAX-2024}. However we observe that we can bound overall communication cost of any variable in terms of that of the largest tensor. We plan to prove theoretical guarantees of the new algorithms in similar ways.
 		
 		If the communication cost of the algorithms is very far from the theoretical cost, we will spend more time on \textbf{WPA2} to understand what extra constraints we need to include. 
-		\item[] \deliverables\newline
-		T0+24: A description of the parallel HOSVD algorithm and its optimality proof (report)\newline
+		\item[] \deliverables T0+24: A description of the parallel HOSVD algorithm and its optimality proof (report)
 		T0+27: A description of the parallel CP-ALS algorithm and its optimality proof (report) 
 	\end{itemize}
 	
-	\subsubsection{\textbf{WPA4}: Experimental evaluation of the proposed algorithms}
-	\begin{table}[H]
+	\vspace*{-0.635cm}\subsubsection{\textbf{WPA4}: Experimental evaluation of the proposed algorithms}
+	\vspace*{-0.385cm}\begin{table}[H]
 		\begin{tabular}{llll}
 			\hline
 			\cellcolor{blue2}
@@ -875,7 +875,7 @@ colorlinks]{hyperref}
 			Involvement      & 3 PM            & 3 PM & 11 PM \\
 			\hline
 		\end{tabular}
-	\end{table}
+	\end{table}\vspace*{-0.25cm}
 	\subtask{Subtask A4.1: Implementation of the algorithms}
 	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To implement the proposed algorithms and run them on GENCI machines.
@@ -890,7 +890,7 @@ colorlinks]{hyperref}
 	\end{itemize}
 
 	\subsubsection{\textbf{WPA5}: Numerical robustness of the proposed algorithms}
-	\begin{table}[H]
+	\vspace*{-0.385cm}\begin{table}[H]
 		\begin{tabular}{lll}
 			\hline
 			\cellcolor{blue2}
@@ -900,16 +900,16 @@ colorlinks]{hyperref}
 			Involvement      & 1 PM            & 6 PM \\
 			\hline
 		\end{tabular}
-	\end{table}
+	\end{table}\vspace*{-0.25cm}
 	%%\subtask{Subtask}
 	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To study numerical robustness of the algorithms developed in \textbf{WPA3}.
 		\item[] \dwp Computations may be arranged differently than the conventional ways in the previous work packages. This will also change the numerical robustness of the algorithms. \textbf{WPA5} aims to study and compare numerical properties of our algorithms with the state of the art. 
-		\item[] \deliverables\newline
+		\item[] \deliverables
 		T0+36: Numerical guarantees of the proposed algorithms (report)
 	\end{itemize}
 	\subsubsection{\textbf{WPA6}: Applying mixed precision arithmetic}
-	\begin{table}[H]
+	\vspace*{-0.385cm}\begin{table}[H]
 		\begin{tabular}{lll}
 			\hline
 			\cellcolor{blue2}
@@ -919,7 +919,7 @@ colorlinks]{hyperref}
 			Involvement      & 2 PM            & 6 PM \\
 			\hline
 		\end{tabular}
-	\end{table}
+	\end{table}\vspace*{-0.25cm}
 	%%\subtask{Subtask}
 	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To apply mixed precision arithmetic to further improve our algorithms.
@@ -929,12 +929,10 @@ colorlinks]{hyperref}
 	
 	
 	\subsection{Description of the work packages for heterogeneous systems}
-	\label{sec:org:wp:hetero}
-	
-	%%Starting time: T0+24
-	
+	\label{sec:org:wp:hetero}	
+	%%Starting time: T0+24	
 	\subsubsection{\textbf{WPB1}: Metrics to express costs}
-	\begin{table}[H]
+	\vspace*{-0.385cm}\begin{table}[H]
 		\begin{tabular}{llll}
 			\hline
 			\cellcolor{blue2}
@@ -944,7 +942,8 @@ colorlinks]{hyperref}
 			Involvement      & 2 PM            & 1 PM & 2 PM \\
 			\hline
 		\end{tabular}
-	\end{table}
+	\end{table}\vspace*{-0.25cm}
+\newpage
 	%%\subtask{Subtask B1.1: }
 	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To study different parameters to formulate costs on heterogeneous systems.
@@ -953,7 +952,7 @@ colorlinks]{hyperref}
 	\end{itemize}
 	
 	\subsubsection{\textbf{WPB2}: Costs on a single simple heterogeneous node}
-	\begin{table}[H]
+	\vspace*{-0.385cm}\begin{table}[H]
 		\begin{tabular}{llll}
 			\hline
 			\cellcolor{blue2}
@@ -963,18 +962,18 @@ colorlinks]{hyperref}
 			Involvement      & 4 PM            & 1 PM & 7 PM \\
 			\hline
 		\end{tabular}
-	\end{table}
+	\end{table}\vspace*{-0.25cm}
 	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To develop minimum cost expressions for both decomposition methods. 
 		\item[] \dwp \textbf{WPB2} focuses on Figure~\ref{system:onecpugpu} type of system (a single simple heterogeneous node). It will first obtain expressions for Multi-TTM and MTTKRP computations. Due to heterogeneity, we need to solve optimization problems with more variables and constraints to determine the minimum communication costs. If all the constraints can not be expressed with quasiconvex function then we may not obtain analytical solutions. In such cases we plan to employ optimization softwares to solve them.
 		Following that, we plan to study tradeoff among computations, communication and reuse for both HOSVD and CP-ALS methods, and derive the minimum cost expressions in terms of amount of computations and communications. 
-		\item[] \deliverables\newline
+		\item[] \deliverables
 		T0+29: A description of the cost expressions for Multi-TTM and MTTKRP (report)\newline
 		T0+ 33: A description of the cost expression for the complete methods (report)
 	\end{itemize}
 	
 	\subsubsection{\textbf{WPB3}: Devise new algorithms}
-	\begin{table}[H]
+	\vspace*{-0.385cm}\begin{table}[H]
 		\begin{tabular}{llll}
 			\hline
 			\cellcolor{blue2}
@@ -984,7 +983,7 @@ colorlinks]{hyperref}
 			Involvement      & 2 PM            & 2 PM & 3 PM \\
 			\hline
 		\end{tabular}
-	\end{table}
+	\end{table}\vspace*{-0.25cm}
 	%%\subtask{Subtask B1.1: }
 	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To design new algorithms for both methods. 
@@ -993,7 +992,7 @@ colorlinks]{hyperref}
 	\end{itemize}
 	
 	\subsubsection{\textbf{WPB4}: Algorithms for more than one GPU}
-	\begin{table}[H]
+	\vspace*{-0.35cm}\begin{table}[H]
 		\begin{tabular}{llll}
 			\hline
 			\cellcolor{blue2}
@@ -1003,12 +1002,12 @@ colorlinks]{hyperref}
 			Involvement      & 6 PM            & 2 PM & 8 PM \\
 			\hline
 		\end{tabular}
-	\end{table}
+	\end{table}\vspace*{-0.05cm}
 	\subtask{Subtask B4.1: Devise algorithms for a single heterogeneous node.}
 	\begin{itemize}[leftmargin=-1pt]
 		\item[] \goal To extend \textbf{WPB2} and \textbf{WPB3} for more than one GPU of a single node.
 		\item[] \dwp This subtask focuses on Figure~\ref{system:onecpumultiplegpus} type of system. It expands the results of the previous two work packages to a node with multiple GPUs. It will develop complete algorithms for HOSVD and CP-ALS methods that achieve optimal completion times.
-		\item[] \deliverables\newline
+		\item[] \deliverables
 		T0 +41: A description of the complete algorithms for both methods (report)
 	\end{itemize}
 	\subtask{Subtask B4.2: Devise algorithms for multiple heterogeneous nodes.}
@@ -1019,7 +1018,7 @@ colorlinks]{hyperref}
 	\end{itemize}
 	
 		\subsubsection{\textbf{WPB5}: Incorporate empirical information}
-\begin{table}[H]
+\vspace*{-0.385cm}\begin{table}[H]
 	\begin{tabular}{lll}
 		\hline
 		\cellcolor{blue2}
@@ -1029,7 +1028,7 @@ colorlinks]{hyperref}
 		Involvement      & 4 PM     & 4 PM \\
 		\hline
 	\end{tabular}
-\end{table}
+\end{table}\vspace*{-0.25cm}
 %%\subtask{Subtask B1.1: }
 \begin{itemize}[leftmargin=-1pt]
 	\item[] \goal To include factual system information in our algorithms.
@@ -1051,7 +1050,21 @@ We present a tentative schedule of the work packages and their subtasks in Table
 \subsubsection*{Costs supported by ANR proposal}
 \paragraph{Staff} A PhD student (36 months), a postdoctoral researcher (24 months) and two research interns (master-level, 6 months) will be hired for the project. 
 
-	
+\paragraph{Mission, traveling} The project also includes funding to participate to international/national conferences/workshops. The traveling costs for these are evaluated as follows:
+\begin{itemize}
+	\item Attending 3 international conferences for the PI, 2 for the PhD student, 2 for the postdoctoral researcher during 4 years. Cost: (3+2+2) $\times $ 2.5k\euro $=$ 17.5k\euro.
+	\item Attending 4 workshops/conferences in France for the PI, 3 for the PhD student and 2 for the postdoctoral researcher during 4 years. Cost: (4+3+2) $\times$ 1k\euro $=$ 9k\euro.
+\end{itemize}
+We plan to organize a two-day workshop on tensor computations in Lyon at the beginning of Year 3, whose cost (food and breaks) will be partly supported by ANR (20 people). Cost: 2500\euro.
+
+\paragraph{Inward billing} Laptops for the PhD student and the postdoctoral researcher. Cost: 2$\times$2.5k\euro $=$ 5k\euro.
+
+
+
+
+
+
+
 	
 	%%\newcommand{\oc}{\cellcolor{orange1}}
 	%%\newcommand{\br}{\cellcolor{blue2}{\ding{45}}}% delivrable rapport
@@ -1185,51 +1198,47 @@ We present a tentative schedule of the work packages and their subtasks in Table
 	
 
 
-	
-	\paragraph{Mission, traveling} The project also includes funding to participate to international/national conferences/workshops. The traveling costs for these are evaluated as follows:
-	\begin{itemize}
-		\item Attending 3 international conferences for the PI, 2 for the PhD student, 2 for the postdoctoral researcher during 4 years. Cost: (3+2+2) $\times $ 2.5k\euro $=$ 17.5k\euro.
-		\item Attending 4 workshops/conferences in France for the PI, 3 for the PhD student and 2 for the postdoctoral researcher during 4 years. Cost: (4+3+2) $\times$ 1k\euro $=$ 9k\euro.
-	\end{itemize}
-	We plan to organize a two-day workshop on tensor computations in Lyon at the beginning of Year 3, whose cost (food and breaks) will be partly supported by ANR (20 people). Cost: 2500\euro.
-	
-	\paragraph{Inward billing} Laptops will be purchased for the PhD student and the postdoctoral researcher. Cost: 2$\times$2.5k\euro $=$ 5k\euro.
-	
-	
-	\begin{table}
-		\begin{center}
-			\begin{tabular}{p{3.8cm}p{8.25cm}r}
-				\toprule
-%				\multicolumn{1}{l}{}&& Inria Lyon \\\midrule
-				\multirow{3}{3.8cm}{Staff expenses}  & PhD student &   120k\euro \\\cline{2-3}
-				& Postdoctoral researcher  &100k\euro \\ \cline{2-3}
-				& 2 Research interns  & 6.6k\euro \\\hline
-				\multicolumn{2}{p{7cm}}{Inward billing (2 laptops)}    &    5k\euro \\\hline
-				\multirow{3}{3.8cm}{General and administrative costs \& other
-					operating expenses}  & Travel costs (international and local missions)  &  26.5k\euro \\\cline{2-3}
-				& Partial cost to organize a workshop  &  2.5k\euro \\\cline{2-3}
-				& Administrative management and\newline
-				structure costs& 37 787\euro \\\midrule
-				\multicolumn{2}{l}{\bf Requested} &\multicolumn{1}{r}{298 387\euro} \\
-				\bottomrule
-			\end{tabular}
-		\end{center}
-		\caption{Estimated cost of the project.}
-		\label{tab:costs}
-	\end{table}
+
+\begin{table}[h]
+	\begin{center}
+		\begin{tabular}{p{3.8cm}p{8.25cm}r}
+			\toprule
+			%				\multicolumn{1}{l}{}&& Inria Lyon \\\midrule
+			\multirow{3}{3.8cm}{Staff expenses}  & PhD student &   120k\euro \\\cline{2-3}
+			& Postdoctoral researcher  &100k\euro \\ \cline{2-3}
+			& 2 Research interns  & 6.6k\euro \\\hline
+			\multicolumn{2}{p{7cm}}{Inward billing (2 laptops)}    &    5k\euro \\\hline
+			\multirow{3}{3.8cm}{General and administrative costs \& other
+				 expenses}  & Travel costs (international and local missions)  &  26.5k\euro \\\cline{2-3}
+			& Partial cost to organize a workshop  &  2.5k\euro \\\cline{2-3}
+			& Administrative management costs& 37 787\euro \\\midrule
+			\multicolumn{2}{l}{\bf Requested} &\multicolumn{1}{r}{298 387\euro} \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	\vspace*{-0.45cm}\caption{Estimated cost of the project.\vspace*{-0.25cm}}
+	\label{tab:costs}
+\end{table}
 
 
 	\subsubsection*{Costs not supported by ANR proposal}
-	\paragraph{Experimental resources} We will initially use the machines available at ENS Lyon for our experiments. We also plan to ask compute-hours on GENCI to test scalability of our proposed algorithms.
-	
-	%%\paragraph{Additional travels and workshop} We will ask for additional funding from the ENS Lyon for a three months internship of the PhD student at Wake Forest University, Winston-Salem, North Carolina, USA. 
-	
-	
-	
-	
-	\paragraph{Additional visits and workshop} We will look for additional funding from Inria/CNRS for a three month scientific visit for the PhD student to launch new collaborations (for instance around the Cyclops~\cite{SMHD-IPDPS-2013}/TuckerMPI~\cite{BKK-TOMS-2020}/Deinsum~\cite{ZKBSH-SC-2022} library team) and to broaden his future perspectives. We will also seek additional funding to organize another workshop at the end of $4$th Year.
-	
-	\paragraph{Hiring of an engineer} This project (\textbf{Task B}) will develop provable algorithms for heterogeneous systems. We will submit another proposal to hire an engineer who will work on the implementation of these algorithms. The engineer will also work on combining our and TuckerMPI softwares (and other popular ones provided we manage to get good support from their contributors) in a unified framework.
+	\begin{itemize}[leftmargin=-1pt]
+		\item[] \textbf{Experimental resources} We will initially use the machines available at ENS Lyon for our experiments. We also plan to ask compute-hours on GENCI to test scalability of our proposed algorithms.
+		\item[] \textbf{Additional visits} We will look for additional funding from Inria/CNRS for a three month scientific visit for the PhD student to launch new collaborations (for instance around the Cyclops~\cite{SMHD-IPDPS-2013}/TuckerMPI~\cite{BKK-TOMS-2020}/ Deinsum~\cite{ZKBSH-SC-2022} library team) and to broaden his future perspectives.		
+		\item[] \textbf{Hiring of an engineer} This project (\textbf{Task B}) will develop provable algorithms for heterogeneous systems. We will submit another proposal to hire an engineer who will work on the implementation of these algorithms. The engineer will also work on combining our and TuckerMPI softwares (and other popular ones provided we manage to get good support from their contributors) in a unified framework.	
+	\end{itemize}
+%	\paragraph{Experimental resources} We will initially use the machines available at ENS Lyon for our experiments. We also plan to ask compute-hours on GENCI to test scalability of our proposed algorithms.
+%	
+%	%%\paragraph{Additional travels and workshop} We will ask for additional funding from the ENS Lyon for a three months internship of the PhD student at Wake Forest University, Winston-Salem, North Carolina, USA. 
+%	
+%	
+%	
+%	
+%	\paragraph{Additional visits} We will look for additional funding from Inria/CNRS for a three month scientific visit for the PhD student to launch new collaborations (for instance around the Cyclops~\cite{SMHD-IPDPS-2013}/TuckerMPI~\cite{BKK-TOMS-2020}/Deinsum~\cite{ZKBSH-SC-2022} library team) and to broaden his future perspectives.
+%	
+%%	We will also seek additional funding to organize another workshop at the end of $4$th Year.
+%	
+%	\paragraph{Hiring of an engineer} This project (\textbf{Task B}) will develop provable algorithms for heterogeneous systems. We will submit another proposal to hire an engineer who will work on the implementation of these algorithms. The engineer will also work on combining our and TuckerMPI softwares (and other popular ones provided we manage to get good support from their contributors) in a unified framework.
 	
 %%	• Project contribution to the coordinator’s empowerment and team development
 %%Demonstrate the project contribution to the young researcher’s empowerment and team development.sec:org:growth
@@ -1244,9 +1253,11 @@ We present a tentative schedule of the work packages and their subtasks in Table
 	
 	Nowadays multi-dimensional data is ubiquitous. However its analysis is challenging. Working actively on the design of parallel tensor decomposition algorithms will definitely attract attentions of people who work on data analysis. There are many research labs in Lyon such as \href{https://www.crnl.fr/}{CRNL} who analyze biological data. Collaborating with them will allow us to gain insight of realistic data and may help us to propose data specific decompositions. This will be useful for long term collaborations and enable us to submit interdisciplinary research and development proposals in future.
 	
-	As mentioned earlier, we plan to organize a workshop on tensor computations in Lyon at the beginning of third year. We plan to invite researchers from all over the Europe. Furthermore we plan to organize a minisymposium on tensor decompositions at SIAM Conference on Applied Linear Algebra (LA24), which would happen in Paris. These will allow us to have fruitful discussions and establish close collaborations.
+	As mentioned earlier, we plan to organize a workshop on tensor computations in Lyon at the beginning of third year. We plan to invite researchers from all over the Europe. Furthermore we plan to organize a minisymposium on tensor decompositions at Conference on Computational Science and Engineering (CSE25). These will allow us to have fruitful discussions and establish close collaborations.
 	
 	
+	
+
 	\section{Project impact and consequences}
 	\label{sec:impact}
 %%	Scientific impact and possible impact in economic, social and cultural fields	
@@ -1266,7 +1277,9 @@ We present a tentative schedule of the work packages and their subtasks in Table
 	
 	We expect to publish the obtained results in major scientific conferences (SC, IPDPS, SPAA, EuroPar) and journals (SIMAX, SISC, TOMS, TPDS). Preliminary results such as implementation prototypes, simulation results of cost models will be presented in poster sessions and demos co-located with major scientific conferences. SIAM conferences and workshops are very valuable events and most of them are without published proceeding. We also plan to present our work there. The algorithms that will be developed in this project will be freely available. We will publish the code under a free license. We will provide documentation and keep it up-to-date. This will create opportunities for outside people to use our code and engage with us.
 	
-	The PI offers  \emph{Data-aware algorithms for matrix and tensor computations} course for the 2nd year master students at ENS Lyon. He also plans to offer a course on multi-dimensional data analysis. All materials of these courses will be available on the PI's personal webpage.
+%	offers  \emph{Data-aware algorithms for matrix and tensor computations} course for the 2nd year master students at ENS Lyon.
+	
+	The PI also plans to offer a course on multi-dimensional data analysis for the 2nd year master students at ENS Lyon. All materials of this courses will be available on the PI's personal webpage.
 	
 	
 %%	The lectures of this course will be recorded and will be available on the PI's personal webpage.
