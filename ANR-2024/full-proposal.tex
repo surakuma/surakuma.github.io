@@ -239,7 +239,7 @@ colorlinks]{hyperref}
 %					\hline \hline
 %					Suraj Kumar & ISFP Inria & 36 PM\\ \hline
 %					Loris Marchal & DR2 CNRS, HdR& 6 PM\\ \hline
-%					Bora Ucar & DR2 CNRS, HdR & 6 PM\\ \hline
+%					Bora Uçar & DR2 CNRS, HdR & 6 PM\\ \hline
 %					PhD Student     & \textbf{Funded by ANR} & 36 PM \\ \hline
 %					Postdoctoral Researcher & \textbf{Funded by ANR} & 24 PM \\ \hline
 %					Research Intern &  \textbf{Funded by ANR} & 6 PM\\ \hline
@@ -253,7 +253,7 @@ colorlinks]{hyperref}
 
 	%%Suraj Kumar -- ISFP Researcher -- 36 PM
 	%%Loris Marchal -- DR2 CNRS, HdR -- 6 PM
-	%%Bora Ucar -- DR2 CNRS, HdR -- 6 PM
+	%%Bora Uçar -- DR2 CNRS, HdR -- 6 PM
 	%%PhD student -- Funder by ANR -- 36 PM
 	%%Postdoc -- Funded by ANR -- 24 PM
 	%%2 Master interns -- Funded by ANR -- 2*6=12 PM	
@@ -511,7 +511,7 @@ colorlinks]{hyperref}
 
 	As mentioned in the previous subsections, Multi-TTM and MTTKRP are  the bottleneck computations of HOSVD and CP-ALS methods, respectively. After performing detailed study of Multi-TTM and MTTKRP, we will design parallel algorithms such that the overall completion times of HOSVD and CP-ALS are minimal. We will implement our algorithms for homogeneous systems and test them on various datasets. 
 	
-	In Figures~\ref{fig:compAllatonceInseq} and \ref{fig:compCombinedAllatonceseq}, we used exhaustive search to determine the arrangement of processors that minimizes the cost of each approach. In order to avoid exhaustive search, we plan to determine processor grid dimensions analytically based on the components of communication lower bounds. To achieve this, we will equate communication cost expression of each matrix/tensor with their corresponding lower bounds and solve them such that all (or most of) the constraints are satisfied.
+	In Figures~\ref{fig:compAllatonceInseq} and \ref{fig:compCombinedAllatonceseq}, we used exhaustive search to determine the arrangement of processors that minimizes the cost of each approach. In order to avoid exhaustive search, we plan to determine processor grid dimensions analytically based on the components of communication lower bounds. We will equate communication cost expression of each matrix/tensor with their corresponding lower bounds and solve them such that all (or most of) the constraints are satisfied.
 	
 
 	
@@ -707,7 +707,7 @@ colorlinks]{hyperref}
 					\hline \hline
 					Suraj Kumar & ISFP Inria &  Principal investigator & 36 PM\\ \hline
 					Loris Marchal & DR2 CNRS, HdR & Will work on WPB1--WPB4 & 6 PM\\ \hline
-					Bora Ucar & DR2 CNRS, HdR & Will work on WPA2--WPA4& 6 PM\\ \hline
+					Bora Uçar & DR2 CNRS, HdR & Will work on WPA2--WPA4& 6 PM\\ \hline
 					PhD Student     & \textbf{Funded by ANR} & WPA1--WPA4 & 36 PM \\ \hline
 					Postdoctoral Researcher & \textbf{Funded by ANR} & WPB1--WPB5 & 24 PM \\ \hline
 					Research Intern &  \textbf{Funded by ANR} & WPA5 & 6 PM\\ \hline
@@ -725,10 +725,10 @@ colorlinks]{hyperref}
 	
 	
 	
-	The project will be pursued in the ROMA Inria team at ENS Lyon. It will include Loris Marchal (DR2, CNRS, HdR) and Bora Ucar (DR2, CNRS, HdR). Table~\ref{tab:human} summarizes the implication of each member of the project, including people hired by this ANR project.
+	The project will be pursued in the ROMA Inria team at ENS Lyon. It will include Loris Marchal (DR2, CNRS, HdR) and Bora Uçar (DR2, CNRS, HdR). Table~\ref{tab:human} summarizes the implication of each member of the project, including people hired by this ANR project.
 	
 		
-	Bora Ucar is an expert in the design of efficient algorithms for sparse tensor computations. He will help the PI in supervising the PhD student and is expected to be a PhD co-advisor. He will be greatly involved in \textbf{WPA3} and \textbf{WPA4} and help in \textbf{WPA2} to study reuse with dimension tree approach.
+	Bora Uçar is an expert in the design of efficient algorithms for sparse tensor computations. He will help the PI in supervising the PhD student and is expected to be a PhD co-advisor. He will be greatly involved in \textbf{WPA3} and \textbf{WPA4} and help in \textbf{WPA2} to study reuse with dimension tree approach.
 	
 	
 	Loris Marchal is an expert in memory aware computations and designing efficient scheduling algorithms for heterogeneous systems. He will help the PI to supervise the postdoctoral researcher. He will be involved in \textbf{WPB1}--\textbf{WPB4} of \textbf{Task B}.
@@ -817,7 +817,7 @@ colorlinks]{hyperref}
 		\begin{tabular}{llll}
 			\hline
 			\cellcolor{blue2}
-			Members involved & Suraj Kumar& Bora Ucar & PhD Student \\
+			Members involved & Suraj Kumar& Bora Uçar & PhD Student \\
 			\hline
 			\cellcolor{orange2}
 			Involvement      & 6 PM            & 1 PM & 10 PM \\
@@ -837,7 +837,7 @@ colorlinks]{hyperref}
 		\item[] \goal To study comprise among computations, communications and data reuse for both methods. 
 		\item[] \dwp The previous subtask analyzes costs of the bottleneck computations of both methods. This subtask focuses on the full methods. For HOSVD, we will determine the cost of each computation and then sum them to obtain the overall cost. This will be an expression in terms of amount of operations and data transfers. This expression may not be very precise when two significant computations require different data distributions. However for HOSVD, when we employ randomized SVDs to compute factor matrices then the overall cost is dominated by Multi-TTM.
 		
-		A single iteration of the CP-ALS method performs $d$ MTTKRPs. As mentioned in Section~\ref{sec:combinedapproach}, some intermediate computations between MTTKRPs can be reused. This will reduce the total amount of operations. Recently, Kaya and Ucar~\cite{KU-SISC-2018} used dimension trees to exploit reuse among all the MTTKRPs of a single iteration. This subtask intends to apply dimension tree approach to reduce the computations in all possible ways to perform MTTKRPs and then determine the overall cost of a single iteration in terms of amount of operations and data transfers.
+		A single iteration of the CP-ALS method performs $d$ MTTKRPs. As mentioned in Section~\ref{sec:combinedapproach}, some intermediate computations between MTTKRPs can be reused. This will reduce the total amount of operations. Recently, Kaya and Uçar~\cite{KU-SISC-2018} used dimension trees to exploit reuse among all the MTTKRPs of a single iteration. This subtask intends to apply dimension tree approach to reduce the computations in all possible ways to perform MTTKRPs and then determine the overall cost of a single iteration in terms of amount of operations and data transfers.
 		\item[] \deliverables T0+18: A description of the overall costs of HOSVD and CP-ALS methods (report)\newline
 		T0+18: An implementation of the dynamic programming based approach to express the overall costs for both methods (software)
 	\end{itemize}
@@ -847,7 +847,7 @@ colorlinks]{hyperref}
 		\begin{tabular}{llll}
 			\hline
 			\cellcolor{blue2}
-			Members involved & Suraj Kumar& Bora Ucar & PhD Student \\
+			Members involved & Suraj Kumar& Bora Uçar & PhD Student \\
 			\hline
 			\cellcolor{orange2}
 			Involvement      & 2 PM            & 2 PM & 7 PM \\
@@ -869,7 +869,7 @@ colorlinks]{hyperref}
 		\begin{tabular}{llll}
 			\hline
 			\cellcolor{blue2}
-			Members involved & Suraj Kumar& Bora Ucar & PhD Student \\
+			Members involved & Suraj Kumar& Bora Uçar & PhD Student \\
 			\hline
 			\cellcolor{orange2}
 			Involvement      & 3 PM            & 3 PM & 11 PM \\
