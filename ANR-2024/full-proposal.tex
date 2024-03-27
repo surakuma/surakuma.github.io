@@ -450,7 +450,7 @@ colorlinks]{hyperref}
 	\subsection{Combining all at once and sequence approaches}
 	\label{sec:combinedapproach}
 	
-	As mentioned in Section~\ref{sec:context:soa:Tucker}, in \cite{ABGKR-SIMAX-2024} we observed that neither approach is better than the other for Multi-TTM with all inputs in terms of communication costs. It motivates us to combine both approaches. There are many ways to perform Multi-TTM computation.  We present some of them below for 3-dimensional cubic input and output tensors.	 
+	As mentioned in Section~\ref{sec:context:soa:Tucker}, in \cite{ABGKR-SIMAX-2024}, we observed that neither approach is better than the other for Multi-TTM with all inputs in terms of communication costs. It motivates us to combine both approaches. There are many ways to perform Multi-TTM computation.  We present some of them below for 3-dimensional cubic input and output tensors.	 
 	
 %	\begin{align*}
 %		\Y&=\seqstart\seqstart\seqstart\X\times_1{\Mn{A}{1}}^\Tra \seqend\times_2{\Mn{A}{2}}^\Tra\seqend\times_3{\Mn{A}{3}}^\Tra\seqend,\\
@@ -487,7 +487,7 @@ colorlinks]{hyperref}
 	
 	
 	
-	The amount of operations for Multi-TTM depends on how it is performed, i.e, how factor matrices are operated with the input tensor. Figure~\ref{fig:compAllatonceInseq} shows that the all at once approach increases the amount of operations compared to the sequence approach. It is significantly higher for large number of processors. Therefore, it is also important to study the computation-communication tradeoff for the Multi-TTM. 
+	The amount of operations for Multi-TTM depends on how it is performed, i.e, how factor matrices are operated with the input tensor. Figure~\ref{fig:compAllatonceInseq} shows that the all at once approach increases the amount of operations compared to the sequence approach. It is significantly higher for large number of processors. Therefore, it is also important to study the computation-communication tradeoff for Multi-TTM. 
 	
 	
 %	We will model both communication and computation costs for the Multi-TTM and devise new parallel algorithms such that the overall completion time is minimal. 
@@ -501,7 +501,7 @@ colorlinks]{hyperref}
 	
 	\subsubsection{Challenges and our approaches to tackle them}
 	
-	As mentioned earlier, the amount of computations and communications for Multi-TTM and MTTKRP  depend on how we perform them. If we do not select it carefully, their completion times may be very far from optimal ones. Even when we decide how we want to perform the computations,  using one approach after the other in a straightforward way will only work if data distributions of inputs and temporaries between both approaches are compatible. However we can not expect any guarantee with respect to the optimal communication/computation cost.  Considering optimal data distributions for only one approach may induce significant data movements  for the other approach. Using optimal data distributions for both approaches may not be compatible or require significant data movement during the transition of the approach. Therefore, in order to take benefits of both all at once and sequential approaches, it is important to theoretical study all possible ways to combine them in detail. More precisely, we need to perform the following tasks to design efficient combined approaches for Multi-TTM and MTTKRP:
+	As mentioned earlier, the computations and communication costs of Multi-TTM and MTTKRP depend on how we perform them, i.e., how matrices are operated with the input tensor. If we do not select it carefully, their completion times may be very far from optimal ones. Even when we decide how we want to perform the computations, combining all at once and sequence approaches, using one after the other, in a straightforward way will only work if data distributions of inputs and temporaries between both approaches are compatible. However we can not expect any guarantees with respect to the optimal communication/computation costs. Considering optimal data distributions for only one approach may induce significant data movements for the other approach. Using optimal data distributions for both approaches may not be compatible or require significant data movement during the transition of the approach. Therefore, in order to take benefits of both all at once and sequential approaches, it is important to theoretical study all possible ways to combine them in detail. More precisely, we need to perform the following tasks to design efficient combined approaches for Multi-TTM and MTTKRP:
 	
 	
 %	We need to tackle the following challenges in order to take benefits of both all at once and sequential approaches.
@@ -526,7 +526,7 @@ colorlinks]{hyperref}
 	
 	\subsection{Strategy for parallel algorithms and their implementations}
 	
-	The HOSVD and CP-ALS methods illustrated in Algorithms~\ref{alg:hosvd} and ~\ref{alg:canonicalals} work with different matrix representations of a tensor. However changing one matrix representation to another results in huge data transfers on distributed memory machines. We plan to directly work with the tensor. We will design our parallel algorithms in a way such they work with subtensors at each step. This strategy will avoid the need of reshaping a tensor into multiple matrix representations. We will assume that each input and output are distributed across all nodes in the start and end, respectively.
+	The HOSVD and CP-ALS methods illustrated in Algorithms~\ref{alg:hosvd} and ~\ref{alg:canonicalals} work with different matrix representations of a tensor. However changing one matrix representation to another results in huge data transfers on distributed memory machines. We plan to directly work with the tensor. We will design our parallel algorithms in a way such they work with subtensors at each step. This strategy will avoid the need of reshaping a tensor into multiple matrix representations. We will also assume that each input and output are distributed across all nodes in the start and end, respectively.
 	
 	In the beginning, we plan to implement our parallel algorithms using MPI. All the communications of this implementation would be performed with collectives. This is a simple and popular strategy to minimize communication for many linear algebra kernels on homogeneous systems~\cite{ABK-IPDPS-2016,BKK-TOMS-2020}.
 	
