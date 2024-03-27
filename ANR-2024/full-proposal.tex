@@ -336,14 +336,15 @@ colorlinks]{hyperref}
 				
 				\path (-18,0) -- (8,0);
 				\end{tikzpicture}}
-			\caption{CP and Tucker decompositions of a 3-dimensional tensor.\label{fig:CTdecompositions}}
-		\end{center}		
+			\vspace*{-0.125cm}\caption{CP and Tucker decompositions of a 3-dimensional tensor.\label{fig:CTdecompositions}}
+		\end{center}\vspace*{-0.205cm}		
 	\end{figure}
 	
 	
 	
 	
-	Figure~\ref{fig:CTdecompositions} shows visual representations of both tensor decompositions for a 3-dimensional tensor. CP decomposition represents a tensor with the sum of rank one tensors. Whereas Tucker decomposition represents a tensor with multiple factor matrices and a much smaller core tensor. The number of dimensions for the core tensor and the original tensor are same. As mentioned earlier, tensors are used to store data in several domains. For example, in neuroscience, a single trial to observe behaviors of neurons over time can be stored in a matrix and data of multiple trials in a 3-dimensional tensor. CP decomposition is a popular method to analyse such neuroscience data~\cite{HKD-SIAM-2020}. Similarly, a single experiment in combustion simulations or electron microscopy produces terabytes of data. For instance, tracking 64 variables on a 512$\times$512$\times$512 three-dimensional spatial grid for 128 time steps in a simulation requires to store $2^{40}$ entries. It is very difficult to transfer and analyze data of these experiments. Tucker decomposition is an appealing practice to compress data of such experiments before different types of analysis can be performed, including computing a CP decomposition, for example~\cite{ABK-IPDPS-2016,BKK-TOMS-2020,RC-CILS-1998}.
+	Figure~\ref{fig:CTdecompositions} shows visual representations of both tensor decompositions for a 3-dimensional tensor. CP decomposition represents a tensor with the sum of rank one tensors. Whereas Tucker decomposition represents a tensor with multiple factor matrices and a much smaller core tensor. The number of dimensions for the core tensor and the original tensor are same. As mentioned earlier, tensors are used to store data in several domains. For example, in neuroscience, a single trial to observe behaviors of neurons over time can be stored in a matrix and data of multiple trials in a 3-dimensional tensor. CP decomposition is a popular method to analyse such neuroscience data~\cite{HKD-SIAM-2020}. Similarly, a single experiment in combustion simulations or electron microscopy produces terabytes of data. For instance, tracking 64 variables on a 512$\times$512$\times$512 three-dimensional spatial grid for 128 time steps in a simulation requires to store $2^{40}$ entries. It is very difficult to transfer and analyze data of these experiments. Tucker decomposition is an appealing practice to compress data of such experiments before different types of analysis can be performed~\cite{ABK-IPDPS-2016,BKK-TOMS-2020,RC-CILS-1998}.
+%	, including computing a CP decomposition, for example~\cite{ABK-IPDPS-2016,BKK-TOMS-2020,RC-CILS-1998}.
 	
 %	WKV-Neuron-2018,
 	
@@ -363,23 +364,26 @@ colorlinks]{hyperref}
 	\label{sec:context:soa:Tucker}
 
 
-	\begin{algorithm}[htb]{
-			\caption{HOSVD method to compute Tucker decomposition\label{alg:hosvd}}
-			\begin{algorithmic}[1]
-				\Require input tensor $\X$, desired rank $(R_1, R_2,\cdots, R_d)$
-				\Ensure  $\X = \Y \times_1 {\Mn{A}{1}}\times_2 {\Mn{A}{2}}\cdots \times_d {\Mn{A}{d}}$
-				\For{$k=1 \text{ to } d$}
-				\State $\Mn{A}{k} \gets R_k$ leading left singular vectors of $X_{(k)}$\label{alg:hosvd:SVDs}
-				\EndFor
-				\State $\Y = \X \times_1 {\Mn{A}{1}}^\Tra \times_2 {\Mn{A}{2}}^\Tra \cdots\times_d {\Mn{A}{d}}^\Tra$\label{alg:hosvd:multiTTM}
-			\end{algorithmic}
-	}\end{algorithm}
+
 	
 	Truncated higher-order SVD (HOSVD) is one of the popular methods for computing a Tucker decomposition, thanks to its quasi-optimal numerical approximation. In this algorithm, the core tensor is computed with the full-format original tensor and multiple tall and skinny factor matrices.	
 	
 
 	
 	Algorithm~\ref{alg:hosvd} computes a $(R_1, R_2, \cdots, R_d)$-rank Tucker decomposition of a $d$-dimensional tensor $\X$~\cite{KB-SIAM-2009}. $\Mn{A}{k}$ is a tall-skinny factor matrix corresponding to mode $k$, and $\times_k$ denotes the \linebreak tensor-times-matrix (TTM)\footnote{TTM in the $k$th mode is the multiplication of a tensor $\X$ with a matrix $A$, denoted by $\Z=\X \times_k A^\Tra$. In the element-wise notation, it is defined as $\Z_{i_1\cdots i_{k-1}ri_{k+1}\cdots i_d} = \sum_{i_k}\X_{i_1\cdots i_{k-1}i_ki_{k+1}\cdots i_d}A_{i_k r}$.} computation in the $k$th mode.
+
+
+	\begin{algorithm}[tb]{
+		\caption{HOSVD method to compute Tucker decomposition\label{alg:hosvd}}
+		\begin{algorithmic}[1]
+			\Require input tensor $\X$, desired rank $(R_1, R_2,\cdots, R_d)$
+			\Ensure  $\X = \Y \times_1 {\Mn{A}{1}}\times_2 {\Mn{A}{2}}\cdots \times_d {\Mn{A}{d}}$
+			\For{$k=1 \text{ to } d$}
+			\State $\Mn{A}{k} \gets R_k$ leading left singular vectors of $X_{(k)}$\label{alg:hosvd:SVDs}
+			\EndFor
+			\State $\Y = \X \times_1 {\Mn{A}{1}}^\Tra \times_2 {\Mn{A}{2}}^\Tra \cdots\times_d {\Mn{A}{d}}^\Tra$\label{alg:hosvd:multiTTM}
+		\end{algorithmic}
+	}\end{algorithm}
 
 	$X_{(k)}$ denotes a matrix representation of $\X$ and is obtained by considering the $k$th dimension as the rows and collapsing the remaining dimensions as the columns. The collective operation of Line~\ref{alg:hosvd:multiTTM} to compute the core tensor $\Y$ is known as the Multi-TTM computation~\cite{ABGKR-SIMAX-2024}. When the computational costs of the matrix SVDs (Line~\ref{alg:hosvd:SVDs}) are reduced using randomization, Multi-TTM becomes the overwhelming bottleneck computation~\cite{MSK-SIAM-2020,SGLTU-SIAM-2020,AAAMCPTO-ACCESS-2021}.
 		
@@ -389,18 +393,18 @@ colorlinks]{hyperref}
 
 	
 	\begin{figure}[htb]
-		\begin{center}
+		\vspace*{-0.35cm}\begin{center}
 			\includegraphics[scale=0.215]{./plots/all-at-once-seq-label.png}
 		\end{center}
 		\vspace*{-1.05cm}\begin{center}
 			\subfigure[Input and output tensor dimensions are $12\times12\times12$ and $4\times4\times4$, respectively.]{
-				\includegraphics[width=0.45\linewidth]{./plots/AAO-vs-Seq-logscale-comparison-with-comp-12-4.eps}
+				\includegraphics[width=0.415\linewidth]{./plots/AAO-vs-Seq-logscale-comparison-with-comp-12-4.eps}
 			}$\quad$
 			\subfigure[Input and output tensor dimensions are $13\times13\times13$ and $6\times6\times6$, respectively.]{
-				\includegraphics[width=0.45\linewidth]{./plots/AAO-vs-Seq-logscale-comparison-with-comp-13-6.eps}
+				\includegraphics[width=0.415\linewidth]{./plots/AAO-vs-Seq-logscale-comparison-with-comp-13-6.eps}
 			}
-			\caption{Comparison of all at once and sequence approaches for two 3-dimensional Multi-TTM computations. $Comp$-$Overhead$ shows the percentage of computational overhead of all at once with respect to the sequence approach.\label{fig:compAllatonceInseq}}
-		\end{center}		
+			\vspace*{-0.125cm}\caption{Comparison of all at once and sequence approaches for two 3-dimensional Multi-TTM computations. $Comp$-$Overhead$ shows the percentage of computational overhead of all at once with respect to the sequence approach.\label{fig:compAllatonceInseq}}
+		\end{center}\vspace*{-0.385cm}		
 	\end{figure}
 
 	This result also exhibits that neither is better than the other in terms of communication costs for all inputs. It indicates that by combining both of these approaches we can obtain better gains. This encourages us to study how to perform this computation such that the communication is optimal. 
@@ -414,7 +418,7 @@ colorlinks]{hyperref}
 	\label{sec:context:soa:Canonical}
 	Computing a CP decomposition involves solving a nonlinear optimization problem to minimize the approximation error. The workhorse method to compute this decomposition uses an alternating least squares (ALS) approach. This works in multiple iterations. Algorithm~\ref{alg:canonicalals} computes a $R$-rank CP decomposition of a $d$-dimensional tensor $\X$ using ALS~\cite{KB-SIAM-2009}. Here $*$ and $\odot$ denote Hadamard and Khatri-Rao products, respectively. Similar to the previous subsection, $X_{(i)}$ represents the $i$th unfolding matrix of $\X$. 
 	
-	\begin{algorithm}[H]{
+	\begin{algorithm}[t]{
 			\caption{CP-ALS method to compute CP decomposition\label{alg:canonicalals}}
 			\begin{algorithmic}[1]
 				\Require input tensor $\X$, desired rank $R$, initial factor matrices $\Mn{A}{1}, \cdots, \Mn{A}{d}$
@@ -428,7 +432,7 @@ colorlinks]{hyperref}
 				\EndFor\label{method:canonical:oneiter:end}
 				\Until converge or the maximum number of iterations
 			\end{algorithmic}
-	}\end{algorithm}
+	}\end{algorithm}\vspace*{-0.15cm}
 	
 	In Line~\ref{alg:canonicalals:mttkrp}, the matricized tensor is multiplied with the Khatri-Rao product and this collective operation is known as the matricized-tensor times Khatri-Rao products (MTTKRP) computation~\cite{LCPSV-IPDPS-2017}. This is the bottleneck computation of the CP-ALS method~\cite{BNR-IPDPS-2018,LCPSV-IPDPS-2017}.
 	
@@ -448,14 +452,18 @@ colorlinks]{hyperref}
 	
 	As mentioned in Section~\ref{sec:context:soa:Tucker}, in \cite{ABGKR-SIMAX-2024} we observed that neither approach is better than the other for Multi-TTM with all inputs in terms of communication costs. It motivates us to combine both approaches. There are many ways to perform Multi-TTM computation.  We present some of them below for 3-dimensional cubic input and output tensors.	 
 	
-	\begin{align*}
-		\Y&=\seqstart\seqstart\seqstart\X\times_1{\Mn{A}{1}}^\Tra \seqend\times_2{\Mn{A}{2}}^\Tra\seqend\times_3{\Mn{A}{3}}^\Tra\seqend,\\
-		\Y&=\allatoncestart\seqstart\X \times_1 {\Mn{A}{1}}^\Tra \seqend \times_2 {\Mn{A}{2}}^\Tra \times_3 {\Mn{A}{3}}^\Tra \allatonceend,\\
-		\Y &= \seqstart\allatoncestart\X \times_1 {\Mn{A}{1}}^\Tra \times_2 {\Mn{A}{2}}^\Tra\allatonceend \times_3 {\Mn{A}{3}}^\Tra\seqend,\\
-		\Y &= \allatoncestart\X \times_1 {\Mn{A}{1}}^\Tra \times_2 {\Mn{A}{2}}^\Tra \times_3 {\Mn{A}{3}}^\Tra\allatonceend.
-	\end{align*}
-	
-	
+%	\begin{align*}
+%		\Y&=\seqstart\seqstart\seqstart\X\times_1{\Mn{A}{1}}^\Tra \seqend\times_2{\Mn{A}{2}}^\Tra\seqend\times_3{\Mn{A}{3}}^\Tra\seqend,\\
+%		\Y&=\allatoncestart\seqstart\X \times_1 {\Mn{A}{1}}^\Tra \seqend \times_2 {\Mn{A}{2}}^\Tra \times_3 {\Mn{A}{3}}^\Tra \allatonceend,\\
+%		\Y &= \seqstart\allatoncestart\X \times_1 {\Mn{A}{1}}^\Tra \times_2 {\Mn{A}{2}}^\Tra\allatonceend \times_3 {\Mn{A}{3}}^\Tra\seqend,\\
+%		\Y &= \allatoncestart\X \times_1 {\Mn{A}{1}}^\Tra \times_2 {\Mn{A}{2}}^\Tra \times_3 {\Mn{A}{3}}^\Tra\allatonceend.
+%	\end{align*}
+
+	\vspace*{-0.375cm}\begin{align*}
+\Y=\seqstart\seqstart\seqstart\X\times_1{\Mn{A}{1}}^\Tra \seqend\times_2{\Mn{A}{2}}^\Tra\seqend\times_3{\Mn{A}{3}}^\Tra\seqend,\quad & \Y=\allatoncestart\seqstart\X \times_1 {\Mn{A}{1}}^\Tra \seqend \times_2 {\Mn{A}{2}}^\Tra \times_3 {\Mn{A}{3}}^\Tra \allatonceend,\\
+\Y = \seqstart\allatoncestart\X \times_1 {\Mn{A}{1}}^\Tra \times_2 {\Mn{A}{2}}^\Tra\allatonceend \times_3 {\Mn{A}{3}}^\Tra\seqend,\qquad & \Y = \allatoncestart\X \times_1 {\Mn{A}{1}}^\Tra \times_2 {\Mn{A}{2}}^\Tra \times_3 {\Mn{A}{3}}^\Tra\allatonceend.
+\end{align*}\vspace*{-0.35cm}
+
 	Here purple parenthesis indicates that the whole computation inside it will be computed with the all at once approach and blue parenthesis denotes a single TTM computation.  Note that here we follow the order of matrices. Changing the order for the rectangular dimensions may minimize the overall communication. It is also reasonable to first operate only with some matrices and then combine the intermediate results with the remaining computations. Our goal is to find the minimal communication cost of this computation and how it should be performed. 
 	
 
@@ -471,7 +479,7 @@ colorlinks]{hyperref}
 	\end{center}
 	\vspace*{-1cm}\begin{center}
 		\includegraphics[width=0.45\linewidth]{./plots/AAO-vs-Seq-logscale-comparison-with-coup.eps}
-		\caption{Comparison of all at once and sequence approaches with a combined approach for the second example of Figure~\ref{fig:compAllatonceInseq}. Input and output tensor dimensions are $13\times13\times13$ and $6\times6\times6$, respectively. Here in the combined approach,  all at once approach is applied with first two matrices and then a single TTM is performed with the intermediate  result and the last matrix, $\Y = \seqstart\allatoncestart\X \times_1 {\Mn{A}{1}}^\Tra \times_2 {\Mn{A}{2}}^\Tra\allatonceend \times_3 {\Mn{A}{3}}^\Tra\seqend$. \label{fig:compCombinedAllatonceseq}}
+		\vspace*{-0.15cm}\caption{Comparison of all at once and sequence approaches with a combined approach for the second example of Figure~\ref{fig:compAllatonceInseq}. Input and output tensor dimensions are $13\times13\times13$ and $6\times6\times6$, respectively. Here in the combined approach,  all at once approach is applied with first two matrices and then a single TTM is performed with the intermediate  result and the last matrix, $\Y = \seqstart\allatoncestart\X \times_1 {\Mn{A}{1}}^\Tra \times_2 {\Mn{A}{2}}^\Tra\allatonceend \times_3 {\Mn{A}{3}}^\Tra\seqend$. \label{fig:compCombinedAllatonceseq}\vspace*{-0.45cm}}
 	\end{center}		
 \end{figure}
 	
@@ -548,7 +556,7 @@ colorlinks]{hyperref}
 	\begin{figure}[htb]
 		\begin{center}
 			\subfigure[A single node with one CPU and one GPU.\label{system:onecpugpu}]
-			{\begin{tikzpicture}[scale=0.7, every node/.style={transform shape}]
+			{\begin{tikzpicture}[scale=0.67, every node/.style={transform shape}]
 				\tikzstyle{cpunode}=[draw=black, minimum height=16mm, minimum width=16mm, fill=none, text=black, below]
 				\tikzstyle{gpunode}=[draw=black, minimum height=12mm, minimum width=12mm, fill=none, text=black]
 				
@@ -561,10 +569,10 @@ colorlinks]{hyperref}
 				\node (td0)  at (t0.mid) [below=0.275cm,memorynode,scale=0.6] {$Memory$};
 				\node (td1)  at (t1.north) [below=0.15cm,memorynode,scale=0.5] {$Memory$};
 				\draw [<->, line width=1.5, orange] (td0) -- (td1);
-				\path (-2.25,0) -- (2.08,0);
+				\path (-2.25,0) -- (2.58,0);
 				\end{tikzpicture}}$\quad$
 			\subfigure[A single node with one CPU and multiple GPUs.\label{system:onecpumultiplegpus}]
-			{\begin{tikzpicture}[scale=0.7, every node/.style={transform shape}]
+			{\begin{tikzpicture}[scale=0.67, every node/.style={transform shape}]
 				\tikzstyle{cpunode}=[draw=black, minimum height=16mm, minimum width=16mm, fill=none, text=black, below]
 				\tikzstyle{gpunode}=[draw=black, minimum height=12mm, minimum width=12mm, fill=none, text=black]
 				
@@ -589,7 +597,7 @@ colorlinks]{hyperref}
 				
 				\end{tikzpicture}}$\qquad$
 			\subfigure[Multiple nodes where each node has one CPU and atleast one GPU.\label{system:gen}]
-			{\begin{tikzpicture}[scale=0.7, every node/.style={transform shape}]
+			{\begin{tikzpicture}[scale=0.67, every node/.style={transform shape}]
 				\tikzstyle{cpunode}=[draw=black, minimum height=16mm, minimum width=16mm, fill=none, text=black, below]
 				\tikzstyle{gpunode}=[draw=black, minimum height=12mm, minimum width=12mm, fill=none, text=black]
 				
@@ -629,8 +637,8 @@ colorlinks]{hyperref}
 				\draw [<->, line width=1.5, orange] (td20) -- (td21);
 				\draw [<->, line width=1.5, orange] (td20) -- (td22);
 				\end{tikzpicture}}
-			\caption{Different types of heterogeneous systems.\label{fig:heterogeneousSystems}}
-		\end{center}		
+			\vspace*{-0.05cm}\caption{Different types of heterogeneous systems.\label{fig:heterogeneousSystems}}
+		\end{center}\vspace*{-0.25cm}		
 	\end{figure}
 	
 	Usually there are many processing units attached to a particular memory module. However to simplify the model, we view them as a single big computing unit.
@@ -640,6 +648,8 @@ colorlinks]{hyperref}
 	\label{sec:context:obj}
 	
 	The goal of the SCATE project is to devise Tucker and CP decomposition algorithms which scale well on the modern computing systems. Recent work~\cite{ABGKR-SIMAX-2024} made by the principal investigator (PI) of this project started to address the bottleneck computation of Tucker decomposition and obtained encouraging preliminary results. The complete parallel algorithms for these decompositions with provable guarantees on their performances are still missing. The main focus of the SCATE project is to address this aspect.
+	
+%	\newpage
 	%%\sk{May be something on the state of the art approaches}
 	
 	The project first studies tradeoff among computations, communications and data reuse for popular tensor decomposition methods and proposes new parallel algorithms whose completion times are optimal for homogeneous systems. After that, the proposed algorithms will be implemented and tested with various datasets on the distributed machines available at ENS Lyon. We will also examine scalability of our algorithms on more than 5,000 cores and/or 512 nodes of \href{https://www.genci.fr/en/our-computers}{GENCI (Grand Equipement de Calcul Intensif)}, which includes the supercomputers from CEA and CNRS.
@@ -660,7 +670,7 @@ colorlinks]{hyperref}
 		\item JICF: This is a $500 \times 2080 \times 1500 \times 18 \times 10$ tensor data. It is obtained from a jet in cross-flow simulation. It corresponds to a $500 \times 2080 \times 1500$ spatial grid with $18$ variables over $10$ time steps. The size of the entire dataset is 6.7 TB.
 	\end{itemize}
 	
-	We will use the Mouse dataset of~\cite{EHBKMP-TOMS-2021} to evaluate our parallel MTTKRP and CP-ALS algorithms.
+	\noindent We will use the Mouse dataset of~\cite{EHBKMP-TOMS-2021} to evaluate our parallel MTTKRP and CP-ALS algorithms.
 	\begin{itemize}
 		\item Mouse dataset: This is a 3-dimensional dataset that corresponds to images of a mouse's brain over time and over a sequence of identical trials. Each entry of the tensor represents a measure of calcium fluorescence in a particular pixel during a time step of a single trial. Each image has dimension $1040\times 1392$ and the number of time steps across $25$ trials is $69$. By flattening the pixel dimensions, it results in a $1446680 \times 69 \times 25$ tensor. 
 	\end{itemize}
