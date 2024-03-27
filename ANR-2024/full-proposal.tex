@@ -435,7 +435,7 @@ colorlinks]{hyperref}
 	A popular choice to compute MTTKRP is to first calculate the explicit Khatri-Rao products and then apply the matricized tensor in a single matrix multiplication~\cite{BK-SIAM-2008}. Another approach is to work with all the inputs at once without forming an intermediate: 
 	$$\Mn{A}{j}_{lr} = \sum_{i_1,\cdots,i_{j-1},i_{j+1},\cdots i_d}\X_{i_1,\cdots,i_{j-1},l,i_{j+1},\cdots i_d}\prod_{k\in{\{1,\cdots,j-1,j+1,\cdots,d\}}}\Mn{A}{k}_{i_k r}.$$
 	
-	Ballard et al.~\cite{BNR-IPDPS-2018} show that the latter approach significantly reduces communication compared to the former one. There are many ways to perform this computation. Similar to Multi-TTM, our goal is to find the minimal communication cost of MTTKRP. 
+	Ballard et al.~\cite{BNR-IPDPS-2018} show that the latter approach significantly reduces communication compared to the former one. We can take benefits of both approaches by combining them in a unified manner. This encourages us to look at all possible ways to perform MTTKRP such that the communication is optimal.
 	
 	
 	Another state-of-the-art approach to compute a CP decomposition is based on gradients. MTTKRP is also the bottleneck computation for this approach. Hence, improving the performance of MTTKRP will also accelerate gradient-based approach to compute the decomposition.
@@ -445,7 +445,8 @@ colorlinks]{hyperref}
 %	\label{sec:challenges}
 	\subsection{Combining all at once and sequence approaches}
 	\label{sec:combinedapproach}
-	As mentioned in Section~\ref{sec:context:soa:Tucker}, neither approach is better than the other for Multi-TTM with all inputs in terms of communication costs.  It advocates to combine both approaches. There are many ways to perform Multi-TTM computation.  We present some of them below for  3-dimensional cubic input and output tensors.	 
+	
+	As mentioned in Section~\ref{sec:context:soa:Tucker}, in \cite{ABGKR-SIMAX-2024} we observed that neither approach is better than the other for Multi-TTM with all inputs in terms of communication costs. It motivates us to combine both approaches. There are many ways to perform Multi-TTM computation.  We present some of them below for 3-dimensional cubic input and output tensors.	 
 	
 	\begin{align*}
 		\Y&=\seqstart\seqstart\seqstart\X\times_1{\Mn{A}{1}}^\Tra \seqend\times_2{\Mn{A}{2}}^\Tra\seqend\times_3{\Mn{A}{3}}^\Tra\seqend,\\
@@ -486,7 +487,7 @@ colorlinks]{hyperref}
 %	
 %	Similar to Multi-TTM, we will study all possible ways to perform $3$ and $4$-dimensional MTTKRP computations. After that, we will generalize our finding and create a dynamic programming based approach to determine how to perform this computation. T
 	
-	Similar to Multi-TTM, the communication and computation costs of  MTTKRP  depend on how factor matrices are operated with the original tensor. Therefore it is also important to study communication-computation tradeoff for MTTKRP. We can note that the intermediate Khatri-Rao products may be used between different iterations in Algorithm~\ref{alg:canonicalals}. With 4-dimensional tensors, MTTKRP corresponding to both 1st and 2nd iterations need $\Mn{A}{4}\odot\Mn{A}{3}$. If we store this result in the 1st iteration then it can be reused in the 2nd one. Therefore, it is essential to study tradeoff among communications, computations and reuse of intermediate results for a single iteration (Lines~\ref{method:canonical:oneiter:start}--\ref{method:canonical:oneiter:end}) of CP-ALS method.
+	Similar to Multi-TTM, the communication and computation costs of MTTKRP depend on how factor matrices are operated with the original tensor. Therefore it is also important to study communication-computation tradeoff for MTTKRP. We can note that the intermediate Khatri-Rao products may be used between different iterations in Algorithm~\ref{alg:canonicalals}. With 4-dimensional tensors, MTTKRP corresponding to both 1st and 2nd iterations need $\Mn{A}{4}\odot\Mn{A}{3}$. If we store this result in the 1st iteration then it can be reused in the 2nd one. Therefore, it is essential to study tradeoff among communications, computations and reuse of intermediate results for a single iteration (Lines~\ref{method:canonical:oneiter:start}--\ref{method:canonical:oneiter:end}) of CP-ALS method.
 	
 	
 	
@@ -497,7 +498,7 @@ colorlinks]{hyperref}
 	
 %	We need to tackle the following challenges in order to take benefits of both all at once and sequential approaches.
 	\begin{itemize}
-		\item Analyze communication costs for all possible ways to perform them 
+		\item Analyze communication costs for all possible ways to perform both computations 
 		\item Investigate tradeoff among amount of operations, communications and data reuse
 		\item Design communication optimal parallel algorithms
 %		\item Design and implement parallel HOSVD and CP-ALS methods and test on various datasets
@@ -507,8 +508,7 @@ colorlinks]{hyperref}
 	
 	We will study all possible ways to perform $3$ and $4$-dimensional Multi-TTM and MTTKRP computations in detail as the number of ways are limited. After that, we will generalize our findings and create a dynamic programming based approach to determine how to perform $d$-dimensional Multi-TTM and MTTKRP computations.
 	
-	\subsubsection*{Design optimal algorithms for complete methods}
-
+	\paragraph{Design optimal algorithms for complete methods}
 	As mentioned in the previous subsections, Multi-TTM and MTTKRP are  the bottleneck computations of HOSVD and CP-ALS methods, respectively. After performing detailed study of Multi-TTM and MTTKRP, we will design parallel algorithms such that the overall completion times of HOSVD and CP-ALS are minimal. We will implement our algorithms for homogeneous systems and test them on various datasets. 
 	
 	In Figures~\ref{fig:compAllatonceInseq} and \ref{fig:compCombinedAllatonceseq}, we used exhaustive search to determine the arrangement of processors that minimizes the cost of each approach. In order to avoid exhaustive search, we plan to determine processor grid dimensions analytically based on the components of communication lower bounds. We will equate communication cost expression of each matrix/tensor with their corresponding lower bounds and solve them such that all (or most of) the constraints are satisfied.
@@ -516,7 +516,10 @@ colorlinks]{hyperref}
 
 	
 	
-	\subsubsection*{Strategy for parallel implementation}
+	\subsection{Strategy for parallel algorithms and their implementations}
+	
+	The HOSVD and CP-ALS methods illustrated in Algorithms~\ref{alg:hosvd} and ~\ref{alg:canonicalals} work with different matrix representations of a tensor. However changing one matrix representation to another results in huge data transfers on distributed memory machines. We plan to directly work with the tensor. We will design our parallel algorithms in a way such they work with subtensors at each step. This strategy will avoid the need of reshaping a tensor into multiple matrix representations. We will assume that each input and output are distributed across all nodes in the start and end, respectively.
+	
 	In the beginning, we plan to implement our parallel algorithms using MPI. All the communications of this implementation would be performed with collectives. This is a simple and popular strategy to minimize communication for many linear algebra kernels on homogeneous systems~\cite{ABK-IPDPS-2016,BKK-TOMS-2020}.
 	
 	
@@ -538,7 +541,7 @@ colorlinks]{hyperref}
 	There is limited work on performing dense tensor decompositions on heterogeneous systems. Choi et al.~\cite{CLC-SC-2018} implemented the dense Tucker decomposition method on GPUs and achieved significant speedup over CPU-only implementations. Bin et al.~\cite{BKL-SENSORS-2020} proposed a GPU based framework to accelerate tensor decompositions for image sensor data. Li et al.~\cite{li2020atucker} proposed a framework to handle diversities of the input tensors for Tucker decomposition on CPUs and GPUs and showed that it outperforms the existing approaches. These works implemented the existing algorithms for GPUs and applied different types of optimizations to improve the performance. Their approaches perform well for the considered tensors, however they lack provable guarantees for communication/computation/overall costs. The SCATE project addresses this concern.
 	
 		
-	\subsection{Extending our framework for heterogeneous systems}
+	\subsubsection{Extending our framework for heterogeneous systems}
 	\label{sec:extension:heterogeneoussystem}
 	In the beginning of this project, we will mainly focus on designing optimal algorithms for homogeneous systems. After that, we plan to extend our framework for heterogeneous systems with CPUs and GPUs. We will mainly consider the following three types of systems:
 	
