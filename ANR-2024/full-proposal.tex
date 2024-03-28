@@ -393,7 +393,7 @@ colorlinks]{hyperref}
 
 	
 	\begin{figure}[htb]
-		\vspace*{-0.35cm}\begin{center}
+		\vspace*{-0.25cm}\begin{center}
 			\includegraphics[scale=0.215]{./plots/all-at-once-seq-label.png}
 		\end{center}
 		\vspace*{-1.05cm}\begin{center}
@@ -403,8 +403,8 @@ colorlinks]{hyperref}
 			\subfigure[Input and output tensor dimensions are $13\times13\times13$ and $6\times6\times6$, respectively.]{
 				\includegraphics[width=0.415\linewidth]{./plots/AAO-vs-Seq-logscale-comparison-with-comp-13-6.eps}
 			}
-			\vspace*{-0.125cm}\caption{Comparison of all at once and sequence approaches for two 3-dimensional Multi-TTM computations. $Comp$-$Overhead$ shows the percentage of computational overhead of all at once with respect to the sequence approach.\label{fig:compAllatonceInseq}}
-		\end{center}\vspace*{-0.385cm}		
+			\vspace*{-0.135cm}\caption{Comparison of all at once and sequence approaches for two 3-dimensional Multi-TTM computations. $Comp$-$Overhead$ shows the percentage of computational overhead of all at once with respect to the sequence approach.\label{fig:compAllatonceInseq}}
+		\end{center}\vspace*{-0.475cm}		
 	\end{figure}
 
 	This result also exhibits that neither is better than the other in terms of communication costs for all inputs. It indicates that by combining both of these approaches we can obtain better gains. This encourages us to study how to perform this computation such that the communication is optimal. 
@@ -439,7 +439,7 @@ colorlinks]{hyperref}
 	A popular choice to compute MTTKRP is to first calculate the explicit Khatri-Rao products and then apply the matricized tensor in a single matrix multiplication~\cite{BK-SIAM-2008}. Another approach is to work with all the inputs at once without forming an intermediate: 
 	$$\Mn{A}{j}_{lr} = \sum_{i_1,\cdots,i_{j-1},i_{j+1},\cdots i_d}\X_{i_1,\cdots,i_{j-1},l,i_{j+1},\cdots i_d}\prod_{k\in{\{1,\cdots,j-1,j+1,\cdots,d\}}}\Mn{A}{k}_{i_k r}.$$
 	
-	Ballard et al.~\cite{BNR-IPDPS-2018} show that the latter approach significantly reduces communication compared to the former one. We can take benefits of both approaches by combining them in a unified manner. This encourages us to look at all possible ways to perform MTTKRP such that the communication is optimal.
+	Ballard et al.~\cite{BNR-IPDPS-2018} show that the latter approach significantly reduces communication compared to the former one. We can obtain better gains by combining both of them in a unified manner. This encourages us to look at all possible ways to perform MTTKRP such that the communication is optimal.
 	
 	
 	Another state-of-the-art approach to compute a CP decomposition is based on gradients. MTTKRP is also the bottleneck computation for this approach. Hence, improving the performance of MTTKRP will also accelerate gradient-based approach to compute the decomposition.
@@ -467,7 +467,7 @@ colorlinks]{hyperref}
 	Here purple parenthesis indicates that the whole computation inside it will be computed with the all at once approach and blue parenthesis denotes a single TTM computation.  Note that here we follow the order of matrices. Changing the order for the rectangular dimensions may minimize the overall communication. It is also reasonable to first operate only with some matrices and then combine the intermediate results with the remaining computations. Our goal is to find the minimal communication cost of this computation and how it should be performed. 
 	
 
-	A preliminary study by the PI shows that a combined approach reduces communication compared to the original ones for some inputs (see Figure~\ref{fig:compCombinedAllatonceseq}). It validates our intuitions and boosts our goal to analyze all possible ways to perform  Multi-TTM computations.
+	A preliminary study by the principal investigator shows that a combined approach reduces communication compared to the original ones for some inputs (see Figure~\ref{fig:compCombinedAllatonceseq}). It validates our intuitions and boosts our goal to analyze all possible ways to perform  Multi-TTM computations.
 
 
 
@@ -501,7 +501,7 @@ colorlinks]{hyperref}
 	
 	\subsubsection{Challenges and our approaches to tackle them}
 	
-	As mentioned earlier, the computations and communication costs of Multi-TTM and MTTKRP depend on how we perform them, i.e., how matrices are operated with the input tensor. If we do not select it carefully, their completion times may be very far from optimal ones. Even when we decide how we want to perform the computations, combining all at once and sequence approaches, using one after the other, in a straightforward way will only work if data distributions of inputs and temporaries between both approaches are compatible. However we can not expect any guarantees with respect to the optimal communication/computation costs. Considering optimal data distributions for only one approach may induce significant data movements for the other approach. Using optimal data distributions for both approaches may not be compatible or require significant data movement during the transition of the approach. Therefore, in order to take benefits of both all at once and sequential approaches, it is important to theoretical study all possible ways to combine them in detail. More precisely, we need to perform the following tasks to design efficient combined approaches for Multi-TTM and MTTKRP:
+	As mentioned earlier, the computations and communication costs of Multi-TTM and MTTKRP depend on how we perform them, i.e., how matrices are operated with the input tensor. If we do not select it carefully, their completion times may be very far from the optimal ones. Even when we decide how we want to perform the computations, combining all at once and sequence approaches, using one after the other, in a straightforward way will only work if data distributions of inputs and temporaries between both approaches are compatible. However we can not expect any guarantees with respect to the optimal communication/computation costs. Considering optimal data distributions for only one approach may induce significant data movements for the other approach. Using optimal data distributions for both approaches may not be compatible or require significant data movement during the transition of the approach. Therefore, in order to take benefits of both all at once and sequential approaches, it is important to theoretical study all possible ways to combine them in detail. More precisely, we need to perform the following tasks to design efficient combined approaches for Multi-TTM and MTTKRP:
 	
 	
 %	We need to tackle the following challenges in order to take benefits of both all at once and sequential approaches.
@@ -519,14 +519,14 @@ colorlinks]{hyperref}
 	\paragraph{Design optimal algorithms for complete methods}
 	As mentioned in the previous subsections, Multi-TTM and MTTKRP are  the bottleneck computations of HOSVD and CP-ALS methods, respectively. After performing detailed study of Multi-TTM and MTTKRP, we will design parallel algorithms such that the overall completion times of HOSVD and CP-ALS are minimal. We will implement our algorithms for homogeneous systems and test them on various datasets. 
 	
-	In Figures~\ref{fig:compAllatonceInseq} and \ref{fig:compCombinedAllatonceseq}, we used exhaustive search to determine the arrangement of processors that minimizes the cost of each approach. In order to avoid exhaustive search, we plan to determine processor grid dimensions analytically based on the components of communication lower bounds. We will equate communication cost expression of each matrix/tensor with their corresponding lower bounds and solve them such that all (or most of) the constraints are satisfied.
+	In Figures~\ref{fig:compAllatonceInseq} and \ref{fig:compCombinedAllatonceseq}, we used exhaustive search to determine the arrangement of processors that minimizes the cost of each approach. In order to avoid exhaustive search, we plan to determine processor grid dimensions analytically based on the components of communication lower bounds. We will equate communication cost expressions of all matrices/tensors with their corresponding lower bounds and solve them such that all the constraints (with larger terms) are satisfied.
 	
 
 	
 	
 	\subsection{Strategy for parallel algorithms and their implementations}
 	
-	The HOSVD and CP-ALS methods illustrated in Algorithms~\ref{alg:hosvd} and ~\ref{alg:canonicalals} work with different matrix representations of a tensor. However changing one matrix representation to another results in huge data transfers on distributed memory machines. We plan to directly work with the tensor. We will design our parallel algorithms in a way such they work with subtensors at each step. This strategy will avoid the need of reshaping a tensor into multiple matrix representations. We will also assume that each input and output are distributed across all nodes in the start and end, respectively.
+	The HOSVD and CP-ALS methods illustrated in Algorithms~\ref{alg:hosvd} and ~\ref{alg:canonicalals} work with different matrix representations of a tensor. However changing one matrix representation to another results in huge data transfers on distributed memory machines. We plan to directly work with the tensor. We will design our parallel algorithms in a way such that they work with subtensors at each step. This strategy will avoid the need of reshaping a tensor into multiple matrix representations. We will also assume that each input and output are distributed across all nodes in the start and end, respectively.
 	
 	In the beginning, we plan to implement our parallel algorithms using MPI. All the communications of this implementation would be performed with collectives. This is a simple and popular strategy to minimize communication for many linear algebra kernels on homogeneous systems~\cite{ABK-IPDPS-2016,BKK-TOMS-2020}.
 	
@@ -681,7 +681,7 @@ colorlinks]{hyperref}
 	
 	\medskip
 	
-	\noindent\url{http://frostt.io/tensors} stores several sparse tensors obtained from real applications. Thanks to this, a significant amount of research has been conducted on sparse tensor computations in the last 6 years. However we have observed relatively less work on dense tensor computations. The SCATE project, with the help of other researchers from tensor community, plans to setup a public repository to store dense tensors of real applications. We will seek support from Inria/CNRS to host this repository.
+	\noindent\url{http://frostt.io/tensors} stores several sparse tensors obtained from real applications. Thanks to this, a significant amount of research has been conducted on sparse tensor computations in the last 7 years. However we have observed relatively less work on dense tensor computations. The SCATE project, with the help of other researchers from tensor community, plans to setup a public repository to store dense tensors of real applications. We will seek support from Inria/CNRS to host this repository.
 %%	We will use Inria cloud storage for this. 
 	We will add all the used real-world tensors in the project to that repository. We will also add code snippets of real applications that generate dense tensors, such as correlation functions. We believe this repository will help researchers to work more on dense tensor computations. 
 	
@@ -1258,7 +1258,7 @@ We plan to organize a two-day workshop on tensor computations in Lyon at the beg
 	\subsection{Growth of the PI and team development}
 	\label{sec:org:growth}
 	Tensors are used in several domains. Therefore acceptance of this proposal certainly will improve the visibility of the PI in various research communities. We expect to publish the obtained results in major conferences/journals of the field. We also plan to present our work on relevant conferences, symposiums and workshops. These will enhance the visibility of the team and allow us to engage with other researchers and start new collaborations.
-%%	discuss with other researchers and start new collaborations.
+
 	
 	
 %%	This will also broaden the perspective of the temporary employees and help them to achieve their next career goals.
@@ -1266,7 +1266,7 @@ We plan to organize a two-day workshop on tensor computations in Lyon at the beg
 	
 	Nowadays multi-dimensional data is ubiquitous. However its analysis is challenging. Working actively on the design of parallel tensor decomposition algorithms will definitely attract attentions of people who work on data analysis. There are many research labs in Lyon such as \href{https://www.crnl.fr/}{CRNL} who analyze biological data. Collaborating with them will allow us to gain insight of realistic data and may help us to propose data specific decompositions. This will be useful for long term collaborations and enable us to submit interdisciplinary research and development proposals in future.
 	
-	As mentioned earlier, we plan to organize a workshop on tensor computations in Lyon at the beginning of third year. We plan to invite researchers from all over the Europe. Furthermore we plan to organize a minisymposium on tensor decompositions at Conference on Computational Science and Engineering (CSE25). These will allow us to have fruitful discussions and establish close collaborations.
+	As mentioned earlier, we plan to organize a workshop on tensor computations in Lyon at the beginning of third year. We plan to invite researchers from all over the Europe. Furthermore we plan to organize a minisymposium on tensor decompositions at SIAM Conference on Computational Science and Engineering (CSE25). These will allow us to have fruitful discussions and establish close collaborations.
 	
 	
 	
@@ -1275,7 +1275,7 @@ We plan to organize a two-day workshop on tensor computations in Lyon at the beg
 	\label{sec:impact}
 %%	Scientific impact and possible impact in economic, social and cultural fields	
 	\subsection*{Impact of the project}
-	The parallel algorithms developed within the project will substantially improve the capabilities to perform data analytics on modern computing systems. This will lead to a strong impact in domains that deal with large amount of multi-dimensional data. For example, medical research, scientific simulations, data mining, computer vision and astrophysics, to name a few. The large amount of data transfers is one of the main bottlenecks for big data analytics and extreme scale visualization~\cite{DOE-Report-2014}. The project employs communication avoidance strategies to design the parallel algorithms and implement them for homogeneous systems. This should allow scientists to solve significantly larger problems and explore new ideas. The communication avoidance strategy also reduces energy consumption that helps to minimize carbon footprint.
+	The parallel algorithms developed within the project will substantially improve the capabilities to perform data analytics on modern computing systems. This will lead to a strong impact in domains that deal with large amount of multi-dimensional data. For example, medical research, scientific simulations, data mining, computer vision and astrophysics, to name a few. The large amount of data transfers is one of the main bottlenecks for big data analytics and extreme scale visualization~\cite{DOE-Report-2014}. The project employs communication avoidance strategies to design parallel algorithms and implement them for homogeneous systems. This should allow scientists to solve significantly larger problems and explore new ideas. The communication avoidance strategy also reduces energy consumption that helps to minimize carbon footprint.
 	
 	The public repository to store dense tensors of real applications will be very helpful for the whole tensor community. It will allow them to test their tensor algorithms on realistic data. We expect that it will become a classical benchmark, like SuiteSparse for sparse matrices.
 	
