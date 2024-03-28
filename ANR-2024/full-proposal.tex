@@ -177,7 +177,7 @@ colorlinks]{hyperref}
 		%%        /STINT
 		%%        {\LARGE \sc to enhance Low-Rank Compression}\\
 		{\large \sc Décompositions de tenseurs évolutives pour l'analyse de données}\\[0.2cm]
-		{\normalsize CES46 $>$ Axe E.05 $>$ Modèles numériques, simulation, applications}\\
+		{\normalsize CE46 $>$ Axe E.05 $>$ Modèles numériques, simulation, applications}\\
 		{\normalsize AAPG 2024 / JCJC 48 months/ Budget 298 387 \euro}
 		%%		{\normalsize AAPG 2023 / JCJC 48 months / Budget 283K\euro\bora{no need for budget here}}
 		\vspace*{0.2\baselineskip}
@@ -467,7 +467,7 @@ colorlinks]{hyperref}
 	Here purple parenthesis indicates that the whole computation inside it will be computed with the all at once approach and blue parenthesis denotes a single TTM computation.  Note that here we follow the order of matrices. Changing the order for the rectangular dimensions may minimize the overall communication. It is also reasonable to first operate only with some matrices and then combine the intermediate results with the remaining computations. Our goal is to find the minimal communication cost of this computation and how it should be performed. 
 	
 
-	A preliminary study by the principal investigator shows that a combined approach reduces communication compared to the original ones for some inputs (see Figure~\ref{fig:compCombinedAllatonceseq}). It validates our intuitions and boosts our goal to analyze all possible ways to perform  Multi-TTM computations.
+	A preliminary study by the principal investigator shows that a combined approach reduces communication compared to the original ones for some inputs (see Figure~\ref{fig:compCombinedAllatonceseq}). It validates our intuitions and boosts our goal to analyze all possible ways to perform  Multi-TTM computation.
 
 
 
@@ -495,13 +495,13 @@ colorlinks]{hyperref}
 %	
 %	Similar to Multi-TTM, we will study all possible ways to perform $3$ and $4$-dimensional MTTKRP computations. After that, we will generalize our finding and create a dynamic programming based approach to determine how to perform this computation. T
 	
-	Similar to Multi-TTM, the communication and computation costs of MTTKRP depend on how factor matrices are operated with the original tensor. Therefore it is also important to study communication-computation tradeoff for MTTKRP. We can note that the intermediate Khatri-Rao products may be used between different iterations in Algorithm~\ref{alg:canonicalals}. With 4-dimensional tensors, MTTKRP corresponding to both 1st and 2nd iterations need $\Mn{A}{4}\odot\Mn{A}{3}$. If we store this result in the 1st iteration then it can be reused in the 2nd one. Therefore, it is essential to study tradeoff among communications, computations and reuse of intermediate results for a single iteration (Lines~\ref{method:canonical:oneiter:start}--\ref{method:canonical:oneiter:end}) of CP-ALS method.
+	Similar to Multi-TTM, the communication and computation costs of MTTKRP depend on how factor matrices are operated with the input tensor. Therefore it is also important to study communication-computation tradeoff for MTTKRP. We can note that the intermediate Khatri-Rao products may be used between different iterations in Algorithm~\ref{alg:canonicalals}. With 4-dimensional tensors, MTTKRP corresponding to both 1st and 2nd iterations need $\Mn{A}{4}\odot\Mn{A}{3}$. If we store this result in the 1st iteration then it can be reused in the 2nd one. Therefore, it is essential to study tradeoff among communications, computations and reuse of intermediate results for a single iteration (Lines~\ref{method:canonical:oneiter:start}--\ref{method:canonical:oneiter:end}) of CP-ALS method.
 	
 	
 	
 	\subsubsection{Challenges and our approaches to tackle them}
 	
-	As mentioned earlier, the computations and communication costs of Multi-TTM and MTTKRP depend on how we perform them, i.e., how matrices are operated with the input tensor. If we do not select it carefully, their completion times may be very far from the optimal ones. Even when we decide how we want to perform the computations, combining all at once and sequence approaches, using one after the other, in a straightforward way will only work if data distributions of inputs and temporaries between both approaches are compatible. However we can not expect any guarantees with respect to the optimal communication/computation costs. Considering optimal data distributions for only one approach may induce significant data movements for the other approach. Using optimal data distributions for both approaches may not be compatible or require significant data movement during the transition of the approach. Therefore, in order to take benefits of both all at once and sequential approaches, it is important to study all possible ways to combine them in detail. More precisely, we need to perform the following tasks to design efficient combined approaches for Multi-TTM and MTTKRP:
+	As mentioned earlier, the computations and communication costs of Multi-TTM and MTTKRP depend on how we perform them, i.e., how matrices are operated with the input tensor. If we do not select it carefully, their completion times may be very far from the optimal ones. Even when we know how we want to perform the computations, combining all at once and sequence approaches, using one after the other, in a straightforward way will only work if data distributions of inputs and temporaries between both approaches are compatible. However we can not expect any guarantees with respect to the optimal communication/computation costs. Considering optimal data distributions for only one approach may induce significant data movements for the other approach. Using optimal data distributions for both approaches may not be compatible or require significant data movement during the transition of the approach. Therefore, in order to take benefits of both all at once and sequential approaches, it is important to study all possible ways to combine them in detail. More precisely, we need to perform the following tasks to design efficient combined approaches for Multi-TTM and MTTKRP:
 	
 	
 %	We need to tackle the following challenges in order to take benefits of both all at once and sequential approaches.
