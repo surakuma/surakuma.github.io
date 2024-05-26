@@ -8,7 +8,7 @@
 
 <center><h1 class="title">Data-aware algorithms for matrix and tensor computations</h1></center>
 <center><h3>Instructor: <a href="https://surakuma.github.io/">Suraj Kumar</a>
-  (<a href="http://www.ens-lyon.fr/LIP/ROMA">ROMA</a> team, LIP, ENS Lyon), 2024-2025 </h3></center><br><br>
+  (<a href="http://www.ens-lyon.fr/LIP/ROMA">ROMA</a> team, LIP, ENS Lyon), 2023-2024 </h3></center><br><br>
 
 <!--
 <h1>Data-aware parallel algorithms for matrix and tensor computations</h1>
@@ -109,8 +109,15 @@ optimal approaches for those computations.</p>
 Experience with algorithm analysis and mathematical optimization will be helpful,
 but not required.
 <!--
+<i>Prerequisite:</i> Experience with algorithm analysis and mathematical optimization
+will be helpful, but not required.
+-->
+
 <h2> Lecture notes </h2>
 <ul>
+<!--  <li> Lecture 1: Overview of the course <a href="https://drive.google.com/file/d/1pFEUq2tuGTLY_YDw2NN-q6X0VquMEs31">slides</a>
+    and sequential matrix multiplication <a href="https://drive.google.com/file/d/1VHNRTnwbdKC4XDlxTr_IvfOsBFaqCg0a">slides</a>.
+    Assignment 1 is out with two questions (please see the slides). </li> -->
   <li> Lecture 1 (Sep 12): Overview of the course <a href="../CR12/Lecture1/course_overview.pdf">slides</a>
       and sequential matrix multiplication <a href="../CR12/Lecture1/seqmatmul.pdf">slides</a>. Suggested reading <a href="https://arxiv.org/abs/1702.02017">pdf</a>.
       Assignment 1 is out with two questions (please see the slides). </li>
@@ -137,10 +144,14 @@ but not required.
       Suggested reading <a href="https://arxiv.org/abs/1708.07401">pdf</a>. </li>
     <li> Lecture 11 (Oct 17): Multiple tensor times matrix computations <a href="../CR12/Lecture11/Multi-TTM.pdf">slides</a>.
         Suggested reading <a href="https://inria.hal.science/hal-03950359">pdf</a>. Final assignment is out (please see the slides), and it is due by Oct 26.
+        <!-- ,and <span style="color:green"><strong> it is due by Oct 26</strong></span>.
+        <span style="color:green"><strong>  You can write your answers on a paper or in latex. Please
+          send them to my ENS or Inria email address by Oct 26. </strong></span> -->
         </li>
     <li> Lecture 12 (Oct 19): Guest lecture by <a href="http://perso.ens-lyon.fr/bora.ucar">Bora Uçar</a> on <em> sparse matrices and
       bipartite graphs </em> <a href="../CR12/Lecture12/buBVN.pdf">slides</a>. </li>
     <li> Lecture 13 (Oct 24): Remaining portions of Multiple tensor times matrix computations. </li>
+    <!-- <li> Oct 26: No class. </li> -->
     <li> Lecture 14 (Nov 7):  Implementation of CP/Tucker/Tensor train decompositions in Matlab/Octave <a href="../CR12/Lectures13-14/tensordecompositions.tar.gz">files</a>. </li>
     <li> Lectures 15-16 (Nov 9): Project presentations and discussion. </li>
 </ul>
@@ -148,29 +159,27 @@ but not required.
 <br>
 Acknowledgement: I am extremely thankful to Grey Ballard and Loris Marchal for sharing source files of slides of their courses. I am using some of their slides in this course.
 
--->
 <h3> Evaluation </h3>
 The evaluation will be based on the following weightings:
 <ul>
-  <li> 4 homework assignments (best 3 would be counted): 40%</li>
-  <li> Project (60%): A list of selected research topics/papers will be provided.
+  <li> 5 homework assignments (best 3 would be counted): 40%</li>
+  <li> Project: 60%</li>
+
+  <!-- (60%): A list of selected research topics/papers will be provided.
     Each student or a group of 2 students will prepare a report and give a presentation
-    for one of these.</li>
+    for one of these.-->
 
     <!--Each student has to analyze contributions of one of the given research
     papers. The output will be assessed based on a written report (in ACM
     format: <a href="https://www.acm.org/publications/proceedings-template">https://www.acm.org/publications/proceedings-template</a>)
     and an oral presentation.-->
 </ul>
-<!--
+
  <h3> Course project for the final evaluation </h3>
  Each student or a group of two students will prepare a 5-6 pages report and give a presentation
  for one of the below topics/articles. <span style="color:green"><strong> Project report is due by Nov 6.</strong></span>
--->
  <!--<span style="color:brown"><strong> Email me your or your group choice (or propose another topic/article) by Oct 12 </strong></span>. -->
 
-
-<!--
  <h4> Research topics </h4>
  <ul>
    <li> Communication costs of a specific matrix factorization (LU, QR, TSQR, RRQR, ...)</li>
@@ -193,7 +202,7 @@ The evaluation will be based on the following weightings:
 
  <br>
  If you want to propose another topic/article, I would be happy to discuss it with you.
--->
+
  <h3> Recommended reading (evolving) </h3>
   <menu>
  <li> Tight Memory-Independent Parallel Matrix Multiplication Communication Lower Bounds <br>
@@ -203,6 +212,7 @@ The evaluation will be based on the following weightings:
  <a href="https://arxiv.org/abs/2205.13407"> Extended version</a>.</li>
   </menu>
 
+<!--https://dl.acm.org/doi/pdf/10.1145/3490148.3538552, https://arxiv.org/pdf/2205.13407 -->
   <menu>
     <li>Minimizing Communication in Numerical Linear Algebra <br>
     <i> Grey Ballard, James Demmel, Olga Holtz, Oded Schwartz</i><br>
@@ -241,6 +251,10 @@ The evaluation will be based on the following weightings:
   <li> <a href="https://ieeexplore.ieee.org/document/9820702">Sparsity-Aware Tensor Decomposition</a>. </li>
   <li> <a href="https://inria.hal.science/hal-03079236v5">Higher-Order QR with Tournament Pivoting for Tensor Compression</a>. </li>
   <li> <a href="https://arxiv.org/abs/2306.13835">Computron: Serving Distributed Deep Learning Models with Model Parallel Swapping</a>. </li>
+
+
+
+
 
 </ul>
 </body>
