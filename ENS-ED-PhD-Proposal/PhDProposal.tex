@@ -1,0 +1,95 @@
+\documentclass[11pt]{article}
+%
+\oddsidemargin -4.0mm
+\evensidemargin -4.0mm
+\topmargin -25.0mm
+\headsep 6.0mm
+\textwidth 174.0mm
+\textheight 240.0mm
+\headheight 15.0mm
+\footskip 5.0mm
+\leftmargin 0.0mm
+%
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{babel}
+\usepackage{eurosym}
+\usepackage{xspace}
+\usepackage{hyperref}
+
+\usepackage{fancyhdr}
+%\pagestyle{fancy}
+\date{}
+\begin{document}
+%\maketitle
+
+ \noindent\textbf{PhD subject}: \emph{Low-rank Tensor Representations of Convolutional Neural Networks }\newline
+ \textbf{Advisors}: Suraj Kumar and Loris Marchal\newline
+ \textbf{Location}: ROMA Inria team, LIP, ENS Lyon, France
+
+\section*{Synopsis}
+
+\emph{We view convolutional neural network (CNN) models as large tensors and plan to represent them with their low-rank tensor representations. The main goal of this PhD thesis is to take advantage of parallel work on tensor computations and various methods to iteratively train tensor based frameworks for the efficient training and prediction with popular CNN models.}
+
+
+\emph{This PhD thesis will be held in the ROMA Inria team at LIP, ENS Lyon under the supervision of Suraj Kumar and Loris Marchal. We will also collaborate with  Alena Shilova (To be confirmed: She will  join Inria Saclay as a permanent researcher in this September). }
+
+
+
+\section{Project description}
+%\section{Description du projet {\small (1 page minimum, 3 pages maximum)}}
+%\section{Ressources demandées {\small (avec quelques lignes d'explication)}}
+
+CNNs are currently the state-of-the-art models to classify objects in several domains, such as computer vision, speech recognition, text processing etc. Thanks to improved computational capability, we witness several popular complex and deeper CNNs. For example, AlexNet is 8 layers deep, while ResNet-152 employs short connections and is represented with 152 layers. Both have about 60M parameters. CNNs have intensive computational requirements due to their huge complexity and large number of parameters. 
+
+Tensors are a natural way to represent high dimensional data for numerous applications in computational science and data science. Tensor decompositions help to identify inherent structure of data, achieve data compression and enable various ways of data analysis~\cite{KB-SIAMReview2009}. CP, Tucker and Tensor Train are the widely used tensor decomposition methods in the literature. These decompositions represent a high dimensional object with a small set of low dimensional objects. These decompositions can be viewed as high order generalization of singular value decomposition. CP decomposition is used to understand the latent components of the data and well suited for tensors with small dimensions. Tucker decomposition is considered to be more appropriate for compression and multi-modal data analysis of small and moderate dimensional tensors. Tensor train decomposition captures the entanglement among dimensions and appropriate to work with high dimensional tensors.
+
+Representing a high dimensional tensor with a set of smaller dimensional objects drastically reduces the overall number of parameters. This led to the use of low-rank tensor representations at different layers of CNNs. For example, it has been shown that replacing convolution kernels of ResNet with their low-rank approximations in Tucker tensor representations significantly reduces the number of parameters and improves the overall performance~\cite{PSSEG+-ECCV2020}. In a separate work, contributions have been made to replace dense weight matrices of the fully connected layers of AlexNet by their approximations in Tensor-train format~\cite{NPOV-NIPS2015}. This approach also significantly reduces the number of parameters while achieving the similar accuracy. Replacing a layer in CNN with its low-rank approximation requires to re-tune the network parameters and both the mentioned works adapted the existing training methods for low-rank tensor representations. The above contributions strongly advocate to employ the low-rank tensor representations in CNNs. We view a full CNN as a large tensor and aim to replace it with a network of smaller tensors. However the training methods for this large tensor and the decomposition structure is not intuitive to estimate. Therefore, we plan to follow bottom-up approach and represent multiple layers of existing successful CNN architectures -- AlexNet and ResNet, with their low-rank tensor representations.
+
+
+
+
+\subsection*{Motivation of this work}
+The state-of-the-art CNN models are very complex to understand. This thesis aims to express CNN models with simpler tensor based networks.  This work will  drastically improve the following features of CNNs.
+\begin{itemize}
+	\item \emph{Simplicity and analysis capability} :  CNNs represented with different tensor decompositions are simpler. Therefore it will allow one to gain more insights of the networks and describe what happens in each layer.
+	\item \emph{Reduction of parameters} : Some researchers have replaced certain portions of CNNs with  networks of smaller tensors and achieved  similar accuracies with significantly less number of parameters, as mentioned earlier. This thesis explores this direction with the aim to represent a full CNN by a network of smaller tensors. 
+	\item \emph{Parallel algorithms for training and prediction} : Representing CNNs with tensor based networks will allow one to take advantage of the existing parallel tensor algorithms. Now a days parallelization is ubiquitous in most computing systems. State-of-the-art CNNs usually rely on the efficient parallel implementation of matrix multiplication for parallelization. This approach processes only one layer at a time in backward or forward propagation. Tensor based networks will enable one to apply different parallelization schemes from Physics and Chemistry for training and inference.
+\end{itemize}
+
+
+\subsection*{Methodology}
+As mentioned earlier, this project aims to represent a full CNN by a network of smaller tensors and we plan to achieve it in a bottom-up fashion. In the beginning, we plan to focus on AlexNet architecture. It has 5 convolution layers and 3 fully connected layers. We first plan to replace convolution layers with a network of smaller tensors and then replace the fully connected layers with another network of smaller tensors. This will require us to re-tune the parameters of the full network. To do this, we plan to adapt gradient-descent method for training. We also plan to take advantage of the existing training methods for tensor network based frameworks in physic or chemistry. For example, density matrix renormalization group (DMRG) is a popular algorithm in molecular simulation community and it has demonstrated initial success to train neural networks~\cite{SS-NIPS2016}. Once we have a working architecture with low rank representations of two large tensors, then our next step would be to replace both tensors with a single one. Here first we plan to represent the large tensor in one of the popular low-rank tensor representations. Depending on the challenges faced at this level, we also plan to consider a combination of more than one low-rank tensor representation.    
+
+
+We first will work with  MNSIT dataset for our training. After that we will also work with CIFAR and ImageNet datasets. After exploring AlexNet architecture, we will focus on ResNet architecture in the next step. In general, ResNet is more complex and consists of  multiple layers. Here we plan to replace 4-5 layers at once with a network of smaller tensors and then re-tune the parameters. Based on the outcome of this step, we plan to iterate our approach until we represent the full network with a low-rank representation of a large tensor. We also aim to take advantage of the  work on parallel tensor computation and apply in our framework to improve the training/inference time.
+
+
+\subsection*{Main Activities}
+
+The candidate is expected to perform the following activities:
+\begin{itemize}
+	\item Analyze existing training methods for CNNs and adapt them for tensor based models
+	\item Represent popular CNN models with low-rank tensor representations
+	\item Evaluate proposed models for MNSIT, CIFAR and ImageNet datasets
+	\item Design parallel algorithms for the proposed models
+\end{itemize}
+
+%\subsection*{Skills}
+%
+%The candidate must have a Master's degree  in Computer Science, Computational Sciences, Applied Mathematics, or a related technical field. Familiarity with tensor computations and Neural Networks will be much appreciated. 
+
+\section{Other relevant information}
+Canidate full name: Chuong Luong
+\subsection*{Interaction with the candidate}
+The candidate contacted me (Suraj Kumar) on 29-April-2024 through email. I took his interview through a video call in the first week of May. I found that he is familiar with deep learning models and has good understanding of tensor computations and optimization methods. He seems a perfect candidate for the proposed PhD position. 
+ 
+\subsection*{Submitted ANR project }
+I have also submitted a project in the ANR JCJC 2024 call. However, this project is about the design and implementation  of parallel and scalable tensor decomposition algorithms. The candidate's profile does seem suitable for this project.
+{
+\small
+\bibliographystyle{abbrv}
+\bibliography{cnn}
+}
+\end{document}
