@@ -1,0 +1,1286 @@
+\documentclass[
+11pt, % Set the default font size, options include: 8pt, 9pt, 10pt, 11pt, 12pt, 14pt, 17pt, 20pt
+%t, % Uncomment to vertically align all slide content to the top of the slide, rather than the default centered
+%aspectratio=169, % Uncomment to set the aspect ratio to a 16:9 ratio which matches the aspect ratio of 1080p and 4K screens and projectors
+]{beamer}
+
+\graphicspath{{Images/}{./}} % Specifies where to look for included images (trailing slash required)
+
+\usepackage{todonotes}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{subfig}
+%%\usepackage[noend]{algpseudocode}
+
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+\usepackage{blkarray}
+\usepackage{amsmath}
+\usepackage{xspace}
+\usepackage{float}
+
+
+\usepackage{tikz}
+\usetikzlibrary{matrix, decorations, patterns, positioning, shapes, calc, intersections, arrows, fit}
+
+\usetikzlibrary{patterns}
+\usetikzlibrary{fit,calc,positioning,decorations.pathreplacing,matrix,3d, hobby}
+
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule for better rules in tables
+\usepackage{bm}
+
+\newcommand{\brown}[1]{{\color{brown} #1 }}
+
+%% Colors from https://latexcolor.com/
+\definecolor{pastelviolet}{rgb}{0.8, 0.6, 0.79}
+\definecolor{babyblueeyes}{rgb}{0.63, 0.79, 0.95}
+\definecolor{pastelyellow}{rgb}{0.99, 0.99, 0.59}
+\definecolor{pastelgreen}{rgb}{0.47, 0.87, 0.47}
+\definecolor{pastelred}{rgb}{1.0, 0.41, 0.38}
+\colorlet{patternblue}{blue!60}
+
+
+\colorlet{darkred}{red!80!black}
+\colorlet{darkblue}{blue!80!black}
+\newcommand<>{\darkred}[1]{{\color{darkred}{#1}}}
+\newcommand<>{\darkblue}[1]{{\color#2{blue!50!black!100}{#1}}}
+
+\newcommand{\A}{\mathbf{A}}
+\newcommand{\B}{\mathbf{B}}
+\newcommand{\CC}{\mathbf{C}}
+\newcommand{\Real}{\mathbb{R}}
+\newcommand{\vc}[1]{\bm{#1}}
+
+\usetheme{Madrid}
+
+
+
+
+
+%----------------------------------------------------------------------------------------
+%	PRESENTATION INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title[Matrix multiplication]{Communication costs of parallel matrix multiplications} % The short title in the optional parameter appears at the bottom of every slide, the full title in the main parameter is only on the title page
+
+%\subtitle{Optional Subtitle} % Presentation subtitle, remove this command if a subtitle isn't required
+
+\author[Suraj Kumar]{Suraj Kumar} % Presenter name(s), the optional parameter can contain a shortened version to appear on the bottom of every slide, while the main parameter will appear on the title slide
+
+\institute[Inria \& ENS Lyon]{Inria \& ENS Lyon \\ \smallskip Email:\textit{suraj.kumar@ens-lyon.fr}} % Your institution, the optional parameter can be used for the institution shorthand and will appear on the bottom of every slide after author names, while the required parameter is used on the title slide and can include your email address or additional information on separate lines
+
+\date[CR12]{CR12: September 2024\\ \smallskip\small https://surakuma.github.io/courses/daamtc.html} % Presentation date or conference/meeting name, the optional parameter can contain a shortened version to appear on the bottom of every slide, while the required parameter value is output to the title slide
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+	
+	%----------------------------------------------------------------------------------------
+	%	TITLE SLIDE
+	%----------------------------------------------------------------------------------------
+	
+	\begin{frame}
+		\titlepage % Output the title slide, automatically created using the text entered in the PRESENTATION INFORMATION block above
+	\end{frame}
+
+	\begin{frame}{Some teams in France who work on data-aware algorithms/computations}
+		\begin{itemize}
+			\item ROMA team (\url{https://www.ens-lyon.fr/LIP/ROMA}), Inria \& ENS Lyon
+			\vfill
+			\item CORSE team (\url{https://team.inria.fr/corse}), Inria Grenoble
+			\vfill
+			\item TOPAL team (\url{https://team.inria.fr/hiepacs}), STORM team (\url{https://team.inria.fr/storm}), Inria Bordeaux
+			\vfill
+			\item CAMUS team (\url{https://team.inria.fr/camus}), Strasbourg (Part of Inria Nancy)
+		\end{itemize}
+	\end{frame}
+%	\section{Popular data layouts}
+%\begin{frame}{Table of Contents}		
+%	\tableofcontents[currentsection,hideallsubsections] % Output the table of contents (all sections on one slide)		
+%\end{frame}
+	\begin{frame}{Popular parallel distributions of matrices}
+		\begin{minipage}{0.235\linewidth}
+			\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+			\def\xstep{0}
+			\foreach \x in {1,2,3}
+			{
+				\draw (\xstep+\x,0) -- ++(1,0) -- ++(0,4) -- ++ (-1,0) --cycle ;
+				\node [scale=1.2] at (\xstep+\x+0.5,2) {$\x$};
+			}
+			\draw [fill=lightgray] (\xstep+0,0) -- ++(1,0) -- ++(0,4) -- ++ (-1,0) --cycle ;
+			\node [scale=1.2] at (\xstep+0+0.5,2) {$0$};
+			
+			\node [scale=1.2] at (\xstep+2,-1) {1D column block layout};
+			\end{tikzpicture}
+		\end{minipage}
+	\begin{minipage}{0.235\linewidth}
+		\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+		\def\xstep{0}
+		\foreach \x in {0,1,2,3}
+		\foreach \y in {0,1,2,3}
+		{
+			\draw (\xstep+\x+0.25*\y,0) -- ++(0.25,0) -- ++(0,4) -- ++ (-0.25,0) --cycle ;
+			\node [scale=1.2] at (\xstep+\x+0.25*\y+0.125,2) {$\y$};
+		}
+		\foreach \x in {0,1,2,3, 4}
+		{
+		\draw [fill=lightgray] (\xstep+\x,0) -- ++(0.25,0) -- ++(0,4) -- ++ (-0.25,0) --cycle ;
+		\node [scale=1.2] at (\xstep+\x+0.125,2) {$0$};
+		}
+		
+		\node [scale=1.2] at (\xstep+2,-1) {1D column cyclic layout};
+		\end{tikzpicture}
+	\end{minipage}
+		\begin{minipage}{0.235\linewidth}
+		\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+		\def\xstep{0}
+		\foreach \x in {0,2}
+		\foreach \y in {0,1,2,3}
+		{
+			\draw (\xstep+\x+0.5*\y,0) -- ++(0.5,0) -- ++(0,4) -- ++ (-0.5,0) --cycle ;
+			\node [scale=1.2] at (\xstep+\x+0.5*\y+0.25,2) {$\y$};
+		}
+		\foreach \x in {0,2}
+		{
+			\draw [fill=lightgray] (\xstep+\x,0) -- ++(0.5,0) -- ++(0,4) -- ++ (-0.5,0) --cycle ;
+			\node [scale=1.2] at (\xstep+\x+0.25,2) {$0$};
+		}
+		
+		\node [scale=1.2] at (\xstep+2,-1) {1D column block cyclic layout};
+		\end{tikzpicture}
+		\end{minipage}\hfill
+		\begin{minipage}{0.2\linewidth}
+%		\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+%			\node [scale=1.2] at (0,0) {Row versions of the\\ previous layouts};
+%		\end{tikzpicture}
+		{\scriptsize Row versions of the previous layouts}
+		\end{minipage}
+	
+		\vfill
+		\begin{minipage}{0.45\linewidth}
+			\begin{center}
+			\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+			\def\xstep{0}
+			\foreach \x in {0,2}
+			\foreach \y in {0,2}
+			{
+				\draw (\xstep+\x,\y) -- ++(2,0) -- ++(0,2) -- ++ (-2,0) --cycle ;
+			}
+
+			\draw [fill=lightgray] (\xstep+0,2) -- ++(2,0) -- ++(0,2) -- ++ (-2,0) --cycle ;
+			\node [scale=1.2] at (\xstep+1,3) {$0$};
+			\node [scale=1.2] at (\xstep+1,1) {$2$};
+			\node [scale=1.2] at (\xstep+3,3) {$1$};
+			\node [scale=1.2] at (\xstep+3,1) {$3$};
+			
+			\node [scale=1.2] at (\xstep+2,-1) {2D row and column block layout};
+			\end{tikzpicture}
+		\end{center}
+		\end{minipage}\hfill
+		\begin{minipage}{0.45\linewidth}
+			\begin{center}
+				\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+				\def\xstep{0}
+				\foreach \x in {0,1,2,3}
+				\foreach \y in {0,1,2,3}
+				{
+					\draw (\xstep+\x,\y) -- ++(1,0) -- ++(0,1) -- ++ (-1,0) --cycle ;
+				}
+				\foreach \x/\y in {0/3,2/3,0/1,2/1}
+					\draw [fill=lightgray] (\xstep+\x,\y) -- ++(1,0) -- ++(0,1) -- ++ (-1,0) --cycle ; 
+				
+				\foreach \x/\y/\z in {0/0/2,1/1/3,2/0/2,3/1/3}
+				{
+					\node [scale=1.2] at (\xstep+\x+0.5,3.5) {$\y$};
+					\node [scale=1.2] at (\xstep+\x+0.5,1.5) {$\y$};
+					\node [scale=1.2] at (\xstep+\x+0.5,2.5) {$\z$};
+					\node [scale=1.2] at (\xstep+\x+0.5,0.5) {$\z$};
+					
+				}
+				
+				\node [scale=1.2] at (\xstep+2,-1) {2D row and column block cyclic layout};
+				\end{tikzpicture}
+			\end{center}
+		\end{minipage}
+
+\vfill
+	{\small Note: Process $0$ owns the shaded submatrices.}
+	\end{frame}
+	\section{2D-algorithms}
+	\begin{frame}{Table of Contents}		
+		\tableofcontents[currentsection,hideallsubsections] % Output the table of contents (all sections on one slide)		
+	\end{frame}
+\begin{frame}{Extension of sequential lower bounds}
+	\begin{itemize}
+		\item Sequential lower bound on bandwidth = $\Omega\left(\frac{2mn\ell}{\sqrt{M}}\right)$ = $\Omega\left(\frac{\textnormal{\#operations}}{\sqrt{M}}\right)$
+		\item Sequential lower bound on latency = $\Omega\left(\frac{\textnormal{\#operations}}{M^{3/2}}\right)$
+	\end{itemize}
+	\vspace*{-0.15cm}		
+	\begin{block}{Extension to paralllel machines}
+		\vspace*{-0.215cm}
+		\begin{lemma}
+			Consider a traditional $n\times n$ matrix multiplication performed on $P$
+			processors with distributed memory. \emph{A processor} with
+			\emph{memory $M$} that perform \emph{$W$ elementary products} must
+			send or receive $\Omega\left(\frac{W}{\sqrt{M}}\right)$
+			elements.    
+		\end{lemma}
+		\vspace*{-0.25cm}
+		\begin{theorem}
+			Consider a traditional $n\times n$ matrix multiplication on \emph{$P$ processors},
+			\emph{each with a memory $M$}. \emph{Some processor} has $\Omega\left(\frac{n^3/P}{\sqrt{M}}\right)$ volume
+			of I/O.  
+		\end{theorem}
+		\vspace*{-0.1cm}
+		\begin{itemize}
+			%				\item With $n\times n$ square matrices, lower bound on bandwidth = $\Omega\left(\frac{n^3/P}{\sqrt{M}}\right)$
+			\item Lower bound on latency = $\Omega\left(\frac{n^3/P}{M^{3/2}}\right)$
+			\item Bound is useful only when $M$ is not very large 
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+
+	\begin{frame}{Matrix multiplication with 2D layout}
+		\begin{itemize}
+			\item Consider processors are arranged in a 2-dimensional grid
+			\item Processors exchange data along rows and columns
+		\end{itemize}
+	\begin{center}
+		\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+		\def\xstep{0}
+		\foreach \x in {0,1,2,3, 4}
+		{
+			\draw (\xstep,\x) -- (\xstep+4,\x);
+			\draw (\xstep+\x,0) -- (\xstep+\x,4);
+		}
+		\foreach \x in {0,1,2,3}
+			\foreach \y in {0,1,2,3}
+			\node [scale=0.8] at (\xstep+ \x+0.5 , 3.5-\y) {p(\x,\y)};
+			
+		\node [scale=1.2] at (5,2) {$=$};
+		
+		\def\xstep{6}
+		\foreach \x in {0,1,2,3, 4}
+		{
+			\draw (\xstep,\x) -- (\xstep+4,\x);
+			\draw (\xstep+\x,0) -- (\xstep+\x,4);
+		}
+		\foreach \x in {0,1,2,3}
+		\foreach \y in {0,1,2,3}
+		\node [scale=0.8] at (\xstep+ \x+0.5 , 3.5-\y) {p(\x,\y)};
+		\node [scale=1.2] at (10.5,2) {$*$};
+		\def\xstep{11}
+		\foreach \x in {0,1,2,3, 4}
+		{
+			\draw (\xstep,\x) -- (\xstep+4,\x);
+			\draw (\xstep+\x,0) -- (\xstep+\x,4);
+		}
+		\foreach \x in {0,1,2,3}
+		\foreach \y in {0,1,2,3}
+		\node [scale=0.8] at (\xstep+ \x+0.5 , 3.5-\y) {p(\x,\y)};
+		\end{tikzpicture}
+	\end{center}
+\begin{itemize}
+	\item $P$ processors are arranged in $\sqrt{P}\times\sqrt{P}$ grid
+\end{itemize}
+	\end{frame}
+\begin{frame}{Cannon's 2D matrix multiplication algorithm}
+	\begin{itemize}
+		\item Processors organized on a square 2D grid of size $\sqrt{P} \times \sqrt{P}$
+		\vfill
+		\item $A$, $B$, $C$ matrices distributed by blocks of size $N/\sqrt{P} \times N/\sqrt{P}$
+		\vfill
+		\item Processor $P(i,j)$ initially holds blocks $A(i,j), B(i,j)$ and computes $C(i,j)$
+		\vfill
+		\item First realign matrices:
+		\begin{itemize}
+			\item Shift $A(i,j)$ block to the left by $i$
+			\item Shift $B(i,j)$ block to the top by $j$
+		\end{itemize}
+	After realignment: $P(i,j)$ holds blocks $A(i,i+j)$ and $B(i+j,j)$
+	\vfill
+	\item At each step :
+	\begin{itemize}
+		\item Compute one block product
+		\item Shift $A$ blocks left
+		\item Shift $B$ blocks up
+	\end{itemize}
+	\end{itemize}
+\end{frame}
+\begin{frame}{Cannon's matrix multiplication algorithm}
+	\begin{minipage}{0.19\linewidth}
+		\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+\def\xstep{0}
+\foreach \x in {0,1,2,3, 4}
+{
+	\draw (\xstep,\x) -- (\xstep+4,\x);
+	\draw (\xstep+\x,0) -- (\xstep+\x,4);
+}
+\foreach \y in {0,1,2}
+\foreach \x in {0,1,2,3}
+\node [scale=0.8] at (\xstep+ \x+0.5 , 3.5-\y) {A(\y,\x)};
+
+\foreach \x/\val in {0/red,1/green,2/blue,3/cyan}
+\node [scale=0.8] at (\xstep+ \x+0.5 , 0.5) {\textcolor{\val}{A(3,\x)}};
+
+\draw [<-] (1,4.25) -- (3,4.25);
+\path (4.25,1) -- (4.25, 3);
+\end{tikzpicture}
+
+\vspace*{0.45cm}
+\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+\def\xstep{0}
+\foreach \x in {0,1,2,3, 4}
+{
+	\draw (\xstep,\x) -- (\xstep+4,\x);
+	\draw (\xstep+\x,0) -- (\xstep+\x,4);
+}
+\foreach \x in {0,1,3}
+\foreach \y in {0,1,2,3}
+\node [scale=0.8] at (\xstep+ \x+0.5 , 3.5-\y) {B(\y,\x)};
+
+\foreach \y/\val in {0/red,1/green,2/blue,3/cyan}
+\node [scale=0.8] at (\xstep+ 2 +0.5 , 3.5-\y) {\textcolor{\val}{B(\y,2)}};
+
+\draw [->] (4.25,1) -- (4.25, 3);
+\node at (2,-1) {Initial A, B};
+\end{tikzpicture}
+	\end{minipage}
+\begin{minipage}{0.19\linewidth}
+	
+\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+	\def\xstep{0}
+	\foreach \x in {0,1,2,3, 4}
+	{
+		\draw (\xstep,\x) -- (\xstep+4,\x);
+		\draw (\xstep+\x,0) -- (\xstep+\x,4);
+	}
+	\foreach \x in {0,1,2,3}
+		\node [scale=0.8] at (\xstep+ \x+0.5 , 3.5) {A(0,\x)};
+	\foreach \x/\y in {0/1,1/2,2/3,3/0}
+		\node [scale=0.8] at (\xstep+ \x+0.5 , 2.5) {A(1,\y)};
+	\foreach \x/\y in {0/2,1/3,2/0,3/1}
+		\node [scale=0.8] at (\xstep+ \x+0.5 , 1.5) {A(2,\y)};
+%	\foreach \x/\y in {0/3,1/0,2/1,3/2}
+%		\node [scale=0.8] at (\xstep+ \x+0.5 , 0.5) {A(3,\y)};
+		
+	\foreach \x/\y/\val in {0/3/cyan,1/0/red,2/1/green,3/2/blue}
+		\node [scale=0.8] at (\xstep+ \x+0.5 , 0.5) {\textcolor{\val}{A(3,\y)}};
+		
+	\draw [<-] (1,4.25) -- (3,4.25);
+	\path (4.25,1) -- (4.25, 3);
+	
+
+\end{tikzpicture}
+
+\vspace*{0.45cm}
+\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+\def\xstep{0}
+\foreach \x in {0,1,2,3, 4}
+{
+	\draw (\xstep,\x) -- (\xstep+4,\x);
+	\draw (\xstep+\x,0) -- (\xstep+\x,4);
+}
+
+
+\foreach \x in {0,1,2,3}
+	\node [scale=0.8] at (\xstep+0.5 , 3.5-\x) {B(\x,0)};
+\foreach \x/\y in {0/1,1/2,2/3,3/0}
+	\node [scale=0.8] at (\xstep+1.5 , 3.5-\x) {B(\y,1)};
+%\foreach \x/\y in {0/2,1/3,2/0,3/1}
+%	\node [scale=0.8] at (\xstep+2.5 , 3.5-\x) {B(\y,2)};
+\foreach \x/\y in {0/3,1/0,2/1,3/2}
+	\node [scale=0.8] at (\xstep+3.5 , 3.5-\x) {B(\y,3)};
+	
+\foreach \x/\y/\val in {0/2/blue,1/3/cyan,2/0/red,3/1/green}
+	\node [scale=0.8] at (\xstep+2.5 , 3.5-\x) {\textcolor{\val}{B(\y,2)}};
+
+\draw [->] (4.25,1) -- (4.25, 3);
+\node at (2,-1) {A, B after realignment};
+
+\end{tikzpicture}
+\end{minipage}
+\begin{minipage}{0.19\linewidth}
+	
+	\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+	\def\xstep{0}
+	\foreach \x in {0,1,2,3, 4}
+	{
+		\draw (\xstep,\x) -- (\xstep+4,\x);
+		\draw (\xstep+\x,0) -- (\xstep+\x,4);
+	}
+	\foreach \x/\y in {0/1,1/2,2/3,3/0}
+		\node [scale=0.8] at (\xstep+ \x+0.5 , 3.5) {A(0,\y)};
+	\foreach \x/\y in {0/2,1/3,2/0,3/1}
+		\node [scale=0.8] at (\xstep+ \x+0.5 , 2.5) {A(1,\y)};
+	\foreach \x/\y in {0/3,1/0,2/1,3/2}
+		\node [scale=0.8] at (\xstep+ \x+0.5 , 1.5) {A(2,\y)};
+%	\foreach \x/\y in {0/0,1/1,2/2,3/3}
+%			\node [scale=0.8] at (\xstep+ \x+0.5 , 0.5) {A(3,\y)};
+
+	
+	\foreach \x/\y/\val in {0/0/red,1/1/green,2/2/blue,3/3/cyan}
+		\node [scale=0.8] at (\xstep+ \x+0.5 , 0.5) {\textcolor{\val}{A(3,\y)}};
+
+	\draw [<-] (1,4.25) -- (3,4.25);
+	\path (4.25,1) -- (4.25, 3);
+	
+	\end{tikzpicture}
+	
+	\vspace*{0.45cm}
+	\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+	\def\xstep{0}
+	\foreach \x in {0,1,2,3, 4}
+	{
+		\draw (\xstep,\x) -- (\xstep+4,\x);
+		\draw (\xstep+\x,0) -- (\xstep+\x,4);
+	}
+
+	
+	\foreach \x/\y in {0/1,1/2,2/3,3/0}
+		\node [scale=0.8] at (\xstep+0.5 , 3.5-\x) {B(\y,0)};
+	\foreach \x/\y in {0/2,1/3,2/0,3/1}
+		\node [scale=0.8] at (\xstep+1.5 , 3.5-\x) {B(\y,1)};
+	%\foreach \x/\y in {0/3,1/0,2/1,3/2}
+	%	\node [scale=0.8] at (\xstep+2.5 , 3.5-\x) {B(\y,2)};
+	\foreach \x/\y in {0/0,1/1,2/2,3/3}
+	\node [scale=0.8] at (\xstep+3.5 , 3.5-\x) {B(\y,3)};
+	
+	
+	\foreach \x/\y/\val in {0/3/cyan,1/0/red,2/1/green,3/2/blue}
+		\node [scale=0.8] at (\xstep+2.5 , 3.5-\x) {\textcolor{\val}{B(\y,2)}};
+		
+	\draw [->] (4.25,1) -- (4.25, 3);
+	\node at (2,-1) {A, B after 1st shift};
+	
+	
+	\end{tikzpicture}
+\end{minipage}
+\begin{minipage}{0.19\linewidth}
+	
+	\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+	\def\xstep{0}
+	\foreach \x in {0,1,2,3, 4}
+	{
+		\draw (\xstep,\x) -- (\xstep+4,\x);
+		\draw (\xstep+\x,0) -- (\xstep+\x,4);
+	}
+	\foreach \x/\y in {0/2,1/3,2/0,3/1}
+		\node [scale=0.8] at (\xstep+ \x+0.5 , 3.5) {A(0,\y)};
+	\foreach \x/\y in {0/3,1/0,2/1,3/2}
+		\node [scale=0.8] at (\xstep+ \x+0.5 , 2.5) {A(1,\y)};
+	\foreach \x/\y in {0/0,1/1,2/2,3/3}
+		\node [scale=0.8] at (\xstep+ \x+0.5 , 1.5) {A(2,\y)};
+	%	\foreach \x/\y in {0/1,1/2,2/3,3/0}
+	%			\node [scale=0.8] at (\xstep+ \x+0.5 , 0.5) {A(3,\y)};
+	
+	
+	\foreach \x/\y/\val in {0/1/green,1/2/blue,2/3/cyan,3/0/red}
+		\node [scale=0.8] at (\xstep+ \x+0.5 , 0.5) {\textcolor{\val}{A(3,\y)}};
+	
+	\draw [<-] (1,4.25) -- (3,4.25);
+	\path (4.25,1) -- (4.25, 3);
+	
+	\end{tikzpicture}
+	
+	\vspace*{0.45cm}
+	\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+	\def\xstep{0}
+	\foreach \x in {0,1,2,3, 4}
+	{
+		\draw (\xstep,\x) -- (\xstep+4,\x);
+		\draw (\xstep+\x,0) -- (\xstep+\x,4);
+	}
+	
+	
+	\foreach \x/\y in {0/2,1/3,2/0,3/1}
+		\node [scale=0.8] at (\xstep+0.5 , 3.5-\x) {B(\y,0)};
+	\foreach \x/\y in {0/3,1/0,2/1,3/2}
+		\node [scale=0.8] at (\xstep+1.5 , 3.5-\x) {B(\y,1)};
+	%\foreach \x/\y in {0/0,1/1,2/2,3/3}
+	%	\node [scale=0.8] at (\xstep+2.5 , 3.5-\x) {B(\y,2)};
+	\foreach \x/\y in {0/1,1/2,2/3,3/0}
+		\node [scale=0.8] at (\xstep+3.5 , 3.5-\x) {B(\y,3)};
+	
+	
+	\foreach \x/\y/\val in {0/0/red,1/1/green,2/2/blue,3/3/cyan}
+		\node [scale=0.8] at (\xstep+2.5 , 3.5-\x) {\textcolor{\val}{B(\y,2)}};	
+		
+	\draw [->] (4.25,1) -- (4.25, 3);
+	\node at (2,-1) {A, B after 2nd shift};
+	\end{tikzpicture}
+\end{minipage}
+\begin{minipage}{0.19\linewidth}
+	
+	\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+	\def\xstep{0}
+	\foreach \x in {0,1,2,3, 4}
+	{
+		\draw (\xstep,\x) -- (\xstep+4,\x);
+		\draw (\xstep+\x,0) -- (\xstep+\x,4);
+	}
+	\foreach \x/\y in {0/3,1/0,2/1,3/2}
+		\node [scale=0.8] at (\xstep+ \x+0.5 , 3.5) {A(0,\y)};
+	\foreach \x/\y in {0/0,1/1,2/2,3/3}
+		\node [scale=0.8] at (\xstep+ \x+0.5 , 2.5) {A(1,\y)};
+	\foreach \x/\y in {0/1,1/2,2/3,3/0}
+		\node [scale=0.8] at (\xstep+ \x+0.5 , 1.5) {A(2,\y)};
+	%	\foreach \x/\y in {0/2,1/3,2/0,3/1}
+	%			\node [scale=0.8] at (\xstep+ \x+0.5 , 0.5) {A(3,\y)};
+	
+	
+	\foreach \x/\y/\val in {0/2/blue,1/3/cyan,2/0/red,3/1/green}
+		\node [scale=0.8] at (\xstep+ \x+0.5 , 0.5) {\textcolor{\val}{A(3,\y)}};
+	
+	\path [<-] (1,4.25) -- (3,4.25);
+%	\path (4.25,1) -- (4.25, 3);
+	
+	\end{tikzpicture}
+	
+	\vspace*{0.45cm}
+	\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+	\def\xstep{0}
+	\foreach \x in {0,1,2,3, 4}
+	{
+		\draw (\xstep,\x) -- (\xstep+4,\x);
+		\draw (\xstep+\x,0) -- (\xstep+\x,4);
+	}
+	
+	
+	\foreach \x/\y in {0/3,1/0,2/1,3/2}
+		\node [scale=0.8] at (\xstep+0.5 , 3.5-\x) {B(\y,0)};
+	\foreach \x/\y in {0/0,1/1,2/2,3/3}
+		\node [scale=0.8] at (\xstep+1.5 , 3.5-\x) {B(\y,1)};
+	%\foreach \x/\y in {0/1,1/2,2/3,3/0}
+	%	\node [scale=0.8] at (\xstep+2.5 , 3.5-\x) {B(\y,2)};
+	\foreach \x/\y in {0/2,1/3,2/0,3/1}
+		\node [scale=0.8] at (\xstep+3.5 , 3.5-\x) {B(\y,3)};
+	
+	
+	\foreach \x/\y/\val in {0/1/green,1/2/blue,2/3/cyan,3/0/red}
+		\node [scale=0.8] at (\xstep+2.5 , 3.5-\x) {\textcolor{\val}{B(\y,2)}};
+		
+%	\draw [->] (4.25,1) -- (4.25, 3);
+	\node at (2,-1) {A, B after 3rd shift};	
+	\end{tikzpicture}
+\end{minipage}
+\begin{center}
+	\begin{tikzpicture}[scale=0.75, every node/.style={transform shape}]
+	 \node at (0,0) {C(3,2) = \textcolor{green}{A(3,1)} * \textcolor{green}{B(1,2)} + \textcolor{blue}{A(3,2)} * \textcolor{blue}{B(2,2)} + \textcolor{cyan}{A(3,3)} * \textcolor{cyan}{B(3,2)} + \textcolor{red}{A(3,0)} * \textcolor{red}{B(0,2)}};
+	\end{tikzpicture}
+\end{center}
+
+\begin{itemize}
+	\item Total data transfer costs = $\mathcal{O}(n^2/\sqrt{P})$
+	\item Not clear how to extend it for rectangular matrices
+\end{itemize}
+
+\end{frame}
+\begin{frame}{\large Scalable Universal Matrix Multiplication Algorithm (SUMMA)}
+	\begin{center}
+	\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+	\def\xstep{0}
+	\foreach \x in {0,1,2,3, 4}
+	{
+		\draw (\xstep,\x) -- (\xstep+4,\x);
+		\draw (\xstep+\x,0) -- (\xstep+\x,4);
+	}
+%	\foreach \x in {0,1,2,3}
+%	\foreach \y in {0,1,2,3}
+%	\node [scale=0.8] at (\xstep+ \x+0.5 , 3.5-\y) {p(\x,\y)};
+	
+	\draw [fill=red] (1.3,0) -- ++ (0.2,0) -- ++ (0,4) -- ++ (-0.2,0) -- cycle;
+	\draw [thick, ->] (1.4, 1.5) to[out=60,in=90] (2.4,1.5);
+	\draw [thick, ->] (1.4, 1.5) to[out=60,in=90] (3.4,1.5);
+	\draw [thick, ->] (1.4, 1.5) to[out=120,in=90] (0.4,1.5);
+	
+	\node [scale=1.2] at (\xstep + 1.4, -0.5) {$b$};
+	
+	\node [scale=2] at (\xstep + 2, -1) {$A$};
+	
+	\def\xstep{5}
+	\foreach \x in {0,1,2,3, 4}
+	{
+		\draw (\xstep,\x) -- (\xstep+4,\x);
+		\draw (\xstep+\x,0) -- (\xstep+\x,4);
+	}
+	%	\foreach \x in {0,1,2,3}
+	%	\foreach \y in {0,1,2,3}
+	%	\node [scale=0.8] at (\xstep+ \x+0.5 , 3.5-\y) {p(\x,\y)};
+	
+	\draw [fill=blue] (\xstep,2.2) -- ++ (4,0) -- ++ (0,0.2) -- ++ (-4,0) -- cycle;
+	\draw [thick, ->] (\xstep+3.5, 2.3) to[out=180,in=-140] (\xstep+3.5,3.5);
+	\draw [thick, ->] (\xstep+3.5, 2.3) to[out=180,in=140] (\xstep+3.5,1.5);
+	\draw [thick, ->] (\xstep+3.5, 2.3) to[out=180,in=120] (\xstep+3.5,0.5);
+	
+	\node [scale=1.2,left] at (\xstep, 2.3) {$b$};
+	
+	\node [scale=2] at (\xstep + 2, -1) {$B$};
+	
+	
+	\def\xstep{10}
+	\foreach \x in {0,1,2,3, 4}
+	{
+		\draw (\xstep,\x) -- (\xstep+4,\x);
+		\draw (\xstep+\x,0) -- (\xstep+\x,4);
+	}
+
+	
+	\draw [fill=green] (\xstep+3,1) -- ++ (1,0) -- ++ (0,1) -- ++ (-1,0) -- cycle;
+	\draw [fill=red] (\xstep+3-0.2,1) -- ++ (0.2,0) -- ++ (0,1) -- ++ (-0.2,0) -- cycle;
+	\draw [fill=blue] (\xstep+3,2) -- ++ (1,0) -- ++ (0,0.2) -- ++ (-1,0) -- cycle;
+	\node [scale=1] at (\xstep+3.5,1.5) {$C_{23}$};
+	
+	\node [below,scale=1.2] at (\xstep+3-0.1,0.1) {$A_{tmp}$};
+	\draw [color=red,->] (\xstep+3-0.1,-0.1) -- (\xstep+3-0.1,1);
+	\node [scale=1.2] at (\xstep+5,2.1) {$B_{tmp}$};
+	\draw [color=blue,->] (\xstep+4.5,2.1) -- (\xstep+4,2.1);
+	
+	\node [scale=2] at (\xstep + 2, -1) {$C$};
+	
+	\end{tikzpicture}
+\end{center}
+\begin{itemize}
+	\item $P$ is arranged in $\sqrt{P}\times \sqrt{P}$ grid
+	\item Each processor owns $n/\sqrt{P} \times n/\sqrt{P}$ submatrices of $A$, $B$ and $C$
+	\item b=block size ($\le n/\sqrt{P}$)
+\end{itemize}
+\begin{block}{Algorithm structure}
+	\begin{itemize}
+		\item Each owner of $A$ block broadcasts data to whole processor row 
+		\item Each owner of $B$ block broadcasts data to whole processor column 
+		\item Receive block of $A$ in {\color{red}$A_{tmp}$}, receive block of $B$ in {\color{blue}$B_{tmp}$}
+		\item Compute $C_{local} += C_{local} +$ {\color{red}$A_{tmp}$} * {\color{blue}$B_{tmp}$}
+		
+	\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Communication costs of SUMMA algorithm}
+	\begin{itemize}
+		\item Total number of steps = $\sqrt{P}\cdot \frac{n/\sqrt{P}}{b} = \frac{n}{b}$
+		\vfill
+		\item Total data transfer costs =  $\mathcal{O}(n^2/\sqrt{P})$
+		\vfill
+		\item Easily extendable with rectangular matrices
+	\end{itemize}
+
+  \begin{theorem}
+	Consider a traditional matrix multiplication on $P$ processors each with $O(n^2/P)$ storage, some processor has $\Omega(n^2/\sqrt{P})$ I/O volume.
+	\end{theorem}
+	Proof: Previous result: $\Omega(n^3/P\sqrt{M})$ with $M=n^2 /P$.
+	
+	\begin{itemize}
+		\item $\mathcal{O}(n^2/\sqrt{P})$ I/O volume of both Cannon's algorithm and SUMMA
+		\vfill
+		\item Both algorithms are bandwidth optimal
+		\vfill
+		\item \textcolor{red}{Can we do better?} 
+	\end{itemize}
+\end{frame}
+
+
+
+
+	\section{Memory-independent communication lower bounds}
+	\begin{frame}{Table of Contents}		
+		\tableofcontents[currentsection,hideallsubsections] % Output the table of contents (all sections on one slide)		
+	\end{frame}
+	\begin{frame}{Notations \& Settings}
+		\begin{itemize}
+			\item $C=AB$, where $A \in \mathbb{R}^{n_1\times n_2}, B \in \mathbb{R}^{n_2\times n_3}$, and $C \in \mathbb{R}^{n_1\times n_3}$
+			\item Let $d_1=\min(n_1,n_2,n_3) \le d_2=median(n_1,n_2,n_3) \le d_3 = \max(n_1,n_2,n_3)$
+		\end{itemize}
+	\vfill			
+				\begin{block}{Settings}
+					\begin{itemize}
+						\item $P$ number of processors
+						\item The algorithm load balances the computation
+						\item One copy of data is in the system
+						\begin{itemize}
+							\item There exists a processor whose input data at the start plus output data at the end  must be at most $\frac{d_1d_2+d_1d_3+d_2d_3}{P}$ words -- will analyze data transfers for this processor   
+						\end{itemize}
+						\item Each processor has large local memory -- enough to store all the required data
+						\item Focus on bandwidth cost (volume of data transfers)
+					\end{itemize}
+				\end{block}	
+
+
+	\end{frame}
+	\begin{frame}{Constraints for matrix multiplications}
+					\begin{itemize}
+			\item Loomis-Whitney inequalitiy: for $d-1$ dimensional projections
+			\begin{itemize}
+				\item For the $2$d object $G$, $ Area(G) \le \phi_x \phi_y$
+				\item For the $3$d object $H$, $Volume(H) \le \sqrt{\phi_{xy}\phi_{yz}\phi_{xz}}$
+				%%		\item $2$-dimensional object $A$ and its $1$-dimensional projections are $\phi_x$ and $\phi_y$, then $\phi_x \phi_y \ge Area(A)$
+				%%		\item $3$-dimensional object $B$ and its $2$-dimensional projections are $\phi_{xy}$, $\phi_{yz}$ and $\phi_{xz}$, then $(\phi_{xy}\phi_{yz}\phi_{xz})^\frac{1}{2} \ge Volume(B)$
+			\end{itemize}
+		\end{itemize}
+		
+		\begin{center}
+			\begin{tikzpicture}[scale=0.25, every node/.style={transform shape}]
+			\draw (0,0) -- ++(5,0) -- ++(0, 5) -- ++(-5,0) -- cycle;
+			\draw [<->] (0,6) -- (0,0) -- (6,0);
+			\node [below right, scale=2] at (6,0) {$x$};
+			\node [left, scale=2] at (0,6) {$y$};
+			
+			\draw [fill=gray!70] (2,2.25) to [curve through={(2.4,3) .. (2.5,2.9) .. (2.8,3.8) .. (3.1,2.1) .. (2.6,1.7)}] (2,2.25);
+			
+			\node [scale=3] at (2.5,2.5) {$G$};
+			\draw [dotted] (1.7,2.25) -- (1.7,0);
+			\draw [dotted] (3.6,2.4) -- (3.6,0);
+			
+			\node[above, scale=3] at (2.6,0) {$\phi_x$};
+			
+			\draw [dotted] (2,1.75) -- (0,1.75);
+			\draw [dotted] (2.8,4) -- (0,4);
+			
+			\node[right, scale=3] at (0,3) {$\phi_y$};
+			\end{tikzpicture}
+			\begin{tikzpicture}[scale=0.25, every node/.style={transform shape}]
+			\draw (0,0) -- ++(5,0) -- ++(0, 5) -- ++(-5,0) -- cycle;
+			\draw (0,5,0) -- ++(0,0, -5) -- ++(5,0,0) -- ++(0,0,5) -- cycle;
+			\draw (5,0,0) -- ++(0,0,-5) -- ++(0,5,0) -- ++(0,0,5) -- cycle;
+			\draw (0,0,-5) -- ++(5,0,0) -- ++(0,5,0) -- ++(-5,0,0) -- cycle;
+			\draw [<->] (0,6) -- (0,0) -- (6,0);
+			\draw [->] (0,0,0) -- (0,0,-12);
+			\node [left, scale=2, rotate=0] at (0,0,-12) {$z$};
+			\node [below right, scale=2] at (6,0) {$x$};
+			\node [left, scale=2] at (0,6) {$y$};
+			
+			\draw [fill=gray!70] (2,2.25) to [curve through={(2.4,3) .. (2.5,3) .. (2.8,3.8) .. (3.1,2.1) .. (2.6,1.7)}] (2,2.25);
+			
+			%				\node [scale=2] at (2.5,2.5) {$G$};
+			\draw [dotted] (1.7,2.25) -- (1.7,0.2);
+			\draw [dotted] (3.6,2.4) -- (3.6,0.3);
+			
+			\draw [fill=green!40] (1.75,0.25) to [curve through={(1.8, 0.35) .. (3.5, 0.65) .. (2,0.25)}] (1.75,0.25);
+			\node[above, scale=1.5] at (2.6,0,-0.75) {$\phi_{xz}$};
+			
+			\draw [dotted] (2,1.75) -- (0.3,1.75);
+			\draw [dotted] (2.8,4) -- (0.385,4);
+			
+			\draw [fill=red!40] (0.3, 1.75) to [curve through={(0.5,2) .. (1, 2.5) .. (1,3.95) .. (0.2, 2.5)}] (0.3,1.75);
+			\node[right, scale=1.5] at (0,3, -0.75) {$\phi_{yz}$};
+			
+			\draw [fill=yellow!40] (3.85,3.9) to [curve through={(3.7,3.8) .. (3.5,3.4) .. (3.45,3.2)}] (3.85, 3.9);
+			\node [scale=1.5] at (3.65,3.1,-1) {$\phi_{xy}$};
+			\draw [dotted] (2.8,4) -- (3.8,3.9);
+			\draw [dotted] (2.56,1.65) -- (4,2.5);
+			
+			\draw [fill=gray!70] (2,2.25) to [curve through={(2.4,3) .. (2.5,3) .. (2.8,3.8) .. (3.1,2.1) .. (2.6,1.7)}] (2,2.25);
+			
+			\node [scale=3] at (2.5,2.5) {$H$};
+			\end{tikzpicture}
+		\end{center}
+	\vspace*{-0.7cm}
+		\begin{center}
+			\begin{align*}
+			&\text{for $i = 0{:}n_1-1$, for $k = 0{:}n_2-1$, for $j = 0{:}n_3-1$}\\
+			&\quad \quad C[i][j] += A[i][k]*B[k][j]
+			\end{align*}
+		\end{center}
+		\begin{itemize}
+			\item Total number of multiplications = $n_1n_2n_3$
+			\item Each processor performs $\frac{n_1n_2n_3}{P}$ amount of multiplications
+			\item Optimization problem: 
+			\begin{align*}
+			Minimize &\ \phi_A + \phi_B + \phi_C \  \text{ s.t.}\\
+			\phi_A^\frac{1}{2} \phi_B^\frac{1}{2}  \phi_C^\frac{1}{2} & \ge \frac{n_1n_2n_3}{P}
+			\end{align*}
+		\end{itemize}
+
+	\end{frame}
+	\begin{frame}{Extra constraints}
+		\vspace*{-0.45cm}
+	\begin{center}
+		\begin{align*}
+		&\text{for $i = 0{:}n_1-1$, for $k = 0{:}n_2-1$, for $j = 0{:}n_3-1$}\\
+		&\quad \quad C[i][j] += A[i][k]*B[k][j]
+		\end{align*}
+	\end{center}
+	\vfill
+	\begin{itemize}
+		\item Each element of $A$ (resp. $B$) is involved in $n_3$ (resp. $n_1$) multiplications
+		\begin{itemize}
+			\item To perform at least $\frac{n_1n_2n_3}{P}$ multiplications: $\phi_A \ge \frac{n_1n_2}{P}, \phi_B \ge \frac{n_2n_3}{P}$
+		\end{itemize}
+	\vfill
+		\item Each element of $C$ is the sum of $n_2$ multiplications, therefore $\phi_C \ge \frac{n_1n_3}{P}$
+		\vfill
+		\item Projections can be at max the size of the arrays: $\phi_A \le n_1n_2$, $\phi_B \le n_2n_3$, $\phi_C \le n_1n_3$ 
+	\end{itemize}
+
+	\end{frame}
+
+\begin{frame}{Optimization problem for communication lower bounds}
+	
+	{\small$\bullet$ Projections ($\phi_A,  \phi_B, \phi_C$) indicate the amount of array accesses\\
+		$\bullet$ Communication lower bound = $\phi_A + \phi_B + \phi_C - \text{data owned by the processor}$
+		\begin{minipage}{0.45\linewidth}
+			\begin{center}
+				\begin{align*}
+				Minimize &\ \phi_A + \phi_B + \phi_C \  \text{ s.t.}\\
+				\phi_A^\frac{1}{2} \phi_B^\frac{1}{2}  \phi_C^\frac{1}{2} & \ge \frac{n_1n_2n_3}{P}\\
+				\frac{n_1n_2}{P} \le &\phi_A \le n_1n_2\\
+				\frac{n_2n_3}{P} \le &\phi_B \le n_2n_3\\
+				\frac{n_1n_3}{P} \le &\phi_C \le n_1n_3
+				\end{align*}
+			\end{center}
+		\end{minipage}
+		\begin{minipage}{0.5\linewidth}
+			\vspace*{-0.15cm}\begin{block}{Generalized version (in terms of $d_1$, $d_2$, $d_3$)}
+				\vspace*{-0.35cm}\begin{align*}
+				Minimize &\ \phi_1 + \phi_2 + \phi_3 \  \text{ s.t.}\\
+				\phi_1^\frac{1}{2} \phi_2^\frac{1}{2}  \phi_3^\frac{1}{2} & \ge \frac{d_1d_2d_3}{P}\\
+				\frac{d_1d_2}{P} \le &\phi_1 \le d_1d_2\\
+				\frac{d_1d_3}{P} \le &\phi_2 \le d_1d_3\\
+				\frac{d_2d_3}{P} \le &\phi_3 \le d_2d_3\\
+				d_1 \le & d_2 \le d_3
+				\end{align*}
+			\end{block}
+		\end{minipage}
+		
+		
+}\end{frame}
+\begin{frame}{Amount of accesses and communication lower bounds}
+	$\bullet$ Estimate the solution based on Lagrange multipliers\\
+	$\bullet$ Prove optimality using all Karush–Kuhn–Tucker (KKT) conditions are satisfied
+	\begin{block}{\small Amount of accesses =$\phi_1 + \phi_2 + \phi_3$}
+		\begin{center}
+			\begin{tikzpicture}[scale=0.6875, every node/.style={transform shape}]
+			%%\draw (-2,0) -- node[below] {a} ++(2,0) -- node[above] {b} ++(2,0);
+			%%\draw (-0.1,0) -- ++(5,0) -- ++(5,0);
+			\draw [->, thick] (-0.1,0) -- (14.5,0) node [below right] {$P$};
+			\draw (0, 0.1) -- node [below, pastelred, scale=1.6]{$1$}(0,-0.1);
+			\draw (5, 0.1) -- node [below, pastelred, scale=1.6]{$\frac{d_3}{d_2}$}(5,-0.1);
+			\draw (10, 0.1) -- node [below, pastelred, scale=1.6] {$\frac{d_2d_3}{d_1^2}$}(10,-0.1);
+			
+			\node[align=left,below,scale=1.2] at (2.25, -0.75) {$\phi_1 = d_1d_2$\\ $\phi_2=\frac{d_1d_3}{P}$\\ $\phi_3 = \frac{d_2d_3}{P}$};
+			\node[align=left,below,scale=1.2] at (7, -0.75) {$\phi_1 =\phi_2= (\frac{d_1^2d_2d_3}{P})^{1/2}$\\ $\phi_3 = \frac{d_2d_3}{P}$};
+			\node[align=center,below,scale=1.2] at (12.25, -0.75) {$\phi_1 = \phi_2 = \phi_3 = (\frac{d_1d_2d_3}{P})^{2/3}$};	
+			\end{tikzpicture}
+		\end{center} 
+	\end{block}
+	\begin{block}{\small Communication lower bounds (amount of data transfers)}
+		\begin{center}
+			\begin{tikzpicture}[scale=0.6875, every node/.style={transform shape}]
+			%%\draw (-2,0) -- node[below] {a} ++(2,0) -- node[above] {b} ++(2,0);
+			%%\draw (-0.1,0) -- ++(5,0) -- ++(5,0);
+			\draw [->, thick] (-0.1,0) -- (14.5,0) node [below right] {$P$};
+			\draw (0, 0.1) -- node [below, pastelred, scale=1.6]{$1$}(0,-0.1);
+			\draw (5, 0.1) -- node [below, pastelred, scale=1.6]{$\frac{d_3}{d_2}$}(5,-0.1);
+			\draw (10, 0.1) -- node [below, pastelred, scale=1.6] {$\frac{d_2d_3}{d_1^2}$}(10,-0.1);
+			
+			\node[align=left,below,scale=1.2] at (2.25, -0.75) {LB=$d_1d_2 -\frac{d_1d_2}{P}$};
+			\node[align=left,below,scale=1.2] at (7, -0.75) {LB=$2(\frac{d_1^2d_2d_3}{P})^{1/2}$\\
+				$\qquad\quad-\frac{d_1d_2+d_1d_3}{P}$};
+			\node[align=center,below,scale=1.2] at (12.25, -0.75) {LB=$3(\frac{d_1d_2d_3}{P})^{2/3}$\\ $\qquad\qquad\quad -\frac{d_1d_2+d_1d_3+d_2d_3}{P}$};	
+			\end{tikzpicture}
+		\end{center}
+	\end{block}
+\end{frame}
+
+\begin{frame}{Convex and quasiconvex functions}
+	
+	{\small
+	\begin{definition}[Eq. 3.2, Boyd and Vandenberghe, 2004.]
+		\label{def:convex}
+		A differentiable function $f:\Real^d\rightarrow \Real$ is \emph{convex} if its domain is a convex set and for all $\vc{x},\vc{y} \in \textbf{dom} \; f$, 
+		$$f(\vc{y}) \geq f(\vc{x}) + \langle \nabla f(\vc{x}), \vc{y} - \vc{x} \rangle.$$
+	\end{definition}
+	
+	\begin{definition}[Eq. 3.20, Boyd and Vandenberghe, 2004.]
+		\label{def:quasiconvex}
+		A differentiable function $g:\Real^d\rightarrow \Real$ is \emph{quasiconvex} if its domain is a convex set and for all $\vc{x},\vc{y} \in \textbf{dom} \; g$, 
+		$$g(\vc{y}) \leq g(\vc{x}) \text{ implies that } \langle \nabla g(\vc{x}), \vc{y} - \vc{x} \rangle \leq 0.$$
+	\end{definition}
+	\begin{lemma}[Lemma 2, Ballard et al., SPAA 2022.]
+		\label{lem:quasiconvex}
+		The function $g_0(\vc{x}) = L - x_1x_2x_3$, for some constant $L$, is quasiconvex in the positive octant.
+	\end{lemma}
+}
+	
+\end{frame}
+\begin{frame}{KKT conditions}
+	
+	{\small\vspace*{-0.2cm}
+		\begin{definition}[Eq. 5.49, Boyd and Vandenberghe, 2004.]
+		\label{def:KKT}
+		\vspace*{-0.175cm}Consider an optimization problem of the form\vspace*{-0.2cm} 
+		\begin{equation}
+		\label{eq:optprob}
+		\min_{\vc{x}} f(\vc{x}) \quad \text{ subject to } \quad \vc{g}(\vc{x}) \leq \vc{0}
+		\end{equation} 
+		where $f:\Real^d \rightarrow \Real$ and $\vc{g}:\Real^d\rightarrow \Real^c$ are both differentiable. 
+		Define the dual variables $\vc{\mu}\in\mathbb{R}^c$, and let $\vc{J}_{\vc{g}}$ be the Jacobian of $\vc{g}$.
+		The \emph{Karush-Kuhn-Tucker (KKT)} conditions of $(\vc{x},\vc{\mu})$ are as follows:
+		\begin{itemize}
+			\item \emph{Primal feasibility}: $\vc{g}(\vc{x}) \leq \vc{0}$;
+			\item \emph{Dual feasibility}: $\vc{\mu} \geq 0$;
+			\item \emph{Stationarity}: $\nabla f(\vc{x}) + \vc{\mu} \cdot \vc{J}_{\vc{g}}(\vc{x}) = \vc{0}$;
+			\item \emph{Complementary slackness}: $\mu_i g_i(\vc{x})=0$ for all $i\in \{1,\dots,c\}$.\vspace*{-0.05cm} 
+		\end{itemize}
+	\end{definition}
+
+\vspace*{-0.15cm}
+		\begin{lemma}[Lemma 3, Ballard et al., SPAA 2022.]
+			\label{lem:KKT}
+			\vspace*{-0.195cm}Consider an optimization problem of the form given in Equation~\ref{eq:optprob}.
+			If $f$ is a convex function and each $g_i$ is a quasiconvex function, then the KKT conditions are sufficient for optimality.\vspace*{-0.065cm}	
+		\end{lemma}
+	}
+\end{frame}
+
+
+	\section{Parallel algorithms}
+	\begin{frame}{Table of Contents}		
+	\tableofcontents[currentsection,hideallsubsections] % Output the table of contents (all sections on one slide)		
+	\end{frame}
+
+%	\begin{frame}
+%		\titlepage % Output the title slide, automatically created using the text entered in the PRESENTATION INFORMATION block above
+%	\end{frame}
+
+%	\begin{frame}{Recap on parallel matrix multiplication}
+%		\begin{itemize}
+%			\item Memory-dependent communication lower bounds
+%			\vfill
+%			\item 2-dimensional optimal algorithms where each processor has $\mathcal{O}(\frac{n^2}{P})$ memory
+%			\vfill
+%			\item Memory-independent communication lower bounds
+%			\vfill
+%			\item 3-dimensional optimal algorithms where each processor has large memory 
+%			\vfill
+%			\item Assignment 2 is out 
+%		\end{itemize}
+%	\end{frame}
+
+
+\begin{frame}{Design of communication optimal algorithms for $C=AB$}
+	
+	\begin{exampleblock}{\small Arrangements of $8$ processors}
+		\begin{center}
+			\begin{tikzpicture}[scale=0.3, every node/.style={transform shape}]	
+			\foreach \x in {0, 1, 2, 3, 4, 5, 6, 7, 8}
+			\draw (-\x, 0) -- (-\x, 1);
+			
+			\foreach \x in {0, 1, 2, 3, 4, 5, 6, 7, 8}
+			\draw (-\x, 1) -- (-\x+0.6, 1.5);
+			
+			\draw (-8,0) -- (0,0);
+			\draw (-8,1) -- (0,1);
+			\draw (-8+0.6,1+0.5) -- (0+0.6,1+0.5);
+			
+			\draw (0,0) -- (0.6,0.5);
+			\draw (0.6,0.5) -- (0.6,1.5);
+			\end{tikzpicture}$\qquad$
+			\begin{tikzpicture}[scale=0.3, every node/.style={transform shape}]	
+			\foreach \x in {0, 1, 2, 3, 4}
+			\draw (-\x, 0) -- (-\x, 1);
+			
+			\foreach \x in {0, 1, 2, 3, 4}
+			\draw (-\x, 0) -- (-\x, -1);
+			
+			\foreach \x in {0, 1, 2, 3, 4}
+			\draw (-\x, 1) -- (-\x+0.6, 1.5);
+			
+			\draw (-4,0) -- (0,0);
+			\draw (-4,-1) -- (0,-1);
+			\draw (-4,1) -- (0,1);
+			\draw (-4+0.6,1+0.5) -- (0+0.6,1+0.5);
+			
+			\draw (0,0) -- (0.6,0.5);
+			\draw (0.6,0.5) -- (0.6,1.5);
+			
+			\draw (0,-1) -- (0.6,-1+0.5);
+			\draw (0.6,-1+0.5) -- (0.6,0.5);
+			\end{tikzpicture}$\qquad$
+			\begin{tikzpicture}[scale=0.3, every node/.style={transform shape}]
+			
+			\def\xref{0.6}
+			\def\yref{0.5}
+			
+			\foreach \x in {0, 1, 2}
+			\draw (-2, \x) -- (0, \x);
+			
+			\foreach \x in {0, 1, 2}
+			\draw (0, \x)--(2*\xref, 2*\yref+\x);
+			
+			\draw (0,0) -- (0,2);
+			\draw (-1,0) -- (-1,2);
+			\draw (-2,0)--(-2,2);
+			\draw (\xref,\yref) -- (\xref, 2+\yref);
+			\draw (2*\xref,2*\yref) -- (2*\xref, 2+ 2*\yref);
+			
+			\draw (-2,2) -- (-2+2*\xref, 2+2*\yref);
+			\draw (-1,2) -- (-1+2*\xref, 2+2*\yref);
+			
+			\draw (-2+2*\xref, 2+2*\yref) -- (2*\xref, 2+2*\yref);
+			\draw (-2+\xref, 2+\yref) -- (\xref, 2+\yref);
+			\end{tikzpicture}
+		\end{center}
+	\end{exampleblock}
+	\vfill
+	\begin{minipage}{0.585\linewidth}{\small	
+			\begin{itemize}
+				\item $P$ is organized into $p_1 \times p_2 \times p_3$ logical grid
+				\item Select $p_1,p_2$ and $p_3$ based on the communication lower bounds
+				\item Allgather $A$ on the set of processors along each slice of $p_3$
+				\item Allgather $B$ on the set of processors along each slice of $p_1$
+				\item Perform local computation
+				\item Perform Reduce-Scatter along $p_2$ to obtain $C$ 
+			\end{itemize}
+	}\end{minipage}
+	\begin{minipage}{0.4\linewidth}
+		\begin{center}
+			\begin{tikzpicture}[every node/.append style={transform shape},scale=0.75]
+			% draw lines signifying collectives
+			%%		\draw[line width=2,->,red!75] (-2.5,-1.5,0) -- (0,-1.5,0) node [right] {$p_2$};
+			\draw[line width=2,->,red!75] (-2.5,-1.5,0) -- (-1.25,-1.5,0) node [below] {$p_2$} -- (0,-1.5,0);
+			\draw[line width=2,->,red!75] (-3.2,1.75,0) -- (-3.2,1,0) node [left] {$p_1$} -- (-3.2,-0.675,0);
+			\draw[line width=2,->,red!75] (-3.35,2.25,0) -- (-3.35,2.25,-2) node [left] {$p_3$} -- (-3.35,2.25,-4);
+			%%		\draw[line width=3,stealth-stealth,red!75] (0,2,0) -- (-2.25,2,0);
+			%%		\draw[line width=3,stealth-stealth,red!75] (0,2,0) -- (0,-.25,0);
+			% right face of comp cube
+			\begin{scope}[canvas is yz plane at x=.5,rotate=-90,yscale=-1,shift={(-.5,-3+.5)}]
+			%%\draw[fill=red!25] (0,0) rectangle (1,1);
+			%%\draw[fill=red!75] (2/3,0) rectangle (1,1);
+			\draw[black] (0,0) grid (3,3);
+			%%\draw[black,xscale=1/3,dotted] (0,0) grid (3,1);
+			\node[yscale=-1,scale=2] at (3/2,3/2) {\Large $\CC$};
+			\node[yscale=-1,scale=.5] at (1/2,1/2) {$\CC_{00}$};
+			\node[yscale=-1,scale=.5] at (1/2,3/2) {$\CC_{01}$};
+			\node[yscale=-1,scale=.5] at (1/2,5/2) {$\CC_{02}$};
+			\node[yscale=-1,scale=.5] at (3/2,1/2) {$\CC_{10}$};
+			\node[yscale=-1,scale=.5] at (3/2,5/2) {$\CC_{12}$};
+			\node[yscale=-1,scale=.5] at (5/2,1/2) {$\CC_{20}$};
+			\node[yscale=-1,scale=.5] at (5/2,3/2) {$\CC_{21}$};
+			\node[yscale=-1,scale=.5] at (5/2,5/2) {$\CC_{22}$};
+			\end{scope}
+			% front face of comp cube
+			\begin{scope}[canvas is yx plane at z=.5,yscale=-1,rotate=180,shift={(-3+.5,-3+.5)}]
+			%%\draw[fill=red!25] (0,2) rectangle (1,3);
+			%%\draw[fill=red!75] (0,2) rectangle (1,7/3);
+			\draw[black] (0,0) grid (3,3);
+			%%\draw[black,shift={(0,2)},yscale=1/3,dotted] (0,0) grid (1,3);
+			\node[rotate=90,scale=2] at (3/2,3/2) {\Large $\A$};
+			\node[rotate=90,scale=.5] at (1/2,1/2) {$\A_{00}$};
+			\node[rotate=90,scale=.5] at (1/2,3/2) {$\A_{01}$};
+			\node[rotate=90,scale=.5] at (1/2,5/2) {$\A_{02}$};
+			\node[rotate=90,scale=.5] at (3/2,1/2) {$\A_{10}$};
+			\node[rotate=90,scale=.5] at (3/2,5/2) {$\A_{12}$};
+			\node[rotate=90,scale=.5] at (5/2,1/2) {$\A_{20}$};
+			\node[rotate=90,scale=.5] at (5/2,3/2) {$\A_{21}$};
+			\node[rotate=90,scale=.5] at (5/2,5/2) {$\A_{22}$};
+			\end{scope}
+			% top face of comp cube
+			\begin{scope}[canvas is zx plane at y=(3-.5),rotate=90,shift={(-3+.5,-.5)}]
+			%%\draw[fill=red!25] (2,0) rectangle (3,1);
+			%%\draw[fill=red!75] (2,0) rectangle (3,1/3);
+			\draw[black] (0,0) grid (3,3);
+			%%\draw[black,shift={(2,0)},yscale=1/3,dotted] (0,0) grid (1,3);
+			\node[rotate=90,scale=2] at (3/2,3/2) {\Large $\B$};
+			\node[rotate=90,scale=.5] at (1/2,1/2) {$\B_{00}$};
+			\node[rotate=90,scale=.5] at (1/2,3/2) {$\B_{01}$};
+			\node[rotate=90,scale=.5] at (1/2,5/2) {$\B_{02}$};
+			\node[rotate=90,scale=.5] at (3/2,1/2) {$\B_{10}$};
+			\node[rotate=90,scale=.5] at (3/2,5/2) {$\B_{12}$};
+			\node[rotate=90,scale=.5] at (5/2,1/2) {$\B_{20}$};
+			\node[rotate=90,scale=.5] at (5/2,3/2) {$\B_{21}$};
+			\node[rotate=90,scale=.5] at (5/2,5/2) {$\B_{22}$};
+			\end{scope}
+			\end{tikzpicture}
+		\end{center}
+	\end{minipage}
+\end{frame}
+
+\begin{frame}{Communication optimal algorithms}
+	\vspace*{-0.25cm}\begin{block}{\small Data Distribution ($P$ is organized into a $p_1 \times p_2 \times p_3$ grid)}
+		\begin{minipage}{0.75\linewidth}{\small	
+				\begin{itemize}
+%					\item Select $p_1,p_2$, and $p_3$ based on communication lower bounds
+					\item Each processor has $\frac{1}{P}$th amount of input and output variables
+					\item $A_{20} = A(2\frac{n_1}{p_1}:3\frac{n_1}{p_1}-1, 0:\frac{n_2}{p_2}-1)$ is evenly distributed among $(2,0, *)$ processors
+					\item $B_{01} =  B(0:\frac{n_2}{p_2}-1, \frac{n_3}{p_3}:2\frac{n_3}{p_3})-1$ is evenly distributed among $(*,0,1)$ processors  
+				\end{itemize}
+		}\end{minipage}
+		\begin{minipage}{0.2\linewidth}
+			\begin{tikzpicture}[scale=0.4, every node/.style={transform shape}]
+			\def\xref{0.6}
+			\def\yref{0.5}
+			
+			\foreach \y in {0, 1, 2, 3, 4}
+			\draw (-2, \y) -- (2, \y);
+			
+			\foreach \x in {-2, -1, 0, 1, 2}
+			\draw (\x, 0) -- (\x, 4);
+			
+			\node [below, pastelgreen, scale=2.5] at (0,0) {$A$};
+			
+			
+			\node [ pastelgreen, scale=1.2] at (-1.5,2.5) {$A_{20}$};
+			
+			\draw [->, red] (-1,-1.5) -- (1,-1.5) node [below right, scale=1.2] {$n_2$};
+			\draw [->, red] (-2.5,1) -- (-2.5,3) node [ above left, scale=1.2] {$n_1$};
+			\end{tikzpicture}
+		\end{minipage}
+	\end{block}
+
+	\begin{block}{Assignment 2 -- deadline Sept. 28}
+		\brown{Questions:}
+		\begin{itemize}
+			\item Write a proper 3-dimensional algorithm for parallel matrix multiplication.
+			\item Determine expressions for processor grid dimensions based on the lower bounds and compute the data transfer costs of the algorithm with these dimensions.
+		\end{itemize}
+	\end{block}
+	
+%	\vspace*{-0.3cm}\begin{algorithm}[H]{\footnotesize
+%			\caption{$C=AB$ Matrix multiplication algorithm}
+%			\begin{algorithmic}[1]
+%				\STATE $(p_1^\prime, p_2^\prime, p_3^\prime)$ is my processor id
+%				\STATE //All-gather input matrices $A$ and $B$
+%				\STATE $A_{p_1^\prime p_2^\prime}$ = All-Gather($A$, $(p_1^\prime, p_2^\prime, *)$)
+%				\STATE $B_{p_2^\prime p_3^\prime}$ = All-Gather($B$, $(*, p_2^\prime, p_3^\prime)$)
+%				%%			\STATE //Perform local Matrix Multiplication in a temporary variable $T$
+%				\STATE $T$ = Local-Matrix-Multiplication($A_{p_1^\prime p_2^\prime}, B_{p_2^\prime p_3^\prime} $) // Local matrix multiplication in a temporary
+%				%%			\STATE //Reduce-scatter the output matrix in $C_{p_1^\prime p_3^\prime}$
+%				\STATE Reduce-Scatter($C_{p_1^\prime p_3^\prime}$, T,  $(p_1^\prime,*,p_3^\prime)$) // Reduce-scatter the output
+%			\end{algorithmic}
+%	}\end{algorithm}
+\end{frame}
+\begin{frame}{Cost analysis and Open questions}
+	\begin{block}{Cost analysis along the critical path}
+		\begin{itemize}
+			\item Total amount of multiplications per processor = $\frac{n_1n_2n_3}{p_1p_2p_3} = \frac{n_1n_2n_3}{P}$
+			%%		\item Amount of data transfers to perform All-Gather/Reduce-Scatter operation on $Q$ processors = $(1-\frac{1}{Q})w$, $w$ is amount of total data after All-Gather or before Reduce-Scatter operation
+			\item Total data transfers = $\frac{n_1n_2}{p_1p_2} + \frac{n_2n_3}{p_2p_3} + \frac{n_1n_3}{p_1p_3} - \frac{n_1n_2+n_2n_3+n_1n_3}{P}$
+			\item Total memory required on each processor =  $\mathcal{O}\left((\frac{n_1n_2n_3}{P})^\frac23\right)$ 
+		\end{itemize}
+	\end{block}
+	\vfill
+	\begin{block}{Open Questions}
+		\begin{itemize}
+%			\item How to select $p_1, p_2, p_3$?
+			\item Are communication lower bounds achievable for all matrix dimensions?
+			\item How to adapt when we have less memory on each processor?
+		\end{itemize}
+	\end{block}
+	
+\end{frame}
+
+	\section{2.5D matrix multiplication}
+\begin{frame}{Table of Contents}		
+	\tableofcontents[currentsection,hideallsubsections] % Output the table of contents (all sections on one slide)		
+\end{frame}
+\begin{frame}{Limited memory scenarios}
+	\begin{itemize}
+	\item $C=AB$, where $A \in \mathbb{R}^{n_1\times n_2}, B \in \mathbb{R}^{n_2\times n_3}$, and $C \in \mathbb{R}^{n_1\times n_3}$
+	\item Amount of memory on each processor = $\mathcal{O}\left(c\frac{n_1n_3}{P}\right)$
+	\item  $\frac{n_1n_3}{P} << c\frac{n_1n_3}{P} << (\frac{n_1n_2n_3}{P})^\frac23$
+	\item Data transfer lower bound = $\Omega\left(\frac{n_1n_2n_3}{P\sqrt{M}}\right) = \Omega\left(n_2\sqrt{\frac{n_1n_3}{Pc}}\right)$
+	\end{itemize}
+
+			\begin{block}{Algorithm structure}
+		\begin{minipage}{0.65\linewidth}
+			\begin{itemize}
+				\item The same 3-dimensional algorithm 
+				\item $P$ ia arranged in $p_1 \times p_2 \times p_3$ logical grid
+				\item Set $p_2=c$
+				\item $p_1p_3=P/c$ processors perform multiplication of $n_1\times \frac{n_2}{c}$ submatrix of $A$ with $\frac{n_2}{c} \times n_3$ submatrix of $B$
+				\item Perform Reduce-Scatter operation along $p_2$ to obtain $C$
+			\end{itemize}
+
+		\end{minipage}
+	\begin{minipage}{0.325\linewidth}
+		\begin{center}
+			\begin{tikzpicture}[every node/.append style={transform shape},scale=0.615]
+			% draw lines signifying collectives
+			%%		\draw[line width=2,->,red!75] (-2.5,-1.5,0) -- (0,-1.5,0) node [right] {$p_2$};
+			\draw[line width=2,->,red!75] (-2.5,-1.5,0) -- (-1.25,-1.5,0) node [below] {$p_2$} -- (0,-1.5,0);
+			\draw[line width=2,->,red!75] (-3.2,1.75,0) -- (-3.2,1,0) node [left] {$p_1$} -- (-3.2,-0.675,0);
+			\draw[line width=2,->,red!75] (-3.35,2.25,0) -- (-3.35,2.25,-2) node [left] {$p_3$} -- (-3.35,2.25,-4);
+			%%		\draw[line width=3,stealth-stealth,red!75] (0,2,0) -- (-2.25,2,0);
+			%%		\draw[line width=3,stealth-stealth,red!75] (0,2,0) -- (0,-.25,0);
+			% right face of comp cube
+			\begin{scope}[canvas is yz plane at x=.5,rotate=-90,yscale=-1,shift={(-.5,-3+.5)}]
+			%%\draw[fill=red!25] (0,0) rectangle (1,1);
+			%%\draw[fill=red!75] (2/3,0) rectangle (1,1);
+			\draw[black] (0,0) grid (3,3);
+			%%\draw[black,xscale=1/3,dotted] (0,0) grid (3,1);
+			\node[yscale=-1,scale=2] at (3/2,3/2) {\Large $\CC$};
+			\node[yscale=-1,scale=.5] at (1/2,1/2) {$\CC_{00}$};
+			\node[yscale=-1,scale=.5] at (1/2,3/2) {$\CC_{01}$};
+			\node[yscale=-1,scale=.5] at (1/2,5/2) {$\CC_{02}$};
+			\node[yscale=-1,scale=.5] at (3/2,1/2) {$\CC_{10}$};
+			\node[yscale=-1,scale=.5] at (3/2,5/2) {$\CC_{12}$};
+			\node[yscale=-1,scale=.5] at (5/2,1/2) {$\CC_{20}$};
+			\node[yscale=-1,scale=.5] at (5/2,3/2) {$\CC_{21}$};
+			\node[yscale=-1,scale=.5] at (5/2,5/2) {$\CC_{22}$};
+			\end{scope}
+			% front face of comp cube
+			\begin{scope}[canvas is yx plane at z=.5,yscale=-1,rotate=180,shift={(-3+.5,-3+.5)}]
+			%%\draw[fill=red!25] (0,2) rectangle (1,3);
+			%%\draw[fill=red!75] (0,2) rectangle (1,7/3);
+			\draw[black] (0,0) grid (3,3);
+			%%\draw[black,shift={(0,2)},yscale=1/3,dotted] (0,0) grid (1,3);
+			\node[rotate=90,scale=2] at (3/2,3/2) {\Large $\A$};
+			\node[rotate=90,scale=.5] at (1/2,1/2) {$\A_{00}$};
+			\node[rotate=90,scale=.5] at (1/2,3/2) {$\A_{01}$};
+			\node[rotate=90,scale=.5] at (1/2,5/2) {$\A_{02}$};
+			\node[rotate=90,scale=.5] at (3/2,1/2) {$\A_{10}$};
+			\node[rotate=90,scale=.5] at (3/2,5/2) {$\A_{12}$};
+			\node[rotate=90,scale=.5] at (5/2,1/2) {$\A_{20}$};
+			\node[rotate=90,scale=.5] at (5/2,3/2) {$\A_{21}$};
+			\node[rotate=90,scale=.5] at (5/2,5/2) {$\A_{22}$};
+			\end{scope}
+			% top face of comp cube
+			\begin{scope}[canvas is zx plane at y=(3-.5),rotate=90,shift={(-3+.5,-.5)}]
+			%%\draw[fill=red!25] (2,0) rectangle (3,1);
+			%%\draw[fill=red!75] (2,0) rectangle (3,1/3);
+			\draw[black] (0,0) grid (3,3);
+			%%\draw[black,shift={(2,0)},yscale=1/3,dotted] (0,0) grid (1,3);
+			\node[rotate=90,scale=2] at (3/2,3/2) {\Large $\B$};
+			\node[rotate=90,scale=.5] at (1/2,1/2) {$\B_{00}$};
+			\node[rotate=90,scale=.5] at (1/2,3/2) {$\B_{01}$};
+			\node[rotate=90,scale=.5] at (1/2,5/2) {$\B_{02}$};
+			\node[rotate=90,scale=.5] at (3/2,1/2) {$\B_{10}$};
+			\node[rotate=90,scale=.5] at (3/2,5/2) {$\B_{12}$};
+			\node[rotate=90,scale=.5] at (5/2,1/2) {$\B_{20}$};
+			\node[rotate=90,scale=.5] at (5/2,3/2) {$\B_{21}$};
+			\node[rotate=90,scale=.5] at (5/2,5/2) {$\B_{22}$};
+			\end{scope}
+			\end{tikzpicture}
+		\end{center}
+	\end{minipage}
+		\end{block}
+\end{frame}
+
+\begin{frame}{Processor grid dimensions and data transfer costs}
+
+	{\small\vspace*{-0.25cm}\begin{itemize}
+		\item Total amount of multiplications on each processor = $\frac{n_1}{p_1}\cdot \frac{n_2}{c}\cdot\frac{n_3}{p_3} = \frac{n_1n_2n_3}{P}$
+		\item To minimize data transfer costs
+		\begin{itemize}
+			\item $\textnormal{\# access of $A$ on each processor}$ = $\textnormal{\# access of $B$ on each processor}$ $=>$ $\frac{n_1}{p_1}\cdot\frac{n_2}{c} = \frac{n_2}{c}\cdot\frac{n_1}{p_1}$
+			\item $p_1p_3=P/c$
+			\item $p_1=\left(\frac{n_1}{n_3} \cdot \frac{P}{c}\right)^\frac12$
+			\item $p_3=\left(\frac{n_3}{n_1} \cdot \frac{P}{c}\right)^\frac12$
+		\end{itemize}
+	\item \# accessed elements on each processor =  $\frac{n_1n_2}{p_1c} + \frac{n_2n_3}{p_3c} + c\frac{n_1n_3}{P}$\\ $\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad= 2 n_2\sqrt{\frac{n_1n_3}{Pc}} + c\frac{n_1n_3}{P}$
+	\item Data transfer costs on each processor =  \emph{\# accessed elements} - \emph{owned data} 
+	\item \emph{owned data} = $\frac{n_1n_2+n_2n_3+n_1n_3}{P}$
+	\end{itemize}
+	\begin{center}
+		{\color{darkblue} $c\frac{n_1n_3}{P} << (\frac{n_1n_2n_3}{P})^\frac23 => c\frac{n_1n_3}{P} << n_2\sqrt{\frac{n_1n_3}{Pc}}$}
+	\end{center}
+	\begin{itemize}
+		\item Data transfer costs of the algorithm asymptotically match the leading terms in the lower bounds  
+	\end{itemize}}
+\end{frame}
+
+\end{document} 
