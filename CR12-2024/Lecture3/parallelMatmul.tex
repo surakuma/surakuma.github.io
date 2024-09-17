@@ -258,7 +258,7 @@
 		}
 		\foreach \x in {0,1,2,3}
 			\foreach \y in {0,1,2,3}
-			\node [scale=0.8] at (\xstep+ \x+0.5 , 3.5-\y) {p(\x,\y)};
+			\node [scale=0.8] at (\xstep+ \x+0.5 , 3.5-\y) {p(\y,\x)};
 			
 		\node [scale=1.2] at (5,2) {$=$};
 		
@@ -270,7 +270,7 @@
 		}
 		\foreach \x in {0,1,2,3}
 		\foreach \y in {0,1,2,3}
-		\node [scale=0.8] at (\xstep+ \x+0.5 , 3.5-\y) {p(\x,\y)};
+		\node [scale=0.8] at (\xstep+ \x+0.5 , 3.5-\y) {p(\y,\x)};
 		\node [scale=1.2] at (10.5,2) {$*$};
 		\def\xstep{11}
 		\foreach \x in {0,1,2,3, 4}
@@ -280,7 +280,7 @@
 		}
 		\foreach \x in {0,1,2,3}
 		\foreach \y in {0,1,2,3}
-		\node [scale=0.8] at (\xstep+ \x+0.5 , 3.5-\y) {p(\x,\y)};
+		\node [scale=0.8] at (\xstep+ \x+0.5 , 3.5-\y) {p(\y,\x)};
 		\end{tikzpicture}
 	\end{center}
 \begin{itemize}
@@ -1131,13 +1131,13 @@
 		\end{minipage}
 	\end{block}
 
-	\begin{block}{Assignment 2 -- deadline Sept. 26}
-		\brown{Questions:}
-		\begin{itemize}
-			\item Write a proper 3-dimensional algorithm for parallel matrix multiplication.
-			\item Determine expressions for processor grid dimensions based on the lower bounds and compute the data transfer costs of the algorithm with these dimensions.
-		\end{itemize}
-	\end{block}
+%	\begin{block}{Assignment 2 -- deadline Sept. 26}
+%		\brown{Questions:}
+%		\begin{itemize}
+%			\item Write a proper 3-dimensional algorithm for parallel matrix multiplication.
+%			\item Determine expressions for processor grid dimensions based on the lower bounds and compute the data transfer costs of the algorithm with these dimensions.
+%		\end{itemize}
+%	\end{block}
 	
 %	\vspace*{-0.3cm}\begin{algorithm}[H]{\footnotesize
 %			\caption{$C=AB$ Matrix multiplication algorithm}
