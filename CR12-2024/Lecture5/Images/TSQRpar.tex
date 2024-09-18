@@ -1,0 +1,69 @@
+%!TEX root = ../../book.tex
+
+% set relative sizes of m and n
+\pgfmathsetmacro{\mdim}{16}
+\pgfmathsetmacro{\ndim}{3}
+% set step shift and arrow offset and label scale
+\pgfmathsetmacro{\shft}{3.5}
+\pgfmathsetmacro{\offset}{.33}
+\pgfmathsetmacro{\lblscl}{2}
+
+% for drawing help	
+\newcommand{\drawgridhelp}{
+	\coordinate (ll) at (0,-1);
+	\coordinate (ur) at (5*\ndim+3*\shft,\mdim+2);
+	\draw[help lines,dashed] (ll) grid (ur);
+}
+
+% draw labeled triangle
+\newcommand{\drawtriangle}[2]{
+	\draw (0,0) -- (\ndim,0) -- (\ndim,-\ndim) -- (0,0);
+	\node[scale=\lblscl] at (3*\ndim/4,-\ndim/4) {$\Mbs{R}{#1}{#2}$};
+}
+
+% for 2 triangle reduction
+\newcommand{\drawreduction}[5]{
+	\drawtriangle{#1}{#2}
+	\begin{scope}[shift={(0,-#5)}]
+		\drawtriangle{#3}{#4}
+	\end{scope}
+	\draw[->] (\ndim+\offset,-\ndim/2) -- +(\shft-2*\offset,0);
+	\draw[->] (\ndim+\offset,-\ndim/2-#5) -- (\ndim+\shft-\offset,-\ndim/2-3*\offset);
+}
+
+\begin{tikzpicture}[every node/.append style={transform shape},scale=.2]
+	%\drawgridhelp
+	
+	% initial matrix
+	\draw[xscale=\ndim,yscale=\mdim/4] (0,0) grid +(1,4);
+	\node[scale=\lblscl] at (\ndim/2,7*\mdim/8) {$\Mb{A}{1}$};
+	\node[scale=\lblscl] at (\ndim/2,5*\mdim/8) {$\Mb{A}{2}$};
+	\node[scale=\lblscl] at (\ndim/2,3*\mdim/8) {$\Mb{A}{3}$};
+	\node[scale=\lblscl] at (\ndim/2,\mdim/8) {$\Mb{A}{4}$};
+	
+	% local step
+	\draw[->] (\ndim+\offset,7*\mdim/8) -- +(\shft-2*\offset,0);
+	\draw[->] (\ndim+\offset,5*\mdim/8) -- +(\shft-2*\offset,0);
+	\draw[->] (\ndim+\offset,3*\mdim/8) -- +(\shft-2*\offset,0);
+	\draw[->] (\ndim+\offset,\mdim/8) -- +(\shft-2*\offset,0);
+	
+	% 1st reduction step
+	\begin{scope}[shift={(\ndim+\shft,\mdim)}]
+		\drawreduction{1}{2}{2}{2}{\mdim/4}
+	\end{scope}
+	\begin{scope}[shift={(\ndim+\shft,2*\mdim/4)}]
+		\drawreduction{3}{2}{4}{2}{\mdim/4}
+	\end{scope}
+	
+	% 2nd reduction step
+	\begin{scope}[shift={(2*\ndim+2*\shft,\mdim)}]
+		\drawreduction{1}{1}{3}{1}{\mdim/2}
+	\end{scope}
+	
+	% final result
+	\begin{scope}[shift={(3*\ndim+3*\shft,\mdim)}]
+		\drawtriangle{1}{0}
+	\end{scope}
+	
+	
+\end{tikzpicture}
