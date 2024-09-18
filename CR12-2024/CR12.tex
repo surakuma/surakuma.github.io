@@ -1,0 +1,322 @@
+\documentclass[9pt]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{graphicx}
+\usepackage{beamerthemesplit}
+\usetheme{Ilmenau}
+%\usetheme{Warsaw}%\usetheme{Frankfurt}
+
+\usepackage{subfigure}
+\usepackage{booktabs}
+\usepackage[utf8]{inputenc}
+\usepackage{helvet}
+\usepackage{multimedia}
+\usepackage{media9}
+\usepackage{stmaryrd}
+\usepackage{xpatch}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{siunitx}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepackage{listings}
+\usepackage{algorithm,algorithmic}
+%\usepackage{algpseudocode}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{fancybox}
+\usepackage{multirow}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{patterns,decorations.pathreplacing}
+\usetikzlibrary{matrix}
+\usetikzlibrary{fit}
+\usetikzlibrary{trees}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{patterns}
+\usetikzlibrary{positioning}
+\usetikzlibrary{decorations.pathreplacing}
+\usepackage{blindtext}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.3}
+\usetikzlibrary{calc}
+\usepackage{colortbl}
+\usepackage{siunitx}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepackage{tikz}
+
+\setbeamertemplate{footline}
+                  {
+                    \leavevmode%
+                    \hbox{%
+                      \begin{beamercolorbox}[wd=.4\paperwidth,ht=2.25ex,dp=2ex,center]{author in head/foot}%
+                        \usebeamerfont{author in head/foot}\insertshortauthor
+                      \end{beamercolorbox}%
+                      \begin{beamercolorbox}[wd=.6\paperwidth,ht=2.25ex,dp=2ex,center]{title in head/foot}%
+                        \usebeamerfont{title in head/foot}\insertshorttitle\hspace*{3em}
+                        %                        \insertframenumber{} / \inserttotalframenumber\hspace*{1ex}
+                    \end{beamercolorbox}}%
+                    \vskip0pt%
+                  }
+
+\usecolortheme{dove}
+\beamertemplatenavigationsymbolsempty
+
+
+
+
+%\author{Grégoire Pichon, Bora Uçar, Frédéric Vivien}
+\author{Suraj Kumar}
+
+\title[CR12 (\url{https://surakuma.github.io/courses/daamtc.html})]{}
+%\title[CR12]{}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+
+\definecolor{pastelviolet}{rgb}{0.8, 0.6, 0.79}
+\definecolor{babyblueeyes}{rgb}{0.63, 0.79, 0.95}
+\definecolor{pastelyellow}{rgb}{0.99, 0.99, 0.59}
+\definecolor{pastelgreen1}{rgb}{0.47, 0.87, 0.47}
+\definecolor{pastelgreen}{rgb}{0, 1, 0}
+\definecolor{pastelred}{rgb}{1.0, 0.41, 0.38}
+\colorlet{patternblue}{blue!60}
+
+\newcommand{\backupbegin}{
+\newcounter{framenumberappendix}
+\setcounter{framenumberappendix}{\value{framenumber}}
+%\setbeamertemplate{footline}{}
+}
+\newcommand{\backupend}{
+\addtocounter{framenumberappendix}{-\value{framenumber}}
+\addtocounter{framenumber}{\value{framenumberappendix}}
+\setbeamertemplate{footline}{
+\vspace{-1cm}\small{\insertframenumber/\inserttotalframenumber}
+}
+}
+
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+\makeatother
+
+\begin{document}
+
+\begin{frame}{{\textbf{CR12: Data-aware algorithms for matrix and tensor computations}}}
+
+\vfill
+
+\begin{minipage}{0.45\linewidth}
+\begin{small}
+\begin{minipage}[l]{0.4\linewidth}
+	\vspace*{0.6cm}
+		\begin{center}
+		\begin{figure}
+			\begin{tikzpicture}[scale=0.5, every node/.style={transform shape}]
+%			\tikzstyle{taskmemory}=[draw=black, minimum height=10mm, minimum width=21mm, fill=blue!40, text=black]
+			\tikzstyle{taskmemory}=[draw=black, minimum height=8mm, minimum width=25mm, fill=blue!20, text=black]
+			\tikzstyle{taskcompute}=[draw=black, minimum height=16mm, minimum width=16mm, fill=none, text=black, below]
+			
+			\node (t0) at (0,4) [taskcompute] {}; 
+			\node (t1) at (0,0) [taskmemory] {$DRAM$};
+
+			
+			\draw [<->, line width=3, orange] (t0) -- (t1);
+			
+			
+			\node (td0)  at (t0.south) [above, scale=0.6] {$Cache$};
+%			\node (td1) [above, scale=0.6] at (t1.south) {$DRAM$};
+%			\node (td2) [above, scale=0.6] at (t2.south) {$DRAM$};
+%			\node (td3) [above, scale=0.6] at (t3.south) {$DRAM$};
+			
+			\node [above] at (td0.north) {$CPU$};
+			
+
+%		\path (0, -2) -- (0.1, -2);
+%		\path (0, 6) -- (0.1, 6);
+
+			\end{tikzpicture}
+			\caption{\scriptsize Sequential machine}
+		\end{figure}
+	\end{center}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\linewidth}
+	\begin{center}
+		\begin{figure}
+		\begin{tikzpicture}[scale=0.5, every node/.style={transform shape}]
+		%%\tikzstyle{taskmemory}=[draw=black, minimum height=18mm, minimum width=18mm, fill=blue!40, text=black]
+		\tikzstyle{taskcompute}=[draw=black, minimum height=16mm, minimum width=16mm, fill=none, text=black, below]
+		
+		\node (t0) at (0,0) [taskcompute] {}; 
+		\node (t1) at (4,0) [taskcompute] {};
+		\node (t2) at (4,4) [taskcompute] {};
+		\node (t3) at (0,4) [taskcompute] {};
+		
+		\draw [<->, line width=3, orange] (t0) -- (t1);
+		\draw [<->, line width=3, orange] (t1) -- (t2);
+		\draw [<->, line width=3, orange] (t2) -- (t3);
+		\draw [<->, line width=3, orange] (t3) -- (t0);
+		
+		%%\draw [<->, line width=3, orange] (t0) -- (t2);
+		%%\draw [<->, line width=3, orange] (t1) -- (t3);
+		
+		\node (td0)  at (t0.south) [above, scale=0.6] {$DRAM$};
+		\node (td1) [above, scale=0.6] at (t1.south) {$DRAM$};
+		\node (td2) [above, scale=0.6] at (t2.south) {$DRAM$};
+		\node (td3) [above, scale=0.6] at (t3.south) {$DRAM$};
+		
+		\node [above] at (td0.north) {$CPU$};
+		\node [above] at (td1.north) {$CPU$};
+		\node [above] at (td2.north) {$CPU$};
+		\node [above] at (td3.north) {$CPU$};
+		
+%		\path (0, -2) -- (0.1, -2);
+%		\path (0, 6) -- (0.1, 6);
+		\end{tikzpicture}
+		\caption{\scriptsize Parallel machine}
+		\end{figure}
+	\end{center}
+\end{minipage}
+\end{small}
+\end{minipage}\hfill
+\fcolorbox{white}{blue!5}{%
+	\begin{minipage}[r]{\dimexpr0.405\linewidth-2\fboxrule-2\fboxsep\relax}
+			\centering{\color{blue!70}{\small Tensors ($N$-dimensional arrays)}}
+				\begin{center}
+					\begin{tikzpicture}[scale=0.115, every node/.style={transform shape}]
+					\pgfmathsetmacro{\rectx}{4}
+					\pgfmathsetmacro{\recty}{0.5}
+					\draw[blue,fill=pastelgreen] (0,0) -- node [below, scale=6, black] {Vector}++(-\rectx,0) -- ++(0,\recty) -- ++(\rectx, 0) -- cycle;
+					\end{tikzpicture}$\;$
+					\begin{tikzpicture}[scale=0.115, every node/.style={transform shape}]
+					\pgfmathsetmacro{\rectx}{4}
+					\pgfmathsetmacro{\recty}{4}
+					\draw[blue,fill=pastelgreen] (0,0) -- node [below, scale=6, black] {Matrix}++(-\rectx,0) -- ++(0,\recty) -- ++(\rectx, 0) -- cycle;
+					%%\addvmargin{4};
+					\end{tikzpicture}$\;$
+					\begin{tikzpicture}[scale=0.115, every node/.style={transform shape}]
+					\pgfmathsetmacro{\cubex}{4}
+					\pgfmathsetmacro{\cubey}{4}
+					\pgfmathsetmacro{\cubez}{4}
+					\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) --node [below, scale=6, black] {3-dimensional tensor} ++(\cubex,0,0) -- cycle;
+					\draw[blue,fill=pastelgreen] (0,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+					\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+					\end{tikzpicture}$\;$
+					%%	\end{center}
+					%%	\begin{center}
+					\end{center}
+				
+				\vspace*{0.1cm}
+				\begin{center}
+				\begin{tikzpicture}[scale=0.115, every node/.style={transform shape}]
+				\pgfmathsetmacro{\cubex}{4}
+				\pgfmathsetmacro{\cubey}{4}
+				\pgfmathsetmacro{\cubez}{4}
+				\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+				\draw[blue,fill=pastelgreen] (0,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+				\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+				
+				\draw[blue,fill=pastelgreen] (\cubex +2,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+				\draw[blue,fill=pastelgreen] (\cubex +2,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+				\draw[blue,fill=pastelgreen] (\cubex +2,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+				
+				\draw[blue,fill=pastelgreen] (\cubex +2 + \cubex +2,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+				\draw[blue,fill=pastelgreen] (\cubex +2 + \cubex +2,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+				\draw[blue,fill=pastelgreen] (\cubex +2 + \cubex +2,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+				
+				\draw[blue, fill=none] (-\cubex -1, 2.5, 0) -- ++(0, -\cubey -3.5, 0) --node [below, scale=6, black] {4-dimensional tensor} ++(\cubex +2 + \cubex +2 + \cubex + \cubex,0,0) -- ++(0, \cubey +3.5, 0) -- cycle; 
+				
+				%%\node [scale=2] at (0, -8) {$hello$};
+				\end{tikzpicture}
+			\end{center}
+
+\end{minipage}}
+%\begin{minipage}[r]{0.4\linewidth}
+%	\begin{block}{\color{blue!70}{\small Tensors ($N$-dimensional arrays)}}
+%%		\colorbox{red}{
+%	\begin{center}
+%		\begin{tikzpicture}[scale=0.115, every node/.style={transform shape}]
+%		\pgfmathsetmacro{\rectx}{4}
+%		\pgfmathsetmacro{\recty}{0.5}
+%		\draw[blue,fill=pastelgreen] (0,0) -- node [below, scale=6, black] {Vector}++(-\rectx,0) -- ++(0,\recty) -- ++(\rectx, 0) -- cycle;
+%		\end{tikzpicture}$\;$
+%		\begin{tikzpicture}[scale=0.115, every node/.style={transform shape}]
+%		\pgfmathsetmacro{\rectx}{4}
+%		\pgfmathsetmacro{\recty}{4}
+%		\draw[blue,fill=pastelgreen] (0,0) -- node [below, scale=6, black] {Matrix}++(-\rectx,0) -- ++(0,\recty) -- ++(\rectx, 0) -- cycle;
+%		%%\addvmargin{4};
+%		\end{tikzpicture}$\;$
+%		\begin{tikzpicture}[scale=0.115, every node/.style={transform shape}]
+%		\pgfmathsetmacro{\cubex}{4}
+%		\pgfmathsetmacro{\cubey}{4}
+%		\pgfmathsetmacro{\cubez}{4}
+%		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) --node [below, scale=6, black] {3-dimensional tensor} ++(\cubex,0,0) -- cycle;
+%		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+%		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+%		\end{tikzpicture}$\;$
+%		%%	\end{center}
+%		%%	\begin{center}
+%		\end{center}
+%	
+%	\vspace*{0.1cm}
+%%	}
+%	
+%		\begin{center}
+%		\begin{tikzpicture}[scale=0.115, every node/.style={transform shape}]
+%		\pgfmathsetmacro{\cubex}{4}
+%		\pgfmathsetmacro{\cubey}{4}
+%		\pgfmathsetmacro{\cubez}{4}
+%		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+%		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+%		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+%		
+%		\draw[blue,fill=pastelgreen] (\cubex +2,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+%		\draw[blue,fill=pastelgreen] (\cubex +2,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+%		\draw[blue,fill=pastelgreen] (\cubex +2,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+%		
+%		\draw[blue,fill=pastelgreen] (\cubex +2 + \cubex +2,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+%		\draw[blue,fill=pastelgreen] (\cubex +2 + \cubex +2,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+%		\draw[blue,fill=pastelgreen] (\cubex +2 + \cubex +2,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+%		
+%		\draw[blue, fill=none] (-\cubex -1, 2.5, 0) -- ++(0, -\cubey -3.5, 0) --node [below, scale=6, black] {4-dimensional tensor} ++(\cubex +2 + \cubex +2 + \cubex + \cubex,0,0) -- ++(0, \cubey +3.5, 0) -- cycle; 
+%		
+%		%%\node [scale=2] at (0, -8) {$hello$};
+%		\end{tikzpicture}
+%	\end{center}
+%	\end{block}
+%\end{minipage}
+
+\vfill
+
+\begin{small}
+  \begin{columns}
+  \begin{column}{0.65\textwidth}
+  \begin{block}{{\color{blue}{Contents}}}
+    \begin{itemize}
+    	\item Minimum data transfer costs of computations
+    	\item Matrix and tensor computation algorithms
+    	\item Popular methods to work with large tensors
+%    \item Graph algorithms
+%    \item Low-rank compression for sparse direct solvers
+%    \item Scheduling under memory constraints
+    \end{itemize}
+  \end{block}
+    \end{column}
+  \begin{column}{0.35\textwidth}
+  \begin{block}{{\color{blue}{Evaluation}}}
+    \begin{itemize}
+    \item Homework assignments
+   \item Report/Presentation 
+    \end{itemize}
+  \end{block}
+    \end{column}
+    \end{columns}
+    \end{small}
+\end{frame}
+
+\vfill  
+\end{document}
