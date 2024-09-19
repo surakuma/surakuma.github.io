@@ -1131,13 +1131,13 @@
 		\end{minipage}
 	\end{block}
 
-%	\begin{block}{Assignment 2 -- deadline Sept. 26}
-%		\brown{Questions:}
-%		\begin{itemize}
-%			\item Write a proper 3-dimensional algorithm for parallel matrix multiplication.
-%			\item Determine expressions for processor grid dimensions based on the lower bounds and compute the data transfer costs of the algorithm with these dimensions.
-%		\end{itemize}
-%	\end{block}
+	\begin{block}{Assignment 2 -- deadline Sept. 26}
+		\brown{Questions:}
+		\begin{itemize}
+			\item Write pseudo code for 3-dimensional parallel matrix multiplication algorithm.
+			\item Determine expressions for processor grid dimensions based on the lower bounds when $P$ is large and compute the data transfer costs of the algorithm with these dimensions.
+		\end{itemize}
+	\end{block}
 	
 %	\vspace*{-0.3cm}\begin{algorithm}[H]{\footnotesize
 %			\caption{$C=AB$ Matrix multiplication algorithm}
@@ -1279,7 +1279,7 @@
 		{\color{darkblue} $c\frac{n_1n_3}{P} << (\frac{n_1n_2n_3}{P})^\frac23 => c\frac{n_1n_3}{P} << n_2\sqrt{\frac{n_1n_3}{Pc}}$}
 	\end{center}
 	\begin{itemize}
-		\item Data transfer costs of the algorithm asymptotically match the leading terms in the lower bounds  
+		\item Data transfer costs of the algorithm match the leading terms in the lower bounds  
 	\end{itemize}}
 \end{frame}
 
