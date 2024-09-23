@@ -620,7 +620,7 @@
 		\EndFor
 		\State $R=A$
 		\Ensure $U = \begin{bmatrix} u_1 & u_2 & \cdots & u_n \end{bmatrix}$ is lower triangular
-		\Ensure $R$ is upper triangular and $A=(I-2u_1u_1^T)\cdots(I-2u_nu_n^T)R$
+		\Ensure $R$ is upper triangular and $R=Q^T A$ with $Q=(I-2u_1u_1^T)\cdots(I-2u_nu_n^T)$
 	\end{algorithmic}
 	
 \end{frame}
