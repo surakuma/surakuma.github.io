@@ -1,0 +1,129 @@
+\documentclass[
+11pt, % Set the default font size, options include: 8pt, 9pt, 10pt, 11pt, 12pt, 14pt, 17pt, 20pt
+%t, % Uncomment to vertically align all slide content to the top of the slide, rather than the default centered
+%aspectratio=169, % Uncomment to set the aspect ratio to a 16:9 ratio which matches the aspect ratio of 1080p and 4K screens and projectors
+]{beamer}
+
+\graphicspath{{Images/}{./}} % Specifies where to look for included images (trailing slash required)
+
+\usepackage{todonotes}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{subfig}
+%%\usepackage[noend]{algpseudocode}
+
+%
+%\usepackage{algorithm}
+%\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{blkarray}
+\usepackage{amsmath}
+\usepackage{xspace}
+\usepackage{float}
+
+
+\usepackage{tikz}
+\usetikzlibrary{matrix, decorations, patterns, positioning, shapes, calc, intersections, arrows, fit}
+
+\usetikzlibrary{patterns}
+\usetikzlibrary{fit,calc,positioning,decorations.pathreplacing,matrix,3d, hobby}
+
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule for better rules in tables
+\usepackage{bm}
+\usepackage{multirow}
+
+\newcommand{\brown}[1]{{\color{brown} #1 }}
+
+%% Colors from https://latexcolor.com/
+\definecolor{pastelviolet}{rgb}{0.8, 0.6, 0.79}
+\definecolor{babyblueeyes}{rgb}{0.63, 0.79, 0.95}
+\definecolor{pastelyellow}{rgb}{0.99, 0.99, 0.59}
+\definecolor{pastelgreen}{rgb}{0.47, 0.87, 0.47}
+\definecolor{pastelred}{rgb}{1.0, 0.41, 0.38}
+\colorlet{patternblue}{blue!60}
+
+
+\colorlet{darkred}{red!80!black}
+\colorlet{darkblue}{blue!80!black}
+\newcommand<>{\darkred}[1]{{\color{darkred}{#1}}}
+\newcommand<>{\darkblue}[1]{{\color#2{blue!50!black!100}{#1}}}
+
+\newcommand{\A}{\mathbf{A}}
+\newcommand{\B}{\mathbf{B}}
+\newcommand{\CC}{\mathbf{C}}
+%\newcommand{\Real}{\mathbb{R}}
+\newcommand{\vc}[1]{\bm{#1}}
+
+\usetheme{Madrid}
+
+%\newcommand{\Tra}{{\sf T}} 
+
+
+%\newcommand{\Ms}[2]{\mathbf{#1}^{(#2)}} 
+%\newcommand{\M}[1]{\mathbf{#1}} 
+%\newcommand{\Mb}[2]{\mathbf{#1}_{#2}} 
+%\newcommand{\Mbs}[3]{\mathbf{#1}_{#2}^{(#3)}} 
+
+%\usepackage{enumitem}
+
+\input{../tensor_header}
+
+
+%----------------------------------------------------------------------------------------
+%	PRESENTATION INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title[Assignment 4]{Unfolding of Tensors} % The short title in the optional parameter appears at the bottom of every slide, the full title in the main parameter is only on the title page
+
+%\subtitle{Optional Subtitle} % Presentation subtitle, remove this command if a subtitle isn't required
+
+\author[Suraj Kumar]{Suraj Kumar} % Presenter name(s), the optional parameter can contain a shortened version to appear on the bottom of every slide, while the main parameter will appear on the title slide
+
+\institute[Inria \& ENS Lyon]{Inria \& ENS Lyon \\ \smallskip Email:\textit{suraj.kumar@inria.fr}} % Your institution, the optional parameter can be used for the institution shorthand and will appear on the bottom of every slide after author names, while the required parameter is used on the title slide and can include your email address or additional information on separate lines
+
+\date[CR12]{CR12: September 2023\\ \smallskip\small https://surakuma.github.io/courses/daamtc.html} % Presentation date or conference/meeting name, the optional parameter can contain a shortened version to appear on the bottom of every slide, while the required parameter value is output to the title slide
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+	
+
+\begin{frame}{Assignment 3}
+ Elements of $\T{A}\in \mathbb{R}^{3\times 3 \times 3}$ are defined in the following way:
+$$\T{A}(i,j,k) = i+j^2 +k^3 \text{ for } 1\le i,j,k \le 3 \text.$$ 
+The frontal slices of $\T{A}$ are :		
+{\footnotesize $$\T{A}(:,:,1) = \begin{pmatrix}
+	3 & 6 & 11\\
+	4 & 7 & 12\\
+	5 & 8 & 13
+	\end{pmatrix}, \  \T{A}(:,:,2) = \begin{pmatrix}
+	10 & 13 & 18\\
+	11 & 14 & 19\\
+	12 & 15 & 20
+	\end{pmatrix}, \  \T{A}(:,:,3) = \begin{pmatrix}
+	29 & 32 & 37\\
+	30 & 33 & 38\\
+	31 & 34 & 39
+	\end{pmatrix}$$}
+The three mode-$j$ unfoldings are:
+{\tiny $$A_{(1)} = \begin{pmatrix}
+	3 & 6 & 11 & 10 & 13 & 18 & 29 & 32 & 37\\
+	4 & 7 & 12 & 11 & 14 & 19 & 30 & 33 & 38\\
+	5 & 8 & 13 & 12 & 15 & 20 & 31 & 34 & 39
+	\end{pmatrix},\  A_{(3)} =\begin{pmatrix}
+	3 & 4 & 5 & 6 & 7 & 8 & 11 & 12 & 13\\
+	10 & 11 & 12 & 13 & 14 & 15 & 18 & 19 & 20\\
+	29 & 30 & 31 & 32 & 33 & 34 & 37 & 38 & 39
+	\end{pmatrix},$$
+	
+	$$A_{(2)} = \begin{pmatrix}
+	3 & 4 & 5 & 10 & 11 & 12 & 29 & 30 & 31\\
+	6 & 7 & 8 & 13 & 14 & 15 & 32 & 33 & 34\\
+	11 & 12 & 13 & 18 & 19 & 20 & 37 & 38 & 39
+	\end{pmatrix}$$}	
+
+\end{frame}
+
+
+\end{document} 
