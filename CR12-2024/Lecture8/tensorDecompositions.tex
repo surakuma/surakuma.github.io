@@ -1059,6 +1059,7 @@ If you want to propose another topic or article, your are more than welcome to d
 
 \begin{frame}{Research articles}
 \footnotesize
+\scriptsize
 \begin{itemize}
 	\item Obtain lower bounds on data transfers for various computations on a sequential machine: \href{https://dl.acm.org/doi/10.1145/3385412.3385989}{Automated Derivation of Parametric Data Movement Lower Bounds for Affine Programs}
 	\vfill
@@ -1077,6 +1078,8 @@ If you want to propose another topic or article, your are more than welcome to d
 	\item Tucker decomposition to improve performance of convolution kernels: \href{https://link.springer.com/chapter/10.1007/978-3-030-58526-6_31}{Stable Low-rank Tensor Decomposition for Compression of Convolutional Neural Network}
 	\vfill
 	\item Tensor train representation for the weight matrices of the fully connected layers: \href{https://proceedings.neurips.cc/paper_files/paper/2015/file/6855456e2fe46a9d49d3d3af4f57443d-Paper.pdf}{Tensorizing Neural Networks}
+	\vfill
+	\item Use of tensor train representation in quantum systems: \href{https://royalsocietypublishing.org/doi/10.1098/rsta.2010.0382}{The density-matrix renormalization group: a short introduction}
 	
 \end{itemize}
 \end{frame}
@@ -1100,30 +1103,30 @@ If you want to propose another topic or article, your are more than welcome to d
 Each group (or person) will do a presentation of the selected topic/article for 30-45 minutes, followed by 5-10 minutes of questions/comments. 
 \end{frame}
 
-%
-%\subsection{Randomized SVD}
-%	\begin{frame}{Table of Contents}		
-%	\tableofcontents[currentsection, currentsubsection] % Output the table of contents (all sections on one slide)		
-%	\end{frame}
-%\begin{frame}{Main idea of randomized SVD}
-%	\small
-%	We want to find $r$-rank approximation of $A\in \mathbb{R}^{m\times n}$. We select a matrix $Q$ with $\ell$ ($r\le \ell \le n$) orthonormal columns that well approximates the action of $A$, $A\approx QQ^TA$.
-%	\begin{enumerate}
-%		\item Construct $B=Q^TA$
-%		\item Perform SVD of $B$, $B=\tilde{U}\Sigma V^T$
-%		\item Set $U= Q\tilde{U}$
-%		\item Return $U$, $\Sigma$, $V$
-%	\end{enumerate}
-%\vfill
-%	\begin{block}{A simple way to find $Q$}
-%		\begin{enumerate}
-%			\item Construct a Gaussian random matrix $\Omega$ of $n\times \ell$ size
-%			\item Form $X=A\Omega$
-%			\item Obtain an orthonormal matrix using QR factorization, $X=QR$
-%		\end{enumerate}
-%	Usually $\ell -r$ is a small constant, such as $5$ or $10$. 
-%	\end{block}
-%\end{frame}
+
+\subsection{Randomized SVD}
+	\begin{frame}{Table of Contents}		
+	\tableofcontents[currentsection, currentsubsection] % Output the table of contents (all sections on one slide)		
+	\end{frame}
+\begin{frame}{Main idea of randomized SVD}
+	\small
+	We want to find $r$-rank approximation of $A\in \mathbb{R}^{m\times n}$. We select a matrix $Q$ with $\ell$ ($r\le \ell \le n$) orthonormal columns that well approximates the action of $A$, $A\approx QQ^TA$.
+	\begin{enumerate}
+		\item Construct $B=Q^TA$
+		\item Perform SVD of $B$, $B=\tilde{U}\Sigma V^T$
+		\item Set $U= Q\tilde{U}$
+		\item Return $U$, $\Sigma$, $V$
+	\end{enumerate}
+\vfill
+	\begin{block}{A simple way to find $Q$}
+		\begin{enumerate}
+			\item Construct a Gaussian random matrix $\Omega$ of $n\times \ell$ size
+			\item Form $X=A\Omega$
+			\item Obtain an orthonormal matrix using QR factorization, $X=QR$
+		\end{enumerate}
+	Usually $\ell -r$ is a small constant, such as $5$ or $10$. 
+	\end{block}
+\end{frame}
 \subsection{Strassen's algorithm: application of CP-decomposition}
 	\begin{frame}{Table of Contents}		
 	\tableofcontents[currentsection, currentsubsection] % Output the table of contents (all sections on one slide)		
