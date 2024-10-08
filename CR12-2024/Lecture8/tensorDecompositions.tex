@@ -624,9 +624,10 @@ Proof: $||\T{A} -\T{A} \times_i U_iU_i^\Tra||_F \le ||\T{A}-\T{A}_{best}||_F $ f
 				\Ensure  $\llbracket \T{G}; U_1, \cdots, U_d\rrbracket $ : a $(r_1, \cdots, r_d)$-rank Tucker decomposition of $\T{A}$
 				\State $\T{B} \gets \T{A}$
 				\For{$k=1 \text{ to } d$}
-				\State $S\gets B_{(k)}B_{(k)}^T$
-				\State $U_k \gets r_k$ leading eigen vectors of $S$
-				\State $\T{B} \gets \T{B} \times_k U_k$
+%				\State $S\gets B_{(k)}B_{(k)}^T$
+%				\State $U_k \gets r_k$ leading eigen vectors of $S$
+				\State $U_k \gets r_k$ leading singular vectors of $B_{(k)}$
+				\State $\T{B} \gets \T{B} \times_k {U_k}^T$
 				\EndFor
 				\State $\T{G} = \T{B}$
 			\end{algorithmic}
@@ -700,6 +701,15 @@ This is equivalent to
 $$\max_{U_1,U_2,U_3} ||\T{A}\times_1 U_1^T \times_2 U_2^T \times_3 U_3^T ||_F\text.$$
 
 It is a nonlinear, nonconvex optimization problem.
+\vfill
+\begin{block}{}\small
+	\vspace*{-0.45cm}\begin{align*}
+	||\T{A} - \T{G} \times_1 U_1 \times_2 U_2 \times_3 U_3||_F^2=& ||\T{A}||_F^2 + ||\T{G} \times_1 U_1 \times_2 U_2 \times_3 U_3||_F^2\\
+	&\qquad\qquad -2\langle \T{A} - \T{G} \times_1 U_1 \times_2 U_2 \times_3 U_3\rangle\\
+	=&  ||\T{A}||_F^2 + ||\T{G}||_F^2 -2\langle\T{A}\times_1 U_1^T \times_2 U_2^T \times_3 U_3^T, \T{G}\rangle\\
+	=&  ||\T{A}||_F^2 - ||\T{G}||_F^2 
+	\end{align*}
+\end{block}
 \end{frame}
 \begin{frame}{Higher-order orthogonal iteration (HOOI) method}
 	Fixing all but one factor matrix, we have a matrix problem:
@@ -1100,7 +1110,7 @@ If you want to propose another topic or article, your are more than welcome to d
 		\item What challenges you faced while reading the paper (which parts are not clear, explanation is not appropriate, missing information, ...)
 	\end{itemize}
 \vfill
-Each group (or person) will do a presentation of the selected topic/article for 30-45 minutes, followed by 5-10 minutes of questions/comments. 
+Each group (or person) will do a presentation of the selected topic/article for 20-35 minutes, followed by 5-10 minutes of questions/comments. 
 \end{frame}
 
 
