@@ -1,0 +1,392 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[light,math]{iwona}
+\usepackage{fullpage}
+\usepackage[utf8]{inputenc}
+\usepackage[american]{babel}
+\usepackage{amsfonts,amsmath,wasysym} %% Additional math chars
+\usepackage{marvosym}
+\usepackage{eurosym}
+
+\usepackage{booktabs}
+\usepackage{colortbl}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{eurosym}
+
+\usepackage{etoolbox}
+\patchcmd\section{2.3ex}{1.8ex}{}{}
+
+%%\usepackage[backend=bibtex,maxbibnames=99,
+%%	sortcites=true,
+%%	doi=false,url=false]{biblatex}
+%\addbibresource{submission.bib}
+\usepackage{tikz}
+\usepackage{tikzscale}
+\usetikzlibrary{matrix}
+\usetikzlibrary{fit}
+\usetikzlibrary{trees}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{patterns}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{arrows}
+\usetikzlibrary{matrix}
+\usetikzlibrary{trees}
+\usetikzlibrary{positioning}
+\usepackage{mdframed}
+
+
+\input{./tensor_header}
+\newcommand{\X}{\T{X}}
+\newcommand{\Y}{\T{Y}}
+
+\definecolor{pastelgreen1}{rgb}{0.47, 0.87, 0.47}
+\definecolor{pastelgreen}{rgb}{0, 1, 0}
+
+\definecolor{orange1}{RGB}{242, 142, 30}
+\definecolor{orange2}{RGB}{245, 165, 77}
+\definecolor{blue1}{RGB}{43, 114, 178}
+\definecolor{blue2}{RGB}{76, 147, 212}
+\usepackage[tight,footnotesize]{subfigure}
+
+\usepackage[bookmarks=true,
+bookmarksnumbered=true,
+bookmarksopen=false,
+plainpages=false,
+pdfpagelabels,
+colorlinks]{hyperref}
+
+\definecolor{anrblue}{rgb}{0,0.2,0.4}
+\definecolor{anrviolet}{rgb}{0.5,0,0.5}
+
+\definecolor{pdfurlcolor}{rgb}{0,0,0.6}
+\definecolor{pdfcitecolor}{rgb}{0,0.6,0}
+\definecolor{pdflinkcolor}{rgb}{0.6,0,0}
+%%
+%%\usepackage[colorlinks=true,citecolor=pdfcitecolor,urlcolor=pdfurlcolor,linkcolor=pdflinkcolor,pdfborder={0 0 0}]{hyperref}
+
+
+%%\hypersetup{
+%%	citecolor=anrblue,              % color of cite links
+%%	pagecolor=anrblue,         % color of page links
+%%	menucolor=anrblue,         % color of Acrobat Reader menu buttons
+%%	urlcolor=anrblue,       % color of page of \url{...}
+%%	linkcolor=anrblue,
+%%	urlbordercolor=red,% hyperlink borders will be red
+%%	pdfborderstyle={/S/U/W 1}% border style will be underline of width  % 1pt
+%%}
+
+\hypersetup{
+	citecolor=pdfcitecolor,              % color of cite links
+	pagecolor=anrblue,         % color of page links
+	menucolor=anrblue,         % color of Acrobat Reader menu buttons
+	urlcolor=pdfurlcolor,       % color of page of \url{...}
+	linkcolor=pdflinkcolor,
+	urlbordercolor=red,% hyperlink borders will be red
+%%	pdfborderstyle={/S/U/W 1}% border style will be underline of width  % 1pt
+}
+
+\makeatletter
+\Hy@AtBeginDocument{%
+	\def\@pdfborder{0 0 1}% Overrides border definition set with colorlinks=true
+	\def\@pdfborderstyle{/S/U/W 0.5}% Overrides border style set with colorlinks=true
+	% Hyperlink border style will be underline of width 1pt
+}
+\makeatother
+
+\ifxetex
+\usepackage{fontspec}
+\usepackage{fontawesome}
+\defaultfontfeatures{Mapping=TeX-text}
+\defaultfontfeatures{Ligatures=NoCommon}
+\let\sfdefault\rmdefault
+\setmainfont{FreeSerif}
+\setromanfont{FreeSerif}
+\newfontfamily\sectionfont[Color=anrblue]{DejaVu Sans}
+\newfontfamily\subsectionfont[Color=anrblue]{DejaVu Sans}
+\newfontfamily\tocsectionfont[Color=anrblue]{DejaVu Sans}
+\newcommand\linksym{\faExternalLink}
+\else
+\newcommand\sectionfont{\color{anrblue}\normalfont\fontsize{14}{14}\bfseries}
+\newcommand\subsectionfont{\color{anrblue}\normalfont\fontsize{12}{12}\bfseries}
+\newcommand\tocsectionfont{\color{anrblue}\normalfont}
+\newcommand\linksym{\Mundus}
+\fi
+
+
+\usepackage{color,xspace,paralist}
+\definecolor{blue}{rgb}{0,0,1}
+\newcommand{\blue}[1]{{\color{blue} #1}}
+
+% Comment/uncomment the next lines to remove the guidelines
+
+\newcommand{\gl}[1]{{\color{blue} \emph{#1}}}
+\renewcommand{\gl}[1]{}
+\newcommand{\bora}[1]{{\color{magenta} \emph{#1}}}
+%\renewcommand{\bora}[1]{}
+\newcommand{\sk}[1]{{\color{blue} \emph{#1}}}
+%\renewcommand{\sk}[1]{}
+
+\newcommand{\todo}[1]{{\color{red}\rule[-.1cm]{.4cm}{.4cm}~~{
+			\color{red}{TODO: #1}}}\xspace}
+
+
+\newcommand{\link}[2]{\href{#2}{#1\linksym}\xspace}
+
+
+\newcommand*{\titleSK}{\begingroup 
+	\centering 
+	\begin{mdframed}[roundcorner=10pt,linewidth=1pt,leftmargin=10,rightmargin=10,shadow=true]%
+		\vspace*{0.2\baselineskip}
+		\centering
+		{\Large \sc SCATE: SCAlable Tensor dEcompositions for data analytics}\\[0.2cm]
+		%%        /STINT
+		%%        {\LARGE \sc to enhance Low-Rank Compression}\\
+		{\large \sc (Décompositions de tenseurs évolutives pour l'analyse de données)}\\[0.1cm]
+		{\small CES46 $>$ Axe E.05 $>$ Calcul haute performance, Modèles numériques, simulation, applications}\\
+		{\normalsize AAPG 2025 / JCJC 48 months}
+%%		{\normalsize AAPG 2023 / JCJC 48 months / Budget 283K\euro\bora{no need for budget here}}
+		\vspace*{0.2\baselineskip}
+	\end{mdframed}
+%%	  \vspace*{0.0cm} 
+	\begin{center}
+		\vspace*{0.025\baselineskip}
+		{\Large \sc Suraj Kumar, {\sc ROMA} project-team, {\sc Inria Lyon}}
+	\end{center}
+	\endgroup}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\rhead{}
+\lhead{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\lfoot{S. Kumar, ANR JCJC 2025, SCATE}
+\rfoot{\thepage}
+\cfoot{}
+
+
+%%\bibliography{scate}
+
+\begin{document}
+	%\thispagestyle{plain}
+	%\vspace{3cm}
+	\titleSK
+	
+	
+	
+	%%Preproposals must fulfil the two main evaluation criteria : « Quality and scientific aim » and « Organisation and implementation of the project ». Applicants are advised to consult the AAPG2023 guide for further information about different sub-criteria related to the chosen funding instrument. No budget information is required in the scientific document, given that no sub-criteria is linked to budget information in step 1.
+	%%I. Pre-proposal’s context, positioning and objective(s)
+	%%This paragraph refers to the evaluation criterion « Quality and scientific aim ». The following information should be detailed here:
+	%%
+	%%Project’s objectives and research hypotheses;
+	%%Position of the project as it relates to the state of the art;
+	%%Methodology to reach the scientific objectives of the project, detailed description of the intended method(s), including its disciplinary coverage (mono-trans-inter-disciplinary) ;
+	%%Added-value in terms of scientific contribution, concerning the object, the research issue, the methodology ; added-value in terms of knowledge production;
+	%%Ability of the project to address the research issues covered by the chosen research theme (cf. §G. Scientific themes covered by the Generic Call for Proposals 2023, in the call text).
+	%%
+	%%The criterion « Quality and scientific aims» will be the determining one: only the projects having received an « A » will proceed to the second step of the evaluation process.
+	%%\todo{Presently I look for only high level suggestions.}
+	\vspace*{-0.5cm}\section{Context, positioning and objectives}
+	
+	%%\todo{Why to do tensor decompositions for data analytics on large computers?}
+	
+	%%Tensors are multi dimensional arrays and arise in several domains, e.g., quantum molecular dynamics, data
+	%%mining, neurosciences and computer vision. My focus will be on developing parallel and scalable algorithms for tensor
+	%%computations and implementing them for modern HPC systems. The principal challenges are high computational and data
+	%%transfer costs of these operations, limited parallelism exposed by most existing tensor data structures and algorithms, and
+	%%little (or negligible) architecture knowledge in the current approaches. My research proposal is carved along solving (or
+	%%mitigating) these challenges and will allow one to work efficiently with tensors on current and future computing systems.
+	
+	%%\todo{More applications}
+	
+	
+	We produce approximately 3.3 quintillion bytes of data every day~\cite{data-size-2024}. To analyze such massive amount of data, we need to design parallel and scalable approaches which can make efficient utilization of the modern computing systems. Tensors are multi-dimensional arrays and used to store data in several domains~\cite{KB-SIAM-2009}, e.g., data mining, neuroscience and computer vision. Tensor decompositions help to identify inherent structure of data, achieve data compression and enable various ways of data analysis. Tensors are also used as operators to solve problems in applied mathematics, chemistry, physics, machine learning and many other fields~\cite{KB-SIAM-2009,NPOV-NIPS-2015}. Working with tensors is challenging due to their large computational effort and memory requirements (amount of memory and computations grow exponentially in the number of dimensions). It is therefore necessary to work with patterns of the tensor data. Using low dimensional structure of high dimensional data is a powerful approach in this context. Most tensor decompositions represent data in its low dimensional structures.
+	
+	
+
+%%\sk{History of CP: Polyadic (1927)-->Canonical decomposition/PARAFAC (1970) --> CP(2000) --> Canonical Polyadic (2010)}	
+%%	\bora{I think Canonical polyadic (or CP) is the shorted form; I do not know if the word ``canonical'' is a name on its own} 
+	CP (also known as Canonical Polyadic or CANDECOMP or PARAFAC) and Tucker are the widely used tensor decompositions in the literature for data analytics. Both decompositions can be viewed as high order generalization of Singular Value Decomposition (SVD). CP decomposition is used to understand the latent components of the data. Tucker decomposition is considered to be more appropriate for compression and multi-modal data analysis.
+	
+	\vspace*{-0.15cm}\begin{figure}[htb]
+		\begin{center}
+			\subfigure[CP decomposition.]{
+				\begin{tikzpicture}[scale=0.23, every node/.style={transform shape}]
+				
+				\path (-2,0,-7) -- (2,0,7);
+				
+				\pgfmathsetmacro{\cubex}{4}
+				\pgfmathsetmacro{\cubey}{4}
+				\pgfmathsetmacro{\cubez}{4}
+				\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+				\draw[blue,fill=pastelgreen] (0,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+				\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+				
+				\node[draw=none, text=black, scale=4] at (2,-2.25,-3) {$=$};
+				\pgfmathsetmacro{\smallwidth}{0.5}
+				\draw[blue,fill=pastelgreen] (\cubex+2,0,0) -- ++(-\smallwidth,0,0) -- ++(0,-\cubey,0) -- ++(\smallwidth,0,0) -- cycle;
+				\draw[blue,fill=pastelgreen] (\cubex+2 +\cubex + 0.5,0.75,0) -- ++(-\cubex,0,0) -- ++(0,-\smallwidth,0) -- ++(\cubex,0,0) -- cycle;
+				\draw[blue,fill=pastelgreen] (\cubex+2,0.5,0) -- ++(-\smallwidth,0,0) -- ++(0,0,-\cubez) -- ++(\smallwidth,0,0) -- cycle;
+				
+				\node[draw=none, text=black, scale=4] at (2+\cubex+3.8,-2.25,-3) {$+$};
+				
+				\draw[blue,fill=pastelgreen] (\cubex+2.5 + \cubex+2,0,0) -- ++(-\smallwidth,0,0) -- ++(0,-\cubey,0) -- ++(\smallwidth,0,0) -- cycle;
+				\draw[blue,fill=pastelgreen] (\cubex+2.5+\cubex+2 +\cubex + 0.5,0.75,0) -- ++(-\cubex,0,0) -- ++(0,-\smallwidth,0) -- ++(\cubex,0,0) -- cycle;
+				\draw[blue,fill=pastelgreen] (\cubex+2.5+\cubex+2,0.5,0) -- ++(-\smallwidth,0,0) -- ++(0,0,-\cubez) -- ++(\smallwidth,0,0) -- cycle;
+				
+				\node[draw=none, text=black, scale=4] at (2+\cubex+5 + \cubex+ 4.25, -2.25,-3) {$+$ $\cdots$ $+$};
+				
+				\draw[blue,fill=pastelgreen] (12 + \cubex+2.5 + \cubex+2,0,0) -- ++(-\smallwidth,0,0) -- ++(0,-\cubey,0) -- ++(\smallwidth,0,0) -- cycle;
+				\draw[blue,fill=pastelgreen] (12+\cubex+2.5+\cubex+2 +\cubex + 0.5,0.75,0) -- ++(-\cubex,0,0) -- ++(0,-\smallwidth,0) -- ++(\cubex,0,0) -- cycle;
+				\draw[blue,fill=pastelgreen] (12 + \cubex+2.5+\cubex+2,0.5,0) -- ++(-\smallwidth,0,0) -- ++(0,0,-\cubez) -- ++(\smallwidth,0,0) -- cycle;
+				\end{tikzpicture}}$\qquad\qquad$
+			\subfigure[Tucker decomposition.]{
+				\begin{tikzpicture}[scale=0.23, every node/.style={transform shape}]
+				\pgfmathsetmacro{\cubex}{4}
+				\pgfmathsetmacro{\cubey}{4}
+				\pgfmathsetmacro{\cubez}{4}
+				\draw[blue,fill=pastelgreen] (-12,1,\cubez-2) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+				\draw[blue,fill=pastelgreen] (-12,1,\cubez-2) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+				\draw[blue,fill=pastelgreen] (-12,1,\cubez-2) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+				\node[draw=none, text=black, scale=4] at (-8,-1,0) {$=$};
+				
+				\pgfmathsetmacro{\cubex}{2}
+				\pgfmathsetmacro{\cubey}{2}
+				\pgfmathsetmacro{\cubez}{2}
+				\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+				\draw[blue,fill=pastelgreen] (0,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+				\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+				
+				\draw[blue,fill=pastelgreen] (-\cubex-1,1,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey-2,0) -- ++(\cubex,0,0) -- cycle;
+				\draw[blue,fill=pastelgreen] (\cubex+2+1,0,-\cubey) -- ++(-\cubex-2,0,0) -- ++(0,-\cubey,0) -- ++(\cubex+2,0,0) -- cycle;
+				
+				\draw[blue,fill=pastelgreen] (0,0,-\cubez-1) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez-2) -- ++(\cubex,0,0) -- cycle;
+				
+				\path (-18,0) -- (8,0);
+				\end{tikzpicture}}
+			\vspace*{-0.25cm}\caption{CP and Tucker decompositions of a 3-dimensional tensor.\label{fig:CTdecompositions}}\vspace*{-0.5cm}
+		\end{center}		
+	\end{figure}
+	
+	Figure~\ref{fig:CTdecompositions} shows visual representations of both tensor decompositions for a 3-dimensional tensor. CP decomposition represents a tensor with the sum of rank one tensors. Whereas, Tucker decomposition represents a tensor with multiple factor matrices and a much smaller core tensor. The number of dimensions for the core tensor and the original tensor are same. As mentioned earlier, tensors are used to store data in several domains. For example, in neuroscience, a single trial to observe behaviors of neurons over time can be stored in a matrix and data of multiple trials in a 3-dimensional tensor. CP decomposition is a popular method to analyse such neuroscience data~\cite{WKV-Neuron-2018}.
+%%	\bora{this was said before}. 
+	Similarly, a single experiment in combustion simulations or electron microscopy produces terabytes of data. For instance, tracking 64 variables on a 512$\times$512$\times$512 three-dimensional spatial grid for 128 time steps in a simulation requires to store $2^{40}$ entries. It is very difficult to transfer and analyze data of such experiments. Tucker decomposition is an appealing practice to compress such data before different types of analysis can be performed~\cite{ABK-IPDPS-2016}.
+	
+	
+	%%Computations involving Tucker-format tensors, such as tensor inner products, often require far fewer operations than with their full-format, dense representations. As a result, the Tucker decomposition is often used as a dimensionality reduction technique before other types of analysis are done.
+	
+	
+    Tensor Train is another popular tensor representation. This is very well suited to work with high dimensional tensors and used often in molecular and quantum simulations. However, this has limited use in data analytics as it is hard to interpret its different components. Therefore, we focus on CP and Tucker decompositions that are widely used for data analytics.
+	
+	
+%%	Recent advances in computing architectures enable us to witness many high performance computing (HPC) systems which perform more than $1$ million billion operations per second -- \href{https://www.olcf.ornl.gov/frontier}{Frontier} at ORNL and \href{https://www.genci.fr/en/our-computers}{Adastra} at GENCI, for example. Such systems have a large number of computing units and enable us to tackle some of the science and societal issues which was not possible before. Traditionally, there has been a great emphasis on developing algorithms which minimize the number of computations. In the last few decades, the rate of computations in these systems has improved drastically, but we have noticed relatively smaller improvement for the rate of data movement. The current HPC systems face bottleneck due to the large volume of communications~\cite{DOE-Report-2014}. Thus it is extremely important to develop algorithms which take communication costs into account. This approach also reduces energy consumption of the computations. GPUs deliver increased processing capabilities and superior energy efficiency compared to CPUs. Therefore, they have become a crucial element of many HPC systems over the past decade. The SCATE project addresses communication costs and scalability of tensor decompositions on the modern HPC systems. More precisely, the high level aim of the project is to devise communication optimal tensor decomposition algorithms which scale well on both homogeneous and heterogeneous systems. Establishing communication lower bounds is also an important part of the project as it helps one to identify the more precise parallel algorithms that match the lower bounds.
+	
+	
+	The data generated by many experiments is so big that it is impossible to perform a CP/Tucker decomposition without parallel computations. Therefore, it is important to focus on parallel algorithms for both decompositions. Thanks to recent advances in architectures, we witness many parallel high performance computing (HPC) systems which perform more than $1$ million billion operations per second -- \href{https://www.olcf.ornl.gov/frontier}{Frontier} at ORNL and \href{https://www.genci.fr/en/our-computers}{Adastra} at GENCI, for example. Such systems have a large number of computing units. In the last few decades, the rate of computations in these systems has improved drastically, but we have noticed relatively smaller improvement in the rate of data movement. The current HPC systems face bottleneck due to the large volume of communications~\cite{DOE-Report-2014}. Thus it is crucial to take communication costs into account while designing parallel algorithms. This approach also reduces energy consumption of the computations. GPUs deliver increased processing capabilities and superior energy efficiency compared to CPUs. Therefore, they have become a crucial element of many HPC systems over the past decade. The SCATE project addresses parallelization, communication costs and scalability of tensor decompositions on the modern HPC systems. More precisely, the high level aim of the project is to devise parallel and communication optimal tensor decomposition algorithms which scale well on both homogeneous and heterogeneous systems. Establishing communication lower bounds is also an important part of the project as it helps one to identify the more precise parallel algorithms that match the lower bounds.	
+	
+	
+	Most existing tensor decomposition algorithms work with the matrix (2-dimensional) representations of the tensors at each step and rely on the parallelization of matrix operations. This approach neglects high dimensional properties of tensors and may not perform the computation efficiently. We focus on improving the performance of Tucker and CP decomposition algorithms by taking multi-dimensional properties of tensors into account.
+	
+	
+	
+	\vspace*{-0.25cm}\paragraph{Algorithms to compute Tucker decompositions:}
+	Truncated higher-order SVD (HOSVD) is one of the popular algorithms for computing a Tucker decomposition, thanks to its quasi-optimal numerical approximation. In this algorithm, the core tensor is computed with the full-format original tensor and multiple tall and skinny factor matrices. For a 3-dimensional tensor $\X$, computation of the core tensor $\Y$ can be expressed in tensor notation as $\Y = \X \times_1 {\Mn{A}{1}}^\Tra \times_2 {\Mn{A}{2}}^\Tra \times_3 {\Mn{A}{3}}^\Tra$, where 
+	%$\X$ is the full-format 
+	%representation of the original 
+	%tensor,
+	$\Mn{A}{k}$ is a tall-skinny factor matrix corresponding to mode $k$, and $\times_k$ denotes the tensor-times-matrix (TTM) operation in the $k$th mode~\cite{KB-SIAM-2009}. This collective operation is known as the Multi-TTM computation~\cite{ABGKR-SIMAX-2022} and is one of the main bottlenecks of the HOSVD algorithm. One approach to perform this computation is in sequence, i.e., $\Y = ((\X \times_1 {\Mn{A}{1}}^\Tra )\times_2 {\Mn{A}{2}}^\Tra) \times_3 {\Mn{A}{3}}^\Tra$. Another approach is to work with all the inputs at once, i.e., $\Y_{ijk} = \sum_{lmp}\X_{lmp}\cdot\Mn{A}{1}_{li}\cdot \Mn{A}{2}_{mj}\cdot \Mn{A}{3}_{pk}$.
+%%	\bora{why * and $\times$} 
+	Daas et al.~\cite{ABGKR-SIMAX-2022} show that the latter approach takes high dimensional properties of tensors into account and reduces communication significantly compared to the sequence approach for small and moderate number of processors. However there is not any clear winner for all settings. We can obtain better gains by a hybrid method which combines the best of both approaches. Furthermore, the amount of operations for the Multi-TTM computation depends on how factor matrices are operated with the input tensor. It is also important to model the computation-communication tradeoff in the combined hybrid method such that the overall completion time of the Multi-TTM is minimized.
+	
+	In addition, HOSVD algorithm also computes SVD for each mode to obtain the corresponding factor matrix. Optimal data distributions to perform SVDs and the Multi-TTM computation may not be compatible and may require to perform extra communication. At last, our goal is to compute communication lower bound and communication-computation tradeoff for the complete HOSVD algorithm and devise a method which achieves the optimal completion time. As SVD is expensive, we also plan to look at other alternatives like randomized SVD to compute factor matrices.
+	
+
+
+
+%Considering optimal data distributions for only one approach may induce significant data movements for the other approach. Using optimal data distributions for both approaches may not be compatible or require significant data movement during the transition of the approach. 
+
+	%%When the computational costs of the matrix SVDs are reduced using randomization, Multi-TTM becomes the overwhelming bottleneck computation [22, 25].
+	
+	%% Talk about MTTKRP
+	
+	\vspace*{-0.35cm}\paragraph{Algorithms to compute CP decompositions:}
+	Computing a CP decomposition involves solving a nonlinear optimization problem to minimize the approximation error. The workhorse algorithm to compute this decomposition uses an alternating least squares approach. This works in multiple iterations. For a $d$-dimensional decomposition, in each iteration, $d$ matricized-tensor times Khatri-Rao product (MTTKRP) computations are performed. In this computation, a matrix representation of the original tensor is multiplied with the Khatri-Rao product of $d-1$ factor matrices. This is the bottleneck computation of the algorithm. 
+	Ballard et al.~\cite{BNR-IPDPS-2018} show that the working
+%%	\bora{did not understand}\sk{I added more details.}
+	with all the inputs at once without forming intermediates reduces communication costs significantly compared to the procedure where the Khatri-Rao product is computed first and the intermediate output is multiplied with a matricized representation of the original tensor. Certain operations can be reused among all MTTKRPs of a single iteration. But, their approach restricts the reuse of operations as intermediates are not formed. The amount of operations in the MTTKRP computation also depends on how factor matrices are operated with the original tensor.
+%%	different inputs are grouped in the procedure.
+	It is important to study tradeoff among communications, computations and reuse of intermediate results for the MTTKRP computations and design a method which achieves optimal completion time. Similar to the previous plan, at last, our goal is to devise a method for a single iteration of the algorithm which achieves optimal completion time. Another state-of-the-art approach to compute a CP decomposition is based on gradients. MTTKRP is also the bottleneck computation for this approach. Hence, improving the performance of MTTKRP will also accelerate gradient-based approach to compute the decomposition.
+	
+    \vspace*{-0.25cm}\paragraph{Challenges and our approaches:} As mentioned earlier, computations and communication costs of Multi-TTM and MTTKRP depend on how matrices are operated with the input tensor. If we do not select it carefully, their completion times may be very far from the optimal ones. Even when we know how we want to perform the computations, combining all at once and sequence approaches, using one after the other, in a straightforward way will only work if data distributions of inputs and temporaries between both approaches are compatible. However we cannot expect any guarantees with respect to the optimal communication/computation costs. Therefore, in order to take benefits of both \emph{all at once} and \emph{in sequence} approaches, it is important to analyze all possible ways to combine them. We will study how to to perform 3 and 4-dimensional Multi-TTM and MTTKRP computations in detail as the number of ways are limited. After that, we will generalize our findings and create a dynamic programming based approach to determine how to perform d-dimensional computations.
+    
+   	\vspace*{-0.25cm}\paragraph{Objectives:} The goal of the SCATE project is to devise Tucker and CP decomposition algorithms that scale well on the modern computing systems. The project first studies tradeoff among computations, communications and data reuse for the existing algorithms and proposes new methods whose completion times are optimal for homogeneous systems. After that, the proposed methods will be implemented and tested with real-world data-sets from neuroscience and combustion simulation on \href{https://www.genci.fr/en/our-computers}{GENCI computers}. This implementation will also be used to accelerate hyperspectral data analysis in astrophysics and brain-computer interface data analysis in electrophysiology. Significant amount of performance is produced by accelerators for the present HPC systems, including many at GENCI. So developing only homogeneous algorithms ignores too much computation power and may result in poor efficiency on heterogeneous systems. The project does address this concern and extends our framework for heterogeneous systems with CPUs and GPUs.
+
+%	\paragraph{Objectives:} The goal of the SCATE project is to devise Tucker and CP decomposition algorithms which scale well on the modern computing systems. The project first studies tradeoff among computations, communications and data reuse for the existing algorithms and proposes new methods whose completion times are optimal for homogeneous systems. After that, the proposed methods will be implemented and tested with various real-world data-sets on \href{https://www.genci.fr/en/our-computers}{GENCI computers}. Significant amount of performance is produced by accelerators for the present HPC systems, including many at GENCI. So developing only homogeneous algorithms ignores too much computation power and may result in poor efficiency on heterogeneous systems. The project does address this concern and extends our framework for heterogeneous systems with CPUs and GPUs.
+
+		
+	
+%%	There is very less work on communication guarantees for linear algebra computations on heterogeneous system. One ambitious aspect of the project is to extend our framework for heterogeneous systems with CPUs and GPUs. It requires us to model different processing and transfer capabilities of different units and their network topology with the aim to minimize the overall completion time.
+	
+
+	
+	\vspace*{-0.25cm}\paragraph{Tasks:} The SCATE project has two tasks. \textbf{Task A} focuses on homogeneous systems and \textbf{Task B} targets heterogeneous systems. \textbf{Task A} is further subdivided into six main work packages. \textbf{WPA1}\newline aims to obtain communication lower bounds for algorithms to compute Tucker and CP decompositions. \textbf{WPA2} analyzes tradeoff among computations, communications and data reuse for the tensor decomposition algorithms. \textbf{WPA3} designs new algorithms which achieve optimal completion time. \textbf{WPA4} implements the proposed algorithms for distributed memory homogeneous systems and validates the performance improvement on more than 5,000 cores and/or 512 nodes of \mbox{\href{https://www.genci.fr/en/our-computers}{GENCI computers}}. \textbf{WPA5} studies the numerical robustness of the proposed algorithms.
+%%	Performing mixed precision arithmetic is a promising direction to improve performance of many scientific computations. 
+	\textbf{WPA6}, towards the end of the project, explores how to apply mixed precision arithmetic to further improve our algorithms.
+	
+	
+	Similarly, \textbf{Task B} is further subdivided into four main work packages. \textbf{WPB1} models
+	communication costs among different processing units for a single node composed of CPUs and GPUs. \textbf{WPB2} aims to obtain communication lower bounds of tensor decomposition algorithms and \textbf{WPB3} proposes new algorithms which achieve optimal completion times for a single heterogeneous node. \textbf{WPB4} extends the proposed framework to multiple heterogeneous nodes.
+	
+	
+	
+	We will begin with \textbf{Task A}. Our framework for \textbf{WPA1} and \textbf{WPA2} will be ready within a year. We will also have good understanding of structure of computations and communications for the decomposition algorithms by then. We will start \textbf{Task B} at this point.
+	
+	
+	
+
+	\vspace*{-0.25cm}\section{Consortium}
+
+
+	\vspace*{-0.15cm}\paragraph{Scientific coordinator:}Suraj Kumar (PI) holds an Inria Starting Faculty Position since October 2022 in the ROMA Inria team, which is hosted at École Normale Supérieure de Lyon (ENS Lyon). He is an expert in tensor computations, communication avoiding algorithms and efficient utilization of resources on heterogeneous systems. He defended his thesis in April 2017 on Scheduling of Dense Linear Algebra Kernels on Heterogeneous Resources. He was a postdoctoral researcher at Pacific Northwest National Laboratory, USA from May 2018 to October 2019. He worked there on \href{https://www.exascaleproject.org/research-project/nwchemex}{NWChemEx} project, whose main goal was to run molecular simulations efficiently on exascale computers. He also worked at Inria Paris from November 2019 to September 2022 as a postdoctoral researcher on the design of parallel and communication optimal algorithms for Multi-TTM computations and tensor-train decompositions. He has an active collaboration with G. Ballard of Wake Forest University, USA, who is an expert in the design of communication-efficient algorithms, that will be beneficial to the implementation of the project. The PI will dedicate 75\% of his time on this project.
+
+
+	\vspace*{-0.25cm}\paragraph{Team:} The SCATE project includes L. Marchal (DR2, CNRS) and B. Uçar (DR2, CNRS) from the Inria ROMA team. We ask for a PhD student, 24 months of a postdoctoral researcher and two master interns. The PhD student will work with the PI and B. Uçar (PhD co-advisor) on \textbf{Task A}\newline (\textbf{WPA1} to \textbf{WPA4}). The master interns will work on \textbf{WPA5} and \textbf{WPA6} with the PI. The postdoctoral researcher will work with the PI and L. Marchal on \textbf{Task B}, and will also help the PI to advise the PhD student. B. Uçar is an expert in tensor computations, while L. Marchal is an expert in memory aware computations and design of scheduling algorithms for heterogeneous resources.
+	
+
+
+	
+	
+	\vspace*{-0.25cm}\paragraph{Growth of the PI:}
+	We expect to publish the obtained results to the major venues (conferences/journals) of the field (SC, IPDPS, SIMAX, SISC). Furthermore we plan to organize a minisymposium on tensor computations at SIAM Conference on Parallel Processing for Scientific Computing 2026. This will allow us to start more collaborations and fruitful discussions. Tensor operations are fundamental to multi-dimensional data analytics in various domains, such as neuroscience, scientific simulations, data mining, computer vision, and astrophysics. The approval of this proposal certainly will speed up our discussions with domain scientists and help us to establish new collaborations. 
+	
+	
+	
+	
+	%%\vspace*{1ex}
+	\vspace*{-0.315cm}
+	{\footnotesize
+		\bibliographystyle{IEEEtranS}
+		\bibliography{scate}
+	}
+\vspace*{-0.215cm}
+	
+
+%	
+%\sk{	
+%    \begin{itemize}
+%%        \item Why we do not consider tensor train decomposition
+%        \item Mention applications from astrophysic and electrophysiology
+%        \item Rewording of the last paragraph
+%        \item What technical challenges associated with combining all-at-once and in-sequence approaches
+%        \item Types of datasets
+%        \item Real world applications
+%    \end{itemize}
+%}
+
+
+
+
+\end{document}
+
