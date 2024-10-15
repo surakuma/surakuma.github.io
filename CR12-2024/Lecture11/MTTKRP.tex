@@ -1,0 +1,955 @@
+\documentclass[
+11pt, % Set the default font size, options include: 8pt, 9pt, 10pt, 11pt, 12pt, 14pt, 17pt, 20pt
+%t, % Uncomment to vertically align all slide content to the top of the slide, rather than the default centered
+%aspectratio=169, % Uncomment to set the aspect ratio to a 16:9 ratio which matches the aspect ratio of 1080p and 4K screens and projectors
+]{beamer}
+
+\graphicspath{{Images/}{./}} % Specifies where to look for included images (trailing slash required)
+
+\usepackage{todonotes}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{subfig}
+%%\usepackage[noend]{algpseudocode}
+
+%
+%\usepackage{algorithm}
+%\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{blkarray}
+\usepackage{amsmath}
+\usepackage{xspace}
+\usepackage{float}
+
+
+\usepackage{tikz}
+\usetikzlibrary{matrix, decorations, patterns, positioning, shapes, calc, intersections, arrows, fit}
+
+\usetikzlibrary{patterns}
+\usetikzlibrary{fit,calc,positioning,decorations.pathreplacing,matrix,3d, hobby}
+
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule for better rules in tables
+\usepackage{bm}
+\usepackage{multirow}
+\usepackage{ragged2e}
+
+
+\newcommand{\brown}[1]{{\color{brown} #1 }}
+
+%% Colors from https://latexcolor.com/
+\definecolor{pastelviolet}{rgb}{0.8, 0.6, 0.79}
+\definecolor{babyblueeyes}{rgb}{0.63, 0.79, 0.95}
+\definecolor{pastelyellow}{rgb}{0.99, 0.99, 0.59}
+\definecolor{pastelgreen}{rgb}{0.47, 0.87, 0.47}
+\definecolor{pastelred}{rgb}{1.0, 0.41, 0.38}
+\colorlet{patternblue}{blue!60}
+
+
+
+%%\newcommand{\tensorcolor}{patternblue}
+\newcommand{\tensorcolor}{cyan}
+
+
+\colorlet{darkred}{red!80!black}
+\colorlet{darkblue}{blue!80!black}
+\newcommand<>{\darkred}[1]{{\color{darkred}{#1}}}
+\newcommand<>{\darkblue}[1]{{\color#2{blue!50!black!100}{#1}}}
+
+\newcommand{\A}{\mathbf{A}}
+\newcommand{\B}{\mathbf{B}}
+\newcommand{\CC}{\mathbf{C}}
+%\newcommand{\Real}{\mathbb{R}}
+%\newcommand{\vc}[1]{\bm{#1}}
+
+\usetheme{Madrid}
+
+%\newcommand{\Tra}{{\sf T}} 
+
+
+%\newcommand{\Ms}[2]{\mathbf{#1}^{(#2)}} 
+%\newcommand{\M}[1]{\mathbf{#1}} 
+%\newcommand{\Mb}[2]{\mathbf{#1}_{#2}} 
+%\newcommand{\Mbs}[3]{\mathbf{#1}_{#2}^{(#3)}} 
+
+%\usepackage{enumitem}
+
+\input{../tensor_header}
+
+\hypersetup{linkcolor=blue}
+
+%----------------------------------------------------------------------------------------
+%	PRESENTATION INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title[MTTKRP]{Matricized tensor times Khatri-Rao product computation} % The short title in the optional parameter appears at the bottom of every slide, the full title in the main parameter is only on the title page
+
+%\subtitle{Optional Subtitle} % Presentation subtitle, remove this command if a subtitle isn't required
+
+\author[Suraj Kumar]{Suraj Kumar} % Presenter name(s), the optional parameter can contain a shortened version to appear on the bottom of every slide, while the main parameter will appear on the title slide
+
+\institute[Inria \& ENS Lyon]{Inria \& ENS Lyon \\ \smallskip Email:\textit{suraj.kumar@ens-lyon.fr}} % Your institution, the optional parameter can be used for the institution shorthand and will appear on the bottom of every slide after author names, while the required parameter is used on the title slide and can include your email address or additional information on separate lines
+
+\date[CR12]{CR12: October 2024\\ \smallskip\small https://surakuma.github.io/courses/daamtc.html} % Presentation date or conference/meeting name, the optional parameter can contain a shortened version to appear on the bottom of every slide, while the required parameter value is output to the title slide
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+	
+	%----------------------------------------------------------------------------------------
+	%	TITLE SLIDE
+	%----------------------------------------------------------------------------------------
+	
+	\begin{frame}
+		\titlepage % Output the title slide, automatically created using the text entered in the PRESENTATION INFORMATION block above
+	\end{frame}
+
+\begin{frame}{Loomis-Whitney inequality}
+	\small
+\begin{itemize}
+	\item Relates volume of a $d$-dimensional object with its all $d-1$ dimensional projections
+	\begin{itemize}
+		\item For the $2$d object $G$, $ Area(G) \le \phi_x \phi_y$
+		\item For the $3$d object $H$, $Volume(H) \le \sqrt{\phi_{xy}\phi_{yz}\phi_{xz}}$
+	\end{itemize}
+\end{itemize}
+
+\begin{center}
+	\begin{tikzpicture}[scale=0.35, every node/.style={transform shape}]
+	\draw (0,0) -- ++(5,0) -- ++(0, 5) -- ++(-5,0) -- cycle;
+	\draw [<->] (0,6) -- (0,0) -- (6,0);
+	\node [below right, scale=2] at (6,0) {$x$};
+	\node [left, scale=2] at (0,6) {$y$};
+	
+	\draw [fill=gray!70] (2,2.25) to [curve through={(2.4,3) .. (2.5,2.9) .. (2.8,3.8) .. (3.1,2.1) .. (2.6,1.7)}] (2,2.25);
+	
+	\node [scale=3] at (2.5,2.5) {$G$};
+	\draw [dotted] (1.7,2.25) -- (1.7,0);
+	\draw [dotted] (3.6,2.4) -- (3.6,0);
+	
+	\node[above, scale=3] at (2.6,0) {$\phi_x$};
+	
+	\draw [dotted] (2,1.75) -- (0,1.75);
+	\draw [dotted] (2.8,4) -- (0,4);
+	
+	\node[right, scale=3] at (0,3) {$\phi_y$};
+	\end{tikzpicture}
+	\begin{tikzpicture}[scale=0.35, every node/.style={transform shape}]
+	\draw (0,0) -- ++(5,0) -- ++(0, 5) -- ++(-5,0) -- cycle;
+	\draw (0,5,0) -- ++(0,0, -5) -- ++(5,0,0) -- ++(0,0,5) -- cycle;
+	\draw (5,0,0) -- ++(0,0,-5) -- ++(0,5,0) -- ++(0,0,5) -- cycle;
+	\draw (0,0,-5) -- ++(5,0,0) -- ++(0,5,0) -- ++(-5,0,0) -- cycle;
+	\draw [<->] (0,6) -- (0,0) -- (6,0);
+	\draw [->] (0,0,0) -- (0,0,-12);
+	\node [left, scale=2, rotate=0] at (0,0,-12) {$z$};
+	\node [below right, scale=2] at (6,0) {$x$};
+	\node [left, scale=2] at (0,6) {$y$};
+	
+	\draw [fill=gray!70] (2,2.25) to [curve through={(2.4,3) .. (2.5,3) .. (2.8,3.8) .. (3.1,2.1) .. (2.6,1.7)}] (2,2.25);
+	
+	%				\node [scale=2] at (2.5,2.5) {$G$};
+	\draw [dotted] (1.7,2.25) -- (1.7,0.2);
+	\draw [dotted] (3.6,2.4) -- (3.6,0.3);
+	
+	\draw [fill=green!40] (1.75,0.25) to [curve through={(1.8, 0.35) .. (3.5, 0.65) .. (2,0.25)}] (1.75,0.25);
+	\node[above, scale=1.5] at (2.6,0,-0.75) {$\phi_{xz}$};
+	
+	\draw [dotted] (2,1.75) -- (0.3,1.75);
+	\draw [dotted] (2.8,4) -- (0.385,4);
+	
+	\draw [fill=red!40] (0.3, 1.75) to [curve through={(0.5,2) .. (1, 2.5) .. (1,3.95) .. (0.2, 2.5)}] (0.3,1.75);
+	\node[right, scale=1.5] at (0,3, -0.75) {$\phi_{yz}$};
+	
+	\draw [fill=yellow!40] (3.85,3.9) to [curve through={(3.7,3.8) .. (3.5,3.4) .. (3.45,3.2)}] (3.85, 3.9);
+	\node [scale=1.5] at (3.65,3.1,-1) {$\phi_{xy}$};
+	\draw [dotted] (2.8,4) -- (3.8,3.9);
+	\draw [dotted] (2.56,1.65) -- (4,2.5);
+	
+	\draw [fill=gray!70] (2,2.25) to [curve through={(2.4,3) .. (2.5,3) .. (2.8,3.8) .. (3.1,2.1) .. (2.6,1.7)}] (2,2.25);
+	
+	\node [scale=3] at (2.5,2.5) {$H$};
+	\end{tikzpicture}
+\end{center}
+\vfill
+\begin{itemize}
+	\item Similarly, for a $4$d object $I$, $Volume(I) \le \phi_{xyz}^\frac13  \phi_{xyw}^\frac13 \phi_{xzw}^\frac13  \phi_{yzw}^\frac13$
+	\vfill
+	\item How to work with arbitrary dimensional projections?
+\end{itemize}
+	
+\end{frame}
+
+\begin{frame}{H\"{o}lder-Brascamp-Lieb (HBL) inequality}
+	
+	\small
+	\begin{itemize}
+		\item Generalize Loomis-Whitney inequality for arbitrary dimensional projections
+		\vfill
+		\item Provide exponent for each projection
+\end{itemize}
+\vfill
+\begin{lemma}
+	\label{lem:hbl}
+	Consider any positive integers $\ell$ and $m$ and any $m$ projections $\phi_j:\mathbb{Z}^\ell\rightarrow\mathbb{Z}^{\ell_j}$ ($\ell_j\leq \ell$), each of which extracts $\ell_j$ coordinates $S_j\subseteq [\ell]$ and forgets the $\ell-\ell_j$ others.
+	Define
+%	$\mathcal{C} = \big\{\V{s}=[s_1\ \cdots \ s_m]^\Tra: 0\leq s_i \leq 1 \text{ for } i=1,2,\cdots,m \text{ and } \M{\Delta}\cdot\V{s}\ge\V{1}\big\}\text,$
+	$\mathcal{C} = \big\{\V{s} \in[0,1]^m:\M{\Delta}\cdot\V{s}\ge\V{1}\big\}\text,$
+	where the $\ell\times m$ matrix $\M{\Delta}$ has entries
+	$\M{\Delta}_{i,j} = 1 \text{ if } i\in S_j \text{ and } \M{\Delta}_{i,j} = 0 \text{ otherwise}\text.$
+	If $[s_1\ \cdots \ s_m]^\Tra\in\mathcal{C}$, then for all $F\subseteq \mathbb{Z}^\ell$,
+	$$ |F| \leq \prod_{j\in [m]}|\phi_j(F)|^{s_j}\text.$$
+\end{lemma}
+\vfill
+	\vspace*{-0.15cm}\begin{itemize}
+	\item For tighter  bound, we usually work with $\M{\Delta}\cdot\V{s} = \V{1}$
+	\begin{itemize}
+		\item Possible that $\M{\Delta}\cdot\V{s} = \V{1}$ does not have solution, then consider $\V{s}$ such that $\M{\Delta}\cdot\V{s}$ is not very far from $\V{1}$
+	\end{itemize}
+\end{itemize}
+
+\vfill
+Notation: $\V{1}$ represents a vector of all ones. $[m]$ denotes $\{1, 2,\cdots, m\}$ throughout the slides.
+\end{frame}
+
+\begin{frame}{HBL inequality}
+	\small
+	
+	\vspace*{-0.15cm}{\footnotesize\begin{lemma}
+		\label{lem:hbl}
+		Consider any positive integers $\ell$ and $m$ and any $m$ projections $\phi_j:\mathbb{Z}^\ell\rightarrow\mathbb{Z}^{\ell_j}$ ($\ell_j\leq \ell$), each of which extracts $\ell_j$ coordinates $S_j\subseteq [\ell]$ and forgets the $\ell-\ell_j$ others.
+		Define
+		%	$\mathcal{C} = \big\{\V{s}=[s_1\ \cdots \ s_m]^\Tra: 0\leq s_i \leq 1 \text{ for } i=1,2,\cdots,m \text{ and } \M{\Delta}\cdot\V{s}\ge\V{1}\big\}\text,$
+		$\mathcal{C} = \big\{\V{s} \in[0,1]^m:\M{\Delta}\cdot\V{s}\ge\V{1}\big\}\text,$
+		where the $\ell\times m$ matrix $\M{\Delta}$ has entries
+		$\M{\Delta}_{i,j} = 1 \text{ if } i\in S_j \text{ and } \M{\Delta}_{i,j} = 0 \text{ otherwise}\text.$
+		If $[s_1\ \cdots \ s_m]^\Tra\in\mathcal{C}$, then for all $F\subseteq \mathbb{Z}^\ell$,
+		\vspace*{-0.15cm}$$ |F| \leq \prod_{j\in [m]}|\phi_j(F)|^{s_j}\text.$$
+	\end{lemma}}
+\vspace*{-0.15cm}
+\begin{block}{Matrix multiplication ($C=AB$) example}
+%		$C= AB$, where $A \in\mathbb{R}^{n_1 \times n_2}$, $B \in\mathbb{R}^{n_2 \times n_3}$, and  $C \in \mathbb{R}^{n_1 \times n_3}$.
+		\vspace*{-0.25cm}\begin{columns}
+			\begin{column}{0.6\linewidth}
+				Here $A \in\mathbb{R}^{n_1 \times n_2}$, $B \in\mathbb{R}^{n_2 \times n_3}$, and  $C \in \mathbb{R}^{n_1 \times n_3}$.
+					\vspace*{-0.15cm}\begin{align*}
+				&\text{for $i = 1{:}n_1$, for $k = 1{:}n_2$, for $j = 1{:}n_3$}\\
+				&\quad \quad C[i][j] += A[i][k]*B[k][j]
+				\end{align*}
+				\vfill
+			\end{column}
+			\begin{column}{0.35\linewidth}
+					\begin{center}
+					$\M{\Delta} = \begin{blockarray}{cccc}
+					& A & B & C  \\
+					\begin{block}{c(ccc)}
+					i & 1 & 0 & 1\\
+					j & 0 & 1 & 1\\
+					k & 1 & 1 & 0\\
+					\end{block}
+					\end{blockarray}$
+				\end{center}
+			\end{column}\hfill
+		\end{columns}
+	\vspace*{-0.5cm}\begin{itemize}{
+			\item Find $\V{s}=\begin{bmatrix} s_1 & s_2 & s_3 \end{bmatrix}^\Tra$ such that $\M{\Delta}\cdot\V{s} = \V{1}$
+			\item $\phi_A, \phi_B, \phi_C$: projections of computations on arrays $A$, $B$, $C$
+			\item HBL inequality:  $\text{amount of computations} \le |\phi_A|^{s_1} |\phi_B|^{s_2} |\phi_C|^{s_3}$
+%			\item To make inequality tight select $\V{x}$ such that $\V{1}^\Tra \V{x}$ is minimum $=>x_1=x_2=x_3 = \frac{1}{2}$ 
+	}\end{itemize}\vspace*{-0.25cm}	
+\end{block}
+\end{frame}
+\begin{frame}{HBL inequality}
+	\small
+	It can be used to obtain sequential or parallel communication lower bound.
+	
+	\vfill
+	
+	Sequential lower bound formulation for matrix multiplication:
+	\begin{itemize}
+		\item Determine maximum amount of computations under segment size constraint:  $Maximize\  |\phi_A|^{s_1} |\phi_B|^{s_2} |\phi_C|^{s_3}$ s.t.  $|\phi_A| + |\phi_B| + |\phi_C| <= Constt$
+		\item Calculate total data transfers for all the segments
+	\end{itemize}
+\vfill
+%We can work with $\M{\Delta}^\Tra$ to determine tile sizes of a sequential algorithm.
+%\begin{itemize}
+%	\item Find $\V{x}=\begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix}^\Tra$ such that $\M{\Delta}^\Tra\cdot\V{x} \le \V{1}$ and $\V{1}^\Tra x$ is maximum
+%	\item $M^{x_i}$ is the tile dimension along $i$th axis
+%	\item Usually results in asymptotic communication optimal algorithm.
+%\end{itemize} 
+%\vfill
+	Parallel lower bound formulation for matrix multiplication:
+	\begin{itemize}
+		\item Determine the sum of array accesses to perform the required computations
+		\begin{itemize}
+			\item $Minimize\ |\phi_A| + |\phi_B| + |\phi_C|$  s.t. $\textnormal{amount of computations} \le |\phi_A|^{s_1} |\phi_B|^{s_2} |\phi_C|^{s_3}$
+		\end{itemize}
+	\end{itemize} 
+\end{frame}
+%	\usefonttheme[onlymath]{serif} 
+\begin{frame}{Optimization problems [Ballard et al., IPDPS 2017]}
+	\small
+\footnotesize
+%\begin{columns}
+%	\begin{column}{0.475\linewidth}
+%	\end{column}
+%	\begin{column}{0.475\linewidth}
+%	\end{column}
+%\end{columns}
+\vspace*{-0.15cm}\begin{lemma}
+	Given $s_i >0$, the optimization problem 
+	\vspace*{-0.15cm}$$\max_{x_i\ge 0} \prod_{i\in[m]} x_i^{s_i} \textnormal{ subject to } \sum_{i\in [m]} x_i \le c$$
+	yields the maximum value
+	\vspace*{-0.15cm}$$c^{\sum_i s_i}\prod_{j\in [m]} \left(\frac{s_j}{\sum_i s_i}\right)^{s_j}\text.$$
+\end{lemma}
+\vfill
+\vspace*{-0.15cm}\begin{lemma}
+	Given $s_i >0$, the optimization problem 
+	\vspace*{-0.15cm}$$\min_{x_i\ge 0} \sum_{i\in [m]} x_i  \textnormal{ subject to }  \prod_{i\in[m]} x_i^{s_i} \ge  c$$
+	yields the minimum value
+	\vspace*{-0.15cm}$$\left(\frac{c}{\prod_i {s_i}^{s_i}}\right)^\frac{1}{\sum_i s_i} \sum_{j\in[m]} s_j\text.$$
+\end{lemma}
+\vfill
+Both lemmas can be proved with the Lagrange multipliers.
+\end{frame}
+\section{CP decomposition}
+	\begin{frame}{Table of Contents}		
+		\tableofcontents[currentsection,hideallsubsections] % Output the table of contents (all sections on one slide)		
+	\end{frame}
+
+
+
+\begin{frame}{CP decomposition of $\T{A} \in \mathbb{R}^{n_1\times n_2\times\cdots\times n_d}$}
+	\small
+	It factorizes a tensor into a sum of rank one tensors.
+	\begin{center}
+		\begin{tikzpicture}[scale=0.215, every node/.style={transform shape}]
+		\pgfmathsetmacro{\cubex}{4}
+		\pgfmathsetmacro{\cubey}{4}
+		\pgfmathsetmacro{\cubez}{4}
+		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+		
+		\node[draw=none, text=black, scale=4] at (2,-2.25,-3) {$=$};
+		\pgfmathsetmacro{\smallwidth}{0.5}
+		\draw[blue,fill=pastelgreen] (\cubex+2,0,0) -- ++(-\smallwidth,0,0) -- ++(0,-\cubey,0) -- ++(\smallwidth,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (\cubex+2 +\cubex + 0.5,0.75,0) -- ++(-\cubex,0,0) -- ++(0,-\smallwidth,0) -- ++(\cubex,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (\cubex+2,0.5,0) -- ++(-\smallwidth,0,0) -- ++(0,0,-\cubez) -- ++(\smallwidth,0,0) -- cycle;
+		
+		\node[draw=none, text=black, scale=4] at (2+\cubex+4.25,-2.25,-3) {$+$};
+		
+		\draw[blue,fill=pastelgreen] (\cubex+2.5 + \cubex+2,0,0) -- ++(-\smallwidth,0,0) -- ++(0,-\cubey,0) -- ++(\smallwidth,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (\cubex+2.5+\cubex+2 +\cubex + 0.5,0.75,0) -- ++(-\cubex,0,0) -- ++(0,-\smallwidth,0) -- ++(\cubex,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (\cubex+2.5+\cubex+2,0.5,0) -- ++(-\smallwidth,0,0) -- ++(0,0,-\cubez) -- ++(\smallwidth,0,0) -- cycle;
+		
+		\node[draw=none, text=black, scale=4] at (2+\cubex+5 + \cubex+ 4.25, -2.25,-3) {$+$ $\cdots$ $+$};
+		
+		\draw[blue,fill=pastelgreen] (12 + \cubex+2.5 + \cubex+2,0,0) -- ++(-\smallwidth,0,0) -- ++(0,-\cubey,0) -- ++(\smallwidth,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (12+\cubex+2.5+\cubex+2 +\cubex + 0.5,0.75,0) -- ++(-\cubex,0,0) -- ++(0,-\smallwidth,0) -- ++(\cubex,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (12 + \cubex+2.5+\cubex+2,0.5,0) -- ++(-\smallwidth,0,0) -- ++(0,0,-\cubez) -- ++(\smallwidth,0,0) -- cycle;
+		\end{tikzpicture}
+	\end{center}
+	\vspace*{-0.15cm}\centering{\footnotesize CP decomposition of a $3$-dimensional tensor.}
+	\vfill
+	{\footnotesize\vspace*{-0.1cm}$$\T{A}=\sum_{\alpha=1}^{r} U_1 (:,\alpha) \circ U_2(:,\alpha)\circ\cdots \circ U_d(:,\alpha)$$}
+	%		$$\T{A}(i_1,\cdots,i_d) = \sum_{\alpha=1}^{r} U_1(i_1,\alpha) U_2(i_2,\alpha)\cdots U_d(i_d,\alpha)$$}
+	\vfill
+	\justifying
+	It can be concisely expressed as $\T{A} = \llbracket U_1, U_2, \cdots, U_d \rrbracket$. CP decomposition for a $3$-dimensional tensor in matricized form can be written as:
+	$$A_{(1)}=U_1(U_3\odot U_2)^T,\ A_{(2)}=U_2(U_3\odot U_1)^T\ A_{(3)}=U_3(U_2\odot U_1)^T\text.$$
+	
+	\vfill
+	It is useful to assume that $U_1, U_2 \cdots U_d$ are normalized to length one with the weights given in a vector $\lambda \in \mathbb{R}^r$.
+	
+\end{frame}
+
+\begin{frame}{CP-ALS algorithm for a 3-dimensional tensor $\T{A}$}
+	\small
+	\textbf{Repeat} until maximum iterations reached or no further improvement obtained
+	\begin{enumerate}
+		\item Solve $U_1(U_3\odot U_2)^T = A_{(1)}$ for $U_1$ $\Rightarrow U_1 = A_{(1)} (U_3\odot U_2) (U_3^TU_3 * U_2^TU_2)^\dagger$
+		\item Normalize columns of $U_1$
+		\item Solve $U_2(U_3\odot U_1)^T = A_{(2)}$ for $U_2$ $\Rightarrow U_2 = A_{(2)} (U_3\odot U_1) (U_3^TU_3 * U_1^TU_1)^\dagger$
+		\item Normalize columns of $U_2$
+		\item Solve $U_3(U_2\odot U_1)^T = A_{(3)}$ for $U_3$ $\Rightarrow U_3 = A_{(3)} (U_2\odot U_1) (U_2^TU_2 * U_1^TU_1)^\dagger$
+		\item Normalize columns of $U_3$
+	\end{enumerate}
+	
+	\bigskip
+	Here $A^\dagger$ denotes the Moore--Penrose pseudoinverse of $A$. We use the following identity to get expressions for $U_1, U_2$ and $U_3$:
+	$$(A\odot B)^T(A\odot B) = A^TA * B^TB$$
+\end{frame}
+\begin{frame}{ALS for computing a CP decomposition}
+	\small
+	\vspace*{-0.25cm}\begin{algorithm}[H]{
+			\caption{CP-ALS method to compute CP decomposition\label{alg:canonicalals}}
+			%%				\caption{HOSVD Algorithm($\X$, $R_1$, $R_2$, $R_3$)}
+			\begin{algorithmic}
+				\Require input tensor $\T{A}\in \mathbb{R}^{n_1\times \cdots \times n_d}$, desired rank $k$, initial factor matrices $U_j\in \mathbb{R}^{n_j\times k} \textnormal{ for } 1\le j \le d$
+				\Ensure $\llbracket \lambda; U_1, \cdots, U_d\rrbracket $ : a rank-$k$ CP decomposition of $\T{A}$
+				\Repeat
+				\For{$i=1 \text{ to } d$}
+				\State $V\gets U_1^\Tra U_1*\cdots*U_{i-1}^\Tra U_{i-1} U_{i+1}^\Tra U_{i+1} *\cdots*U_d^\Tra U_d$
+				\State $U_i \gets A_{(i)} (U_d\odot\cdots\odot U_{i+1}\odot U_{i-1}\odot U_1)$\label{alg:canonicalals:mttkrp}
+				\State $U_i\gets U_iV^\dagger$ 
+				\State $\lambda\gets \text{normalize colums of } U_i$ 
+				\EndFor
+				\Until converge or the maximum number of iterations
+			\end{algorithmic}
+	}\end{algorithm}
+%	\vspace*{-0.375cm}
+	\begin{itemize}
+		\item The collective operation $A_{(i)} (U_d\odot\cdots\odot U_{i+1}\odot U_{i-1}\odot U_1)$ is known as Matricized tensor times Khatri-Rao product (MTTKRP) computation
+%		\item $U_j$ can be chosen randomly or by setting $k$ left singular vectors of $A_{(j)}$ for $1\le j \le d$
+	\end{itemize}	
+\end{frame}
+
+\begin{frame}{Gradient based CP decomposition}
+	\small
+$$F=\min_{U_1,U_2U_3} ||\T{A} - \llbracket U_1, U_2, U_3 \rrbracket ||_F^2$$
+
+Gradients:
+$$\T{G} = 2(\T{A} - \llbracket U_1, U_2, U_3 \rrbracket)$$
+$$\frac{\partial F}{\partial U_1} = -G_{(1)}(U_3\odot U_2)$$
+$$\frac{\partial F}{\partial U_2} = -G_{(2)}(U_3\odot U_1)$$
+$$\frac{\partial F}{\partial U_3} = -G_{(3)}(U_2\odot U_1)$$
+
+
+\vfill
+Update $U_1, U_2$ and $U_3$ based on gradients until convergence or for the fixed number of iterations
+\vfill
+Gradient based algorithm also employs MTTKRP computations.
+\end{frame}
+\section{Matricized tensor times Khatri-Rao product (MTTKRP)}
+
+\begin{frame}{Table of Contents}		
+	\tableofcontents[currentsection,hideallsubsections] % Output the table of contents (all sections on one slide)		
+\end{frame}
+\begin{frame}{MTTKRP}
+	\small
+	We want to find $R$-rank CP decomposition of $\T{A}\in \mathbb{R}^{n_1\times \cdots \times n_d}$. The corresponding MTTKRP operation is 
+	$$U_i \gets A_{(i)} (U_d\odot\cdots\odot U_{i+1}\odot U_{i-1}\odot U_1)\text.$$ 
+Two approaches to compute this operation:
+\begin{itemize}
+	\item Conventional approach
+	\begin{itemize}
+		\item Compute Khatri-Rao products in a temporary $T$
+%		, $T=U_d\odot\cdots\odot U_{i+1}\odot U_{i-1}\odot U_1$
+		\item Multiply $A_{(i)}$ with the temporary $T$, $U_i = A_{(i)} T$ 
+		\item Total arithmetic cost = $\mathcal{O}(NR)$
+	\end{itemize}
+\end{itemize}
+	\vfill
+	\begin{itemize}
+		\item All-at-once approach
+			\vspace*{-0.15cm}$$U_i(j_i,r) = \sum_{j_1,\cdots,j_{i-1},j_{i+1},\cdots j_d} \T{A}(j_1,\cdots j_d) \prod_{k\in[d]-\{i\}}U_k(j_k,r)$$
+		\vspace*{-0.15cm}\begin{itemize}
+			\item Total arithmetic cost = $\mathcal{O}(dNR)$
+			\item No intermediate is formed (may limit the partial reuse)
+			\item Very useful to work with sparse tensor
+		\end{itemize}
+	\end{itemize}
+	\vfill
+	$n_1n_2\cdots n_d$ is denoted by $N$ through out the slides. We will mainly focus on all-at-once approach. This approach reduces communication.
+\end{frame}
+\begin{frame}{MTTKRP all-at-once pseudo code}
+\small
+\begin{itemize}
+	\item[] For $\{j_1=1 \text{ to } n_1\}$
+%	\item[] $\quad $ For $\{j_1=1 to n_1\}$
+	\item[] $\quad\ddots$
+	\item[] $\quad\quad $ For $\{j_d=1 \text{ to } n_d\}$
+	\item[] $\qquad\quad $ For $\{r=1 \text{ to } R\}$
+%	\item[] $\qquad\qquad 
+	\vspace*{-0.25cm}$$U_i(j_i,r) += \T{A}(j_1,\cdots j_d) \cdot \prod_{k\in[d]-\{i\}} U_k(j_k,r)\quad$$
+\end{itemize}
+\vfill
+Total number of loop iterations = $NR$
+
+\medskip
+\vfill
+We assume that the innermost computation is performed atomically. This is required for the communication lower bounds. 
+\begin{itemize}
+	\item \emph{Sequential case} : all the inputs are present in the memory when the single output value is updated
+	\item \emph{Parallel case}: all the multiplications of this computation are performed on only one processor
+\end{itemize}
+\end{frame}
+
+\subsection{Sequential case}
+\begin{frame}{Table of Contents}		
+	\tableofcontents[currentsubsection] % Output the table of contents (all sections on one slide)		
+\end{frame}
+\begin{frame}{$\M{\Delta}$ matrix for MTTKRP}
+	\small
+					\begin{center}
+	$\M{\Delta} = \begin{blockarray}{ccccccc}
+	& \T{A} & U_1 & \cdots & U_i & \cdots & U_d  \\
+	\begin{block}{c(cccccc)}
+	j_1 & 1 & 1 & & & &\\
+	\vdots & \vdots & & \ddots & & & \\
+	j_i & 1 &  & & 1 & &\\
+	\vdots & \vdots & & & & \ddots & \\
+	j_d & 1 & & & & & 1\\
+	r & & 1 & \cdots & 1 & \cdots & 1\\
+	\end{block}
+	\end{blockarray}$
+\end{center}
+\begin{itemize}
+	\item To obtain tight lower bound, find $\V{s}=[s_1,\cdots, s_d]^\Tra$ such that $\M{\Delta}\cdot\V{s}=\V{1}$
+	 $$\V{s}^\Tra = \left[1-\frac{1}{d},\frac{1}{d}, \cdots, \frac{1}{d}\right]$$
+\end{itemize}
+\end{frame}
+\begin{frame}{Analysis of a segment}
+\small
+We consider a segment of $M$ loads and stores. Any algorithm in the segment can access at most $3M$ elements.
+\begin{itemize}
+	\item \emph{Output}: at most $M$ elements can be live after each segment \& $M-L$ elements written to the slow memory
+	\item \emph{Inputs}: at most $M$ elements are available at the start of the segment \& $L$ elements loaded to the fast memory  
+\end{itemize} 
+Let $F$ be the subset of iteration space evaluated during the segment. $\phi_i(F)$ denotes the projection of $F$ on the $i$-th variable.
+
+\medskip
+Optimization problem:
+\begin{align*}
+\textnormal{Maximize } |F| & \textnormal { subject to}\\
+|F| \le & \prod_{i\in[d+1]} |\phi_i(F)|^{s_i}\\
+\sum_{i\in[d+1]} |\phi_i(F)| \le & 3M
+\end{align*}
+\end{frame}
+
+\begin{frame}{Communication lower bound}
+\small
+After solving the optimization problem, we get
+$$|F| \le \frac1d \left( \frac{1}{2-1/d}\right)^{2-1/d} (1-1/d)^{1-1/d}(3M)^{2-1/d} \le \frac1d (3M)^{2-1/d}\text.$$
+
+\vfill
+\vspace*{-0.25cm}\begin{theorem}
+	Any sequential MTTKRP algorithm performs at least 
+	$\frac{1}{3^{2-1/d}}\frac{dNR}{M^{1-1/d}} - M$ loads and stores.
+\end{theorem}
+Proof: Data transfer lower bound = $\left\lfloor \frac{NR}{|F|}\right\rfloor M \ge  \left(\frac{NR}{|F|} -1\right)M =  \frac{1}{3^{2-1/d}}\frac{dNR}{M^{1-1/d}} - M$
+\vfill
+\begin{corollary}
+	Any parallel MTTKRP algorithm performs at least 
+	$\frac{1}{3^{2-1/d}}\frac{dNR}{PM^{1-1/d}} - M$ sends and receives.
+\end{corollary}
+Proof: There must be a processor which performs at least $\frac{NR}{P}$ loop iterations, applying the previous theorem for this processor yields the mentioned bound. 
+\end{frame}
+
+\begin{frame}{Generalized size of a segment}
+	\small
+We are interested to know how many loop iterations we can perform by accessing $A$ elements.
+
+\medskip
+Optimization problem:
+\begin{align*}
+\textnormal{Maximize } |F_{M+A}| & \textnormal { subject to}\\
+|F_{M+A}| \le & \prod_{i\in[d+1]} |\phi_i(F)|^{s_i}\\
+\sum_{i\in[d+1]} |\phi_i(F)| \le & M+A
+\end{align*}
+\vfill
+Data transfer lower bound = $\left\lfloor \frac{NR}{|F_{M+A}|}\right\rfloor A \ge  \left(\frac{NR}{|F_{M+A}|} -1\right)A$
+
+\vfill
+We select $A$ such that the bound is maximum.
+
+\end{frame}
+
+\begin{frame}{Communication optimal sequential algorithm}
+	\small
+	We select a block size $b$ such that $b^d + db \le M$.
+	
+	\begin{enumerate}
+		\item Loop over $b\times \cdots \times b$ blocks of the tensor
+		\item With block in memory, loop over subcolumns of input factor matrices and update corresponding subcolumn of output matrix
+	\end{enumerate}
+\begin{columns}
+	\begin{column}{0.485\linewidth}
+		Amount of data transfer is bounded by $$N + \left\lceil\frac{n_1}{b}\right\rceil \cdots  \left\lceil\frac{n_d}{b}\right\rceil \cdot R (d+1)b \text.$$
+		
+		With $b \approx M^{1/d}$, data transfer cost = $$\mathcal{O}\left(N + \frac{dNR}{M^{1-1/d}}\right)$$
+	\end{column}\hfill
+	\begin{column}{0.4\linewidth}
+		\begin{block}{}
+			Sequential block algorithm for $d=3$:
+			\newcommand{\matdim}{4}
+			\newcommand{\mat}{\draw[black,shift={(-.5,-.5)}] (0,0) grid (\matdim,\matdim);}
+			\newcommand{\highlight}{gray!50}
+			
+			\begin{center}
+				\begin{tikzpicture}[x={(-0.5cm,-0.4cm)}, y={(1cm,0cm)}, z={(0cm,1cm)},every node/.append style={transform shape},scale=.46]
+				
+				% highlight tensor block and factor matrix subcolumns (do first to put in background)
+				% front face
+				\begin{scope}[canvas is yz plane at x=.5,shift={(1.5,-1.5)}]
+				% highlight front face of tensor block
+				\draw[dashed,fill=\highlight,shift={(0,0)}] (0,0) rectangle (-1,-1);
+				\node[draw=none] at (-1.25,-.5) {\small $b$};
+				\node[draw=none] at (-.5,-1.25) {\small $b$};
+				% highlight block of 1st factor matrix
+				\draw[fill=\highlight,shift={(-2.5,0)},xscale=.5] (0,0) rectangle (-1,-1);
+				% highlight block of 2nd factor matrix
+				\draw[fill=\highlight,shift={(0,-2.5)},yscale=.5] (0,0) rectangle (-1,-1);
+				%	\only<2>{
+				% highlight subcolumn of 1st factor matrix
+				\draw[densely dotted,thick,shift={(-2.8,0)}] (0,0) -- (0,-1);
+				% highlight subcolumn of 2nd factor matrix
+				\draw[densely dotted,thick,shift={(0,-2.8)}] (0,0) -- (-1,0);
+				%	}
+				\end{scope}
+				% right face
+				\begin{scope}[canvas is zx plane at y=(\matdim-.5),rotate=-90,shift={(.5,-4)}]
+				% highlight block of 3rd factor matrix
+				\draw[fill=\highlight,yscale=.5] (0,0) rectangle (-1,-1);
+%				\only<2>{
+					% highlight subcolumn of 3rd factor matrix
+					\draw[densely dotted,thick,shift={(0,-.3)}] (0,0) -- (-1,0);
+%				}
+				\end{scope}
+				% right face, but in middle of tensor
+				\begin{scope}[canvas is zx plane at y=1.5,rotate=-90,shift={(-.5,-2.5)}]
+				% highlight right face of tensor block
+				\draw[dashed,fill=\highlight] (0,0) rectangle (1,1);
+				\node[draw=none] at (.75,-.2) {\small $b$};
+				\end{scope}
+				% top face, but in middle of tensor
+				\begin{scope}[canvas is yx plane at z=-1.5,yscale=-1,rotate=0,shift={(.5,-.5)}]
+				\draw (0,0) node {\LARGE $\cdot$};
+				% highlight top face of tensor block
+				\draw[dashed,fill=\highlight] (0,0) rectangle (1,1);
+				\end{scope}
+				
+				% draw tensor
+				% front face
+				\begin{scope}[canvas is yz plane at x=.5,rotate=-90]
+				\mat
+				\end{scope}
+				% top face
+				\begin{scope}[canvas is yx plane at z=.5,yscale=-1,rotate=0]
+				\mat
+				\end{scope}
+				% right face
+				\begin{scope}[canvas is zx plane at y=(\matdim-.5),rotate=180]
+				\mat
+				\end{scope}
+				
+				% draw factor matrices
+				% front face
+				\begin{scope}[canvas is yz plane at x=.5,shift={(1.5,-1.5)}]
+				% draw 1st factor matrix
+				\draw[shift={(-2.5,0)},xscale=.5] (0,-2) grid (-1,2);
+				\node[draw=none] at (-3.5,0) {$U_1$};
+				% draw 2nd factor matrix
+				\draw[shift={(0,-2.5)},yscale=.5] (-2,0) grid (2,-1);
+				\node[draw=none] at (0,-3.5) {$U_2$};
+				\end{scope}
+				% right face
+				\begin{scope}[canvas is zx plane at y=(\matdim-.5),rotate=-90,shift={(1.5,-1.5)}]
+				% draw 3nd factor matrix
+				\draw[shift={(0,-2.5)},yscale=.5] (-2,0) grid (2,-1);
+				\node[draw=none] at (0,-3.5) {$U_3$};
+				\end{scope}
+				
+				
+				\end{tikzpicture}
+			\end{center}
+		\end{block}
+	\end{column}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{Comparisons}
+	\small
+	\begin{center}
+		\renewcommand{\arraystretch}{2}
+		\begin{tabular}{|c|ccc|}
+			\hline
+			& \textbf{Lower Bound} & \textbf{All-at-once} & \textbf{Conventional (MM)} \\
+			\hline
+			\textbf{Flops} & - & $dNR$ & $2NR$ \\
+			\textbf{Words} & $\Omega\left( \frac{dNR}{M^{1-1/d}} \right)$ & $\mathcal{O}\left( N+\frac{dNR}{M^{1-1/d}} \right)$ & $O\left( N+\frac{NR}{M^{1/2}} \right)$ \\
+			\textbf{Temp Mem} & - & - & $\frac{NR}{n_i}$ \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\vfill
+	
+	\begin{itemize}
+		\item All-at-once approach performs $\frac d2$ more flops than the conventional approach
+		\item For relatively small $R$, $N$ term dominates communication
+		\begin{itemize}
+			\item This is the typical case in practice
+		\end{itemize}
+		\item For relatively large $R$, all-at-once approach based algorithm communicates less
+		\begin{itemize}
+			\item better exponent on $M$
+		\end{itemize}
+	\end{itemize}	
+\end{frame}
+
+\subsection{Parallel case}
+\begin{frame}{Table of Contents}		
+	\tableofcontents[currentsubsection] % Output the table of contents (all sections on one slide)		
+\end{frame}
+\begin{frame}{Settings to compute parallel communication lower bound}
+	\small
+	\begin{itemize}
+		\item The algorithm load balances the computation -- each processor performs $NR/P$ number of loop iterations
+		\vfill
+		\item One copy of data is in the system
+		\begin{itemize}
+			\item There exists a processor whose input data at the start plus output data
+			at the end must be at most $\frac{N + \sum_{i=1}^{d}n_iR }{P}$ words – will analyze amount of data
+			transfers for this processor
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Communication lower bound}
+\small
+Let $F$ be the subset of iteration space evaluated on a processor. $\phi_i(F)$ denotes the projection of $F$ on the $i$-th variable. We recall that $\V{s}^\Tra = \left[1-\frac{1}{d},\frac{1}{d}, \cdots, \frac{1}{d}\right]$.
+
+\medskip
+Optimization problem:
+\begin{align*}
+\textnormal{Minimize } \sum_{i\in[d+1]} |\phi_i(F)|  & \textnormal { subject to}\\
+\frac{NR}{P} \le & \prod_{i\in[d+1]} |\phi_i(F)|^{s_i}
+\end{align*}
+
+\vfill
+After solving the above optimization we obtain,
+{\footnotesize$$\sum_{i\in[d+1]} |\phi_i(F)| = \left(\sum_i s_i \right) \left(\frac{NR/P}{\prod_i s_i^{s_i}}\right)^{1/\sum_i s_i}= (2-1/d)\left(\frac{NR/P}{\prod_i s_i^{s_i}}\right)^\frac{d}{2d-1} \ge 2\left(\frac{dNR}{P}\right)^\frac{d}{2d-1} \text.$$}
+\begin{align*}
+\textnormal{Communication lower bound } = & \sum_{i\in[d+1]} |\phi_i(F)| - \textnormal{data owned by the processor}\\
+\ge & 2\left(\frac{dNR}{P}\right)^\frac{d}{2d-1} - \frac{N + \sum_{i=1}^{d}n_iR }{P}
+\end{align*}
+\end{frame}
+\begin{frame}{Sketch of communication optimal algorithm for $d=3$}
+\small
+Assume that the required rank ($R$) is small. We do not need to communicate tensor in this setting. Suppose we want to update $U_2$.
+
+\vfill
+\begin{columns}
+	
+	\begin{column}{.45\textwidth}
+		
+		\newcommand{\procdim}{3}
+		\newcommand{\proc}{\draw[black,shift={(-.5,-.5)}] (0,0) grid (\procdim,\procdim);}
+		\newcommand{\highlight}{gray!75}
+		\newcommand{\commhighlight}{gray!25}
+		
+		\begin{center}
+			\begin{tikzpicture}[x={(-0.5cm,-0.4cm)}, y={(1cm,0cm)}, z={(0cm,1cm)},every node/.append style={transform shape}, scale=0.7]
+			
+			% highlight all-gather/reduce-scatter patterns
+			% 1st slide is proc data (leave highlighting for all slides)
+			% 2nd slide is all-gather in 1st mode
+			\only<2>{
+				% front face
+				\begin{scope}[canvas is yz plane at x=.5]
+				% highlight front face of proc comm
+				\draw[fill=\commhighlight,shift={(-.5,-.5)}] (0,0) rectangle (3,1);
+				% highlight block of 1st factor matrix
+				\draw[fill=\commhighlight,shift={(-1,.5)},xscale=.5] (0,0) rectangle (-1,-1);
+				\end{scope}
+				% right face
+				\begin{scope}[canvas is zx plane at y=(\procdim-.5),rotate=-90]
+				% highlight right face of proc comm
+				\draw[fill=\commhighlight,shift={(-.5,-.5)}] (0,0) rectangle (3,1);
+				\end{scope}
+				% top face
+				\begin{scope}[canvas is yx plane at z=.5,yscale=-1,rotate=0]
+				% highlight top face of proc comm
+				\draw[fill=\commhighlight,shift={(-.5,-.5)}] (0,0) rectangle (3,3);
+				\end{scope}
+			}
+			% 3rd slide is all-gather in 3rd mode
+			\only<3>{
+				% front face
+				\begin{scope}[canvas is yz plane at x=.5]
+				% highlight front face of proc comm
+				\draw[fill=\commhighlight,shift={(-.5,.5)}] (0,0) rectangle (3,-3);
+				% highlight block of 1st factor matrix now owned by processor
+				\draw[fill=\highlight,shift={(-1,.5)},xscale=.5] (0,0) rectangle (-1,-1);
+				\end{scope}
+				% right face
+				\begin{scope}[canvas is zx plane at y=(\procdim-.5),rotate=-90]
+				% highlight right face of proc comm
+				\draw[fill=\commhighlight,shift={(-.5,.5)}] (0,0) rectangle (1,-3);
+				% highlight block of 3rd factor matrix
+				\draw[fill=\commhighlight,yscale=.5,shift={(-.5,-6)}] (0,0) rectangle (1,-1);
+				\end{scope}
+				% top face
+				\begin{scope}[canvas is yx plane at z=.5,yscale=-1,rotate=0]
+				% highlight top face of proc comm
+				\draw[fill=\commhighlight,shift={(-.5,-.5)}] (0,0) rectangle (3,1);
+				\end{scope}
+			}
+			% 4th and 5th slides are local computation
+			\only<4-5>{
+				% front face
+				\begin{scope}[canvas is yz plane at x=.5]
+				% highlight block of 1st factor matrix now owned by processor
+				\draw[fill=\highlight,shift={(-1,.5)},xscale=.5] (0,0) rectangle (-1,-1);
+				\end{scope}
+				% right face
+				\begin{scope}[canvas is zx plane at y=(\procdim-.5),rotate=-90]
+				% highlight block of 3rd factor matrix now owned by processor
+				\draw[fill=\highlight,yscale=.5,shift={(-.5,-6)}] (0,0) rectangle (1,-1);
+				\end{scope}
+			}
+			\only<5>{
+				% front face
+				\begin{scope}[canvas is yz plane at x=.5]
+				% highlight block of 2nd factor matrix contribution computed by processor
+				\draw[fill=\highlight,shift={(1.5,-3)},yscale=.5] (0,0) rectangle (1,-1);
+				\end{scope}
+			}
+			% 6th slide is reduce-scatter in 2nd mode
+			\only<6>{
+				% front face
+				\begin{scope}[canvas is yz plane at x=.5]
+				% highlight front face of proc comm
+				\draw[fill=\commhighlight,shift={(1.5,.5)}] (0,0) rectangle (1,-3);
+				% highlight block of 2nd factor matrix involved in reduce scatter
+				\draw[fill=\commhighlight,shift={(1.5,-3)},yscale=.5] (0,0) rectangle (1,-1);
+				% highlight block of 2nd factor matrix of computed output
+				\draw[fill=\highlight,shift={(1.5,-3)},yscale=.5] (0,0) rectangle (1/9,-1);
+				% highlight block of 1st factor matrix now owned by processor
+				\draw[fill=\highlight,shift={(-1,.5)},xscale=.5] (0,0) rectangle (-1,-1);
+				\end{scope}
+				% right face
+				\begin{scope}[canvas is zx plane at y=(\procdim-.5),rotate=-90]
+				% highlight right face of proc comm
+				\draw[fill=\commhighlight,shift={(-.5,.5)}] (0,0) rectangle (3,-3);
+				% highlight block of 3rd factor matrix now owned by processor
+				\draw[fill=\highlight,yscale=.5,shift={(-.5,-6)}] (0,0) rectangle (1,-1);
+				\end{scope}
+				% top face
+				\begin{scope}[canvas is yx plane at z=.5,yscale=-1,rotate=0]
+				% highlight top face of proc comm
+				\draw[fill=\commhighlight,shift={(1.5,-.5)}] (0,0) rectangle (1,3);
+				\end{scope}
+			}
+			
+			% highlight one processor's data
+			% front face
+			\begin{scope}[canvas is yz plane at x=.5,shift={(1.5,-1.5)}]
+			% highlight front face of tensor block
+			\draw[fill=\highlight,shift={(0,1)}] (0,0) rectangle (1,1);
+			% highlight block of 1st factor matrix
+			\draw[fill=\highlight,shift={(-2.5,2-1/3)},xscale=.5] (0,0) rectangle (-1,-1/9);
+			% highlight block of 2nd factor matrix
+			\draw[shift={(0,-1.5)},yscale=.5] (0,0) rectangle (1/9,-1);
+			\end{scope}
+			% right face
+			\begin{scope}[canvas is zx plane at y=(\procdim-.5),rotate=-90,shift={(-.5,-3)}]
+			% highlight front face of tensor block
+			\draw[fill=\highlight,shift={(0,2.5)}] (0,0) rectangle (1,1);
+			% highlight block of 3rd factor matrix
+			\draw[fill=\highlight,yscale=.5] (0,0) rectangle (1/9,-1);
+			\end{scope}
+			% top face
+			\begin{scope}[canvas is yx plane at z=.5,yscale=-1,rotate=0]
+			% highlight front face of tensor block
+			\draw[fill=\highlight,shift={(1.5,-.5)}] (0,0) rectangle (1,1);
+			\end{scope}
+			
+			% draw tensor
+			% front face
+			\begin{scope}[canvas is yz plane at x=.5,rotate=-90]
+			\proc
+			\end{scope}
+			% top face
+			\begin{scope}[canvas is yx plane at z=.5,yscale=-1,rotate=0]
+			\proc
+			\end{scope}
+			% right face
+			\begin{scope}[canvas is zx plane at y=(\procdim-.5),rotate=180]
+			\proc
+			\end{scope}
+			
+			% draw factor matrices
+			% front face
+			\begin{scope}[canvas is yz plane at x=.5,shift={(1.5,-.5)}]
+			% draw 1st factor matrix
+			\draw[shift={(-2.5,0)},xscale=.5] (0,-2) grid (-1,1);
+			\node[draw=none] at (-3.5,-.5) {$U_1$};
+			% draw 2nd factor matrix
+			\draw[shift={(0,-2.5)},yscale=.5] (-2,0) grid (1,-1);
+			\node[draw=none] at (-.5,-3.5) {$U_2$};
+			\end{scope}
+			% right face
+			\begin{scope}[canvas is zx plane at y=(\procdim-.5),rotate=-90,shift={(1.5,-.5)}]
+			% draw 2nd factor matrix
+			\draw[shift={(0,-2.5)},yscale=.5] (-2,0) grid (1,-1);
+			\node[draw=none] at (-.5,-3.5) {$U_3$};
+			\end{scope}
+			
+			
+			\end{tikzpicture}
+		\end{center}
+		
+	\end{column}\hfill
+	\begin{column}{.56\textwidth}
+		
+		\footnotesize
+		Each processor
+		\begin{enumerate}
+			\item Starts with one subtensor and subset of rows of each input factor matrix
+			\uncover<2->{\item All-Gathers all the rows needed from $U_1$}
+			\uncover<3->{\item All-Gathers all the rows needed from $U_3$}
+			\uncover<4->{\item Computes its contribution to rows of $U_2$ (local MTTKRP)}
+			\uncover<6->{\item Reduce-Scatters to compute and distribute $U_2$ evenly}
+		\end{enumerate}
+		
+	\end{column}
+	
+\end{columns}
+\end{frame}
+\begin{frame}{Parallel communication optimal MTTKRP algorithm}
+	\small
+		\begin{algorithm}[H]{\footnotesize
+				\caption{Parallel MTTKRP algorithm}
+				\begin{algorithmic}[1]
+					\Require input tensor $\T{A}\in \mathbb{R}^{n_1\times \cdots \times n_d}$, factor matrices $U_j\in \mathbb{R}^{n_j\times R} \textnormal{ for } 1\le j \le d$, mode $j$, $P$ processors are arranged in $p_0\times p_1\times \cdots\times p_d$ logical processor grid
+					\Ensure Updated $U_j$
+					\State $(p_0^\prime, p_1^\prime,\cdots, p_d^\prime)$ is my processor id
+					\State //All-gather input tensor
+					\State $\T{A}_{p_1^\prime,\cdots,p_d^\prime} = $ All-Gather($\T{A}, (*, p_1^\prime, \cdots, p_d^\prime)$)
+					\State //All-gather factor matrices except $U_j$
+					\For {$k\in [d]-\{j\}$}
+					\State $(U_k)_{p_0^\prime, p_k^\prime} = $ All-Gather($U_k, (p_0^\prime, *, \cdots,*, p_k^\prime,*, \cdots,*)$) 
+					\EndFor
+					\State //Compute local MTTKRP
+					\State $T = $ Local-MTTKRP ($\T{A}_{p_1^\prime,\cdots,p_d^\prime}, (U_k)_{p_0^\prime, p_k^\prime}, j$)
+					\State //Reduce scatter along the processors which have same $p_0^\prime$ and $p_j^\prime$
+					\State Reduce-Scatter($(U_j)_{p_0^\prime, p_j^\prime}, T, (p_0^\prime, *, \cdots,*, p_j^\prime,*, \cdots,*)$)
+				\end{algorithmic}
+		}\end{algorithm}
+\end{frame}
+
+\begin{frame}{Communication cost}
+	\small
+	We set $p_0 \approx \frac{(dR)^\frac{d}{2d-1}}{(N/P)^\frac{d-1}{2d-1}}$ and $p_k \approx \frac{n_k}{(Np_0/P)^\frac1d}$ for $k\in [d]$. 
+	
+	\vfill
+	
+	Communication cost of the algorithm with the above processor grid is $$\mathcal{O}\left(\frac{dNR}{P}\right)^\frac{d}{2d-1}\text.$$
+\end{frame}
+
+\begin{frame}{Perspectives}
+	\small
+	\begin{itemize}
+		\item Tight communication lower bounds for MTTKRP with small $P$ and rectangular factor matrices
+		\vfill
+		\item Cost analysis of several ways to perform MTTKRP
+		\vfill
+		\item Amount of reuse across multiple MTTKRPs
+		\vfill
+		\item Optimal cost of CP-ALS algorithm for an iteration (or for a set of $d$-iterations)
+	\end{itemize}
+\end{frame}
+\end{document} 
