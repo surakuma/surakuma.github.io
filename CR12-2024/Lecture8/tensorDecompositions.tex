@@ -452,7 +452,7 @@ $$(A\odot B)^T(A\odot B) = A^TA * B^TB$$
 			\Ensure $\llbracket \lambda; U_1, \cdots, U_d\rrbracket $ : a rank-$k$ CP decomposition of $\T{A}$
 			\Repeat
 			\For{$i=1 \text{ to } d$}
-			\State $V\gets U_1^\Tra U_1*\cdots*U_{i-1}^\Tra U_{i-1} U_{i+1}^\Tra U_{i+1} *\cdots*U_d^\Tra U_d$
+			\State $V\gets U_1^\Tra U_1*\cdots*U_{i-1}^\Tra U_{i-1}* U_{i+1}^\Tra U_{i+1} *\cdots*U_d^\Tra U_d$
 			\State $U_i \gets A_{(i)} (U_d\odot\cdots\odot U_{i+1}\odot U_{i-1}\odot U_1)$\label{alg:canonicalals:mttkrp}
 			\State $U_i\gets U_iV^\dagger$ 
 			\State $\lambda\gets \text{normalize colums of } U_i$ 
