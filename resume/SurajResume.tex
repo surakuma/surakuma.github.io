@@ -1,0 +1,417 @@
+% resume.tex
+%
+% (c) 2002 Matthew Boedicker <mboedick@mboedick.org> (original author) http://mboedick.org
+% (c) 2003 David J. Grant <dgrant@ieee.org> http://www.davidgrant.ca
+% (c) 2007 Todd C. Miller <Todd.Miller@courtesan.com> http://www.courtesan.com/todd
+% (c) 2009 Derek R. Hildreth <derek@derekhildreth.com> http://www.derekhildreth.com 
+%This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/1.0/ or send a letter to Creative Commons, 559 Nathan Abbott Way, Stanford, California 94305, USA.
+
+% GENERAL NOTE:  There may be some notes specific to myself.  If you're only interested in my LaTeX source or it doesn't make sense, please disregard it.
+
+\documentclass[letterpaper,11pt]{article}
+% \documentclass[margin]{res}
+
+%-----------------------------------------------------------
+\usepackage{latexsym}
+\usepackage{engord}
+\usepackage[empty]{fullpage}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage[pdftex]{hyperref}
+\usepackage{enumitem}
+\usepackage[utf8x]{inputenc}
+\hypersetup{
+    colorlinks,%
+    citecolor=black,%
+    filecolor=black,%
+    linkcolor=black,%
+    urlcolor=mygreylink     % can put red here to visualize the links
+}
+\urlstyle{same}
+\definecolor{mygrey}{gray}{.85}
+\definecolor{mygreylink}{gray}{.30}
+\textheight=9.0in
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.375in}
+\addtolength{\evensidemargin}{0.375in}
+\addtolength{\textwidth}{0.5in}
+\addtolength{\topmargin}{-.375in}
+\addtolength{\textheight}{0.75in}
+\addtolength{\parindent}{0in}
+% \usepackage[paper=a4paper,
+%            includefoot, % Uncomment to put page number above margin
+%            marginparwidth=30.5mm,    % Length of section titles
+%             marginparsep=1.5mm,       % Space between titles and text
+%             margin=15mm,              % 25mm margins
+%             voffset=5mm,
+%             includemp]{geometry}
+
+%-----------------------------------------------------------
+%Custom commands
+\newcommand{\resitem}[1]{\item #1 \vspace{-2pt}}
+\newcommand{\resheading}[1]{{\large \colorbox{mygrey}{\begin{minipage}{\textwidth}{\textbf{#1 \vphantom{p\^{E}}}}\end{minipage}}}}
+\newcommand{\ressubheading}[4]{
+\begin{tabular*}{6.5in}{l@{\extracolsep{\fill}}r}
+		\textbf{#1} & #2 \\
+		\textit{#3} & \textit{#4} \\
+\end{tabular*}\vspace{-6pt}}
+
+\newcommand{\ressubheadingMEProject}[6]{
+\begin{tabular*}{6.5in}{l@{\extracolsep{\fill}}r}
+		\textbf{#1} & #3 \\
+		\textbf{#2} &	\\
+		\textit{#4} &  \textit{#6}\\
+		\hspace{0.52in}\textit{#5} & \\
+\end{tabular*}\vspace{-6pt}}
+
+\newcommand{\ressubheadingComp}[3]{
+\begin{tabular*}{6.5in}{l@{\extracolsep{\fill}}r}
+		\textbf{#1} & #2 \\
+%		\hspace{0.52in}\textit{#3} & \\
+\end{tabular*}\vspace{-6pt}}
+
+\newcommand{\ressubheadingBTechProject}[5]{
+\begin{tabular*}{6.5in}{l@{\extracolsep{\fill}}r}
+		\textbf{#1} & #3 \\
+		\textbf{#2} &	\\
+		\textit{#4} &  \textit{#5}\\
+\end{tabular*}\vspace{-6pt}}
+
+%-----------------------------------------------------------
+
+%-----------------------------------------------------------
+%General Resume Tips
+%   No periods!  Technically, nothing in this document is a full sentence.
+%   Use parallelism by ending key words with the same thing,  i.e. "Coordinated; Designed; Communicated".
+%   More tips on bottom of this LaTeX document.
+%-----------------------------------------------------------
+
+\setlength{\parindent}{0in}
+% \parindent=0in
+
+\begin{document}
+
+\newcommand{\mywebheader}{
+	\begin{center}
+	{\centering\huge\textbf{S\sc{uraj} K\sc{umar}}}
+	\end{center}
+\begin{tabular*}{7in}{l@{\extracolsep{\fill}}r}
+%%	\huge\textbf{S\sc{uraj} K\sc{umar}} & {} \vspace{0.1in}\\
+	\textbf{{Contact Address}} & {}\\
+	{\small{ROMA team}} & {\small{Ph: +33(0)782966289 }}\\
+	{\small{LIP, Inria, ENS Lyon, France }} & {\small{Email: suraj.kumar@inria.fr}}
+%	{\small{}} & {\small{Skype Id: surakum3}}
+	\end{tabular*}
+\vspace{0.1in}}
+
+%%\href{https://sites.google.com/site/surajkumar201189}{https://sites.google.com/site/surajkumar201189}
+%%
+%%Alpines team, Inria Paris
+%%2 Rue Simone IFF, 75012 Paris
+%%Email: suraj.kumar@inria.fr
+%%Phone: +33 (0) 782966289
+% CHANGE HEADER SOURCE HERE
+\mywebheader
+
+%%%%%%%%%%%%%%%%%%%%%%
+% \vspace{0.3in}
+\resheading{Interests}
+\vspace{0.01in} \\
+%\hspace{0.3in}
+Matrix and tensor computations, Communication costs, Parallel algorithms
+%Tensor Computations, Communication Avoiding Algorithms, Parallel Computing, Scheduling, Runtime Systems, Data analysis
+%% Tensor Algorithms, Parallel Computing, Linear Algebra, Scheduling, Heterogeneous Resources, Combinatorial Scientific Computing, Machine Learning 
+\vspace*{0.1in} \\
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+%\resheading{Objective} 
+%\begin{description}
+%\item{\begin{tabbing} \hspace*{0.1cm}\=\hspace{0.1cm}\=\hspace{0.2cm}\= \kill \>Seeking for an intern position in Research and Development (Google Maps/ Search / News / \\Enterprise and Apps Development) which is profitable for both of us. \end{tabbing} }                                                                                                                                                          
+%\end{description}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\vspace{0.1in} 
+\resheading{Research Experience}
+\begin{itemize}
+	\item \ressubheading{{Inria Lyon}}{Lyon, France}{{Research Associate}}{Oct 2022 -- present} \newline
+	\item \ressubheading{{Inria Paris}}{Paris, France}{{Postdoctoral Researcher}}{Nov 2019 -- Sep 2022} \newline
+	
+%	{Design parallel and communication optimal algorithms for tensor compression. Extend the concept of hierarchical matrices to tensors. Working with chemists to understand how tensors are used in molecular and quantum simulations.}
+	\item \ressubheading{{Pacific Northwest National Laboratory}}{Richland, Washington, USA}{{Postdoctoral Research Associate}}{May 2018 -- Oct 2019} \newline
+	
+	\item \ressubheading{{Ericsson Research}}{Bangalore, India}{{Senior Engineer}}{Aug 2017 -- Feb 2018} \newline
+	
+%	{Worked on scheduling of tasks on remote cuda devices.}
+	\item \ressubheading{{IBM India Research Lab}}{New Delhi, India}{{Software Engineer}}{Jul 2012 -- Nov 2013} \newline
+	
+
+	
+%	{Performed theoretical and empirical analysis of data transfer order between two memory nodes. Designed a task-based runtime system for tensor operations of molecular simulations.}
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+
+\vspace{0.1in} 
+\resheading{Education}
+	\begin{itemize}
+		\item
+			\ressubheading{{Inria Bordeaux, University of Bordeaux}}{Bordeaux, France}{{Doctorate of Philosophy}}{Dec 2013 -- Apr 2017}
+				{ \footnotesize
+				\begin{itemize}
+					\item Topic: Scheduling of Dense Linear Algebra Kernels on Heterogeneous Resources
+					\item Advisor: \href{https://dblp.uni-trier.de/pid/89/2078.html}{Olivier Beaumont}
+					\item Co-advisors: \href{https://dblp.uni-trier.de/pid/59/1733.html}{Emmanuel Agullo}, \href{https://dblp.uni-trier.de/pid/e/LionelEyraudDubois.html}{Lionel Eyraud-Dubois}, and \href{https://scholar.google.fr/citations?user=Gk0anzsAAAAJ}{Samuel Thibault}
+%%					\resitem{\small{The main objective of this PhD thesis is to propose a unified approach for scheduling large graph of dense Numerical Linear Algebra application on future Exascale platforms. The main difficulty is to decide which task should be allocated statically or which dynamically. In both cases, one has to determine the policy driving the task graph exploration, physical resource allocation and migration based or work stealing based load-balancing.}}
+				\end{itemize}
+				}
+				
+		\item
+			\ressubheading{{Indian Institute of Science}}{Bangalore, India}{{Master of Engineering in Computer Science and Engineering}}{Aug 2010 -- Jun 2012}
+				{ \footnotesize
+				\begin{itemize}
+					\resitem {Topic: Auto Parallelization and Optimization of Program Employing Linked Lists}
+					\resitem {Advisor: \href{https://www.csa.iisc.ac.in/~udayb}{Uday Kumar B Reddy}}
+%%					\resitem{CGPA: \textbf{6.5}/8}
+					%{\scriptsize $^{\ast}$ - Upto Second Semester.}
+% 					\medskip 
+% 							   \begin{tabular}{| p{9 cm} |c|}
+% 							      \hline
+% 							      { \it Course Name} & {\it Grade } \\ \hline
+% 							    {Compiler Design} & A\\ \hline
+% 							    {Program Analysis \& Verification}& A\\ \hline
+% 							    {Design \& Analysis of Algorithms} & A\\ \hline
+% 							    {Linear Algebra \& Applications} & A\\ \hline
+% 							    {Mathematical foundation for Modern Computing} & A\\ \hline
+% 							    {Computer Architecture} & B\\ \hline
+% 							    {Advanced Techniques in Compilation and Programming for Parallel Architectures} & B\\ \hline
+% 							    {Probability \& Statistics} & B\\ \hline
+% 							    {Graph Theory \& Combinatorics} & B\\ \hline
+% 							    {Game Theory} & B\\ \hline
+% 							    \end{tabular}
+							
+%%							\resitem{Courses: 
+%%							    {Compiler Design},
+%%							    {Advanced Techniques in Compilation and Programming for Parallel Architectures},
+%% 						      {Computer Architecture},
+%%							    {Program Analysis \& Verification},
+%%							    {Probability \& Statistics},
+%%							    {Design \& Analysis of Algorithms},
+%%							    {Linear Algebra \& Applications},
+%%							    {Graph Theory \& Combinatorics},
+%%							    {Mathematical foundation for Modern Computing},
+%%							    {Game Theory.}\\
+%%							    
+%%							
+%%					%		    {\scriptsize $^{\star}$ - Current Semester Courses.}
+%%						}
+				\end{itemize}
+				}
+		\item
+			\ressubheading{{Sikkim Manipal Institute of Technology}}{Sikkim, India}{{Bachelor of Technology in Computer Science and Engineering}}{May 2010}
+%%%%				{ \footnotesize
+%%%%				\begin{itemize}
+%%%%					\resitem{\small{CGPA: \textbf{9.2}/10}}
+%%%%				\end{itemize}
+%%%%				}
+% 		\item
+% 			\ressubheading{{Bihar Intermediate Education Council}}{Bihar}{{Maths, Physics, Chemistry}}{March 2006}
+% 				{ \footnotesize
+% 				\begin{itemize}
+% 					\resitem{\small{PERCENTAGE: \textbf{64.6}}}
+% 				\end{itemize}
+% 				}
+% 		\item
+% 			\ressubheading{{Bihar School Examination Board}}{Bihar}{Maths, Science}{April 2004}
+% 				{ \footnotesize
+% 				\begin{itemize}
+% 					\resitem{\small{PERCENTAGE: \textbf{70.7}}}
+% 				\end{itemize}
+% 				}	
+
+
+	\end{itemize} % End Education list
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\vspace{0.1in} 
+%\resheading{Industry Experience}
+%\begin{itemize}
+%	\item \ressubheading{{Ericsson Research}}{Bangalore, India}{{Senior Engineer}}{Aug 2017 -- Feb 2018} \newline
+%	
+%	{Worked on scheduling of tasks on remote cuda devices.}
+%	\item \ressubheading{{IBM India Research Lab}}{New Delhi, India}{{Software Engineer}}{Jul 2012 -- Nov 2013} \newline
+%
+%	{Performed performance analysis and optimizations of TTI RTM algorithm on GPU based heterogeneous architectures. Implemented an effective scheduler for K-means algorithm on the Blue Gene/P machine.}	
+%\end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+%\resheading{{Skills}}
+%\begin{description}
+%	\item[Languages:] { \footnotesize C, C++, Shell Scripting}
+%	\item[Sporadically Used:] { \footnotesize  R, Python, Java, Octave}
+%	\item[Working knowledge in:] { \footnotesize Cuda, Pthreads, OpenMP, MPI, VTune, StarPU, LLVM}
+%\end{description} % End Skills list
+
+\vspace*{0.2in}
+%%\newpage
+%%%%%%%%%%%%%%%%%%%%%%
+\resheading{Publications}
+\vspace{0.005in} \\
+{\scriptsize The papers with * have author names in alphabetical order.}
+\begin{enumerate}
+	\item *Communication Lower Bounds and Optimal Algorithms for Symmetric Matrix Computations\\
+	Hussam Al Daas, Grey Ballard, Laura Grigori, Suraj Kumar, Kathryn Rouse, Mathieu Verite\\
+	(Available at \url{https://arxiv.org/abs/2409.11304}, submitted in Sept 2024)
+	
+	\item *Communication Lower Bounds and Optimal Algorithms for Multiple Tensor-Times-Matrix Computation\\
+	Hussam Al Daas, Grey Ballard, Laura Grigori, Suraj Kumar, Kathryn Rouse\\
+	SIAM Journal on Matrix Analysis and Applications (\textit{SIMAX}), 2024, 45(1).
+	
+	\item *Parallel Memory-Independent Communication Bounds for SYRK\\
+	Hussam Al Daas, Grey Ballard, Laura Grigori, Suraj Kumar, Kathryn Rouse\\
+	ACM Symposium on Parallelism in Algorithms and Architectures (\textit{SPAA 2023}), Jun 2023, Orlando, FL, USA.
+	
+	\item *Parallel Tensor Train through Hierarchical Decomposition\\
+	Laura Grigori, Suraj Kumar\\
+	(Available at \url{https://hal.inria.fr/hal-03081555}, working paper).
+	\item *Brief Announcement: Tight Memory-Independent Parallel Matrix Multiplication Communication Lower Bounds\\
+	Hussam Al Daas, Grey Ballard, Laura Grigori, Suraj Kumar, Kathryn Rouse\\
+	ACM Symposium on Parallelism in Algorithms and Architectures (\textit{SPAA 2022}), Jul 2022, Philadelphia, PA, USA.
+	
+	\item NWChemEx -- computational chemistry for the exascale era\\
+	Karol Kowalski, Edoardo Aprà, Raymond Bair, Jeffery S. Boschen, Eric J.
+	Bylaska, Jeff Daily, Wibe A. de Jong, Thom Dunning, Niranjan Govind, 
+	Robert J. Harrison, Kristopher Keipert, Sriram Krishnamoorthy, Suraj Kumar, 
+	Erdal Mutlu, Bruce Palmer, Ajay Panyala, Bo Peng, Ryan M. Richard, T. P.
+	Straatsma, Edward F. Valeev, Marat Valiev, Hubertus J. J. van Dam, David
+	B. Williams-Young, Chao Yang, Marcin Zalewski, Theresa L. Windus\\
+	Chemical Reviews 2021, Volume 121(8), 4962-4998.
+	
+	\item *Analysis of a List Scheduling Algorithm for Task Graphs on Two Types of Resources\\
+	Lionel Eyraud-Dubois, Suraj Kumar\\
+	IEEE International Parallel \& Distributed Processing Symposium (\textit{IPDPS 2020}), May 2020, New Orleans (Virtual), Louisiana, USA.
+	\item Performance Models for Data Transfers: A Case Study with Computational Chemistry Kernels\\
+	Suraj Kumar, Lionel Eyraud-Dubois, Sriram Krishnamoorthy\\
+	International Conference on Parallel Processing (\textit{ICPP 2019}), Aug 2019, Kyoto, Japan.
+	\item *Fast Approximation Algorithms for Task-Based Runtime Systems\\
+	Olivier Beaumont, Lionel Eyraud-Dubois, Suraj Kumar\\
+	Concurrency and Computation: Practice and Experience (\textit{CCPE}), Wiley, 2018, 30:e4502.
+	\item *Approximation Proofs of a Fast and Efficient List Scheduling Algorithm for Task-Based Runtime Systems on Multicores and GPUs\\
+	Olivier Beaumont, Lionel Eyraud-Dubois, Suraj Kumar\\
+	IEEE International Parallel \& Distributed Processing Symposium (\textit{IPDPS 2017}), May 2017, Orlando, Florida , USA.
+	
+	\item *Scheduling of Linear Algebra Kernels on Multiple Heterogeneous Resources\\
+	Olivier Beaumont, Terry Cojean, Lionel Eyraud-Dubois, Abdou Guermouche, Suraj Kumar\\
+	International Conference on High Performance Computing, Data, and Analytics (\textit{HiPC 2016}), Dec 2016, Hyderabad, India.
+	
+	\item *Are Static Schedules so Bad? A Case Study on Cholesky Factorization\\
+	Emmanuel Agullo, Olivier Beaumont, Lionel Eyraud-Dubois, Suraj Kumar\\
+	IEEE International Parallel \& Distributed Processing Symposium (\textit{IPDPS 2016}), May 2016, Chicago, IL, USA. IEEE, 2016.
+	\item {*Bridging the Gap between Performance and Bounds of Cholesky Factorization on Heterogeneous Platforms\\
+		Emmanuel Agullo, Olivier Beaumont, Lionel Eyraud-Dubois, Julien Herrmann, Suraj Kumar, Loris Marchal, Samuel Thibault\\
+		Heterogeneity in Computing Workshop (\textit{HCW 2015}), IPDPS 2015, Hyderabad, India.}
+	\item {Performance Optimizations for TTI RTM on GPU based Hybrid Architectures\\
+		Ankur Narang, Suraj Kumar, Ananda S. Das, Michael Perrone, David Wade, Kristian Bendiksen, Vidar Slatten, Tor Erik Rabben\\
+		10th Biennial International Conference \& Exposition, 2013.}
+	\item
+	{ Maximizing TTI RTM Throughput for CPU+GPU\\
+		Ankur Narang, Suraj Kumar, Jyothish Soman, Michael Perrone, David Wade, Kristian Bendiksen, Vidar Slatten, Tor Erik Rabben\\
+		75th EAGE Conference \& Exhibition incorporating SPE EUROPEC 2013, London, UK.}
+	
+	\item 
+	{ Optimized Association Rule Mining using Genetic Algorithm \\
+		M Anandhavalli, Suraj Kumar, Sudhanshu, Ayush Kumar \\
+		Bioinfo Publications, Advances in information Mining. ISSN: 0975-3265,Volume 1, Issue  2, 2009.}
+	
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\vspace*{0.2in}
+%
+%%%%%%%%%%%%%%%%%%%%%%%
+%\resheading{Computational Chemistry Publications}
+%\begin{enumerate}[resume]
+%	\item NWChemEx -- computational chemistry for
+%	the exascale era\\
+%	Karol Kowalski, Edoardo Aprà, Raymond Bair, Jeffery S. Boschen, Eric J.
+%	Bylaska, Jeff Daily, Wibe A. de Jong, Thom Dunning, Niranjan Govind, 
+%	Robert J. Harrison, Kristopher Keipert, Sriram Krishnamoorthy, Suraj Kumar, 
+%	Erdal Mutlu, Bruce Palmer, Ajay Panyala, Bo Peng, Ryan M. Richard, T. P.
+%	Straatsma, Edward F. Valeev, Marat Valiev, Hubertus J. J. van Dam, David
+%	B. Williams-Young, Chao Yang, Marcin Zalewski, Theresa L. Windus\\
+%	Chemical Reviews 2021, Volume 121(8), 4962-4998.
+%\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace*{0.2in}
+
+%%%%%%%%%%%%%%%%%%%%%%
+\resheading{Posters}
+\begin{itemize}
+	\item Scheduling of Cholesky Factorization with Lookahead Information\\
+	Suraj Kumar, HiPC 2016.
+	\item Scheduling Strategies and Bounds for Cholesky Factorization on Heterogeneous Platforms\\
+	Suraj Kumar, SC 2016.
+	\item Scheduling of Task-Based Linear Algebra Kernels on Heterogeneous Resources\\
+	Suraj Kumar, IPDPS 2016 PhD Forum.
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%\newpage
+\vspace{0.1in}
+%%%%%%%%%%%%%%%%%%%%%%
+\resheading{Awards, Competitions and Miscellaneous Information}
+\begin{itemize}
+%%	\item Received a postdoc offer from Lawrence Berkeley National Lab (did not take it because I already had accepted PNNL offer).
+	\item Student travel awards to attend SC 2016 and IPDPS 2016.
+	\item Invited for Google PhD Student Summit on Compiler \& Programming Technology, Munich, Germany 2014.
+%	\item Recipient of the MHRD Scholarship, India (2010-2012) during my Masters.
+	\item {All-India Rank 28 (top 0.03\%) at the Gate Examination 2010, out of a total of about 107,000 candidates.}
+	\item {Secured 1st position in programming contest organized at IIT Guwahati, India in their technical fest TECHNICHE09.}
+%%	\item {Best outgoing student of CSE 2010 batch at Sikkim Manipal Institute of Technology, India.}
+
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%
+\vspace{0.1in}
+%%%%%%%%%%%%%%%%%%%%%%
+\resheading{Professional Services}
+\begin{itemize}
+	\item Reviewer for the following conferences: SC 2024, ICPP 2022
+	\item External reviewer for the following conferences: SPAA 2023, ICPP 2019
+	\item Reviewer for the following international journals: IJPP since March 2018, CALC since March 2020, SIMAX since May 2020, TOMS since May 2020, SISC since May 2021, TPDS since May 2022.
+	%%	
+	%%	
+	%%	\item Reviewer for the 48th International Conference on Parallel Processing (ICPP 2019).
+	%%	\item Reviewer for the 29th International Parallel and Distributed Processing Symposium (IPDPS 2016).
+	%%	\item Reviewer for the 17th ACM SIGPLAN symposium on Principles and Practice of Parallel Programming (PPOPP 2012).
+	%%	\item Reviewer for the following international journals: IJPP since March 2018, CALC since March 2020, SIMAX since May 2020, TOMS since May 2020.
+\end{itemize}
+
+%\resheading{Professional Services}
+%\begin{itemize}
+%	\item Reviewer for the 51st International Conference on Parallel Processing (ICPP 2022)
+%	\item External reviewer for the 48th International Conference on Parallel Processing (ICPP 2019).
+%	\item Helped my advisors to review PPOPP 2012 and IPDPS 2016 papers.
+%	\item Reviewer for the following international journals: IJPP since March 2018, CALC since March 2020, SIMAX since May 2020, TOMS since May 2020, SISC since May 2021, TPDS since May 2022.
+%%%	
+%%%	
+%%%	\item Reviewer for the 48th International Conference on Parallel Processing (ICPP 2019).
+%%%	\item Reviewer for the 29th International Parallel and Distributed Processing Symposium (IPDPS 2016).
+%%%	\item Reviewer for the 17th ACM SIGPLAN symposium on Principles and Practice of Parallel Programming (PPOPP 2012).
+%%%	\item Reviewer for the following international journals: IJPP since March 2018, CALC since March 2020, SIMAX since May 2020, TOMS since May 2020.
+%\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%\vspace{0.1in}
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%\resheading{Student Mentoring}
+%%\begin{itemize}
+%%	\item IBM India Research Lab, 2013 (summer internship), Co-supervision of Suyash Garg from IIT Kanpur. The main focus of the work was to compare performance of Charm++ with our scheduling algorithms for K-means clustering method on the IBM Blue Gene/P machine.
+%%\end{itemize}
+
+
+\end{document}
