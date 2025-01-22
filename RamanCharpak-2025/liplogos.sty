@@ -1,0 +1,122 @@
+%Ne pas oublier de préciser le driver soit dans le \documentclass[dvips]...
+%Soit dans le \usepackage[dvips]{liplogos}
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{liplogos}[1998/01/29 Logos du LIP]
+\RequirePackage{texgraphicx}
+%\RequirePackage{epstopdf}
+
+% \IfFileExists{liplensl.eps}{}{\PackageError{liplogos}%
+%   {The logo liplensl.eps could not be found.\MessageBreak
+%   Please download it.}
+%   {These files could be found at some URL... (later)}}
+\IfFileExists{lipllipl.eps}{}{\PackageError{liplogos}%
+  {The logo lipllipl.eps could not be found.\MessageBreak
+  Please download it.}
+  {These files could be found at some URL... (later)}}
+% \IfFileExists{liplspi.eps}{}{\PackageError{liplogos}%
+%   {The logo liplspi.eps could not be found.\MessageBreak
+%   Please download it.}
+%   {These files could be found at some URL... (later)}}
+\IfFileExists{logocnrs.eps}{}{\PackageError{liplogos}%
+  {The logo logocnrs.eps could not be found.\MessageBreak
+  Please download it.}
+  {These files could be found at some URL... (later)}}
+\IfFileExists{logoinria.eps}{}{\PackageError{liplogos}%
+  {The logo logoinria.eps could not be found.\MessageBreak
+  Please download it.}
+  {These files could be found at some URL... (later)}}
+\IfFileExists{lipRRbandeau.eps}{}{\PackageError{liplogos}%
+  {The logo lipRRbandeau.eps could not be found.\MessageBreak
+  Please download it.}
+  {These files could be found at some URL... (later)}}
+
+
+% \DeclareRobustCommand*{\ENSLPicture}{\includegraphics*[height=.95cm]{logoensl.eps}}
+% \DeclareRobustCommand*{\LIPPicture}{\includegraphics*[height=1.8cm]{lipllipl.eps}}
+% \DeclareRobustCommand*{\CNRSPicture}{\includegraphics*[height=0.95cm]{logocnrs.eps}}
+% \DeclareRobustCommand*{\INRIAPicture}{\includegraphics*[height=0.63cm]{logoinria.eps}}
+% \DeclareRobustCommand*{\UCBLPicture}{\includegraphics*[height=1.10cm]{logoucbl.eps}}
+
+
+\DeclareRobustCommand*{\UnivLyonPicture}{\includegraphics*[height=1.5cm]{logo-univ-lyon.eps}}
+\DeclareRobustCommand*{\ENSLPicture}{\includegraphics*[height=1.5cm]{logoensl.eps}}
+\DeclareRobustCommand*{\LIPPicture}{\includegraphics*[height=2.5cm]{lipllipl.eps}}
+\DeclareRobustCommand*{\CNRSPicture}{\includegraphics*[height=1.5cm]{logocnrs.eps}}
+\DeclareRobustCommand*{\INRIAPicture}{\includegraphics*[height=1.5cm]{logoinria.eps}}
+\DeclareRobustCommand*{\UCBLPicture}{\includegraphics*[height=1.50cm]{logoucbl.eps}}
+
+%\DeclareRobustCommand*{\UNIVLYONPicture}{\includegraphics*[height=0.075\textwidth]{logounivlyon.eps}}
+
+%%% \DeclareRobustCommand*{\BandeauTitle}{\includegraphics*[height=0.14\textwidth]{lipRRbandeau.eps}}
+%%% height=0.14\textwidth -> width = .9\linewidth By A. Legrand
+\DeclareRobustCommand*{\BandeauTitle}{\includegraphics*[width=\linewidth]{lipRRbandeau.eps}}
+
+%% \DeclareRobustCommand{\ENSLTitle}{\parbox{\textwidth}{\parbox{0.2\textwidth}\ENSLPicture\parbox{0.48\textwidth}{\begin{center}\fontsize{12}{14}\fontfamily{ptm}\selectfont \textbf{\'Ecole Normale Sup\'erieure de Lyon}\\\fontsize{8}{9}\selectfont 46 All\'ee d'Italie, 69364 Lyon Cedex 07, France\\T\'el\'ephone : +33(0)4.72.72.80.37\\ T\'el\'ecopieur : +33(0)4.72.72.80.80\\Adresse \'electronique : \texttt{lip@ens-lyon.fr}\end{center} } \parbox{0.1\textwidth}{\INRIAPicture}}}
+
+%%% New version by J-C Mignot
+\DeclareRobustCommand{\ENSLTitle}{\parbox{\textwidth}{
+    \begin{center}
+     \hfill\hfill
+      {\begin{minipage}[c]{.2\linewidth}
+        {\UnivLyonPicture}
+      \end{minipage}}\hfill
+      {\begin{minipage}[c]{.29\linewidth}
+        {\ENSLPicture}
+      \end{minipage}}\hfill
+      {\begin{minipage}[c]{.11\linewidth}
+        {\CNRSPicture}
+      \end{minipage}}\hfill
+      {\begin{minipage}[c]{.23\linewidth}
+        {\INRIAPicture}
+      \end{minipage}}\hfill
+      {\begin{minipage}[c]{.15\linewidth}
+        {\UCBLPicture}
+      \end{minipage}}
+      \hfill\hfill
+    \end{center}}}
+
+%% \DeclareRobustCommand{\LIPTitle}{\noindent\parbox[b]{\textwidth}{%
+%% \parbox[b]{0.12\textwidth}{\LIPPicture}%
+%% \parbox[b]{0.54\textwidth}{\fontsize{12}{16}\fontfamily{ptm}\selectfont \textbf{\emph{Laboratoire de l'Informatique du Parall\'elisme}}\fontsize{8}{9}\selectfont\begin{flushleft}\'Ecole Normale Sup\'erieure de Lyon\\Unit\'e Mixte de Recherche CNRS-INRIA-ENS LYON n{\raise +1ex \hbox{\fontsize{6}{7}\selectfont o}}\kern+.2em 5668\end{flushleft}}%
+%% \parbox[b]{0.265\textwidth}{\CNRSPicture}\parbox[b]{0.1\textwidth}{\SPIPicture}%
+%% }}
+
+%%% New version by J-C Mignot
+\DeclareRobustCommand{\LIPTitle}{\noindent\parbox[b]{\textwidth}{\begin{center}%
+\parbox[b]{0.25\textwidth}{\LIPPicture}%
+\parbox[b]{0.54\textwidth}{\fontsize{12}{16}\fontfamily{ptm}\selectfont \textbf{\emph{Laboratoire de l'Informatique du Parall\'elisme}}\fontsize{8}{9}\selectfont\begin{flushleft}\'Ecole Normale Sup\'erieure de Lyon\\Unit\'e Mixte de Recherche CNRS-INRIA-ENS LYON-UCBL n{\raise +1ex \hbox{\fontsize{6}{7}\selectfont o}}\kern+.2em 5668\end{flushleft}}%
+%\parbox[b]{0.15\textwidth}{~~~~~~~\CNRSPicture}%
+\end{center}}}
+
+% \DeclareRobustCommand{\LIPLetterTitle}{\noindent\parbox[b]{\textwidth}{\begin{center}%
+%       \parbox[b]{0.25\textwidth}{\LIPPicture}%
+%       \parbox[b]{0.65\textwidth}{\fontsize{12}{16}\fontfamily{ptm}\selectfont
+%         \textbf{\emph{Laboratoire de l'Informatique du
+%             Parall\'elisme}}\fontsize{8}{9}\selectfont\begin{flushleft}Unit\'e
+%           Mixte de Recherche CNRS-INRIA-ENS LYON-UCBL n{\raise +1ex
+%             \hbox{\fontsize{6}{7}\selectfont o}}\kern+.2em 5668\\
+%           \'Ecole Normale Supérieure de Lyon, \\
+%           46 All\'ee d'Italie, 69364 Lyon Cedex 07, France\\
+%           Tel : +33(0)4~72~72~80~37, Fax :  +33(0)4~72~72~80~80.
+%         \end{flushleft}}%
+
+
+\DeclareRobustCommand{\LIPLetterTitle}{\noindent\parbox[b]{\textwidth}{\begin{center}%
+      \parbox[b]{0.30\textwidth}{\LIPPicture}%
+      \parbox[b]{0.64\textwidth}{
+        \scriptsize
+        \begin{flushleft}
+          \textbf{\emph{Laboratoire de l'Informatique du Parall\'elisme}}\\
+          Unit\'e Mixte de Recherche CNRS-INRIA-ENS LYON-UCBL n$^{\mathsf{o}}$ 5668\\
+          \'Ecole Normale Sup\'erieure de Lyon, site Monod,
+          46 All\'ee d'Italie, Lyon.\\
+          ~\\
+          ~
+        \end{flushleft}}%
+
+%\parbox[b]{0.265\textwidth}{\CNRSPicture}%
+\end{center}}}
+
+\endinput
+
