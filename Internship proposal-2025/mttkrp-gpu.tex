@@ -1,0 +1,49 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[margin=1in,footskip=0.25in]{geometry}
+\usepackage{hyperref}
+%\usepackage{url}
+%opening
+%%\title{Parallel Tensor Decompositions for Data Analytics}
+%%\author{}
+\date{}
+\pagenumbering{gobble}
+\begin{document}
+%%\maketitle
+\noindent\textbf{Internship subject}: \emph{Tensor computations on GPUs}\newline
+\textbf{Advisor}: Suraj Kumar\newline
+% and Bora Ucar\newline
+\textbf{Location}: ROMA team, Inria  \& ENS Lyon, France
+
+\section*{Context}
+
+Tensors are multi-dimensional arrays and used to store data in several domains~\cite{KB-SIAM-2009}, such as data mining, neuroscience and computer vision. Tensor decompositions help to identify inherent structure of data, achieve data compression and enable various ways of data analysis. CP (also known as Canonical Polyadic or CANDECOMP or PARAFAC) is one of the widely used tensor decompositions in the literature for data analytics~\cite{HKD-SIAM-2020}.
+
+
+
+Computing a CP decomposition involves solving a nonlinear optimization problem to minimize the approximation error. The workhorse algorithm to compute this decomposition uses an alternating least squares approach. This works in multiple iterations. For a $d$-dimensional decomposition, in each iteration, $d$ matricized-tensor times Khatri-Rao product (MTTKRP) computations are performed. In this computation, a matrix representation of the original tensor is multiplied with the Khatri-Rao product of $d - 1$ factor matrices. This is the bottleneck computation of the algorithm~\cite{BNR-IPDPS-2018}. We will design efficient parallel GPU algorithms for MTTKRP by taking hardware details into account.
+
+\section*{Main Activities}
+
+We will perform the following activities:
+\begin{itemize}
+	\item Design efficient parallel GPU algorithms for $3$-dimensional MTTKRP computations
+	\item Implement the proposed algorithms on modern GPUs
+\end{itemize}
+
+\section*{Skills}
+Familiarity with Linear Algebra and GPU computations will be much appreciated. 
+
+\section*{Salary and duration}
+\noindent Payment: $\sim$600 euros per month\\
+Duration: 5-6 months\\
+Contact: Suraj Kumar (suraj.kumar@inria.fr)
+
+
+
+
+\bibliographystyle{plain}
+\footnotesize \bibliography{mttkrp-gpu}
+
+
+\end{document}
