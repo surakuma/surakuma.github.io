@@ -1,0 +1,11 @@
+\beamer@sectionintoc {1}{Tensors}{6}{1}{1}
+\beamer@subsectionintoc {1}{1}{Communication Optimal Algorithms for Tensors}{29}{1}{1}
+\beamer@sectionintoc {2}{Scheduling on Heterogeneous Resources}{40}{1}{2}
+\beamer@subsectionintoc {2}{1}{Communication Computation Overlap}{41}{1}{2}
+\beamer@subsectionintoc {2}{2}{Scheduling of Dense Linear Algebra Kernels}{45}{1}{2}
+\beamer@subsubsectionintoc {1}{2}{2}{1}{54}{2}{Task Graph Bound}
+\beamer@subsubsectionintoc {1}{2}{2}{2}{59}{2}{Dynamic Scheduling Strategies}
+\beamer@sectionintoc {1}{Modify Existing Algorithms}{74}{2}{1}
+\beamer@subsectionintoc {20}{1}{Extension of the Existing Approaches}{75}{2}{1}
+\beamer@subsectionintoc {20}{2}{Exploratory Topics}{78}{2}{1}
+\beamer@sectionintoc {21}{Integration in the Team}{81}{2}{2}

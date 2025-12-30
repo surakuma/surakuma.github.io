@@ -1,0 +1,766 @@
+\documentclass[aspectratio=169]{beamer}
+\usetheme{Madrid}
+\usepackage{todonotes}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{subfig}
+\usepackage[noend]{algpseudocode}
+
+\usepackage{amsmath}
+\usepackage{xspace}
+\usepackage{float}
+\usepackage{tikz}
+
+
+\usetikzlibrary{matrix,snakes, patterns, positioning, shapes, calc, intersections, arrows, fit}
+
+
+\definecolor{pastelviolet}{rgb}{0.8, 0.6, 0.79}
+\definecolor{babyblueeyes}{rgb}{0.63, 0.79, 0.95}
+\definecolor{pastelyellow}{rgb}{0.99, 0.99, 0.59}
+\definecolor{pastelgreen}{rgb}{0.47, 0.87, 0.47}
+\definecolor{pastelred}{rgb}{1.0, 0.41, 0.38}
+\colorlet{patternblue}{blue!60}
+
+\graphicspath{{./diagrams/}{../expes/plots/}}
+
+
+\newcommand{\heteroprio}{{HeteroPrio}\xspace}
+\newcommand{\heteroprioD}{{HeteroPrioDep}\xspace}
+
+\newcommand{\copt}{{C_{\max}^{\textsc Opt}}\xspace}
+\newcommand{\HE}{C_{\max}^{\textsc HP}\xspace}
+
+\title[HeteroPrio for Task Graphs]{Analysis of a List Scheduling Algorithm for\\ TaskGraphs on Two Types of Resources}
+\author[{\sc Inria}]{Lionel {\sc Eyraud-Dubois}, 
+	Inria Bordeaux, France\\
+	{\it lionel.eyraud-dubois@inria.fr}\\
+	 and\\ 
+	 Suraj {\sc Kumar}, 
+	 Inria Paris, France\\
+     {\it suraj.kumar@inria.fr}
+} 
+\centering
+%%TODO: Find a good way to achieve the same feature
+\date[IPDPS 2020]{\includegraphics[width=.35\linewidth]{ipdps2020-logo.jpg}}
+\begin{document}
+\maketitle
+
+%%\begin{frame}{Introduction}
+%%\begin{itemize}
+%%	\item Accelerators are becoming standard in HPC community
+%%	\begin{itemize}
+%%		\item Provide massive computational power at a limited cost 
+%%		\item 144 systems in TOP 500 list use accelerators
+%%	\end{itemize}
+%%	\item  Exploiting the full potential of hybrid platforms is challenging
+%%	\begin{itemize}
+%%		\item Difficult to precisely model computation and data transfer times
+%%		\item Scheduling 
+%%%%		on these platforms 
+%%			  is a well known hard optimization problem
+%%	\end{itemize}
+%%%%	\item Asynchronous task based runtime systems show promising performance on hybrid platforms.
+%%	\item Task based runtime systems are getting popular to make good utilization of resources
+%%			\begin{columns}
+%%		\null \hfill
+%%		\begin{column}{0.35\linewidth}
+%%			\begin{center}
+%%%%				\includegraphics[scale=0.2]{taskGraph.eps}
+%%				\includegraphics[scale=0.12]{Cholesky-4.pdf}
+%%			\end{center}
+%%		\end{column}
+%%		\begin{column}{0.65\linewidth}
+%%			\begin{itemize}
+%%				\item Applications can be expressed as task graphs
+%%				\item Vertices represent tasks
+%%				\item Edges represent dependencies among tasks
+%%				\item Runtime manages scheduling of computations and communications
+%%			\end{itemize}
+%%		\end{column}
+%%		\end{columns}
+%%	 
+%%\end{itemize}
+%%\end{frame}
+
+%%\begin{frame}{\heteroprio Scheduler -- Two Types of Resources}
+%%%%\vspace*{-0.2cm}
+%%\begin{itemize}
+%%	\item Resource-centric scheduling algorithm, selects the most favorable task first  
+%%        \item If no ready task remains, restart running tasks if it allows to finish them earlier
+%%	\item Achieves 3.41-approximation for independent tasks (Beaumont \emph{et al.}, IPDPS 2017)
+%%\end{itemize}
+%%%% \begin{block}{}
+%%%% %%	\begin{center}
+%%%% 	\begin{columns}
+%%%% 		\begin{column}[c]{.45\linewidth}
+%%%% 			\vspace*{-0.5cm}
+%%%% 			\begin{itemize}
+%%%% 				\vfill
+%%%% 				\item {\scriptsize Resource1 is idle at $t$}
+%%%% 				\vfill 
+%%%% 				\item {\scriptsize Resource1 selects task $A$}
+%%%% 				\vfill
+%%%% 				\item {\scriptsize Faster resource may spoliate tasks running on slow resource}
+%%%% 				\vfill
+%%%% 				\item {\scriptsize Resource2 spoliates task $A$}
+%%%% 				\vfill
+%%%% 			\end{itemize}
+%%%% 		\end{column}
+%%%% 		\begin{column}[c]{.45\linewidth}
+%%%% %%			\vspace*{-0.2cm}
+%%%% 			\centering \includegraphics[scale=0.35]{hp1} 
+%%%% %%			\vspace*{-0.25cm}
+%%%% 			\centering \includegraphics[scale=0.35]{hp2} 
+%%%% %%			\vspace*{-0.2cm}
+%%%% 			\centering \includegraphics[scale=0.35]{hp3} 
+%%%% 		\end{column}
+%%%% 	\end{columns}
+%%%% %%	\end{center}
+%%%% \end{block}
+%%%%\vspace*{-0.25cm}
+%%\begin{block}{Our Contributions}
+%%	\begin{itemize}
+%%%%		\vfill
+%%		\item Extend \heteroprio scheduler for task graphs -- \heteroprioD
+%%%%		\vfill
+%%		\item Approximation proofs and worst case examples for \heteroprioD 
+%%%%		\vfill
+%%		\item Empirical evaluation of \heteroprioD with state-of-the-art schedulers
+%%%%		\vfill
+%%	\end{itemize}
+%%\end{block}
+%%\end{frame}
+%%
+%%%%\begin{frame}{Our Contributions}
+%%%%\begin{itemize}
+%%%%	\vfill
+%%%%	\item Extend \heteroprio scheduler for task graphs -- \heteroprioD
+%%%%	\vfill
+%%%%	\item Approximation proofs and worst case examples for \heteroprioD scheduler
+%%%%	\vfill
+%%%%	\item Empirical evaluation of \heteroprioD with state-of-the-art schedulers
+%%%%	\vfill
+%%%%\end{itemize}
+%%%%\end{frame}
+%%\begin{frame}{\heteroprioD: \heteroprio for Task Graphs}
+%%
+%%  \begin{itemize}
+%%  \item Ready tasks are ranked by acceleration factor: $\rho_T$ = $\text{CPU time(T)/ GPU time(T)}$
+%%  \item \emph{Favorable} tasks: those which run faster on $W$ than on another resource
+%%  \end{itemize}
+%%  
+%%  \begin{block}{Presentation of the algorithm}
+%%    \algrenewcommand\algorithmicwhile{\textbf{When}}
+%%    	\begin{algorithmic}
+%%          \While{a worker $W$ is idle}
+%%          \State Pick the most favorable ready task (highest or lowest acceleration factor)
+%%          \If{no favorable task is ready}
+%%          \State Pick\textcolor{red}{*} a currently running task which would be finished earlier if started now on $W$
+%%          \EndIf
+%%          \State Schedule the picked task on $W$
+%%          \EndWhile
+%%        \end{algorithmic}
+%%
+%%  \end{block}
+%%
+%%  \medskip
+%%  
+%%  \raggedright
+%%  \footnotesize
+%%\textcolor{red}{*} Theoretical results do not depend on the pick
+%%ordering, in practice it is better to pick the highest priority task
+%%  
+%%\end{frame}
+%%
+%%
+%%\begin{frame}{\heteroprioD: Running Example}
+%%\begin{figure}
+%%	\vspace*{-0.5cm}
+%%	\begin{columns}
+%%		\begin{column}{0.275\linewidth}
+%%	\begin{block}{\footnotesize Precedence Constraints}
+%%		\begin{center}
+%%	\begin{tikzpicture}[scale=0.60, every node/.style={transform shape}]
+%%%%\draw[fill=cyan] (0,0) circle (0.8cm);
+%%\tikzstyle{task}=[circle, draw, minimum size=10mm]
+%%\node (d) at (0,0)[task, fill=babyblueeyes] {$D$};
+%%\node (e) at (2.5,0)[task, fill=pastelviolet] {$E$};
+%%\draw[thick, ->] (d.east) -- (e);
+%%
+%%\node (a) at (0,2)[task, fill=pastelyellow] {$A$};
+%%\node (b) at (2.5,2.75)[task, fill=pastelgreen] {$B$};
+%%\node (c) at (2.5,1.25)[task, fill=pastelred] {$C$};
+%%
+%%\draw[thick, ->] (a.east) -- (b);
+%%\draw[thick, ->] (a.east) -- (c);
+%%
+%%\path (-0.1, -0.8) -- (2.5, -0.8); 
+%%\end{tikzpicture}
+%%		\end{center}
+%%	\end{block}
+%%		\end{column}
+%%	\begin{column}{0.7\linewidth}
+%%\begin{block}{}{\footnotesize
+%%\begin{itemize}
+%%%%	\item $p_T$ (resp. $q_T$): processing times of task $T$ on CPU (resp. GPU)
+%%%%	\item $\frac{p_A}{q_A} > \frac{p_B}{q_B} > \frac{p_C}{q_C} > 1 > \frac{p_E}{q_E}$
+%%	\item $\rho_A > \rho_B > \rho_C > \rho_D > 1 > \rho_E$
+%%	\item Processing of $B$ and $C$ first start on GPU and CPU
+%%	  respectively
+%%        \item When $D$ ends:
+%%	  \begin{itemize}
+%%          \item $C$ is spoliated by a GPU ($E$ is ready, but not favorable)
+%%	  \item $E$ is scheduled on the CPU available after the spoliation
+%%          \end{itemize}
+%%\end{itemize}
+%%}\end{block}
+%%	\end{column}
+%%	\end{columns}
+%%\subfloat[\heteroprioD schedule when task $C$ is first scheduled.]{
+%%	\label{fig:hetprio.example.first}
+%%	\begin{tikzpicture}[scale=0.60, every node/.style={transform shape}]
+%%	\tikzstyle{task}=[draw, minimum height=0.5cm,
+%%	inner sep=0pt, anchor=south west]
+%%	\tikzstyle{legend}=[below=0.4, anchor=mid] 
+%%	%%	\draw[color=red] (2.8, -0.3) -- +(0, 3.25);
+%%	
+%%	\foreach \y/\l in { 0/{0.4/0, 0.3/0.4, 0.7/0.7}, 
+%%		0.5/{0.3/0, 0.4/0.3, 0.3/0.7},
+%%		1.25/{0.5/0, 0.3/0.5, 1.2/0.8, 1.5/2.0},
+%%		1.75/{0.8/0, 0.4/0.8, 0.7/1.2, 0.5/1.9},
+%%		2.25/{0.6/0, 0.4/0.6, 1.1/1.0, 1.0/2.1},
+%%	} {
+%%		\foreach \w/\x in \l
+%%		\node at (\x, \y)[task, minimum width=\w cm, fill=white] {};
+%%	}
+%%	
+%%	\node at (1.0, 0.5)[task, minimum width=1.2cm, fill=pastelyellow]{$A$};
+%%	\node at (2.2, 0.5)[task, minimum width=1.0cm, fill=pastelgreen]{$B$};
+%%	\node at (1.4, 0)[task, minimum width=1.4cm, fill=babyblueeyes]{$D$};
+%%	\node at (2.4, 1.75)[task, minimum width=1.6cm, fill=pastelred]{$C$};
+%%	
+%%	\draw[->] (-0.3, -0.3) -- (0, -0.3) -- node[pos=0, legend] {$0$}
+%%	node[pos=0.57, legend] {current time} (4.2, -0.3) node[right] {$t$}; 
+%%	\draw[dashed] (2.4,-0.3) -- +(0, 3.25);
+%%	\foreach \x in {0, 2.4} \draw (\x, -0.3) -- (\x, -0.4);
+%%	\node at (-0.3, 2.0) [anchor=south, rotate=90] {CPUs}; 
+%%	\node at (-0.3, 0.5) [anchor=south, rotate=90] {GPUs}; 
+%%	
+%%	
+%%	\end{tikzpicture}
+%%} 
+%%\hfill
+%%\subfloat[\heteroprioD schedule after spoliation of task $C$.]{
+%%	\label{fig:hetprio.example.spoliation}
+%%	\begin{tikzpicture}[scale=0.60, every node/.style={transform shape}]
+%%	\tikzstyle{task}=[draw, minimum height=0.5cm,
+%%	inner sep=0pt, anchor=south west]
+%%	\tikzstyle{legend}=[below=0.4, anchor=mid] 
+%%	%%	\draw[color=red] (2.8, -0.3) -- +(0, 3.25);
+%%	\foreach \y/\l in { 0/{0.4/0, 0.3/0.4, 0.7/0.7}, 
+%%		0.5/{0.3/0, 0.4/0.3, 0.3/0.7},
+%%		1.25/{0.5/0, 0.3/0.5, 1.2/0.8, 1.5/2.0},
+%%		1.75/{0.8/0, 0.4/0.8, 0.7/1.2, 0.5/1.9},
+%%		2.25/{0.6/0, 0.4/0.6, 1.1/1.0, 1.0/2.1},
+%%	} {
+%%		\foreach \w/\x in \l
+%%		\node at (\x, \y)[task, minimum width=\w cm] {};
+%%	}
+%%	\draw[dashed] (4.0,-0.3) -- +(0, 3.25);
+%%	\node at (1.0, 0.5)[task, minimum width=1.2cm, fill=pastelyellow]{$A$};
+%%	\node at (2.2, 0.5)[task, minimum width=1.0cm, fill=pastelgreen]{$B$};
+%%	\node at (1.4, 0)[task, minimum width=1.4cm, fill=babyblueeyes]{$D$};
+%%	\node at (2.8, 0)[task, minimum width=0.6cm, fill=pastelred]{$C$};
+%%	%%	\node at (2.4, 1.75)[task, minimum width=1.4cm, , fill=blue!10, pattern=north east lines]{aborted};
+%%	
+%%	\draw[->] (-0.3, -0.3) -- (0, -0.3) -- node[pos=0, legend] {$0$}
+%%	node[pos=0.66, legend] {current time}  (4.2, -0.3) node[right] {$t$}; 
+%%	\draw[dashed] (2.8,-0.3) -- +(0, 3.25);
+%%	\foreach \x in {0, 2.8, 4.0} \draw (\x, -0.3) -- (\x, -0.4);
+%%	
+%%	\node at (2.4, 1.75)[task, minimum width=1.6cm,  pattern=north
+%%	east lines, pattern color=patternblue](aborted){};
+%%	\node at (aborted.center) [fill=white, inner sep=2pt]{aborted};
+%%	
+%%	%%	\node at (-0.3, 2.0) [anchor=south, rotate=90] {CPUs}; 
+%%	%%	\node at (-0.3, 0.5) [anchor=south, rotate=90] {GPUs}; 
+%%	
+%%	\end{tikzpicture}
+%%}
+%%\hfill
+%%\subfloat[\heteroprioD schedule with first response of task $E$.]{
+%%	\label{fig:hetprio.example.last}
+%%	\begin{tikzpicture}[scale=0.60, every node/.style={transform shape}]
+%%	\tikzstyle{task}=[draw, minimum height=0.5cm,
+%%	inner sep=0pt, anchor=south west]
+%%	\tikzstyle{legend}=[below=0.4, anchor=mid] 
+%%	%%	\draw[color=red] (2.8, -0.3) -- +(0, 3.25);
+%%	\foreach \y/\l in { 0/{0.4/0, 0.3/0.4, 0.7/0.7}, 
+%%		0.5/{0.3/0, 0.4/0.3, 0.3/0.7},
+%%		1.25/{0.5/0, 0.3/0.5, 1.2/0.8, 1.5/2.0},
+%%		1.75/{0.8/0, 0.4/0.8, 0.7/1.2, 0.5/1.9},
+%%		2.25/{0.6/0, 0.4/0.6, 1.1/1.0, 1.0/2.1},
+%%	} {
+%%		\foreach \w/\x in \l
+%%		\node at (\x, \y)[task, minimum width=\w cm] {};
+%%	}
+%%	
+%%	%%	\draw[dashed] (4.0,-0.3) -- +(0, 3.25);
+%%	\node at (1.0, 0.5)[task, minimum width=1.2cm, fill=pastelyellow]{$A$};
+%%	\node at (2.2, 0.5)[task, minimum width=1.0cm, fill=pastelgreen]{$B$};
+%%	\node at (1.4, 0)[task, minimum width=1.4cm, fill=babyblueeyes]{$D$};
+%%	\node at (2.8, 0)[task, minimum width=0.6cm, fill=pastelred]{$C$};
+%%	
+%%	%%	\node at (2.4, 1.75)[task, minimum width=1.4cm, , fill=blue!10, pattern=north east lines]{aborted};
+%%	\node at (2.4, 1.75)[task, minimum width=0.4cm,  pattern=north east lines, pattern color=patternblue]{};
+%%	\node at (2.8, 1.75)[task, minimum width=0.8cm,  fill=pastelviolet]{$E$};
+%%	
+%%	\draw[->] (-0.3, -0.3) -- (0, -0.3) -- node[pos=0, legend] {$0$}
+%%	node[pos=0.66, legend] {current time}   (4.2, -0.3) node[right] {$t$}; 
+%%	\foreach \x in {0, 2.8} \draw (\x, -0.3) -- (\x, -0.4);
+%%	\draw[dashed] (2.8,-0.3) -- +(0, 3.25);
+%%	%%	\node at (-0.3, 2.0) [anchor=south, rotate=90] {CPUs}; 
+%%	%%	\node at (-0.3, 0.5) [anchor=south, rotate=90] {GPUs}; 	
+%%	\end{tikzpicture}
+%%} 
+%%\end{figure}
+%%\end{frame}
+%%\setcounter{subfigure}{0}
+%%\begin{frame}{\heteroprioD Schedule}
+%%%%\begin{itemize}
+%%%%	\item 
+%%%%\end{itemize}
+%%\begin{columns}
+%%\begin{column}{0.45\linewidth}
+%%\begin{block}{\footnotesize $T$ completes on its unfavorable resource}
+%%	\begin{center}
+%%		\begin{tikzpicture}[scale=0.75, every node/.style={transform shape}]
+%%%%\draw[snake=brace] (a0.west |- a0.north) -- (t5.north -| t5.east) node[rectangle, auto=left,midway,anchor=south, inner sep=4pt] {$1+\frac{m}{n}$ repetitions};
+%%
+%%\tikzstyle{task}=[draw, minimum height=0.5cm,
+%%inner sep=0pt, anchor=south west]
+%%\tikzstyle{legend}=[below=0.4, anchor=mid] 
+%%%%	\draw[color=red] (2.8, -0.3) -- +(0, 3.25);
+%%\foreach \y/\l in { 0/{1.5/0, 2.4/1.5, 0.5/3.9}, 
+%%	0.5/{1.0/0, 1.0/1.0, 1.8/2.0, 0.3/3.8},
+%%	1.25/{1.5/0, 1.7/1.5, 1.0/3.2},
+%%	1.75/{1.0/0, 3.1/1.0},
+%%	2.25/{1.5/0, 2.5/1.5, 0.5/4.0},
+%%} {
+%%	\foreach \w/\x in \l
+%%	\node at (\x, \y)[task, minimum width=\w cm] {};
+%%}
+%%
+%%%%	\draw[dashed] (4.0,-0.3) -- +(0, 3.25);
+%%\node at (1.5, 2.25)[task, minimum width=2.5cm, fill=pastelviolet]{$T$};
+%%\node at (0, 1.25)[task, minimum width=1.5cm,  pattern=north
+%%east lines, pattern color=patternblue]{};
+%%\node at (1, 1.75)[task, minimum width=1cm,  pattern=north east
+%%lines, pattern color=patternblue]{};
+%%
+%%\node at (5.5, 2.25)[task, minimum width=2.5cm, fill=pastelviolet]{$T$ on CPU};
+%%\node at (5.5, 0.5)[task, minimum width=.5cm, fill=pastelviolet, name=TGPU]{};
+%%\node at (TGPU)[right=0.2cm]{$T$ on GPU}; 
+%%
+%%%%\draw[->] (-0.3, -0.3) -- (0, -0.3) -- node[pos=0, legend] {$0$} (4.2, -0.3) node[right] {$t$}; 
+%%%%\foreach \x in {0} \draw (\x, -0.3) -- (\x, -0.4);
+%%%%\draw[|-|] (0,0) -- (3,0) node[rectangle, auto=left,midway,anchor=north, inner sep=4pt] {$1+\frac{m}{n}$ repetitions};
+%%\end{tikzpicture}
+%%	\end{center}
+%%\end{block}
+%%\end{column}
+%%\begin{column}{0.45\linewidth}
+%%\begin{block}{\footnotesize $T$ is replaced with $T'$ and $T''$}
+%%	\begin{center}
+%%		\begin{tikzpicture}[scale=0.75, every node/.style={transform shape}]
+%%%%\draw[snake=brace] (a0.west |- a0.north) -- (t5.north -| t5.east) node[rectangle, auto=left,midway,anchor=south, inner sep=4pt] {$1+\frac{m}{n}$ repetitions};
+%%
+%%\tikzstyle{task}=[draw, minimum height=0.5cm,
+%%inner sep=0pt, anchor=south west]
+%%\tikzstyle{legend}=[below=0.4, anchor=mid] 
+%%%%	\draw[color=red] (2.8, -0.3) -- +(0, 3.25);
+%%\foreach \y/\l in { 0/{1.5/0, 2.4/1.5, 0.5/3.9}, 
+%%	0.5/{1.0/0, 1.0/1.0, 1.8/2.0, 0.3/3.8},
+%%	1.25/{1.5/0, 1.7/1.5, 1.0/3.2},
+%%	1.75/{1.0/0, 3.1/1.0},
+%%	2.25/{1.5/0, 2.5/1.5, 0.5/4.0},
+%%} {
+%%	\foreach \w/\x in \l
+%%	\node at (\x, \y)[task, minimum width=\w cm] {};
+%%}
+%%
+%%%%	\draw[dashed] (4.0,-0.3) -- +(0, 3.25);
+%%\node at (1.5, 2.25)[task, minimum width=2.0cm, fill=pastelred]{$T'$};
+%%\node at (3.5, 2.25)[task, minimum width=0.5cm, fill=pastelgreen]{$T''$};
+%%\node at (0, 1.25)[task, minimum width=1.5cm,  pattern=north east lines, pattern color=patternblue]{};
+%%\node at (1, 1.75)[task, minimum width=1cm,  pattern=north east lines, pattern color=patternblue]{};
+%%
+%%\node at (5.5, 2.25)[task, minimum width=2cm, fill=pastelred]{$T'$ on CPU};
+%%\node at (5.5, 0.5)[task, minimum width=.01cm, color=pastelred, name=TpGPU]{};
+%%\node at (TpGPU)[right=0.2cm]{$T'$ on GPU}; 
+%%
+%%\node at (5.5, 1.5)[task, minimum width=0.5cm, fill=pastelgreen, name=TppCPU]{};
+%%\node at (TppCPU)[right=0.2cm]{$T''$ on CPU};
+%%\node at (5.5, 0)[task, minimum width=.5cm, fill=pastelgreen, name=TppGPU]{};
+%%\node at (TppGPU)[right=0.2cm]{$T''$ on GPU}; 
+%%
+%%                \end{tikzpicture}
+%%	\end{center}
+%%\end{block}
+%%\end{column}
+%%\end{columns}
+%%\begin{flushleft}{\footnotesize
+%%We divide the modified schedule into different types of segments and try to bound each segment separately.
+%%\begin{itemize}
+%%	\item[$\bullet$] $ST_A$: Segments where at least one worker is idle on
+%%	both types of resources
+%%	\item[$\bullet$] $ST_B$: Segments where at least one type of resource
+%%	is fully busy and at least one task runs on its unfavorable resource
+%%	(either a spoliated or a task of type $T'$)
+%%	\item[$\bullet$] $ST_C$: Segments where at least one type of resource
+%%	is fully busy, and all tasks are on their favorable resources
+%%\end{itemize} 
+%%}\end{flushleft}
+%%\end{frame}
+%%\begin{frame}{Different Segments of a Modified \heteroprioD Schedule}
+%%	\begin{center}
+%%	\begin{tikzpicture}[scale=0.615, every node/.style={transform shape}]
+%%	\tikzstyle{task}=[draw, minimum height=0.5cm,
+%%	inner sep=0pt, anchor=south west]
+%%	\tikzstyle{legend}=[below=0.4, anchor=mid] 
+%%	%%	\draw[color=red] (2.8, -0.3) -- +(0, 3.25);
+%%	\foreach \y/\l in { 0/{1.0/0, 1.8/1.0, 1.8/2.8, 0.65/4.6, 2.1/9.3, 0.6/11.4, 1.8/13, 0.4/14.8, 
+%%			1.6/15.2, 0.5/16.8, 1.6/17.3}, 
+%%		0.5/{0.5/0, 2.0/0.5, 1.0/2.5, 0.8/3.5, 0.95/4.3, 1.05/5.25, 1.9/6.3, 1.3/8.2, 1.0/9.5, 2.1/10.5, 
+%%			1.9/12.6, 1.5/14.5, 1.0/16},
+%%		1.25/{1.0/0, 2.0/1.0, 1.25/4.5, 1.0/9.3, 2.2/10.3, 1.3/12.5, 1.0/13.8, 1.4/14.8, 0.8/16.2},
+%%		1.75/{5.25/0, 2.1/5.9, 1.3/8.0, 2.0/9.3, 1.7/11.3, 2.0/13.0, 1.5/15, 1.2/16.5},
+%%		2.25/{2.0/0, 2.5/2.0, 1.4/4.5, 3.1/5.9, 1.2/9, 1.8/10.2, 1.8/12, 3.2/13.8, 0.4/17.0, 0.6/17.4},
+%%	} {
+%%		\foreach \w/\x in \l
+%%		\node at (\x, \y)[task, minimum width=\w cm] {};
+%%	}
+%%	
+%%	\node at (0, 1.75)[task, minimum width=5.25cm, pattern=north east lines, pattern 
+%%	color=patternblue]{$T_1$};
+%%	\node at (5.25, 0.5)[task, minimum width=1.05cm]{$T_1$};
+%%	
+%%	\node at (13.8, 1.25)[task, minimum width=1cm, pattern=north east lines, pattern 
+%%	color=patternblue]{$T_3$};
+%%	\node at (14.8, 0)[task, minimum width=0.4cm]{$T_3$};
+%%	\node at (13.8, 2.25)[task, minimum width=3.2cm, fill=pastelred]{$T_2'$};
+%%	\node at (17, 2.25)[task, minimum width=0.4cm, fill=pastelgreen]{$T_2''$};
+%%	
+%%	\draw[dotted] (0.0, -0.75) -- +(0, 3.85);
+%%	\draw[dotted] (5.25, -0.75) -- +(0, 3.85);
+%%	\draw[dotted] (9.3, -0.75) -- +(0, 3.85);
+%%	\draw[dotted] (13.8, -0.75) -- +(0, 3.85);
+%%	\draw[dotted] (17.0, -0.75) -- +(0, 3.85);
+%%	\draw[dotted] (18.9, -0.75) -- +(0, 3.85);
+%%	
+%%	\draw[|-|, thin] (0, -0.5) -- (5.25, -0.5) node[rectangle,
+%%	auto=left,midway,anchor=north, inner sep=4pt] {segment of $ST_B$};
+%%	\draw[|-|, thin] (5.25, -0.5) -- (9.3, -0.5) node[rectangle,
+%%	auto=left,midway,anchor=north, inner sep=4pt] {segment of $ST_A$};
+%%	\draw[|-|, thin] (9.3, -0.5) -- (13.8, -0.5) node[rectangle,
+%%	auto=left,midway,anchor=north, inner sep=4pt] {segment of $ST_C$};
+%%	\draw[|-|, thin] (13.8, -0.5) -- (17.0, -0.5) node[rectangle,
+%%	auto=left,midway,anchor=north, inner sep=4pt] {segment of $ST_B$};
+%%	\draw[|-|, thin] (17.0, -0.5) -- (18.9, -0.5) node[rectangle,
+%%	auto=left,midway,anchor=north, inner sep=4pt] {segment of $ST_A$};
+%%	
+%%	
+%%	\node at (-0.3, 2.0) [anchor=south, rotate=90] {CPUs}; 
+%%	\node at (-0.3, 0.5) [anchor=south, rotate=90] {GPUs}; 
+%%	
+%%	\end{tikzpicture}
+%%	{\small
+%%	\begin{itemize}
+%%		\item Platform is composed of $m$ CPUs and $n$ GPUs
+%%		\item $\HE$ and $\copt$ represent \heteroprioD and \textit{Optimal} makespans respectively
+%%		\item We prove that $\HE = |ST_A| + |ST_B| + |ST_C| \le \left(2+ \max(\frac{m}{n}, \frac{n}{m})\right)\copt$
+%%	\end{itemize}
+%%}
+%%\end{center}
+%%\end{frame}
+%%
+%%%%\begin{frame}{\heteroprioD Worst Case Example}
+%%%%\begin{block}{Task Graph}
+%%%%	\begin{center}
+%%%%		\begin{tikzpicture}[circle, every
+%%%%		node/.style={font=\footnotesize}, inner sep=1pt]
+%%%%		\foreach \i in {0, 2, 5} {
+%%%%			\begin{scope}[shift={(\i, 0)}]
+%%%%			\node (a\i) at (0, 3) {$A$};
+%%%%			\node (t\i) at (1, 3) {$T_1$};
+%%%%			\node (u\i) at (1, 2.5) {$T_2$};
+%%%%			\node (btop\i) at (2, 2.5) {$B$};
+%%%%			\node (bdown\i) at (2, 1.5) {$B$};
+%%%%			\end{scope}
+%%%%			
+%%%%			\draw[very thick, loosely dotted] (btop\i) -- (bdown\i);
+%%%%			\draw[->] (a\i) edge (t\i) edge (u\i)
+%%%%			(u\i) edge (btop\i) edge (bdown\i);
+%%%%			\draw[snake=brace] (btop\i.north -| btop\i.east) --
+%%%%			(bdown\i.south -| bdown\i.east) node[midway, auto=left, inner
+%%%%			sep=4pt] {$n$ tasks};
+%%%%		}
+%%%%		\node (a7) at (7, 3) {$A$}; 
+%%%%		\draw[->] (t0) edge (a2) (t5) edge (a7);
+%%%%		\draw[very thick, loosely dotted] (t2) -- (a5); 
+%%%%		
+%%%%		\draw[snake=brace] (a0.west |- a0.north) -- (t5.north -|
+%%%%		t5.east) node[rectangle, auto=left,midway,anchor=south, inner sep=4pt] {$1+\frac{m}{n}$ repetitions};
+%%%%		\end{tikzpicture}
+%%%%	\end{center}
+%%%%\end{block}
+%%%%
+%%%%\begin{block}{Task Description}
+%%%%\begin{center}
+%%%%	\begin{tabular}{|c|c|c|c|}
+%%%%		\hline
+%%%%		Task Name & \# & GPU time &CPU time \\ 
+%%%%		$A$ & $\frac{m}{n} + 2$ & $2\epsilon$ & $1-3\epsilon$\\
+%%%%		$T_1$ & $\frac{m}{n} + 1$ & $5\epsilon$ & $4\epsilon$\\
+%%%%		$T_2$ & $\frac{m}{n} + 1$ & $2\epsilon$ & $3\epsilon$\\
+%%%%		$B$ & $m+n$ & $1-\epsilon$ & $1$ \\ 
+%%%%		\hline
+%%%%	\end{tabular}
+%%%%\end{center}
+%%%%\end{block}
+%%%%\end{frame}
+%%
+%%\tikzset{task/.style args={#1start#2length#3res#4}{draw, inner
+%%		sep=0pt, fill=gray!25!white, label=center:#1, fit={(#2*0.2,#4*0.35)
+%%			(#2*0.2+#3*0.2,#4*0.35+0.35)}}}
+%%		
+%%\newcommand{\taskA}[1]{\node[task=$A$ start #1 length 7 res 0]{};}
+%%\newcommand{\taskBs}[1]{\node[task=$B$ start #1 length 9 res
+%%	-1,name=top]{};
+%%	\node[task=$B$ start #1 length 9 res -4
+%%	, name=bot]{}; \draw[loosely dotted, very thick]
+%%	(top) -- (bot);
+%%}
+%%\newcommand{\taskT}[1]{\node[task=$T_1$ start #1 length 4 res 0]{};}
+%%\newcommand{\taskU}[1]{\node[task=$T_2$ start #1 length 2 res -1]{};}
+%%\newcommand{\taskAA}[1]{\node[task=$A$ start #1 length 2 res -1]{};}
+%%\newcommand{\taskBBs}[1]{\node[task=$B$ start #1 length 9 res
+%%	-1,name=top]{};
+%%	\node[task=$B$ start #1 length 9 res -4
+%%	, name=bot]{}; \draw[loosely dotted, very thick]
+%%	(top) -- (bot);
+%%	\node[task=$B$ start #1 length 9 res 0,name=botC]{};
+%%	\node[task=$B$ start #1 length 9 res 4,name=topC]{};
+%%	\draw[loosely dotted, very thick] (botC) -- (topC);
+%%}
+%%
+%%\begin{frame}{\heteroprioD Worst Case Example}
+%%\vspace*{-0.25cm}
+%%\begin{columns}
+%%	\begin{column}{0.475\linewidth}
+%%\begin{block}{\footnotesize Task Graph}
+%%	\begin{center}
+%%		\begin{tikzpicture}[scale=0.625, circle, every
+%%		node/.style={font=\tiny}, inner sep=1pt]
+%%		\foreach \i in {0, 2, 5} {
+%%			\begin{scope}[shift={(\i, 0)}]
+%%			\node (a\i) at (0, 3) {$A$};
+%%			\node (t\i) at (1, 3) {$T_1$};
+%%			\node (u\i) at (1, 2.5) {$T_2$};
+%%			\node (btop\i) at (2, 2.5) {$B$};
+%%			\node (bdown\i) at (2, 1.5) {$B$};
+%%			\end{scope}
+%%			
+%%			\draw[very thick, loosely dotted] (btop\i) -- (bdown\i);
+%%			\draw[->] (a\i) edge (t\i) edge (u\i)
+%%			(u\i) edge (btop\i) edge (bdown\i);
+%%			\draw[snake=brace] (btop\i.north -| btop\i.east) --
+%%			(bdown\i.south -| bdown\i.east) node[midway, auto=left, inner
+%%			sep=4pt] {$n$ tasks};
+%%		}
+%%		\node (a7) at (7, 3) {$A$}; 
+%%		\draw[->] (t0) edge (a2) (t5) edge (a7);
+%%		\draw[very thick, loosely dotted] (t2) -- (a5); 
+%%		
+%%		\draw[snake=brace] (a0.west |- a0.north) -- (t5.north -|
+%%		t5.east) node[rectangle, auto=left,midway,anchor=south, inner sep=4pt] {$1+\frac{m}{n}$ repetitions};
+%%		\end{tikzpicture}
+%%	\end{center}
+%%\end{block}
+%%\end{column}
+%%\begin{column}{0.475\linewidth}
+%%\begin{block}{\footnotesize Task Description}{\scriptsize
+%%	\begin{center}
+%%		\begin{tabular}{|c|c|c|c|}
+%%			\hline
+%%			Task & \# & GPU time &CPU time \\ 
+%%			$A$ & $\frac{m}{n} + 2$ & $2\epsilon$ & $1-3\epsilon$\\
+%%			$T_1$ & $\frac{m}{n} + 1$ & $5\epsilon$ & $4\epsilon$\\
+%%			$T_2$ & $\frac{m}{n} + 1$ & $2\epsilon$ & $3\epsilon$\\
+%%			$B$ & $m+n$ & $1-\epsilon$ & $1$ \\ 
+%%			\hline
+%%		\end{tabular}
+%%	\end{center}}
+%%\end{block}
+%%	\end{column}
+%%\end{columns}
+%%%%\end{frame}
+%%%%
+%%%%\begin{frame}{\heteroprioD Worst Case Example}
+%%	\begin{columns}
+%%		\begin{column}{0.475\linewidth}
+%%\begin{block}{\footnotesize A Possible \heteroprioD Schedule}
+%%	    \begin{center}
+%%		\begin{tikzpicture}[scale=0.625, every node/.style={font=\tiny},
+%%		inner sep=1pt]
+%%		\draw[->] (-0.2, -1.4) -- (8.5, -1.4) node[below] {$t$};
+%%		\draw (0, -1.4) -- (0, 1.8);
+%%		\node at (-0.3, -0.7)[rotate=90] {$n$ GPUs};
+%%		\node at (-0.3, 0.9)[rotate=90] {$m$ CPUs};
+%%		\draw[dashed,gray,thick] (-0.2, 0) -- (8.5, 0);
+%%		
+%%		\node[task=$A$ start 0 length 2 res -1]{};
+%%		\taskT{2}
+%%		\taskU{2}
+%%		\taskBs{4}
+%%		\taskA{6}
+%%		\taskT{13}
+%%		\taskU{13}
+%%		\taskBs{15}
+%%		\taskA{17}
+%%		
+%%		\taskT{30}
+%%		\taskU{30}
+%%		\taskBs{32}
+%%		\taskA{34}
+%%		\foreach \y in {0.15, -0.15, -1.25} 
+%%		\draw[loosely dotted, very thick] (4.9, \y) -- (5.9, \y);
+%%		\end{tikzpicture}
+%%	\end{center}
+%%\end{block}
+%%\centering $\HE = (\frac{m}{n}+1)(1+\epsilon) +2\epsilon$
+%%              \end{column}
+%%\begin{column}{0.475\linewidth}
+%%\begin{block}{\footnotesize A Better Schedule}
+%%	    \begin{center}		
+%%		\begin{tikzpicture}[scale=0.625, every node/.style={font=\tiny},
+%%		inner sep=1pt]
+%%		\draw[->] (-0.2, -1.4) -- (8.5, -1.4) node[below] {$t$};
+%%		\draw (0, -1.4) -- (0, 1.8);
+%%		\node at (-0.3, -0.7)[rotate=90] {$n$ GPUs};
+%%		\node at (-0.3, 0.9)[rotate=90] {$m$ CPUs};
+%%		\draw[dashed,gray,thick] (-0.2, 0) -- (8.5, 0);
+%%		
+%%		\taskAA{0}
+%%		\taskT{2}
+%%		\taskU{2}
+%%		\taskAA{6}
+%%		\taskT{8}
+%%		\taskU{8}
+%%		
+%%		\foreach \y in {0.15, -0.15} 
+%%		\draw[loosely dotted, very thick] (2.5, \y) -- (3.9, \y);
+%%		
+%%		\taskAA{20}
+%%		\taskT{22}
+%%		\taskU{22}
+%%		\taskAA{26}
+%%		\taskBBs{28}
+%%		\end{tikzpicture}
+%%	\end{center}
+%%\end{block}
+%%\centering $\copt \le 2\epsilon + 6\epsilon \left(\frac{m}{n} +1\right) +
+%%1$
+%%\end{column}
+%%\end{columns}
+%%\vspace*{-0.15cm}
+%%\begin{center}
+%%$\lim_{\epsilon \to 0} \frac{\HE}{\copt} \ge \frac{m}{n} + 1$
+%%\end{center}
+%%
+%%\end{frame}
+%%
+%%\begin{frame}{State-of-the-art Approaches \& Experimental Setup}
+%%\vspace*{-0.15cm}
+%%	\begin{center}
+%%{\scriptsize
+%%\begin{tabular}{|l|l|c|p{5.835cm}|}
+%%	\hline
+%%	Algorithm & Type & Approx. ratio & Description\\ \hline
+%%	HLP & Offline & $6$ & Solve linear program to find task allocations and schedule tasks using list scheduling algorithm\\ \hline
+%%	ER-LS & Online & $4\sqrt{max(\frac{m}{n}, \frac{n}{m})}$ & Comparison of CPU time of a task and its earliest completion time on GPU, and average processing time of a task on CPU and GPU\\ \hline
+%%	QA & Online & $1 +2\sqrt{max(\frac{m}{n}, \frac{n}{m})}$ & Modified version of ER-LS, only the second decision rule of ER-LS\\ \hline
+%%	HEFT & Offline & $\Omega(max(\frac{m}{n}, \frac{n}{m}))$ & The highest priority task is scheduled on the resource which finishes it at the earliest time\\ \hline
+%%%%	QA & Online & $1 +2\sqrt{max(\frac{m}{n}, \frac{n}{m})}$ & M\\ \hine
+%%%%	HEFT & Offline & $\Omega(max(\frac{m}{n}, \frac{n}{m})$ & The highest priority task is scheduled on the resource which finishes it at the earliest time\\ \hine
+%%	ECT & Online & $\Omega(max(\frac{m}{n}, \frac{n}{m}))$ & Online version of HEFT\\ \hline
+%%\end{tabular}}
+%%	\end{center}
+%%\vspace*{-0.3cm}
+%%{\footnotesize\begin{block}{Experimental Setup}
+%%		\vspace*{-0.1cm}
+%%	\begin{itemize}
+%%	\setlength\itemsep{0.125em}
+%%	\item Task based Cholesky, QR and LU  kernels of Chameleon library, with TileSize = 960
+%%	%%		\item StarPU runtime system for actual execution
+%%	\item \emph{sirocco} platform description (single node)
+%%	\begin{itemize}
+%%		\item 24 CPU cores (\textbf{20 computational cores}) of Intel® Xeon® E5-2680 
+%%		\item \textbf{4} Nvidia K40-M \textbf{GPUs}   
+%%	\end{itemize}
+%%	\item Task timings are obtained by executing kernels on each type of computing resource of \emph{sirocco}
+%%\end{itemize}
+%%\end{block}
+%%}\end{frame}
+%%
+%%\begin{frame}{Schedulers Performance for Task Graphs}
+%%\begin{columns}
+%%	\begin{column}{0.525\linewidth}
+%%%%		\todo[inline]{SK2LED: remove results corresponding to 20 and 60 number of CPUs}
+%%		\begin{block}{}
+%%		\begin{center}
+%%%%		\includegraphics[scale=0.4]{./bordeaux-Ratio.pdf}
+%%		\includegraphics[scale=0.4]{./transparent-bordeaux-Ratio.pdf}
+%%		\end{center}
+%%		\end{block}	
+%%	\end{column}
+%%\begin{column}{0.465\linewidth}{\scriptsize
+%%		\begin{center}
+%%\begin{itemize}
+%%	\item Normalized makespan is the ratio of the
+%%	makespan obtained by each algorithm to the lower bound
+%%	\item  Number of 960 $\times$ 960 tiles vary from 4 to 60
+%%	\item Each row shows simulated results for a platform with 4 GPUs and a number of CPUs (4, 8, 12, 20, 40, 60)
+%%	\item \heteroprioD outperforms other algorithms in most cases
+%%	\item HLP performance is close to \heteroprioD for large task graphs
+%%	\item HEFT performance is close to \heteroprioD for small task graphs
+%%\end{itemize}
+%%		\end{center}
+%%}\end{column}
+%%\end{columns}
+%%\end{frame}
+
+ \begin{frame}{Conclusion and Future Work}
+ \begin{block}{Conclusion}
+\begin{itemize}
+	\item Proposed \heteroprioD algorithm, an extension of \heteroprio, for task graphs
+	\item Presented theoretical approximation guarantees and worst case examples for \heteroprioD
+	\item Empirical evaluation of \heteroprioD with state-of-the-art schedulers
+\end{itemize}
+ \end{block}
+\vfill
+\begin{block}{Future Work}
+\begin{itemize}
+	\item Model locality and data transfer costs in \heteroprioD
+	\item Evaluate \heteroprioD for machine learning applications
+\end{itemize}
+ \end{block}
+\end{frame}
+
+
+%%\begin{frame}
+%%\huge{\centerline{Thank You!}}
+%%\end{frame}
+
+\end{document}

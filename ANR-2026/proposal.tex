@@ -355,7 +355,7 @@ colorlinks]{hyperref}
 	%$\X$ is the full-format 
 	%representation of the original 
 	%tensor,
-	$\Mn{A}{k}$ is a tall-skinny factor matrix corresponding to mode $k$, and $\times_k$ denotes the tensor-times-matrix (TTM) operation in the $k$th mode~\cite{KB-SIAM-2009}. This collective operation is known as the Multi-TTM computation~\cite{ABGKR-SIMAX-2022} and is one of the main bottleneck of the HOSVD algorithm. One approach to perform this computation is \emph{in~sequence}, i.e., $\Y = ((\X \times_1 {\Mn{A}{1}}^\Tra )\times_2 {\Mn{A}{2}}^\Tra) \times_3 {\Mn{A}{3}}^\Tra$. Another approach is to work with the inputs \emph{all~at~once}, i.e., $\Y_{ijk} = \sum_{lmp}\X_{lmp}\cdot\Mn{A}{1}_{li}\cdot \Mn{A}{2}_{mj}\cdot \Mn{A}{3}_{pk}$.
+	$\Mn{A}{k}$ is a tall-skinny factor matrix corresponding to mode $k$, and $\times_k$ denotes the tensor-times-matrix (TTM) operation in the $k$th mode~\cite{KB-SIAM-2009}. This collective operation is known as the Multi-TTM computation~\cite{ABGKR-SIMAX-2022} and is one of the main bottlenecks of the HOSVD algorithm. One approach to perform this computation is \emph{in~sequence}, i.e., $\Y = ((\X \times_1 {\Mn{A}{1}}^\Tra )\times_2 {\Mn{A}{2}}^\Tra) \times_3 {\Mn{A}{3}}^\Tra$. Another approach is to work with the inputs \emph{all~at~once}, i.e., $\Y_{ijk} = \sum_{lmp}\X_{lmp}\cdot\Mn{A}{1}_{li}\cdot \Mn{A}{2}_{mj}\cdot \Mn{A}{3}_{pk}$.
 	%%	\bora{why * and $\times$} 
 	Daas et al.~\cite{ABGKR-SIMAX-2022} show that the latter approach, which takes multi-dimensional properties of tensors into account, reduces communication significantly compared to the sequence approach for small and moderate number of processors. However there is not any clear winner for all settings. One can achieve better gains with a hybrid method that combines the strengths of both approaches. This perspective is not explored in~\cite{ABGKR-SIMAX-2022}.
 	%	We can obtain better gains by a hybrid method which combines the best of both approaches. 
@@ -399,7 +399,7 @@ colorlinks]{hyperref}
 	
 	
 	\vspace*{-0.35cm}\paragraph{Objectives:} The goal of the SCATE project is to develop Tucker and CP decomposition algorithms that scale efficiently on modern computing systems.
-	The project first studies tradeoff among computations, communications and data reuse for the existing algorithms and proposes new methods whose completion times are optimal for homogeneous systems. After that, the proposed methods will be implemented and tested with real-world data-sets from neuroscience and combustion simulations on  more than 5,000 cores and/or 512 nodes of \href{https://www.genci.fr/en/our-computers}{GENCI computers}. This implementation will also be used to accelerate hyperspectral data analysis in astrophysics.
+	The project first studies tradeoff among computations, communications and data reuse for the existing algorithms and proposes new methods whose completion times are optimal for homogeneous systems. After that, the proposed methods will be implemented and tested with real-world data-sets from neuroscience and combustion simulations on  more than 5,000 cores and/or 512 nodes of \href{https://www.genci.fr/en/services/means-calculation}{GENCI computers}. This implementation will also be used to accelerate hyperspectral data analysis in astrophysics.
 %	and brain-computer interface data analysis in electrophysiology. 
 	The project also extends our framework for heterogeneous systems composed of CPUs and GPUs.
 	

@@ -1,0 +1,7 @@
+\beamer@sectionintoc {1}{Introduction}{3}{0}{1}
+\beamer@sectionintoc {2}{Low Rank Tensor Representations}{7}{0}{2}
+\beamer@sectionintoc {3}{Algorithms to Compute Tensor Train Representation}{14}{0}{3}
+\beamer@subsectionintoc {3}{1}{Sequential Algorithms}{14}{0}{3}
+\beamer@subsectionintoc {3}{2}{Parallel Algorithms}{20}{0}{3}
+\beamer@sectionintoc {4}{Experimental Evaluation}{30}{0}{4}
+\beamer@sectionintoc {5}{Conclusion}{36}{0}{5}

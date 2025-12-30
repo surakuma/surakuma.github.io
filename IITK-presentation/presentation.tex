@@ -1,0 +1,1709 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Beamer Presentation
+% LaTeX Template
+% Version 1.0 (10/11/12)
+%
+% This template has been downloaded from:
+%----------------------------------------------------------------------------------------
+
+\documentclass[aspectratio=169]{beamer}
+%%\documentclass{beamer}
+%%\usetheme{Madrid}
+%%\usepackage{todonotes}
+%%\usepackage{graphicx}
+%%\usepackage{xcolor}
+%%\usepackage{subfig}
+%%%%\usepackage[noend]{algpseudocode}
+%%
+%%
+%%\usepackage{algorithm}
+%%\usepackage{algorithmic}
+%%
+%%\usepackage{blkarray}
+%%\usepackage{amsmath}
+%%\usepackage{xspace}
+%%\usepackage{float}
+%%
+%%
+%%
+%%\usepackage{enumitem}
+
+\usetheme{Madrid}
+\usepackage{todonotes}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{subfig}
+%%\usepackage[noend]{algpseudocode}
+
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+\usepackage{blkarray}
+\usepackage{amsmath}
+\usepackage{xspace}
+\usepackage{float}
+\usepackage{appendixnumberbeamer}
+
+\usepackage{enumitem}
+
+\setitemize{label=\usebeamerfont*{itemize item}%
+	\usebeamercolor[fg]{itemize item}
+	\usebeamertemplate{itemize item}}
+
+\usepackage{tikz}
+\usetikzlibrary{matrix, decorations, patterns, positioning, shapes, 3d,calc, intersections, arrows, fit, hobby}
+%%\usepackage{enumitem}
+
+\mode<presentation> {
+
+% The Beamer class comes with a number of default slide themes
+% which change the colors and layouts of slides. Below this is a list
+% of all the themes, uncomment each in turn to see what they look like.
+
+%\usetheme{default}
+%\usetheme{AnnArbor}
+%\usetheme{Antibes}
+%\usetheme{Bergen}
+%\usetheme{Berkeley}
+%\usetheme{Berlin}
+%\usetheme{Boadilla}
+%\usetheme{CambridgeUS}
+%\usetheme{Copenhagen}
+%\usetheme{Darmstadt}
+%\usetheme{Dresden}
+%\usetheme{Frankfurt}
+%\usetheme{Goettingen}
+%\usetheme{Hannover}
+%\usetheme{Ilmenau}
+%\usetheme{JuanLesPins}
+%\usetheme{Luebeck}
+\usetheme{Madrid}
+%\usetheme{Malmoe}
+%\usetheme{Marburg}
+%\usetheme{Montpellier}
+%\usetheme{PaloAlto}
+%\usetheme{Pittsburgh}
+%\usetheme{Rochester}
+%\usetheme{Singapore}
+%\usetheme{Szeged}
+%\usetheme{Warsaw}
+
+% As well as themes, the Beamer class has a number of color themes
+% for any slide theme. Uncomment each of these in turn to see how it
+% changes the colors of your current slide theme.
+
+%\usecolortheme{albatross}
+%\usecolortheme{beaver}
+%\usecolortheme{beetle}
+%\usecolortheme{crane}
+%\usecolortheme{dolphin}
+%\usecolortheme{dove}
+%\usecolortheme{fly}
+%\usecolortheme{lily}
+%\usecolortheme{orchid}
+%\usecolortheme{rose}
+%\usecolortheme{seagull}
+%\usecolortheme{seahorse}
+%\usecolortheme{whale}
+%\usecolortheme{wolverine}
+
+%\setbeamertemplate{footline} % To remove the footer line in all slides uncomment this line
+%\setbeamertemplate{footline}[page number] % To replace the footer line in all slides with a simple slide count uncomment this line
+
+%\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
+}
+
+
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+
+
+
+\newcommand{\A}{\mathbf{A}}
+\newcommand{\B}{\mathbf{B}}
+\newcommand{\CC}{\mathbf{C}}
+
+
+\newcommand{\tensor}[1]{\T{#1}}
+\newcommand{\lowerbound}{{\sc C_{LB}}\xspace}
+\newcommand{\maxp}{{\sc MaxP}\xspace}
+\newcommand{\lowerboundmatrix}{{\sc LB(MatrixComm)}\xspace}
+\newcommand{\lowerboundtensor}{{\sc LB(TensorComm)}\xspace}
+\newcommand{\odata}{{\sc O_d}\xspace}
+\newcommand{\init}[1]{\hat{#1}}
+\newcommand{\tmp}[1]{q_{prev}}
+\newcommand{\lbbasedpartition}{{\it Algo1($C_{LB}$ based config)}\xspace}
+\newcommand{\bestconfigAAO}{{\it Algo1(best config)}\xspace}
+\newcommand{\bestconfigSeq}{{\it Seq-Appr(best config)}\xspace}
+
+%% Colors from https://latexcolor.com/
+\definecolor{pastelviolet}{rgb}{0.8, 0.6, 0.79}
+\definecolor{babyblueeyes}{rgb}{0.63, 0.79, 0.95}
+\definecolor{pastelyellow}{rgb}{0.99, 0.99, 0.59}
+\definecolor{pastelgreen1}{rgb}{0.47, 0.87, 0.47}
+\definecolor{pastelgreen}{rgb}{0, 1, 0}
+\definecolor{pastelred}{rgb}{1.0, 0.41, 0.38}
+\colorlet{patternblue}{blue!60}
+
+
+
+
+%%For tensor notations
+\input{./tensor_header}
+\newcommand{\X}{\T{X}}
+\newcommand{\Y}{\T{Y}}
+\newcommand{\starontop}[1]{{#1}^*}
+
+
+\graphicspath{{./diagrams/}{./Figs/}{./plots/}}
+
+%%\newenvironment{beameritemize}
+%%{ \begin{itemize}
+%%		\setlength{\itemsep}{1.5ex}
+%%		\setlength{\parskip}{0pt}
+%%		\setlength{\parsep}{0pt}   
+%%		\addtolength{\itemindent}{-2em}  }
+%%{ \end{itemize} }
+
+
+
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title[Matrix/Tensor Computations]{Communication Lower Bounds for Parallel Matrix and Tensor Computations} % The short title appears at the bottom of every slide, the full title is only on the title page
+
+%%\author{John Smith} % Your name
+%%\institute[UCLA] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
+%%{
+%%University of California \\ % Your institution for the title page
+%%\medskip
+%%\textit{john@smith.com} % Your email address
+%%}
+\author[Suraj {\sc Kumar}]{Suraj {\sc Kumar}}
+
+\institute[Inria \& ENS Lyon]{National Institute for Research in Digital Science and Technology (Inria), Lyon}
+%%%%\underline{Suraj {\sc Kumar}}\inst{1}, Lionel {\sc Eyraud-Dubois}\inst{2}, and\\ Sriram {\sc Krishnamoorthy}\inst{1}}
+%%\institute[Inria Paris]{\inst{1} Rutherford Appleton Laboratory, UK \and %
+%%	\inst{2} Wake Forest University, USA \and
+%%	\inst{3} Inria Paris, France \and
+%%	\inst{4} Inmar Intelligence, USA}
+\date[CSE -- IIT Kanpur]{CSE -- IIT Kanpur\\\today} % Date, can be changed to a custom date
+
+
+
+\begin{frame}
+\titlepage % Print the title page as the first slide
+\end{frame}
+
+
+
+\begin{frame}{Tensors and their uses}
+%%\vspace*{-0.1025cm}
+\begin{minipage}{0.485\linewidth}
+	\begin{itemize}
+		\item[$\textcolor{blue}{\bullet}$] \textbf{Neuroscience}: Neuron $\times$ Time $\times$ Trial
+		%%		\item \textbf{Transportation}: Pickup $\times$ Dropoff $\times$ Time
+		\item[$\textcolor{blue}{\bullet}$] \textbf{Media}: User x Movie x Time 
+		\item[$\textcolor{blue}{\bullet}$] \textbf{Ecommerce}: User x Product x Time
+		%%		\item[$\textcolor{blue}{\bullet}$] \textbf{Social-Network}: Person x Person x Time x Type
+	\end{itemize}
+\end{minipage}\hfill
+\begin{minipage}{0.485\linewidth}
+	\begin{center}
+		\begin{tikzpicture}[scale=0.1, every node/.style={transform shape}]
+		\pgfmathsetmacro{\rectx}{4}
+		\pgfmathsetmacro{\recty}{0.5}
+		\draw[blue,fill=pastelgreen] (0,0) -- node [below, scale=6, black] {Vector}++(-\rectx,0) -- ++(0,\recty) -- ++(\rectx, 0) -- cycle;
+		\end{tikzpicture}$\;$
+		\begin{tikzpicture}[scale=0.1, every node/.style={transform shape}]
+		\pgfmathsetmacro{\rectx}{4}
+		\pgfmathsetmacro{\recty}{4}
+		\draw[blue,fill=pastelgreen] (0,0) -- node [below, scale=6, black] {Matrix}++(-\rectx,0) -- ++(0,\recty) -- ++(\rectx, 0) -- cycle;
+		%%\addvmargin{4};
+		\end{tikzpicture}$\;$
+		\begin{tikzpicture}[scale=0.1, every node/.style={transform shape}]
+		\pgfmathsetmacro{\cubex}{4}
+		\pgfmathsetmacro{\cubey}{4}
+		\pgfmathsetmacro{\cubez}{4}
+		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) --node [below, scale=6, black] {3-dimensional tensor} ++(\cubex,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+		\end{tikzpicture}$\;$
+		%%	\end{center}
+		%%	\begin{center}	
+		\begin{tikzpicture}[scale=0.1, every node/.style={transform shape}]
+		\pgfmathsetmacro{\cubex}{4}
+		\pgfmathsetmacro{\cubey}{4}
+		\pgfmathsetmacro{\cubez}{4}
+		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+		
+		\draw[blue,fill=pastelgreen] (\cubex +2,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (\cubex +2,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+		\draw[blue,fill=pastelgreen] (\cubex +2,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+		
+		\draw[blue,fill=pastelgreen] (\cubex +2 + \cubex +2,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (\cubex +2 + \cubex +2,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+		\draw[blue,fill=pastelgreen] (\cubex +2 + \cubex +2,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+		
+		\draw[blue, fill=none] (-\cubex -1, 2.5, 0) -- ++(0, -\cubey -3.5, 0) --node [below, scale=6, black] {4-dimensional tensor} ++(\cubex +2 + \cubex +2 + \cubex + \cubex,0,0) -- ++(0, \cubey +3.5, 0) -- cycle; 
+		
+		%%\node [scale=2] at (0, -8) {$hello$};
+		\end{tikzpicture}
+	\end{center}
+\end{minipage}
+%%\vspace*{-0.2cm}
+\vspace*{0.2cm}
+\begin{itemize}
+	%%%%	\item \textbf{Cyber-Traffic}: IP x IP x Port x Time
+	%%	\item[$\textcolor{blue}{\bullet}$] \textbf{Social-Network}: Person x Person x Time x Interaction-Type
+	\item[$\textcolor{blue}{\bullet}$] \textbf{Social-Network}: Person x Person x Time x Type
+\end{itemize}
+
+\begin{itemize}
+	\vfill
+	\item High dimensional tensors: Neural network, Molecular simulation, Quantum computing
+	\vfill
+	\item People work with low dimensional structure (decomposition) of the tensors
+	\begin{center}
+		\begin{columns}
+			\hfill\begin{column}{0.34\linewidth}
+				\begin{block}{\footnotesize Canonical decomposition}
+					\begin{center}
+						\begin{tikzpicture}[scale=0.15, every node/.style={transform shape}]
+						%%						\pgfmathsetmacro{\cubex}{2}
+						%%						\pgfmathsetmacro{\cubey}{2}
+						%%						\pgfmathsetmacro{\cubez}{2}
+						%%						\path (0,0,-\cubez-1) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez-2) -- ++(\cubex,0,0) -- cycle;
+						
+						\path (-2,0,-7) -- (2,0,7);
+						
+						\pgfmathsetmacro{\cubex}{4}
+						\pgfmathsetmacro{\cubey}{4}
+						\pgfmathsetmacro{\cubez}{4}
+						\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+						\draw[blue,fill=pastelgreen] (0,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+						\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+						
+						\node[draw=none, text=black, scale=4] at (2,-2.25,-3) {$=$};
+						\pgfmathsetmacro{\smallwidth}{0.5}
+						\draw[blue,fill=pastelgreen] (\cubex+2,0,0) -- ++(-\smallwidth,0,0) -- ++(0,-\cubey,0) -- ++(\smallwidth,0,0) -- cycle;
+						\draw[blue,fill=pastelgreen] (\cubex+2 +\cubex + 0.5,0.75,0) -- ++(-\cubex,0,0) -- ++(0,-\smallwidth,0) -- ++(\cubex,0,0) -- cycle;
+						\draw[blue,fill=pastelgreen] (\cubex+2,0.5,0) -- ++(-\smallwidth,0,0) -- ++(0,0,-\cubez) -- ++(\smallwidth,0,0) -- cycle;
+						
+						\node[draw=none, text=black, scale=4] at (2+\cubex+3.8,-2.25,-3) {$+$};
+						
+						\draw[blue,fill=pastelgreen] (\cubex+2.5 + \cubex+2,0,0) -- ++(-\smallwidth,0,0) -- ++(0,-\cubey,0) -- ++(\smallwidth,0,0) -- cycle;
+						\draw[blue,fill=pastelgreen] (\cubex+2.5+\cubex+2 +\cubex + 0.5,0.75,0) -- ++(-\cubex,0,0) -- ++(0,-\smallwidth,0) -- ++(\cubex,0,0) -- cycle;
+						\draw[blue,fill=pastelgreen] (\cubex+2.5+\cubex+2,0.5,0) -- ++(-\smallwidth,0,0) -- ++(0,0,-\cubez) -- ++(\smallwidth,0,0) -- cycle;
+						
+						\node[draw=none, text=black, scale=4] at (2+\cubex+5 + \cubex+ 4.25, -2.25,-3) {$+$ $\cdots$ $+$};
+						
+						\draw[blue,fill=pastelgreen] (12 + \cubex+2.5 + \cubex+2,0,0) -- ++(-\smallwidth,0,0) -- ++(0,-\cubey,0) -- ++(\smallwidth,0,0) -- cycle;
+						\draw[blue,fill=pastelgreen] (12+\cubex+2.5+\cubex+2 +\cubex + 0.5,0.75,0) -- ++(-\cubex,0,0) -- ++(0,-\smallwidth,0) -- ++(\cubex,0,0) -- cycle;
+						\draw[blue,fill=pastelgreen] (12 + \cubex+2.5+\cubex+2,0.5,0) -- ++(-\smallwidth,0,0) -- ++(0,0,-\cubez) -- ++(\smallwidth,0,0) -- cycle;
+						\end{tikzpicture}
+					\end{center}
+				\end{block}
+			\end{column}
+			\begin{column}{0.265\linewidth}
+				\begin{block}{\footnotesize Tucker decomposition}
+					\begin{center}
+						\begin{tikzpicture}[scale=0.15, every node/.style={transform shape}]
+						\pgfmathsetmacro{\cubex}{4}
+						\pgfmathsetmacro{\cubey}{4}
+						\pgfmathsetmacro{\cubez}{4}
+						\draw[blue,fill=pastelgreen] (-12,1,\cubez-2) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+						\draw[blue,fill=pastelgreen] (-12,1,\cubez-2) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+						\draw[blue,fill=pastelgreen] (-12,1,\cubez-2) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+						\node[draw=none, text=black, scale=4] at (-8,-1,0) {$=$};
+						
+						\pgfmathsetmacro{\cubex}{2}
+						\pgfmathsetmacro{\cubey}{2}
+						\pgfmathsetmacro{\cubez}{2}
+						\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+						\draw[blue,fill=pastelgreen] (0,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+						\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+						
+						\draw[blue,fill=pastelgreen] (-\cubex-1,1,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey-2,0) -- ++(\cubex,0,0) -- cycle;
+						\draw[blue,fill=pastelgreen] (\cubex+2+1,0,-\cubey) -- ++(-\cubex-2,0,0) -- ++(0,-\cubey,0) -- ++(\cubex+2,0,0) -- cycle;
+						
+						\draw[blue,fill=pastelgreen] (0,0,-\cubez-1) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez-2) -- ++(\cubex,0,0) -- cycle;
+						
+						\path (-18,0) -- (8,0);
+						\end{tikzpicture}
+					\end{center}
+				\end{block}
+			\end{column}
+			\begin{column}{0.265\linewidth}
+				\begin{block}{\footnotesize Tensor-train decomposition}
+					\begin{center}
+						\begin{tikzpicture}[scale=0.15, every node/.style={transform shape}]
+						
+						\node (t0) at (0,-2.75) [scale=6] {$\tensor{X}$};
+						\node [scale=4]at (2.5, -2.75) {$=$};
+						\path (5,-6) -- (0,0);
+						\end{tikzpicture}\hspace*{-0.15cm}
+						\includegraphics[scale=0.13]{./ttentry-simple.eps}
+					\end{center}
+					
+				\end{block}
+			\end{column}
+		\end{columns}
+	\end{center}
+	
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{High dimensional tensors: tensorized neural networks}
+\begin{itemize}
+	\item \textbf{Neural Network} \begin{center}\vspace*{-0.35cm}
+		\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+		\tikzstyle{taskc}=[circle, draw=black, minimum size=2mm, fill=none]
+		
+		\node (t00) at (0,1) [taskc] {};
+		\node (t01) at (0,0) [taskc] {};
+		\node (t02) at (0,-1) [taskc] {};
+		
+		\draw (-0.5,1) -- (t00);
+		\draw (-0.5,0) -- (t01);
+		\draw (-0.5,-1) -- (t02);
+		
+		\node (t10) at (2,1.5) [taskc] {};
+		\node (t11) at (2,0.5) [taskc] {};
+		\node (t12) at (2,-0.5) [taskc] {};
+		\node (t13) at (2,-1.5) [taskc] {};
+		
+		\draw (t00) -- (t10);
+		\draw (t00) -- (t11);
+		\draw (t00) -- (t12);
+		\draw (t00) -- (t13);
+		
+		\draw (t01) -- (t10);
+		\draw (t01) -- (t11);
+		\draw (t01) -- (t12);
+		\draw (t01) -- (t13);
+		
+		\draw (t02) -- (t10);
+		\draw (t02) -- (t11);
+		\draw (t02) -- (t12);
+		\draw (t02) -- (t13);
+		
+		\node (t20) at (4,0.5) [taskc] {};
+		\node (t21) at (4,-0.5) [taskc] {};
+		
+		\draw (t10) -- (t20);
+		\draw (t10) -- (t21);
+		
+		\draw (t11) -- (t20);
+		\draw (t11) -- (t21);
+		
+		\draw (t12) -- (t20);
+		\draw (t12) -- (t21);
+		
+		\draw (t13) -- (t20);
+		\draw (t13) -- (t21);
+		
+		\draw (t20) -- (4.5, 0.5);
+		\draw (t21) -- (4.5, -0.5);
+		%%	\node (t01) at (0,0) [taskc]{};
+		%%	\draw (t01) -- (1,0);
+		%%	\draw (t01) -- (-1,0);
+		\path (6.8, 0) -- (9.0,0);
+		\end{tikzpicture} 	
+		%%%%	\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+		%%%%	\tikzstyle{taskc}=[ellipse, draw=black, minimum width=40mm, minimum height=15mm, fill=\tensorcolor]
+		%%%%	\node (t0) at (0,0) [taskc] {};
+		%%%%	
+		%%%%	\draw(0, -1.5) -- (t0);
+		%%%%	\draw(-0.5, -1.5) -- (-0.5, 0);
+		%%%%	\draw(0.5, -1.5) -- (0.5, 0);
+		%%%%	
+		%%%%	\draw(-0.25,0) -- (-0.25,1.5);
+		%%%%	\draw(0.25,0) -- (0.25,1.5);
+		%%%%	
+		%%%%	
+		%%%%	\node (t0) at (0,0) [taskc] {};
+		%%%%	\end{tikzpicture}
+	\end{center}
+\vfill
+	%%	\includegraphics[scale=0.02]{./tmp/neuralNetwork.jpg}
+	\item \textbf{Tensor representation of a neural network}
+	\begin{center}
+		\includegraphics[scale=0.2]{./pics/tnn.png}
+	\end{center} 
+\vfill
+{\footnotesize Image source:  Perspective on Tensor Networks for Machine Learning - E.M. Stoudenmire}
+	
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Importance of communication in high performance computing}
+\begin{minipage}{0.7\linewidth}
+\begin{itemize}	
+	\item Gaps between computation and communication costs growing exponentially 
+	%%	\item Gaps between computation and communication growing exponentially on a parallel computer
+	%%{\footnotesize\begin{center}
+	%%		\begin{tabular}{|c|c|c|c|}
+	%%			\hline
+	%%			& time-per-operation & Network-bandwidth & Network-latency\\ \hline
+	%%			Annual improvements & 59 \% & 26 \% & 15 \%\\ \hline
+	%%			%%		\multicolumn{2}{|c|}{Annual improvements}\\ \hline
+	%%			%%		time-per-operation & 59\%\\ \hline
+	%%			%%		Network-bandwidth & 26\%\\ \hline
+	%%			%%		Network-latency & 15 \% \\ \hline
+	%%		\end{tabular}$\qquad\qquad\qquad$
+	%%\end{center}}
+	{\footnotesize\begin{center}
+			\begin{tabular}{|c|c|}
+				\hline
+				& Annual improvements\\ \hline
+				Time-per-operation & 59 \%\\ \hline
+				Network-bandwidth & 26 \%\\ \hline
+				Network-latency & 15 \%\\ \hline
+			\end{tabular}$\qquad\qquad\qquad$
+	\end{center}}
+	{$\ $\tiny Source: Getting up to speed: The future of supercomputing (observed from 2004)}
+\end{itemize}
+\end{minipage}
+\begin{minipage}{0.2\linewidth}
+\begin{center}
+	\begin{tikzpicture}[scale=0.5, every node/.style={transform shape}]
+	%%\tikzstyle{taskmemory}=[draw=black, minimum height=18mm, minimum width=18mm, fill=blue!40, text=black]
+	\tikzstyle{taskcompute}=[draw=black, minimum height=16mm, minimum width=16mm, fill=none, text=black, below]
+	
+	\node (t0) at (0,0) [taskcompute] {}; 
+	\node (t1) at (4,0) [taskcompute] {};
+	\node (t2) at (4,4) [taskcompute] {};
+	\node (t3) at (0,4) [taskcompute] {};
+	
+	\draw [<->, line width=3, orange] (t0) -- (t1);
+	\draw [<->, line width=3, orange] (t1) -- (t2);
+	\draw [<->, line width=3, orange] (t2) -- (t3);
+	\draw [<->, line width=3, orange] (t3) -- (t0);
+	
+	%%\draw [<->, line width=3, orange] (t0) -- (t2);
+	%%\draw [<->, line width=3, orange] (t1) -- (t3);
+	
+	\node (td0)  at (t0.south) [above, scale=0.6] {$DRAM$};
+	\node (td1) [above, scale=0.6] at (t1.south) {$DRAM$};
+	\node (td2) [above, scale=0.6] at (t2.south) {$DRAM$};
+	\node (td3) [above, scale=0.6] at (t3.south) {$DRAM$};
+	
+	\node [above] at (td0.north) {$CPU$};
+	\node [above] at (td1.north) {$CPU$};
+	\node [above] at (td2.north) {$CPU$};
+	\node [above] at (td3.north) {$CPU$};
+	\end{tikzpicture}
+\end{center}
+\end{minipage}
+\vfill
+\begin{block}{}
+\begin{itemize}
+	\item \textbf{Research goal}: Scalable and communication optimal tools for matrix and tensor computations
+\end{itemize}
+\end{block}
+%%\begin{exampleblock}{}
+%%%%\begin{itemize}
+%%%%\item \textbf{My expertise}: Tensor computations, Parallel and communication optimal algorithms, Scheduling, Runtime Systems, Low-rank approximations
+%%%%\end{itemize}
+
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title[Matrix/Tensor Computations]{Communication Lower Bounds for Parallel Matrix and Tensor Computations} % The short title appears at the bottom of every slide, the full title is only on the title page
+
+%%\author{John Smith} % Your name
+%%\institute[UCLA] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
+%%{
+%%University of California \\ % Your institution for the title page
+%%\medskip
+%%\textit{john@smith.com} % Your email address
+%%}
+
+\author[Suraj {\sc Kumar}]{\small Hussam {\sc Al Daas}\inst{1}, Grey {\sc Ballard}\inst{2}, Laura {\sc Grigori}\inst{3}, \underline{Suraj {\sc Kumar}}\inst{4}, and Kathryn {\sc Rouse}\inst{5}}
+
+\institute[Inria Lyon]{\inst{1} Rutherford Appleton Laboratory, UK \and %
+	\inst{2} Wake Forest University, USA \and
+	\inst{3} Ecole Polytechnique Fédérale de Lausanne (EPFL), Switzerland \and
+	\inst{4} Inria Lyon, France \and
+	\inst{5} Inmar Intelligence, USA}
+\date[CSE -- IIT Kanpur]{CSE -- IIT Kanpur\\\today} % Date, can be changed to a custom date
+
+
+
+
+\begin{frame}
+\titlepage % Print the title page as the first slide
+\end{frame}
+
+
+
+%%\begin{frame}{Introduction}
+%%\begin{itemize}
+%%	\item Accelerators are becoming standard in HPC community
+%%	\begin{itemize}
+%%		\item Provide massive computational power at a limited cost 
+%%		\item 144 systems in TOP 500 list use accelerators
+%%	\end{itemize}
+%%	\item  Exploiting the full potential of hybrid platforms is challenging
+%%	\begin{itemize}
+%%		\item Difficult to precisely model computation and data transfer times
+%%		\item Scheduling 
+%%%%		on these platforms 
+%%			  is a well known hard optimization problem
+%%	\end{itemize}
+%%%%	\item Asynchronous task based runtime systems show promising performance on hybrid platforms.
+%%	\item Task based runtime systems are getting popular to make good utilization of resources
+%%			\begin{columns}
+%%		\null \hfill
+%%		\begin{column}{0.35\linewidth}
+%%			\begin{center}
+%%%%				\includegraphics[scale=0.2]{taskGraph.eps}
+%%				\includegraphics[scale=0.12]{Cholesky-4.pdf}
+%%			\end{center}
+%%		\end{column}
+%%		\begin{column}{0.65\linewidth}
+%%			\begin{itemize}
+%%				\item Applications can be expressed as task graphs
+%%				\item Vertices represent tasks
+%%				\item Edges represent dependencies among tasks
+%%				\item Runtime manages scheduling of computations and communications
+%%			\end{itemize}
+%%		\end{column}
+%%		\end{columns}
+%%	 
+%%\end{itemize}
+%%\end{frame}
+
+\begin{frame}{Higher-order SVD (HOSVD) to compute Tucker decomposition}
+\begin{center}
+	\begin{tikzpicture}[scale=0.25, every node/.style={transform shape}]
+	\pgfmathsetmacro{\cubex}{1.2}
+	\pgfmathsetmacro{\cubey}{1.2}
+	\pgfmathsetmacro{\cubez}{1.2}
+	\draw[blue,fill=pastelgreen] (-12,-1,\cubez-2) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+	\node [scale=3] at (-12.25,-1.25, 0) {$\Y$};
+	\draw[blue,fill=pastelgreen] (-12,-1,\cubez-2) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+	\draw[blue,fill=pastelgreen] (-12,-1,\cubez-2) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+	\node[draw=none, text=black, scale=4] at (-8,-1,0) {$=$};
+	
+	\pgfmathsetmacro{\cubex}{2}
+	\pgfmathsetmacro{\cubey}{2}
+	\pgfmathsetmacro{\cubez}{2}
+	\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+	\draw[blue,fill=pastelgreen] (0,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+	\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+	
+	\node [scale=3] at (-1, -1.2, 0) {$\X$};
+	\draw[blue,fill=pastelgreen] (-\cubex-1,1,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey-2,0) -- ++(\cubex,0,0) -- cycle;
+	
+	\node [scale=3] at (-4, -1.2, 0) {$A$};
+	
+	\draw[blue,fill=pastelgreen] (\cubex+2+1,0,-\cubey) -- ++(-\cubex-2,0,0) -- ++(0,-\cubey,0) -- ++(\cubex+2,0,0) -- cycle;
+	\node [scale=3] at (3.75, -0.25, 0) {$B$};
+	
+	\draw[blue,fill=pastelgreen] (0,0,-\cubez-1) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez-2) -- ++(\cubex,0,0) -- cycle;
+	\node [scale=3] at (-1, 0, -5) {$C$};
+	
+	\path (-18,0) -- (20,0);
+	\end{tikzpicture}
+	
+		{\footnotesize
+		\begin{algorithm}[H]{\footnotesize
+				\caption{3-dimensional HOSVD Algorithm($\X$)}
+				%%				\caption{HOSVD Algorithm($\X$, $R_1$, $R_2$, $R_3$)}
+				\begin{algorithmic}[1]
+					%%					\STATE $A \leftarrow$ $R_1$ left singular vectors of $\X_{(1)}$
+					%%					\STATE $B \leftarrow$ $R_2$ left singular vectors of $\X_{(2)}$
+					%%					\STATE $C \leftarrow$ $R_3$ left singular vectors of $\X_{(3)}$
+					\STATE Obtain factor matrices $A, B$ and $C$ from the matrix representations of the input tensor $\X$
+					%%					 based on required accuracy
+					\STATE $\Y = \X \times_1 A^\Tra \times_2 B^\Tra \times_3 C^\Tra$
+					\STATE Return $\Y$, $A$, $B$, $C$
+				\end{algorithmic}
+		}\end{algorithm}
+		
+		\vspace*{-0.45cm}
+		\begin{itemize}
+			\item $\X$, $\Y$: 3-dimensional input and output tensors (or arrays) \& $A$, $B$, $C$: matrices
+			\vfill
+			%%			\item $\X_{(i)}$: matricization of $\X$ ($i$th dimension represents rows and remaining dimensions represent columns)
+			\item $\times_i$: tensor contraction along the $i$th dimension (similar to matrix multiplication)
+			\vfill
+			\item Multiple Tensor-Times-Matrix (Multi-TTM) computation: $\Y = \X \times_1 A^\Tra \times_2 B^\Tra \times_3 C^\Tra$
+			%%			\begin{itemize}
+			%%				\item To obtain full tensor, $\X = \Y \times_1 A \times_2 B \times_3 C$
+			%%			\end{itemize}
+		\end{itemize}
+	}
+
+
+\end{center}
+
+%% $\X = \Y \times_1 {\Mn{A}{1}} \cdots \times_d {\Mn{A}{d}}$ to obtain the full tensor or as $\Y = \X \times_1 {\Mn{A}{1}}^\Tra \cdots \times_d {\Mn{A}{d}}^\Tra$
+\end{frame}
+%%\begin{frame}
+%%\frametitle{Outline (Lower Bounds and Communication Optimal Algorithms)} % 
+%%\end{frame}
+
+\begin{frame}
+	\frametitle{Communication lower bounds and communication optimal algorithms} % Table of contents slide, comment this block out to remove it
+	\tableofcontents[hidesubsections] 
+%	\begin{block}{Settings}
+%		\begin{itemize}
+%			\item $P$ number of processors
+%			\item Each processor performs (asymptotically) equal amount of operations
+%			%%		\item No redundant operations
+%			\item One copy of data is in the system
+%			\begin{itemize}
+%				\item $1/P$th amount of inputs (before the computation) and output (after the computation) on each processor  
+%			\end{itemize}
+%			\item Focus on bandwidth cost (volume of data transfers)
+%			%%		\item Each processor has enough memory
+%		\end{itemize}
+%	\end{block}
+	
+\end{frame}
+
+
+
+
+\section{For Matrix Matrix Multiplication}
+
+%%\begin{frame}{Outline (Lower Bounds and Communication Optimal Algorithms)}
+%%\tableofcontents[currentsection]
+%%\end{frame}
+
+\begin{frame}{Traditional matrix multiplication}
+
+%	\vfill
+	\begin{itemize}
+		\item $C= AB$, where $A \in\mathbb{R}^{n_1 \times n_2}$, $B \in\mathbb{R}^{n_2 \times n_3}$, and  $C$ $\in$ $\mathbb{R}^{n_1 \times n_3}$.
+		\item $C_{ij} = \sum_\ell A_{i\ell} \cdot B_{\ell j}$
+	\end{itemize}
+	For simplicity, we assume $n_1=n_2=n_3=n$.
+	\vfill
+	\begin{center}
+		\begin{tikzpicture}[scale=1, every node/.style={transform shape}]
+		%%	\tikzstyle{taskr}=[draw=black, minimum height=18mm, minimum width=18mm, anchor=south west, fill=pastelgreen, text=black]
+		
+		\tikzstyle{taskr}=[draw=black, minimum height=18mm, minimum width=18mm, fill=pastelgreen, text=black]
+		
+		\tikzstyle{taskrow}=[draw=black, minimum height=2mm, minimum width=18mm, fill=pastelgreen, fill=none, text=black]
+		\tikzstyle{taskcol}=[draw=black, minimum height=18mm, minimum width=2mm, fill=pastelgreen, fill=none, text=black]
+		
+		\tikzstyle{taskrsmall}=[draw=black, minimum height=2mm, minimum width=2mm, fill=none, text=black]
+		
+		%%	\node(t1) at (0,0) {};
+		%%	\node [above right=0cm and 0cm of t1.mid,taskr](T1) {};
+		\node [taskr, fill=none] (T1) at (0,0) {};
+		\node [taskrsmall] (T2) at (T1.mid) {};
+		\node [above] at (T2.mid) {\tiny C(i,j)};
+		\node[draw=none, text=black, scale=1] at (2.25,0) {$=$};
+		
+		\node [right=3cm of T1.mid,taskr, fill=none](T3) {};
+		\node[taskrow](T4) at (T3.mid) {};
+		\node [above] at (T4.mid) {\tiny A(i,:)};
+		
+		\node [right=2cm of T3.mid,taskr, fill=none](T5) {};
+		\node [right=2.5cm of T3.mid, taskcol](T6) {};
+		\node [right] at (T6.mid) {\tiny B(:,j)};
+		
+		\end{tikzpicture}
+	\end{center}
+	\vfill
+	\begin{itemize}
+		\item Not focus on fast matrix multiplications such as Strassen's algorithm today
+	\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Matrix multiplication: linear combination of columns}
+	\begin{itemize}
+		\item A column of $C$ is obtained by linear combination of columns of $A$.
+	\end{itemize}
+	\begin{center}
+		\begin{tikzpicture}[scale=1, every node/.style={transform shape}]
+		%%	\tikzstyle{taskr}=[draw=black, minimum height=18mm, minimum width=18mm, anchor=south west, fill=pastelgreen, text=black]
+		
+		\tikzstyle{taskr}=[draw=black, minimum height=18mm, minimum width=18mm, fill=pastelgreen, text=black]
+		
+		\tikzstyle{taskrow}=[draw=black, minimum height=2mm, minimum width=18mm, fill=pastelgreen, fill=none, text=black]
+		\tikzstyle{taskcol}=[draw=black, minimum height=18mm, minimum width=2mm, fill=pastelgreen, fill=none, text=black]
+		
+		\tikzstyle{taskrsmall}=[draw=black, minimum height=2mm, minimum width=2mm, fill=none, text=black]
+		
+		%%	\node(t1) at (0,0) {};
+		%%	\node [above right=0cm and 0cm of t1.mid,taskr](T1) {};
+		\node [taskr, fill=none] (T1) at (0,0) {};
+		\node [taskcol] (T2) at (0,0) {};
+		\node [right] at (T2.mid) {\tiny C(:,j)};
+		
+		\node[draw=none, text=black, scale=1] at (2.25,0) {$=$};
+		%%	
+		\node [right=3cm of T1.mid,taskr, fill=none](T3) {};
+		%%	\node[taskrow](T4) at (T3.mid) {};
+		\node [above] at (T3.north) {\tiny A};
+		%%	\draw[pastelgreen, thick] (3.1cm, 0.8) -- (3.1cm, -0.75);
+		%%	\draw[pastelgreen, thick] (3.2cm, 0.8) -- (3.2cm, -0.75);
+		%%	\draw[pastelgreen, thick] (3.3cm, 0.8) -- (3.3cm, -0.75);
+		%%	\draw[pastelgreen, thick] (3.45cm, 0.8) -- (3.45cm, -0.75);
+		\foreach \x in {1,2,3,4,5,6,7,8,9,10}
+		\draw [pastelgreen, thick] (3+0.165* \x, 0.8) -- (3+0.165* \x, -0.75);
+		%%  \foreach \y [count=\yi] in {0,...,3}  
+		%%  \draw (\x\y)--(\x\yi) (\y\x)--(\yi\x) ;
+		
+		%%	
+		\node [right=2cm of T3.mid,taskr, fill=none](T5) {};
+		\node [right=2.5cm of T3.mid, taskcol](T6) {};
+		\node [right] at (T6.mid) {\tiny B(:,j)};
+		%%	
+		\end{tikzpicture}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Matrix multiplication: linear combination of rows}
+	\begin{itemize}
+		\item A row of $C$ is obtained by linear combination of rows of $B$.
+	\end{itemize}
+	\begin{center}
+		\begin{tikzpicture}[scale=1, every node/.style={transform shape}]
+		%%	\tikzstyle{taskr}=[draw=black, minimum height=18mm, minimum width=18mm, anchor=south west, fill=pastelgreen, text=black]
+		
+		\tikzstyle{taskr}=[draw=black, minimum height=18mm, minimum width=18mm, fill=pastelgreen, text=black]
+		
+		\tikzstyle{taskrow}=[draw=black, minimum height=2mm, minimum width=18mm, fill=pastelgreen, fill=none, text=black]
+		\tikzstyle{taskcol}=[draw=black, minimum height=18mm, minimum width=2mm, fill=pastelgreen, fill=none, text=black]
+		
+		\tikzstyle{taskrsmall}=[draw=black, minimum height=2mm, minimum width=2mm, fill=none, text=black]
+		
+		%%	\node(t1) at (0,0) {};
+		%%	\node [above right=0cm and 0cm of t1.mid,taskr](T1) {};
+		\node [taskr, fill=none] (T1) at (0,0) {};
+		\node [taskrow] (T2) at (0,0) {};
+		\node [above] at (T2.mid) {\tiny C(i,:)};
+		
+		\node[draw=none, text=black, scale=1] at (2.25,0) {$=$};
+		%%	
+		\node [right=3cm of T1.mid,taskr, fill=none](T3) {};
+		\node[taskrow](T4) at (T3.mid) {};
+		\node [above] at (T3.mid) {\tiny A(i,:)};
+		%%	\node [above] at (T3.north) {\tiny A};
+		%%	\draw[pastelgreen, thick] (3.1cm, 0.8) -- (3.1cm, -0.75);
+		%%	\draw[pastelgreen, thick] (3.2cm, 0.8) -- (3.2cm, -0.75);
+		%%	\draw[pastelgreen, thick] (3.3cm, 0.8) -- (3.3cm, -0.75);
+		%%	\draw[pastelgreen, thick] (3.45cm, 0.8) -- (3.45cm, -0.75);
+		%%	\foreach \x in {1,2,3,4,5,6,7,8,9,10}
+		%%		\draw [pastelgreen, thick] (3+0.165* \x, 0.8) -- (3+0.165* \x, -0.75);
+		%%  \foreach \y [count=\yi] in {0,...,3}  
+		%%  \draw (\x\y)--(\x\yi) (\y\x)--(\yi\x) ;
+		
+		%%	
+		\node [right=2cm of T3.mid,taskr, fill=none](T5) {};
+		\node [above] at (T5.north) {\tiny B};
+		
+		\foreach \x in {1,2,3,4,5,6,7,8,9,10}
+		\draw [pastelgreen, thick] (6, -0.75+0.165* \x) -- (7.56, -0.75+0.165* \x);
+		
+		%%	\node [right=2.5cm of T3.mid, taskcol](T6) {};
+		%%	\node [right] at (T6.mid) {\tiny B(:,j)};
+		%%	
+		\end{tikzpicture}
+	\end{center}
+	
+\end{frame}
+
+\begin{frame}{Matrix multiplication: sum of $n$ matrices}
+	\begin{itemize}
+		\item Matrix multiplication can also be viewed as sum of $n$ matrices.
+	\end{itemize}
+	\begin{center}
+		\begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+		%%	\tikzstyle{taskr}=[draw=black, minimum height=18mm, minimum width=18mm, anchor=south west, fill=pastelgreen, text=black]
+		
+		\tikzstyle{taskr}=[draw=black, minimum height=18mm, minimum width=18mm, fill=pastelgreen, text=black]
+		
+		\tikzstyle{taskrow}=[draw=black, minimum height=2mm, minimum width=18mm, fill=pastelgreen, fill=none, text=black]
+		\tikzstyle{taskcol}=[draw=black, minimum height=18mm, minimum width=2mm, fill=pastelgreen, fill=none, text=black]
+		
+		\tikzstyle{taskrsmall}=[draw=black, minimum height=2mm, minimum width=2mm, fill=none, text=black]
+		
+		%%	\node(t1) at (0,0) {};
+		%%	\node [above right=0cm and 0cm of t1.mid,taskr](T1) {};
+		\node [taskr, fill=none] (T1) at (0,0) {};
+		%%	\node [taskrow] (T2) at (0,0) {};
+		\node [above] at (T1.north) {\tiny C};
+		
+		\node[draw=none, text=black, scale=1] at (2.25,0) {$=$};
+		%%	
+		\node [right=3cm of T1.mid,taskr, fill=none](T3) {};
+		%%	\node[taskrow](T4) at (T3.mid) {};
+		%%	\node [above] at (T3.mid) {\tiny A(i,:)};
+		\node [above] at (T3.north) {\tiny A};
+		%%	\draw[pastelgreen, thick] (3.1cm, 0.8) -- (3.1cm, -0.75);
+		%%	\draw[pastelgreen, thick] (3.2cm, 0.8) -- (3.2cm, -0.75);
+		%%	\draw[pastelgreen, thick] (3.3cm, 0.8) -- (3.3cm, -0.75);
+		%%	\draw[pastelgreen, thick] (3.45cm, 0.8) -- (3.45cm, -0.75);´
+		%%	  \foreach \x/\xtext in {0,...,3,2.72 / e} 
+		\foreach \x/\y in {1/pastelviolet, 2/babyblueeyes, 3/orange, 4/yellow, 5/green, 6/pastelred}
+		\draw [\y, line width = 2.5] (3+0.25* \x, 0.8) -- (3+0.25* \x, -0.75);
+		%%  \foreach \y [count=\yi] in {0,...,3}  
+		%%  \draw (\x\y)--(\x\yi) (\y\x)--(\yi\x) ;
+		
+		%%	
+		\node [right=2cm of T3.mid,taskr, fill=none](T5) {};
+		\node [above] at (T5.north) {\tiny B};
+		
+		\foreach \x/\y in {1/pastelviolet, 2/babyblueeyes, 3/orange, 4/yellow, 5/green, 6/pastelred}
+		\draw [\y, line width = 2.5] (6, 1-0.25* \x) -- (7.56, 1-0.25* \x);
+		
+		%%	\node [right=2.5cm of T3.mid, taskcol](T6) {};
+		%%	\node [right] at (T6.mid) {\tiny B(:,j)};
+		%%	
+		\end{tikzpicture}
+	\end{center}
+	
+	\begin{center}
+		\begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+		%%	\tikzstyle{taskr}=[draw=black, minimum height=18mm, minimum width=18mm, anchor=south west, fill=pastelgreen, text=black]
+		
+		\tikzstyle{taskr}=[draw=black, minimum height=18mm, minimum width=18mm, fill=pastelgreen, text=black]
+		
+		
+		%%	\node(t1) at (0,0) {};
+		%%	\node [above right=0cm and 0cm of t1.mid,taskr](T1) {};
+		\node [taskr, fill=none] (T1) at (0,0) {};
+		%%	\node [taskrow] (T2) at (0,0) {};
+		%%	\node [above] at (T1.north) {\tiny C};
+		
+		\node[draw=none, text=black] at (2.25,0) {$=$};
+		
+		\draw [pastelviolet, line width = 2.5] (3+0.25, 0.8) -- (3+0.25, -0.75);
+		\draw [pastelviolet, line width = 2.5] (3+0.35, 1-0.25) -- (5, 1-0.25);
+		\node[draw=none, text=black] at (5.25,0) {$+$};
+		
+		\draw [babyblueeyes, line width = 2.5] (2.5+3+0.25, 0.8) -- (2.5+3+0.25, -0.75);
+		\draw [babyblueeyes, line width = 2.5] (2.5+3+0.35, 1-0.25) -- (2.5+5, 1-0.25);
+		\node[draw=none, text=black] at (2.75+5.25,0) {$+\cdots$};
+		
+		\node[draw=none, text=black] at (3.5+5.25,0) {$+$};
+		\draw [pastelred, line width = 2.5] (9.25, 0.8) -- (9.25, -0.75);
+		\draw [pastelred, line width = 2.5] (9.35, 1-0.25) -- (9.35+1.65, 1-0.25);
+		
+		%%	
+		%%	\node [right=3cm of T1.mid,taskr, fill=none](T3) {};
+		%%	%%	\node[taskrow](T4) at (T3.mid) {};
+		%%	%%	\node [above] at (T3.mid) {\tiny A(i,:)};
+		%%	\node [above] at (T3.north) {\tiny A};
+		%%	%%	\draw[pastelgreen, thick] (3.1cm, 0.8) -- (3.1cm, -0.75);
+		%%	%%	\draw[pastelgreen, thick] (3.2cm, 0.8) -- (3.2cm, -0.75);
+		%%	%%	\draw[pastelgreen, thick] (3.3cm, 0.8) -- (3.3cm, -0.75);
+		%%	%%	\draw[pastelgreen, thick] (3.45cm, 0.8) -- (3.45cm, -0.75);´
+		%%	%%	  \foreach \x/\xtext in {0,...,3,2.72 / e} 
+		%%	\foreach \x/\y in {1/pastelviolet, 2/babyblueeyes, 3/orange, 4/yellow, 5/green, 6/pastelred}
+		%%	\draw [\y, line width = 2.5] (3+0.25* \x, 0.8) -- (3+0.25* \x, -0.75);
+		%%	%%  \foreach \y [count=\yi] in {0,...,3}  
+		%%	%%  \draw (\x\y)--(\x\yi) (\y\x)--(\yi\x) ;
+		%%	
+		%%	%%	
+		%%	\node [right=2cm of T3.mid,taskr, fill=none](T5) {};
+		%%	\node [above] at (T5.north) {\tiny B};
+		%%	
+		%%	\foreach \x/\y in {1/pastelviolet, 2/babyblueeyes, 3/orange, 4/yellow, 5/green, 6/pastelred}
+		%%	\draw [\y, line width = 2.5] (6, 1-0.25* \x) -- (7.56, 1-0.25* \x);
+		%%	
+		%%	%%	\node [right=2.5cm of T3.mid, taskcol](T6) {};
+		%%	%%	\node [right] at (T6.mid) {\tiny B(:,j)};
+		%%	%%	
+		\end{tikzpicture}
+	\end{center}
+	
+	
+\end{frame}
+
+
+\begin{frame}{Matrix multiplication: recursive calls on submatrices}
+	\begin{itemize}
+		\item Matrix is divided into 2$\times$2 blocks
+	\end{itemize}
+	%%\begin{pmatrix}
+	%%	1 & 2 & 3\\
+	%%	a & b & c
+	%%\end{pmatrix}
+	
+	\begin{align*}
+	\begin{pmatrix}
+	C_{11} & C_{12} \\
+	C_{21} & C_{22}
+	\end{pmatrix}
+	&
+	=
+	\begin{pmatrix}
+	A_{11} & A_{12} \\
+	A_{21} & A_{22}
+	\end{pmatrix}
+	\begin{pmatrix}
+	B_{11} & B_{12} \\
+	B_{21} & B_{22}
+	\end{pmatrix}
+	\end{align*}
+	
+	\begin{align*}
+	C_{11} &= A_{11}B_{11} + A_{12}B_{21}\\
+	C_{12} &= A_{11}B_{12} + A_{12}B_{22}\\
+	C_{21} &= A_{21}B_{11} + A_{22}B_{21}\\
+	C_{22} &= A_{21}B_{12} + A_{22}B_{22}\\
+	\end{align*}
+\end{frame}
+
+
+\begin{frame}{Matrix multiplication: recursive calls on submatrices}
+	Operation count recurrence,
+	\begin{align*}
+	T(n) &= 8T\Big(\frac{n}{2}\Big) + \mathcal{O}(n^2)\\
+	T(n) &= 1
+	\end{align*}
+	Here $\mathcal{O}(n^2)$ refers that $\exists c\in\mathbb{N}$ such that this term is less than or equal to $cn^2$ for every $n$.
+	\medskip
+	
+	
+	After solving, we obtain $T(n) = \mathcal{O}(n^3)$.
+\end{frame}
+
+\subsection{Communication lower bounds \& optimal algorithms}
+\begin{frame}
+	\frametitle{Communication lower bounds and communication optimal algorithms} % Table of contents slide, comment this block out to remove it
+	\tableofcontents % Throughout your presentation, if you choose to use \section{} and \subsection{} commands, these will automatically be printed on this slide as an overview of your presentation
+	
+	\begin{block}{Settings}
+		\begin{itemize}
+			\item $P$ number of processors
+			\item Each processor performs (asymptotically) equal amount of operations
+			%%		\item No redundant operations
+			\item One copy of data is in the system
+			\begin{itemize}
+				\item $1/P$th amount of inputs (before the computation) and output (after the computation) on each processor  
+			\end{itemize}
+			\item Focus on bandwidth cost (volume of data transfers)
+			%%		\item Each processor has enough memory
+		\end{itemize}
+	\end{block}
+	
+\end{frame}
+
+
+
+\begin{frame}{Approach to obtain communication lower bounds}
+
+{\small
+	\begin{minipage}{0.7\linewidth}
+		\begin{itemize}
+			\item Loomis-Whitney inequalitiy: for $d-1$ dimensional projections
+			\begin{itemize}
+				\item For the $2$d object $A$, $\phi_x \phi_y \ge Area(A)$
+				\item For the $3$d object $B$, $(\phi_{xy}\phi_{yz}\phi_{xz})^\frac{1}{2} \ge Volume(B)$
+				%%		\item $2$-dimensional object $A$ and its $1$-dimensional projections are $\phi_x$ and $\phi_y$, then $\phi_x \phi_y \ge Area(A)$
+				%%		\item $3$-dimensional object $B$ and its $2$-dimensional projections are $\phi_{xy}$, $\phi_{yz}$ and $\phi_{xz}$, then $(\phi_{xy}\phi_{yz}\phi_{xz})^\frac{1}{2} \ge Volume(B)$
+			\end{itemize}
+		\end{itemize}
+	\end{minipage}$\quad$
+	\begin{minipage}{0.25\linewidth}
+		\begin{center}
+			\begin{tikzpicture}[scale=0.215, every node/.style={transform shape}]
+			\draw (0,0) -- ++(5,0) -- ++(0, 5) -- ++(-5,0) -- cycle;
+			\draw [<->] (0,6) -- (0,0) -- (6,0);
+			\node [below right, scale=2] at (6,0) {$x$};
+			\node [left, scale=2] at (0,6) {$y$};
+			
+			\draw [fill=gray!70] (2,2.25) to [curve through={(2.4,3) .. (2.5,2.9) .. (2.8,3.8) .. (3.1,2.1) .. (2.6,1.7)}] (2,2.25);
+			
+			\node [scale=3] at (2.5,2.5) {$A$};
+			\draw [dotted] (1.7,2.25) -- (1.7,0);
+			\draw [dotted] (3.6,2.4) -- (3.6,0);
+			
+			\node[above, scale=3] at (2.6,0) {$\phi_x$};
+			
+			\draw [dotted] (2,1.75) -- (0,1.75);
+			\draw [dotted] (2.8,4) -- (0,4);
+			
+			\node[right, scale=3] at (0,3) {$\phi_y$};
+			\end{tikzpicture}
+			\begin{tikzpicture}[scale=0.215, every node/.style={transform shape}]
+			\draw (0,0) -- ++(5,0) -- ++(0, 5) -- ++(-5,0) -- cycle;
+			\draw (0,5,0) -- ++(0,0, -5) -- ++(5,0,0) -- ++(0,0,5) -- cycle;
+			\draw (5,0,0) -- ++(0,0,-5) -- ++(0,5,0) -- ++(0,0,5) -- cycle;
+			\draw (0,0,-5) -- ++(5,0,0) -- ++(0,5,0) -- ++(-5,0,0) -- cycle;
+			\draw [<->] (0,6) -- (0,0) -- (6,0);
+			\draw [->] (0,0,0) -- (0,0,-12);
+			\node [left, scale=2, rotate=0] at (0,0,-12) {$z$};
+			\node [below right, scale=2] at (6,0) {$x$};
+			\node [left, scale=2] at (0,6) {$y$};
+			
+			\draw [fill=gray!70] (2,2.25) to [curve through={(2.4,3) .. (2.5,3) .. (2.8,3.8) .. (3.1,2.1) .. (2.6,1.7)}] (2,2.25);
+			
+			\node [scale=2] at (2.5,2.5) {$A$};
+			\draw [dotted] (1.7,2.25) -- (1.7,0.2);
+			\draw [dotted] (3.6,2.4) -- (3.6,0.3);
+			
+			\draw [fill=green!40] (1.75,0.25) to [curve through={(1.8, 0.35) .. (3.5, 0.65) .. (2,0.25)}] (1.75,0.25);
+			\node[above, scale=1.5] at (2.6,0,-0.75) {$\phi_{xz}$};
+			
+			\draw [dotted] (2,1.75) -- (0.3,1.75);
+			\draw [dotted] (2.8,4) -- (0.385,4);
+			
+			\draw [fill=red!40] (0.3, 1.75) to [curve through={(0.5,2) .. (1, 2.5) .. (1,3.95) .. (0.2, 2.5)}] (0.3,1.75);
+			\node[right, scale=1.5] at (0,3, -0.75) {$\phi_{yz}$};
+			
+			\draw [fill=yellow!40] (3.85,3.9) to [curve through={(3.7,3.8) .. (3.5,3.4) .. (3.45,3.2)}] (3.85, 3.9);
+			\node [scale=1.5] at (3.65,3.1,-1) {$\phi_{xy}$};
+			\draw [dotted] (2.8,4) -- (3.8,3.9);
+			\draw [dotted] (2.56,1.65) -- (4,2.5);
+			
+			\draw [fill=gray!70] (2,2.25) to [curve through={(2.4,3) .. (2.5,3) .. (2.8,3.8) .. (3.1,2.1) .. (2.6,1.7)}] (2,2.25);
+			
+			\node [scale=3] at (2.5,2.5) {$B$};
+			\end{tikzpicture}
+		\end{center}
+	\end{minipage}
+	\begin{itemize}
+		\item H\"{o}lder-Brascamp-Lieb (HBL) inequality -- generalization for arbitrary dimensional projections
+		\begin{itemize}
+			\item Provide exponent for each projection
+			%%		\item Work with $\M{\Delta}$ matrix that depends on the array accesses
+			%%		\item $\V{1}$ is vector of all ones and $\M{\Delta}$ depends on the array accesses in the computation
+			%%		\item $\V{x}$ and projections provide relation with the amount of computations 
+		\end{itemize}
+	\end{itemize}
+	\vspace*{-0.15cm}
+	\begin{block}{\small Constraints for parallel load balanced matrix matrix multiplication}
+		\begin{itemize}
+			\item $C=AB$ with $A \in \mathbb{R}^{n_1\times n_2}, B \in \mathbb{R}^{n_2\times n_3}$, and $C \in \mathbb{R}^{n_1\times n_3}$
+		\end{itemize}
+		\vspace*{-0.45cm}\begin{align*}
+		&\text{for $i = 1{:}n_1$, for $k = 1{:}n_2$, for $j = 1{:}n_3$}\\
+		&\quad \quad C[i][j] += A[i][k]*B[k][j]
+		\end{align*}
+		%%\begin{columns}
+		%%	\begin{column}{0.35\linewidth}{\small
+		%%			\vspace*{-0.425cm}\begin{center}
+		%%				$\M{\Delta} = \begin{blockarray}{cccc}
+		%%				& A & B & C  \\
+		%%				\begin{block}{c(ccc)}
+		%%				i & 1 & 0 & 1\\
+		%%				j & 0 & 1 & 1\\
+		%%				k & 1 & 1 & 0\\
+		%%				\end{block}
+		%%				\end{blockarray}$
+		%%			\end{center}
+		%%	}\end{column}
+		%%	\begin{column}{0.6\linewidth}
+		%%		\vspace*{-0.35cm}\begin{align*}
+		%%		&\text{for $i = 1{:}n_1$, for $k = 1{:}n_2$, for $j = 1{:}n_3$}\\
+		%%		&\quad \quad C[i][j] += A[i][k]*B[k][j]
+		%%		\end{align*}
+		%%	\end{column}
+		%%\end{columns}
+		%%\vspace*{-0.2cm}
+		\begin{itemize}[leftmargin=5.5mm]
+			%%	\item For tight bounds, find vector $\V{x}$ such that $\M{\Delta}.\V{x} = \V{1}$
+			%%	\item $\phi_A, \phi_B, \phi_C$: projections of computations on arrays $A$, $B$, $C$ and $\V{x}=\begin{bmatrix} \frac{1}{2} & \frac{1}{2} & \frac{1}{2} \end{bmatrix}^\Tra$
+			\item $\phi_A, \phi_B, \phi_C$: projections of computations on arrays $A$, $B$, $C$
+			\item From Loomis-Whitney/HBL inequality: $\phi_A^{\frac{1}{2}} \phi_B^{\frac{1}{2}} \phi_C^{\frac{1}{2}} \ge \text{number of multiplications per processor}=\frac{n_1n_2n_3}{P}$
+			\item Extra constraints: $\frac{n_1n_2}{P} \le \phi_A \le n_1n_2$, $\frac{n_2n_3}{P} \le \phi_B \le n_2n_3$, $\frac{n_1n_3}{P} \le \phi_C \le n_1n_3$
+		\end{itemize}
+	\end{block}
+}
+\end{frame}
+
+
+
+\begin{frame}{Optimization problem and communication lower bounds}
+
+{\footnotesize 
+	%%		\begin{itemize}
+	%%			\item $\phi_A,  \phi_B, \phi_C$ indicate the amount of array accesses
+	%%		\end{itemize}
+	\begin{center}
+		\vspace*{-0.375cm}\begin{align*}
+		Minimize &\ \phi_A + \phi_B + \phi_C \  \text{ s.t.}\\
+		\phi_A^\frac{1}{2} \phi_B^\frac{1}{2}  \phi_C^\frac{1}{2} & \ge \frac{n_1n_2n_3}{P}\\
+		\frac{n_1n_2}{P} \le &\phi_A \le n_1n_2\\
+		\frac{n_2n_3}{P} \le &\phi_B \le n_2n_3\\
+		\frac{n_1n_3}{P} \le &\phi_C \le n_1n_3
+		\end{align*}
+	\end{center}
+	
+	%%\vfill
+	\vspace*{-0.15cm}
+	\begin{block}{\footnotesize Amount of array accesses = $\phi_A + \phi_B + \phi_C$}
+		%%	\begin{block}{}
+		%%$\bullet$ Estimate the solution based on Lagrange multipliers\\
+		%%$\bullet$ Prove optimality using all Karush–Kuhn–Tucker (KKT) conditions are satisfied
+		$\bullet$ Estimate the solution and prove optimality using all Karush--Kuhn--Tucker conditions are satisfied\\
+		$\bullet$ For $n_1\le n_2\le n_3$,
+		%%$\bullet$ Prove optimality using all Karush–Kuhn–Tucker (KKT) conditions are satisfied
+		\vspace*{-0.1cm}\begin{center}
+			\begin{tikzpicture}[scale=0.6875, every node/.style={transform shape}]
+			%%\draw (-2,0) -- node[below] {a} ++(2,0) -- node[above] {b} ++(2,0);
+			%%\draw (-0.1,0) -- ++(5,0) -- ++(5,0);
+			\draw [->, thick] (-0.1,0) -- (14.5,0) node [below right] {$P$};
+			\draw (0, 0.1) -- node [below, pastelred, scale=1.6]{$1$}(0,-0.1);
+			\draw (5, 0.1) -- node [below, pastelred, scale=1.6]{$\frac{n_3}{n_2}$}(5,-0.1);
+			\draw (10, 0.1) -- node [below, pastelred, scale=1.6] {$\frac{n_2n_3}{n_1^2}$}(10,-0.1);
+			
+			\node[align=left,below,scale=1.2] at (2.25, -0.15) {$\phi_A = n_1n_2$\\ $\phi_B=\frac{n_1n_3}{P}$\\ $\phi_C = \frac{n_2n_3}{P}$};
+			\node[align=left,below,scale=1.2] at (7.25, -0.25) {$\phi_A =\phi_B= (\frac{n_1^2n_2n_3}{P})^{1/2}$\\ $\phi_C = \frac{n_2n_3}{P}$};
+			\node[align=center,below,scale=1.2] at (12.75, -0.5) {$\phi_A = \phi_B = \phi_C = (\frac{n_1n_2n_3}{P})^{2/3}$};	
+			\end{tikzpicture}
+		\end{center}\vspace*{-0.25cm}
+		$\bullet$ Communication lower bound = $\phi_A + \phi_B + \phi_C - \text{data owned by the processor} = \phi_A + \phi_B + \phi_C - \frac{n_1n_2+n_2n_3+n_1n_3}{P}$
+	\end{block}	
+}
+\end{frame}
+
+
+
+
+
+\begin{frame}{Design of communication optimal algorithms for $C=AB$}
+
+\begin{exampleblock}{\small Arrangements of $8$ processors}
+\begin{center}
+	\begin{tikzpicture}[scale=0.3, every node/.style={transform shape}]	
+	\foreach \x in {0, 1, 2, 3, 4, 5, 6, 7, 8}
+	\draw (-\x, 0) -- (-\x, 1);
+	
+	\foreach \x in {0, 1, 2, 3, 4, 5, 6, 7, 8}
+	\draw (-\x, 1) -- (-\x+0.6, 1.5);
+	
+	\draw (-8,0) -- (0,0);
+	\draw (-8,1) -- (0,1);
+	\draw (-8+0.6,1+0.5) -- (0+0.6,1+0.5);
+	
+	\draw (0,0) -- (0.6,0.5);
+	\draw (0.6,0.5) -- (0.6,1.5);
+	\end{tikzpicture}$\qquad$
+	\begin{tikzpicture}[scale=0.3, every node/.style={transform shape}]	
+	\foreach \x in {0, 1, 2, 3, 4}
+	\draw (-\x, 0) -- (-\x, 1);
+	
+	\foreach \x in {0, 1, 2, 3, 4}
+	\draw (-\x, 0) -- (-\x, -1);
+	
+	\foreach \x in {0, 1, 2, 3, 4}
+	\draw (-\x, 1) -- (-\x+0.6, 1.5);
+	
+	\draw (-4,0) -- (0,0);
+	\draw (-4,-1) -- (0,-1);
+	\draw (-4,1) -- (0,1);
+	\draw (-4+0.6,1+0.5) -- (0+0.6,1+0.5);
+	
+	\draw (0,0) -- (0.6,0.5);
+	\draw (0.6,0.5) -- (0.6,1.5);
+	
+	\draw (0,-1) -- (0.6,-1+0.5);
+	\draw (0.6,-1+0.5) -- (0.6,0.5);
+	\end{tikzpicture}$\qquad$
+	\begin{tikzpicture}[scale=0.3, every node/.style={transform shape}]
+	
+	\def\xref{0.6}
+	\def\yref{0.5}
+	
+	\foreach \x in {0, 1, 2}
+	\draw (-2, \x) -- (0, \x);
+	
+	\foreach \x in {0, 1, 2}
+	\draw (0, \x)--(2*\xref, 2*\yref+\x);
+	
+	\draw (0,0) -- (0,2);
+	\draw (-1,0) -- (-1,2);
+	\draw (-2,0)--(-2,2);
+	\draw (\xref,\yref) -- (\xref, 2+\yref);
+	\draw (2*\xref,2*\yref) -- (2*\xref, 2+ 2*\yref);
+	
+	\draw (-2,2) -- (-2+2*\xref, 2+2*\yref);
+	\draw (-1,2) -- (-1+2*\xref, 2+2*\yref);
+	
+	\draw (-2+2*\xref, 2+2*\yref) -- (2*\xref, 2+2*\yref);
+	\draw (-2+\xref, 2+\yref) -- (\xref, 2+\yref);
+	\end{tikzpicture}
+\end{center}
+\end{exampleblock}
+\vfill
+\begin{minipage}{0.585\linewidth}{\small	
+	\begin{itemize}
+		\item $P$ is organized into $p_1 \times p_2 \times p_3$ logical grid
+		\item Select $p_1,p_2$ and $p_3$ based on the communication lower bounds
+		\item Gather $A$ on the set of processors along each slice of $p_3$
+		\item Gather $B$ on the set of processors along each slice of $p_1$
+		\item Perform local computation
+		\item Perform reduce operation along $p_2$ to obtain $C$ 
+	\end{itemize}
+}\end{minipage}
+\begin{minipage}{0.4\linewidth}
+\begin{center}
+	\begin{tikzpicture}[every node/.append style={transform shape},scale=0.75]
+	% draw lines signifying collectives
+	%%		\draw[line width=2,->,red!75] (-2.5,-1.5,0) -- (0,-1.5,0) node [right] {$p_2$};
+	\draw[line width=2,->,red!75] (-2.5,-1.5,0) -- (-1.25,-1.5,0) node [below] {$p_2$} -- (0,-1.5,0);
+	\draw[line width=2,->,red!75] (-3.2,1.75,0) -- (-3.2,1,0) node [left] {$p_1$} -- (-3.2,-0.675,0);
+	\draw[line width=2,->,red!75] (-3.35,2.25,0) -- (-3.35,2.25,-2) node [left] {$p_3$} -- (-3.35,2.25,-4);
+	%%		\draw[line width=3,stealth-stealth,red!75] (0,2,0) -- (-2.25,2,0);
+	%%		\draw[line width=3,stealth-stealth,red!75] (0,2,0) -- (0,-.25,0);
+	% right face of comp cube
+	\begin{scope}[canvas is yz plane at x=.5,rotate=-90,yscale=-1,shift={(-.5,-3+.5)}]
+	%%\draw[fill=red!25] (0,0) rectangle (1,1);
+	%%\draw[fill=red!75] (2/3,0) rectangle (1,1);
+	\draw[black] (0,0) grid (3,3);
+	%%\draw[black,xscale=1/3,dotted] (0,0) grid (3,1);
+	\node[yscale=-1,scale=2] at (3/2,3/2) {\Large $\CC$};
+	\node[yscale=-1,scale=.5] at (1/2,1/2) {$\CC_{11}$};
+	\node[yscale=-1,scale=.5] at (1/2,3/2) {$\CC_{12}$};
+	\node[yscale=-1,scale=.5] at (1/2,5/2) {$\CC_{13}$};
+	\node[yscale=-1,scale=.5] at (3/2,1/2) {$\CC_{21}$};
+	\node[yscale=-1,scale=.5] at (3/2,5/2) {$\CC_{23}$};
+	\node[yscale=-1,scale=.5] at (5/2,1/2) {$\CC_{31}$};
+	\node[yscale=-1,scale=.5] at (5/2,3/2) {$\CC_{32}$};
+	\node[yscale=-1,scale=.5] at (5/2,5/2) {$\CC_{33}$};
+	\end{scope}
+	% front face of comp cube
+	\begin{scope}[canvas is yx plane at z=.5,yscale=-1,rotate=180,shift={(-3+.5,-3+.5)}]
+	%%\draw[fill=red!25] (0,2) rectangle (1,3);
+	%%\draw[fill=red!75] (0,2) rectangle (1,7/3);
+	\draw[black] (0,0) grid (3,3);
+	%%\draw[black,shift={(0,2)},yscale=1/3,dotted] (0,0) grid (1,3);
+	\node[rotate=90,scale=2] at (3/2,3/2) {\Large $\A$};
+	\node[rotate=90,scale=.5] at (1/2,1/2) {$\A_{11}$};
+	\node[rotate=90,scale=.5] at (1/2,3/2) {$\A_{12}$};
+	\node[rotate=90,scale=.5] at (1/2,5/2) {$\A_{13}$};
+	\node[rotate=90,scale=.5] at (3/2,1/2) {$\A_{21}$};
+	\node[rotate=90,scale=.5] at (3/2,5/2) {$\A_{23}$};
+	\node[rotate=90,scale=.5] at (5/2,1/2) {$\A_{31}$};
+	\node[rotate=90,scale=.5] at (5/2,3/2) {$\A_{32}$};
+	\node[rotate=90,scale=.5] at (5/2,5/2) {$\A_{33}$};
+	\end{scope}
+	% top face of comp cube
+	\begin{scope}[canvas is zx plane at y=(3-.5),rotate=90,shift={(-3+.5,-.5)}]
+	%%\draw[fill=red!25] (2,0) rectangle (3,1);
+	%%\draw[fill=red!75] (2,0) rectangle (3,1/3);
+	\draw[black] (0,0) grid (3,3);
+	%%\draw[black,shift={(2,0)},yscale=1/3,dotted] (0,0) grid (1,3);
+	\node[rotate=90,scale=2] at (3/2,3/2) {\Large $\B$};
+	\node[rotate=90,scale=.5] at (1/2,1/2) {$\B_{11}$};
+	\node[rotate=90,scale=.5] at (1/2,3/2) {$\B_{12}$};
+	\node[rotate=90,scale=.5] at (1/2,5/2) {$\B_{13}$};
+	\node[rotate=90,scale=.5] at (3/2,1/2) {$\B_{21}$};
+	\node[rotate=90,scale=.5] at (3/2,5/2) {$\B_{23}$};
+	\node[rotate=90,scale=.5] at (5/2,1/2) {$\B_{31}$};
+	\node[rotate=90,scale=.5] at (5/2,3/2) {$\B_{32}$};
+	\node[rotate=90,scale=.5] at (5/2,5/2) {$\B_{33}$};
+	\end{scope}
+	\end{tikzpicture}
+\end{center}
+\end{minipage}
+\end{frame}
+
+\subsection{Conclusion}
+\begin{frame}{Outline}
+	\tableofcontents[currentsection,currentsubsection]
+\end{frame}
+ \begin{frame}{Conclusion and future work}
+	\begin{block}{Conclusion}
+		\begin{itemize}
+			\item Communication lower bounds for matrix multiplication
+			\item Communication optimal algorithms for matrix multiplication
+			
+		\end{itemize}
+	\end{block}
+	\vfill
+	\begin{block}{Future Work}
+		\begin{itemize}
+			\item Obtain tight communication lower bounds for Strassen's algorithm
+			\item Analyze symmetric computations such as $C=AA^T$ in detail
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\section{For Multi-TTM Computation}
+
+\begin{frame}{Outline}
+\tableofcontents[currentsection]
+\end{frame}
+
+\subsection{Communication lower bounds \& optimal algorithms}
+
+\begin{frame}{3-dimensional Multi-TTM computation}
+
+\begin{columns}
+	\begin{column}{0.435\linewidth}
+		\begin{center}
+			\begin{tikzpicture}[scale=0.275, every node/.style={transform shape}]
+			\pgfmathsetmacro{\cubex}{1.2}
+			\pgfmathsetmacro{\cubey}{1.2}
+			\pgfmathsetmacro{\cubez}{1.2}
+			\draw[blue,fill=pastelgreen] (-12,-1,\cubez-2) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+			\node [scale=3] at (-12.25,-1.25, 0) {$\Y$};
+			\draw[blue,fill=pastelgreen] (-12,-1,\cubez-2) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+			\draw[blue,fill=pastelgreen] (-12,-1,\cubez-2) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+			\node[draw=none, text=black, scale=4] at (-8,-1,0) {$=$};
+			
+			\pgfmathsetmacro{\cubex}{2}
+			\pgfmathsetmacro{\cubey}{2}
+			\pgfmathsetmacro{\cubez}{2}
+			\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+			\draw[blue,fill=pastelgreen] (0,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+			\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+			
+			\node [scale=3] at (-1, -1.2, 0) {$\X$};
+			\draw[blue,fill=pastelgreen] (-\cubex-1,1,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey-2,0) -- ++(\cubex,0,0) -- cycle;
+			
+			\node [scale=3] at (-4, -1.2, 0) {$A$};
+			
+			\draw[blue,fill=pastelgreen] (\cubex+2+1,0,-\cubey) -- ++(-\cubex-2,0,0) -- ++(0,-\cubey,0) -- ++(\cubex+2,0,0) -- cycle;
+			\node [scale=3] at (3.75, -0.25, 0) {$B$};
+			
+			\draw[blue,fill=pastelgreen] (0,0,-\cubez-1) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez-2) -- ++(\cubex,0,0) -- cycle;
+			\node [scale=3] at (-1, 0, -5) {$C$};
+			
+			\path (-18,0) -- (20,0);
+			\end{tikzpicture}
+		\end{center}
+	\end{column}
+	\begin{column}{0.56\linewidth}
+		\begin{itemize} {\footnotesize
+%%				\item Used to compute Tucker decomposition 
+				\item $\Y = \X \times_1 A^\Tra \times_2 B^\Tra \times_3 C^\Tra$
+				\item $\X$, $\Y$: 3-dimensional input and output tensors
+				\item $A, B, C$: matrices
+				\item $\times_i$: analogous to matrix multiplication
+				
+				%%		\item $\times_i$: tensor contraction along the $i$th dimension (similar to matrix multiplication)
+		}\end{itemize}
+	\end{column}
+\end{columns}
+\vfill
+\begin{itemize}
+		%%	\item 3-dimensional Multi-TTM ($\Y = \X \times_1 {\Mn{A}{1}}^\Tra \times_2 {B}^\Tra \times_3 {\Mn{A}{3}}^\Tra$)
+		\item TTM-in-Sequence approach (used in TuckerMPI library):
+		 $\Y = \left(\left(\X \times_1 A^\Tra \right)\times_2 B^\Tra \right)\times_3 C^\Tra$
+		\vfill
+		\item Our All-at-Once definition with {\small$\X \in \mathbb{R}^{n_1\times n_2\times n_3}$, $\Y\in \mathbb{R}^{r_1 \times r_2 \times r_3}$, $A\in \mathbb{R}^{n_1\times r_1}$, $B\in \mathbb{R}^{n_2\times r_2}$, $C\in \mathbb{R}^{n_3\times r_3}$
+%%			\vspace*{-0.15cm}\begin{align*}
+%%			&\text{for $n_1^\prime = 1{:}n_1$, for $n_2^\prime = 1{:}n_2$, for $n_3^\prime = 1{:}n_3$}\\
+%%			&\quad \text{for $r_1^\prime = 1{:}r_1$, for $r_2^\prime = 1{:}r_2$, for $r_3^\prime = 1{:}r_3$}\\
+%%			&\quad \quad \Y(r_1^\prime,r_2^\prime,r_3^\prime) = \Y(r_1^\prime,r_2^\prime,r_3^\prime)\\
+%%			&\qquad\qquad\quad + \Big( \X(n_1^\prime,n_2^\prime,n_3^\prime) *  \Mn{A}{1}(n_{1}^\prime,r_1^\prime) * B(n_2^\prime,r_2^\prime) * \Mn{A}{3}(n_3^\prime,r_3^\prime)\Big)
+%%			\end{align*}\vspace*{-0.5cm}
+			\begin{align*}
+			&\text{for \{$n_1^\prime, n_2^\prime, n_3^\prime, r_1^\prime, r_2^\prime, r_3^\prime$\}} = 1{:}\text{\{$n_1,n_2,n_3,r_1,r_2,r_3$\}}\\
+			&\quad  \Y(r_1^\prime,r_2^\prime,r_3^\prime) += \left( \X(n_1^\prime,n_2^\prime,n_3^\prime) *  A(n_{1}^\prime,r_1^\prime) * B(n_2^\prime,r_2^\prime) * C(n_3^\prime,r_3^\prime)\right)
+			\end{align*}\vspace*{-0.5cm}
+		}
+		\vfill
+		\item Establish lower bounds on data transfers based on the geometry of computations
+%%		\begin{itemize}
+%%			\item From the geometry of load balanced computations 
+%%		\end{itemize}
+		\vfill
+		\item Design a $6$-dimensional parallel algorithm
+		\begin{itemize}
+%%			\item Communication optimal for correct parameters -- select parameters based on lower bounds
+			\item Select right parameters based on lower bounds to achieve communication optimality
+		\end{itemize}
+		\vfill
+\end{itemize}
+\end{frame}
+
+\setcounter{algorithm}{0}
+\begin{frame}{Solving optimization problems to compute lower bounds}
+\begin{itemize}
+	\item Select a processor which performs $\frac{n_1r_1n_2r_2n_3r_3}{P}$ amount of $4-array$ operations
+	\item After applying lower and upper bounds for each projection, we need to solve the following optimization problem
+\end{itemize}
+\vspace*{-0.35cm}{\small\begin{align*}
+Minimize \ \phi_{\X} + \phi_{\Y} +& \phi_1 + \phi_2 + \phi_3 \  \text{ s.t.}\\
+\phi_{\X}^{1-a}\phi_{\Y}^{1-a} \phi_1^a \phi_2^a \phi_3^a & \ge \frac{n_1r_1n_2r_2n_3r_3}{P}\\
+\frac{n_1n_2n_3}{P} \le & \phi_{\X} \le n_1n_2n_3\\
+\frac{r_1r_2r_3}{P} \le & \phi_{\Y} \le r_1r_2r_3\\
+\frac{n_1r_1}{P} \le &\phi_1 \le n_1r_1\\
+\frac{n_2r_2}{P} \le &\phi_2 \le n_2r_2\\
+\frac{n_3r_3}{P} \le &\phi_3 \le n_3r_3\\
+0 \le & a \le 1
+\end{align*}}
+\end{frame}
+\begin{frame}{Divide the problem into two parts}
+\vspace*{-0.25cm}
+\begin{minipage}{0.45\linewidth}
+\begin{block}{Matrix part}{\small
+		\vspace*{-0.45cm}\begin{align*}
+		Minimize \ & \phi_1 + \phi_2 + \phi_3 \  \text{ s.t.}\\
+		\phi_1 \phi_2 \phi_3 & \ge \frac{n_1r_1n_2r_2n_3r_3}{P}\\
+		\frac{n_1r_1}{P} \le &\phi_1 \le n_1r_1\\
+		\frac{n_2r_2}{P} \le &\phi_2 \le n_2r_2\\
+		\frac{n_3r_3}{P} \le &\phi_3 \le n_3r_3
+		\end{align*}
+}\end{block}
+\end{minipage}$\quad$
+\begin{minipage}{0.45\linewidth}
+\begin{block}{Tensor part}{\small
+		\begin{align*}
+		Minimize \ & \phi_{\X} + \phi_{\Y}\  \text{ s.t.}\\
+		\phi_{\X}\phi_{\Y} & \ge \frac{n_1r_1n_2r_2n_3r_3}{P}\\
+		\frac{n_1n_2n_3}{P} \le & \phi_{\X} \le n_1n_2n_3\\
+		\frac{r_1r_2r_3}{P} \le & \phi_{\Y} \le r_1r_2r_3
+		\end{align*}
+}\end{block}
+\end{minipage}
+
+
+\end{frame}
+\begin{frame}{Amount of accesses and lower bounds}
+\begin{itemize}{\small
+\item We assume $n_1r_1\le n_2r_2\le n_3r_3$ and $r_1r_2r_3\le n_1n_2n_3$
+\item Estimate solutions for both parts using Lagrange multipliers ( optimality can be proven using Karush--Kuhn--Tucker conditions) 
+}\end{itemize}
+\vspace*{-0.25cm}\begin{block}{Amount of accesses = $\phi_{\X} + \phi_{\Y} + \phi_1 + \phi_2 + \phi_3$}
+\begin{center}
+\begin{tikzpicture}[scale=0.75, every node/.style={transform shape}]
+%%\draw (-2,0) -- node[below] {a} ++(2,0) -- node[above] {b} ++(2,0);
+%%\draw (-0.1,0) -- ++(5,0) -- ++(5,0);
+\draw [->, thick] (-0.1,0) -- (15,0) node [below right] {$P$};
+\draw (0, 0.1) -- node [below, pastelred, scale=1.6]{$1$}(0,-0.1);
+\draw (5, 0.1) -- node [below, pastelred, scale=1.6]{$\frac{n_3r_3}{n_2r_2}$}(5,-0.1);
+\draw (10, 0.1) -- node [below, pastelred, scale=1.6] {$\frac{n_2r_2n_3r_3}{n_1^2r_1^2}$}(10,-0.1);
+
+\node[align=left,below] at (2.5, -0.4) {$\phi_1=n_1r_1$\\ $\phi_2=n_2r_2$\\ $\phi_3=\frac{n_3r_3}{P}$};
+\node[align=left,below] at (7.5, -0.6) {$\phi_1=n_1r_1$\\$\phi_2=\phi_3= \big(\frac{n_2r_2n_3r_3}{P}\big)^{1/2}$};
+\node[align=center,below] at (12.5, -0.6) {$\phi_1=\phi_2=\phi_3=$\\ $\qquad\quad \big(\frac{n_1r_1n_2r_2n_3r_3}{P}\big)^{1/3}$};	
+\end{tikzpicture}
+\end{center}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.75, every node/.style={transform shape}]
+\draw [->, thick] (-0.1,0) -- (15,0) node [below right] {$P$};
+\draw (0, 0.1) -- node [below, pastelred, scale=1.6]{$1$}(0,-0.1);
+\draw (7.5, 0.1) -- node [below, pastelred, scale=1.6]{$\frac{n_1n_2n_3}{r_1r_2r_3}$}(7.5,-0.1);
+
+\node[align=left,below] at (3.75, -0.325) {$\phi_{\Y}= r_1r_2r_3$\\ $\phi_{\X} = \frac{n_1n_2n_3}{P}$};
+\node[align=left,below] at (11.25, -0.5) {$\phi_{\X}=\phi_{\Y}= \big(\frac{n_1r_1n_2r_2n_3r_3}{P}\big)^{1/2}$};
+\end{tikzpicture}
+\end{center}
+\end{block}
+Communication lower bound = $\phi_{\X} + \phi_{\Y} + \phi_1 + \phi_2 + \phi_3 -\frac{n_1n_2n_3+r_1r_2r_3+n_1r_1+n_2r_2+n_3r_3}{P}$
+\end{frame}
+
+\begin{frame}{Design of communication optimal algorithms}
+\begin{block}{\small Data Distribution ($P$ is organized into a $p_1 \times p_2 \times p_3\times q_1 \times q_2 \times q_3$ grid)}{\small
+%%		\begin{minipage}{0.75\linewidth}{\small	
+\begin{itemize}
+\item $p_1,p_2, p_3, q_1, q_2$, and $q_3$ evenly distribute $n_1, n_2, n_3, r_1, r_2$, and  $r_3$
+\item Each processor has $\frac{1}{P}$th amount of input and output variables
+\item Subtensor $\T{X}_{231} = \T{X}(\frac{n_1}{p_1}+1:2\frac{n_1}{p_1}, 2\frac{n_2}{p_2}+1:3\frac{n_2}{p_2}, 1:\frac{n_3}{p_3})$ is distributed evenly among processors $(2,3,1,*,*,*)$ 
+\item Submatrix $B_{31} = B(2\frac{n_2}{p_2}+1:3\frac{n_2}{p_2}, 1:\frac{r_2}{q_2})$ is distributed evenly among processors $(*,3,*,*,1,*)$
+\end{itemize}
+%%		}\end{minipage}
+\begin{center}
+\vspace*{-0.25cm}\begin{tikzpicture}[scale=0.4, every node/.style={transform shape}]
+\def\xref{0.6}
+\def\yref{0.5}
+
+\foreach \y in {0, 1, 2, 3, 4}
+\draw (-2, \y) -- (2, \y);
+
+\foreach \x in {-2, -1, 0, 1, 2}
+\draw (\x, 0) -- (\x, 4);
+
+\foreach \y in {0, 1, 2, 3, 4}
+\draw (2, \y)--(2+4*\xref, 4*\yref+\y);
+
+
+\foreach \y in {0, 1, 2, 3, 4}
+\draw (2+\y * \xref, \y * \yref) -- (2+\y * \xref, 4+\y * \yref);
+
+\foreach \x in {-2, -1, 0, 1, 2}
+\draw (\x, 4) -- (\x + 4*\xref, 4+4*\yref);
+
+\foreach \y in {0, 1, 2, 3, 4}
+\draw (-2+\y * \xref, 4+\y * \yref) -- (2+\y * \xref, 4+\y * \yref);
+
+\node [below, pastelgreen1, scale=2.5] at (0,0) {$\T{X}$};
+
+\draw [dotted] (-1, 3) -- (-1+\xref,3+\yref);
+\draw [dotted] (0, 3) -- (0+\xref,3+\yref);
+\draw [dotted] (0, 2) -- (0+\xref,2+\yref);
+\draw [dotted] (-1+\xref,3+\yref) -- (0+\xref,3+\yref);
+\draw [dotted] (0+\xref,3+\yref) -- (0+\xref,2+\yref);
+
+\node [pastelgreen1, scale=1.2] at (-0.5,2.5) {$\T{X}_{231}$};
+
+\draw [->, red] (-1,-1.5) -- (1,-1.5) node [below right, scale=1.2] {$n_1$};
+\draw [->, red] (-2.5,1) -- (-2.5,3) node [ above left, scale=1.2] {$n_2$};
+\draw [->, red] (-2.5+\xref, 4+\yref) -- (-2.5 + 3*\xref, 4+3*\yref) node [above,rotate=45, scale=1.2] {$n_3$};
+\end{tikzpicture}$\qquad$
+\vspace*{-0.25cm}\begin{tikzpicture}[scale=0.4, every node/.style={transform shape}]
+\def\xref{0.6}
+\def\yref{0.5}
+
+\foreach \y in {0, 1, 2, 3, 4}
+\draw (-2, \y) -- (2, \y);
+
+\foreach \x in {-2, -1, 0, 1, 2}
+\draw (\x, 0) -- (\x, 4);
+
+\node [below, pastelgreen1, scale=2.5] at (0,0) {$B$};
+
+
+\node [ pastelgreen1, scale=1.2] at (-1.5,2.5) {$B_{31}$};
+
+\draw [->, red] (-1,-1.5) -- (1,-1.5) node [below right, scale=1.2] {$r_2$};
+\draw [->, red] (-2.5,1) -- (-2.5,3) node [ above left, scale=1.2] {$n_2$};
+\end{tikzpicture}
+\end{center}
+\vspace*{-0.15cm}
+}\end{block}
+\end{frame}
+\begin{frame}{6-dimensional algorithm to compute Multi-TTM}
+\vspace*{-0.35cm}\begin{algorithm}[H]
+\caption{3-dimensional Parallel Atomic Multi-TTM}
+\begin{algorithmic}[1]
+\REQUIRE $\T{X}$, $A$, $B$, $C$, $p_1 \times p_2 \times p_3 \times q_1 \times q_2 \times q_3$ logical processor grid
+\ENSURE $\T{Y}$ such that $\Y = \X \times_1 {A}^\Tra \times_2 {B}^\Tra \times_3 {C}^\Tra$
+\STATE $(p_1^\prime, p_2^\prime, p_3^\prime, q_1^\prime, q_2^\prime, q_3^\prime)$ is my processor id
+\STATE //All-gather input tensor and matrices
+\STATE $\T{X}_{p_1^\prime p_2^\prime p_3^\prime}$ = All-Gather($\T{X}$, $(p_1^\prime, p_2^\prime, p_3^\prime, *, *, *)$)\label{alg:3dmultittm:line:allGatherInputTensor}
+\STATE $A_{p_1^\prime q_1^\prime}$ = All-Gather($A$, $(p_1^\prime, *, *, q_1^\prime, *, *)$)\label{alg:3dmultittm:line:allGatherMatrix1}
+\STATE $B_{p_2^\prime q_2^\prime}$ = All-Gather($B$, $(*, p_2^\prime, *, *, q_2^\prime, *)$)\label{alg:3dmultittm:line:allGatherMatrix2}
+\STATE $C_{p_3^\prime q_3^\prime}$ = All-Gather($C$, $(*, *, p_3^\prime, *, *, q_3^\prime)$)
+\STATE //Perform local Multi-TTM computation in a temporary tensor $\T{T}$
+\STATE $\T{T}$ = Local-Multi-TTM($\T{X}_{p_1^\prime p_2^\prime p_3^\prime}$, $A_{p_1^\prime q_1^\prime}$, $B_{p_2^\prime q_2^\prime}$, $C_{p_3^\prime q_3^\prime}$)
+\STATE //Reduce-scatter the output tensor in $\T{Y}_{q_1^\prime q_2^\prime q_3^\prime}$
+\STATE Reduce-Scatter($\T{Y}_{q_1^\prime q_2^\prime q_3^\prime}$, $\T{T}$, $(*, *, *, q_1^\prime, q_2^\prime, q_3^\prime)$)
+\end{algorithmic}
+\end{algorithm}
+\end{frame}
+
+
+
+
+\subsection{Simulated experiments}
+\begin{frame}{Outline}
+\tableofcontents[currentsubsection]
+\end{frame}
+
+\begin{frame}{Communication lower bound ($\lowerbound$) distributions}
+\begin{minipage}{0.475\linewidth}
+	\begin{block}{$n_1=n_2=n_3=2^{12},r_1=r_2=r_3=2^{4}$}
+		\begin{center}
+			\includegraphics[scale=0.56]{./LB-logscale-12-12-12-4-4-4.eps}
+		\end{center}
+	\end{block}
+\end{minipage}$\quad$
+\begin{minipage}{0.475\linewidth}
+	\begin{block}{$n_1=n_2=n_3=2^{20},r_1=r_2=r_3=2^{8}$}
+		\begin{center}
+			\includegraphics[scale=0.56]{./LB-logscale-20-20-20-8-8-8.eps}
+		\end{center}
+	\end{block}
+\end{minipage}
+%%\begin{figure*}[htb]
+%%	\begin{center}
+%%		\subfloat[$n_1=2^{12}, n_2=2^{13}, n_3=2^{19},r_1=2^{8},r_2=2^{13}, r_3=2^{11}$.\label{fig:lb:allcases}]{\includegraphics[width=0.32\linewidth]{./LB-logscale-12-13-19-8-13-11.eps}}\hfill
+%%		\subfloat[$n_1=n_2=n_3=2^{12},r_1=r_2=r_3=2^{4}$.\label{fig:lb:matrixdominated}]{\includegraphics[width=0.32\linewidth]{./LB-logscale-12-12-12-4-4-4.eps}}\hfill	
+%%		\subfloat[$n_1=n_2=n_3=2^{20},r_1=r_2=r_3=2^{8}$.\label{fig:lb:genpattern}]{\includegraphics[width=0.32\linewidth]{./LB-logscale-20-20-20-8-8-8.eps}}
+%%		\vspace*{-0.05cm}\caption{Matrix and tensor communication costs in Multi-TTM communication lower bounds ($\lowerbound$) for different configurations.\label{fig:lb}\vspace*{-0.15cm}}
+%%	\end{center}
+%%\end{figure*}
+\begin{itemize}
+	\item Matrix communication costs dominate when $P$ is much less than $\frac{n_1n_2n_3}{r_1r_2r_3}$
+\end{itemize}
+\
+\end{frame}
+\begin{frame}{Performance comparison of our algorithm}
+\begin{minipage}{0.475\linewidth}
+\begin{block}{$n_1=n_2= n_3=2^{20},r_1=r_2=r_3=2^{8}$}
+	\begin{center}
+		\includegraphics[scale=0.45]{./A@O-vs-Seq-logscale-20-20-20-8-8-8.eps}
+	\end{center}
+\end{block}
+\end{minipage}$\quad$
+\begin{minipage}{0.475\linewidth}
+	\begin{block}{$n_1=n_2= n_3=2^{12},r_1=r_2=r_3=2^{4}$}
+		\begin{center}
+			\includegraphics[scale=0.45]{./A@O-vs-Seq-logscale-12-12-12-4-4-4.eps}
+		\end{center}
+	\end{block}
+\end{minipage}
+\begin{itemize}
+	\item Typical scenarios in data compression problems
+	\item For small $P$, our approach communicates much less than the state-of-the-art approach
+\end{itemize}
+
+%%\begin{itemize}{
+%%{\small$\bullet$ $C_{LB}$: Communication lower bound, \bestconfigAAO: Our algorithm with the best partition, \lbbasedpartition: Our algorithm with the partition based on the lower bound, \bestconfigSeq: Multi-TTM computation used in Tucker-MPI with the best partition\\
+%%$\bullet$ Our algorithm communicates much less than the approach in Tucker-MPI
+%%}
+%%	\item The gap between our algorithm and \bestconfigSeq is large at the second kink in \bestconfigSeq (more than $10\time$)
+%%\end{itemize}
+\end{frame}
+
+\subsection{Conclusion}
+\begin{frame}{Outline}
+\tableofcontents[currentsubsection]
+\end{frame}
+
+	
+ \begin{frame}{Conclusion and future work}
+\begin{block}{Conclusion}
+	\begin{itemize}
+		\item Communication lower bounds and optimal algorithms for All-at-Once Multi-TTM
+		\item Comparison of our approach with the TTM-in-Sequence approach
+		\item Our algorithm communicates much less data than TTM-in-Sequence for small $P$
+	\end{itemize}
+\end{block}
+\vfill
+\begin{block}{Future Work}
+	\begin{itemize}
+		\item Detailed study of what scenarios are favorable for our approach
+		\item Combine both All-at-Once and TTM-in-Sequence approaches
+		\item Extend our framework for other linear algebra computations
+		
+	\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\Huge{\centerline{Thank You!}}
+\end{frame}
+
+%%\appendix
+
+
+%%\begin{frame}{Cost analysis of our algorithm}
+%%\begin{itemize}
+%%\item Total amount of $4$-array operations per processor = $\frac{n_1r_1n_2r_2n_3r_3}{p_1q_1p_2q_2p_3q_3} = \frac{n_1r_1n_2r_2n_3r_3}{P}$
+%%\vfill
+%%\item Data transfers happen only in All-Gather and Reduce-Scatter collective operations
+%%\begin{itemize}
+%%\item Cost on $Q$ processors is $(1-\frac{1}{Q})w$, $w$ is the amount of total data after All-Gather or before Reduce-Scatter operation 
+%%\end{itemize}
+%%\vfill
+%%%%		\item Amount of data transfers to perform All-Gather/Reduce-Scatter operation on $Q$ processors = $(1-\frac{1}{Q})w$, $w$ is amount of total data after All-Gather or before Reduce-Scatter operation
+%%\item Total data transfers = $\frac{n_1n_2n_3}{p_1p_2p_3} + \frac{r_1r_2r_3}{q_1q_2q_3} + \frac{n_1r_1}{p_1q_1} +\frac{n_2r_2}{p_2q_2} + \frac{n_3r_3}{p_3q_3} - \frac{n_1n_2n_3+r_1r_2r_3+n_1r_1+n_2r_2+n_3r_3}{P}$
+%%\vfill
+%%\item Select $p_1, p_2, p_3, q_1, q_2$, and $q_3$ based on lower bounds 
+%%\end{itemize}
+%%\end{frame}
+
+\end{document} 

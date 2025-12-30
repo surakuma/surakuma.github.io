@@ -1,0 +1,3930 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Beamer Presentation
+% LaTeX Template
+% Version 1.0 (10/11/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+
+\documentclass[aspectratio=169]{beamer}
+%%\documentclass{beamer}
+\mode<presentation> {
+
+% The Beamer class comes with a number of default slide themes
+% which change the colors and layouts of slides. Below this is a list
+% of all the themes, uncomment each in turn to see what they look like.
+
+%\usetheme{default}
+%\usetheme{AnnArbor}
+%\usetheme{Antibes}
+%\usetheme{Bergen}
+%\usetheme{Berkeley}
+%\usetheme{Berlin}
+%\usetheme{Boadilla}
+%\usetheme{CambridgeUS}
+%\usetheme{Copenhagen}
+%\usetheme{Darmstadt}
+%\usetheme{Dresden}
+%\usetheme{Frankfurt}
+%\usetheme{Goettingen}
+%\usetheme{Hannover}
+%\usetheme{Ilmenau}
+%\usetheme{JuanLesPins}
+%\usetheme{Luebeck}
+\usetheme{Madrid}
+%\usetheme{Malmoe}
+%\usetheme{Marburg}
+%\usetheme{Montpellier}
+%\usetheme{PaloAlto}
+%\usetheme{Pittsburgh}
+%\usetheme{Rochester}
+%\usetheme{Singapore}
+%\usetheme{Szeged}
+%\usetheme{Warsaw}
+
+% As well as themes, the Beamer class has a number of color themes
+% for any slide theme. Uncomment each of these in turn to see how it
+% changes the colors of your current slide theme.
+
+%\usecolortheme{albatross}
+%\usecolortheme{beaver}
+%\usecolortheme{beetle}
+%\usecolortheme{crane}
+%\usecolortheme{dolphin}
+%\usecolortheme{dove}
+%\usecolortheme{fly}
+%\usecolortheme{lily}
+%\usecolortheme{orchid}
+%\usecolortheme{rose}
+%\usecolortheme{seagull}
+%\usecolortheme{seahorse}
+%\usecolortheme{whale}
+%\usecolortheme{wolverine}
+
+%\setbeamertemplate{footline} % To remove the footer line in all slides uncomment this line
+%\setbeamertemplate{footline}[page number] % To replace the footer line in all slides with a simple slide count uncomment this line
+
+%\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
+}
+%%\documentclass[mathserif,hyperref={pdfpagemode=FullScreen}]{beamer}
+%%% \documentclass[handout]{beamer}
+%%% \usetheme{Dresden}
+%%\usetheme{340}
+%%\beamertemplatetransparentcovereddynamic
+%%\usepackage[latin1]{inputenc}
+%%\usepackage{pgf}
+
+
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{xspace}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{xcolor}
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+%%\usepackage{xspace}
+
+\usepackage{braket}
+\usepackage{multirow}
+\usepackage{todonotes}
+
+
+%%\usepackage{enumitem}
+
+
+\newcommand{\heteroprio}{{HeteroPrio}\xspace}
+\newcommand{\heteroprioD}{{HeteroPrioDep}\xspace}
+
+
+\usepackage{appendixnumberbeamer}
+
+%%\usepackage{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{matrix, decorations, patterns, positioning, shapes, calc, intersections, arrows, fit}
+
+
+\usetikzlibrary{patterns}
+\usetikzlibrary{fit,calc,positioning,decorations.pathreplacing,matrix}
+
+%%\graphicspath{{./diagrams/}{./plots/}}
+\graphicspath{{./diagrams/}{./Figs/}{./plots/}}
+%%\tikzset{xtick/.style={inner xsep=0pt, inner ysep=3pt, minimum
+%%		size=0pt, draw, label=below:#1},%
+%%	comm/.style args={#1start#2length#3color#4}{rounded corners=1mm, draw, inner
+%%		sep=0pt, fill=#4, label=center:#1, fit={(#2,0.75)
+%%			(#2+#3,1.5)}},%
+%%	comp/.style args={#1start#2length#3color#4}{rounded corners=1mm, draw, inner
+%%		sep=0pt, fill=#4, label=center:#1, fit={(#2,0)
+%%			(#2+#3,0.75)}},%
+%%}
+%%
+%%\newcommand{\schedule}[3]{
+%%	\draw[->] (-0.2, 0) -- (#1, 0) node[below] {$t$};
+%%	\draw (0, 0) -- (0, 1.5);
+%%	\node at (-0.8, 0.75)[rotate=90] {#2};
+%%	\draw[dashed,gray] (0, 0.75) -- (#1, 0.75);
+%%	\foreach \t in {0,#3} {
+%%		\node[xtick=\t] at (\t, 0){};
+%%	}
+%%}
+%%\newcommand{\task}[6][0]{
+%%	\node[comm=#2 start #3 length #4 color #6]{};
+%%	\node[comp=#2 start #3+#4+#1 length #5 color #6]{}; 
+%%}
+
+
+\newcommand\addvmargin[1]{
+	\node[fit=(current bounding box),inner ysep=#1,inner xsep=0]{};
+}
+
+\newcommand{\tensor}[1]{{\cal\textbf{#1}\xspace}}
+\newcommand{\ttrain}{{\it Tensor-Train}\xspace}
+
+\newcommand{\hfirst}{{\it LSR}\xspace}
+\newcommand{\hsecond}{{\it SLSB}\xspace}
+\newcommand{\hthird}{{\it LSB}\xspace}
+\newcommand{\otta}{{\it STTA}\xspace}
+
+
+\newcommand{\credit}[1]{\vspace*{-0.2cm}\par\hfill {\footnotesize Source:~\itshape#1}}
+
+%%\newcommand{\tensorcolor}{patternblue}
+\newcommand{\tensorcolor}{cyan}
+
+%% Colors from https://latexcolor.com/
+\definecolor{pastelviolet}{rgb}{0.8, 0.6, 0.79}
+\definecolor{babyblueeyes}{rgb}{0.63, 0.79, 0.95}
+\definecolor{pastelyellow}{rgb}{0.99, 0.99, 0.59}
+%%\definecolor{pastelgreen}{rgb}{0.47, 0.87, 0.47}
+\definecolor{pastelgreen}{rgb}{0, 1, 0}
+\definecolor{pastelred}{rgb}{1.0, 0.41, 0.38}
+\colorlet{patternblue}{blue!60}
+
+
+
+
+\definecolor{forestgreen}{rgb}{0.13, 0.55, 0.13}
+\definecolor{greenhtml}{rgb}{0.0, 0.5, 0.0}
+\definecolor{cyannew}{rgb}{0.0, 1.0, 1.0}
+
+
+\newcommand{\mycolora}{green}
+\newcommand{\mycolorb}{blue}
+\newcommand{\mycolorc}{cyan}
+\newcommand{\mycolord}{violet}
+\newcommand{\mycolore}{orange}
+\newcommand{\mycolorf}{forestgreen}
+
+
+%%\newcommand{\mysymbola}{\textcolor{\mycolora}{$\blacksquare$}}
+%%\newcommand{\mysymbolb}{\textcolor{\mycolorb}{$\blacksquare$}}
+%%\newcommand{\mysymbolc}{\textcolor{\mycolorc}{$\blacksquare$}}
+%%\newcommand{\mysymbold}{\textcolor{\mycolord}{$\blacksquare$}}
+%%\newcommand{\mysymbole}{\textcolor{\mycolore}{$\blacksquare$}}
+%%\newcommand{\mysymbolf}{\textcolor{\mycolorf}{$\blacksquare$}}
+\newcommand{\mysymbola}{\textcolor{\mycolora}{}}
+\newcommand{\mysymbolb}{\textcolor{\mycolorb}{}}
+\newcommand{\mysymbolc}{\textcolor{\mycolorc}{}}
+\newcommand{\mysymbold}{\textcolor{\mycolord}{}}
+\newcommand{\mysymbole}{\textcolor{\mycolore}{}}
+\newcommand{\mysymbolf}{\textcolor{\mycolorf}{}}
+
+
+\newcommand{\mybullet}{\textcolor{blue}{$\quad\bullet$}\xspace}
+
+%%\newcommand{\mysymbola}{\mycolorb}
+%%\newcommand{\mysymbola}{\mycolorc}
+%%\newcommand{\mysymbola}{\mycolord}
+%%\newcommand{\mysymbola}{\mycolore}
+%%\newcommand{\mysymbola}{\mycolorf}
+
+
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+%%\title[Scalable Tensor Algorithms]{Scalable Tensor Algorithms for Modern Computing Systems} % The short title appears at the bottom of every slide, the full title is only on the title page
+%%QUANT-PHY - Quantum computing - quantum programming languages - formal models, calculations, and embodiment of the "quantity" of the physical world - hardware development 
+\title[Parallel Quantum Computations]{Parallel Strategies for Quantum Computations} % The short title appears at the bottom of every slide, the full title is only on the title page
+
+\author[Suraj {\sc Kumar}]{Suraj {\sc Kumar}} % Your name
+%%\institute[UCLA] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space\institute[Inria Paris] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
+%%{
+%%	Alpines team, Inria Paris, France\\ % Your institution for the title page
+%%	\medskip
+%%	\textit{Suraj.kumar@inria.fr} % Your email address
+%%}
+%%{
+%%University of California \\ % Your institution for the title page
+%%\medskip
+%%\textit{john@smith.com} % Your email address
+%%}
+
+\institute[Inria Paris]{Inria Paris}
+%%%%\institute[Inria Paris] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
+%%%%{
+%%%%	Alpines team, Inria Paris, France\\ % Your institution for the title page
+%%%%	\medskip
+%%%%	\textit{Suraj.kumar@inria.fr} % Your email address
+%%%%}
+
+\date{\today} % Date, can be changed to a custom date
+
+%%\date{June 7, 2021} % Date, can be changed to a custom date
+
+
+
+\makeatletter
+\AtBeginPart{%
+	\beamer@tocsectionnumber=0\relax
+	\setcounter{section}{0}
+%%	\frame{\partpage}%
+}
+\makeatother
+
+\begin{document}
+
+\begin{frame}
+\titlepage % Print the title page as the first slide
+\end{frame}
+
+
+%%\begin{frame}{Resume}
+%%
+%%{\small Interests: \textcolor{\mycolora}{Tensors}, \textcolor{\mycolorb}{Parallel Algorithms}, \textcolor{\mycolorc}{Scheduling}, \textcolor{\mycolord}{Runtime Systems}, \textcolor{\mycolore}{Performance Optimizations}
+%%\vspace*{-0.125cm}
+%%%% \renewcommand\labelitemii{$\square$}
+%%\begin{itemize}
+%%	\item 08/2010 -- 06/2012, Master Student, Indian Institute of Science, Bangalore, India
+%%	\begin{itemize}
+%%		\item \mysymbolb Automatic parallelization of programs with linked-list data structure 
+%%	\end{itemize}
+%%
+%%	\item 07/2012 -- 11/2013, Software Engineer, IBM Research, New Delhi, India
+%%	\begin{itemize}
+%%		\item \mysymbole \mysymbolc Performance optimizations of seismic algorithms on GPU, \mysymbolc Schedulers for BG/P machine
+%%	\end{itemize}
+%%
+%%	\item 12/2013 -- 06/2017, PhD Student, University of Bordeaux \& Inria Bordeaux, France
+%%	\begin{itemize}
+%%		\item \mysymbolc \mysymbold Scheduling of dense linear algebra kernels on heterogeneous resources
+%%	\end{itemize}
+%%
+%%	\item 08/2017 -- 02/2018, Senior Engineer, Ericsson, Bangalore, India
+%%	\begin{itemize}
+%%		\item Use of remote GPUs in cloud
+%%	\end{itemize}
+%%
+%%	\item 05/2018 -- 10/2019, Postdoc, Pacific Northwest National Laboratory, USA
+%%\begin{itemize}
+%%	\item \mysymbolc \mysymbole Analysis of data transfer orders, \mysymbola \mysymbolb \mysymbold Runtime systems for molecular simulations
+%%\end{itemize}
+%%
+%%	\item 11/2019 -- Current, Postdoc, Inria Paris, France
+%%\begin{itemize}
+%%	\item \mysymbola \mysymbolb \mysymbole Parallel algorithms for tensor computations, \mysymbola Use of tensors in  molecular simulations
+%%\end{itemize}
+%%
+%%%%	\item 07/2006 -- 06/2010, BTech Student, Sikkim Manipal Institute of Technology, India
+%%%%	\begin{itemize}
+%%%%		\item Associating rule mining using genetic algorithm
+%%%%	\end{itemize}
+%%	
+%%\end{itemize}
+%%}
+%%\end{frame}
+
+
+
+%%%%\begin{frame}{Resume}
+%%%%
+%%%%{\small Interests: \textcolor{\mycolora}{Tensors}, \textcolor{\mycolorb}{Parallel Algorithms}, \textcolor{\mycolorc}{Scheduling}, \textcolor{\mycolord}{Runtime Systems}, \textcolor{\mycolore}{Performance Optimizations}
+%%%%	\vspace*{-0.125cm}
+%%%%	%% \renewcommand\labelitemii{$\square$}
+%%%%	\begin{itemize}
+%%%%
+%%%%		\item 11/2019 -- Current, Postdoc, Alpines team, Inria Paris, France
+%%%%		\begin{itemize}
+%%%%			\item \mysymbola \mysymbolb \mysymbole Parallel algorithms for high dimensional tensor computations
+%%%%		\end{itemize}
+%%%%	
+%%%%			\item 05/2018 -- 10/2019, Postdoc, Pacific Northwest National Laboratory, USA
+%%%%		\begin{itemize}
+%%%%			\item \mysymbola \mysymbolb \mysymbolc \mysymbold Runtime systems for molecular simulations
+%%%%		\end{itemize}
+%%%%		
+%%%%		\item 08/2017 -- 02/2018, Senior Engineer, Ericsson, Bangalore, India
+%%%%		\begin{itemize}
+%%%%			\item\mysymbolc Use of remote GPUs in cloud
+%%%%		\end{itemize}
+%%%%	
+%%%%		
+%%%%		\item 12/2013 -- 06/2017, PhD Student, University of Bordeaux \& Inria Bordeaux, France
+%%%%		\begin{itemize}
+%%%%			\item \mysymbolc \mysymbold Scheduling of dense linear algebra kernels on heterogeneous resources
+%%%%		\end{itemize}
+%%%%
+%%%%		
+%%%%		\item 07/2012 -- 11/2013, Software Engineer, IBM Research, New Delhi, India
+%%%%		\begin{itemize}
+%%%%			\item \mysymbole \mysymbolc Performance optimizations of seismic algorithms on GPU, \mysymbolc Schedulers for BG/P machine
+%%%%		\end{itemize}
+%%%%	
+%%%%		\item 08/2010 -- 06/2012, Master Student, Indian Institute of Science, Bangalore, India
+%%%%		\begin{itemize}
+%%%%			\item \mysymbolb Automatic parallelization of programs with linked-lists 
+%%%%		\end{itemize}
+%%%%		
+%%%%	\end{itemize}
+%%%%}
+%%%%\end{frame}
+
+
+%%distributed models of quantum computing, quantum programming languages, digital quantum simulation
+%%    First period (<6 years):
+%%Junior Professor 6 years contract
+%%64 hours of teaching/year
+%%~200KEUR ANR project for funding PhDs/postdocs/travels 
+%%Second period :
+%%Full Professor permanent position
+%%192 hours of teaching/year 
+
+
+\begin{frame}{Resume in timeline}
+
+{\small 
+%%	Interests: \textcolor{\mycolora}{Tensors}, \textcolor{\mycolorb}{Scalable Algorithms}, \textcolor{\mycolorc}{Scheduling}, \textcolor{\mycolord}{Runtime Systems}, \textcolor{\mycolore}{Performance Optimizations}
+%%	\vspace*{-0.125cm}
+
+\vspace*{0.45cm}
+\begin{tikzpicture}[scale=0.6, every node/.style={transform shape}]
+
+	\tikzstyle{taskc}=[circle, thick, draw=black, minimum size=2mm, fill=white]
+	
+%%	\tikzstyle{taskr}=[rectangle, rounded corners, draw=black, minimum size=2mm, fill=none]
+	\tikzstyle{taskr}=[draw=black, rounded corners, minimum height=8mm, minimum width=8mm, fill=none, text=black]
+	
+	\draw [->, ultra thick](-1,0) -- (23.5, 0);
+	\node (t0) at (0,0) [taskc] {};
+	\node [above right] at (t0) {Jul 2012};
+	
+	\node (t1) at (5,0) [taskc] {};
+	\node [above right] at (t1) {Dec 2013};
+	\node (t2) at (10,0) [taskc] {};
+	\node [above right] at (t2) {Aug 2017};
+	\node (t3) at (15,0) [taskc] {};
+	\node [above right] at (t3) {May 2018};
+	\node (t4) at (20,0) [taskc] {};
+	\node [above right] at (t4) {Nov 2019};
+	
+
+	\node (ibmnode) at (2.5, -3) [taskr, align=left] {\textbf{IBM Research, New Delhi, India}\\{\footnotesize Software Engineer}};
+	\node [below, align=left, anchor=north west] at (ibmnode.south west) {\mysymbole \mysymbolc Optimizations on GPUs\\ \mysymbolb \mysymbolc Schedulers for BG/P machine};
+	
+	\draw [dotted, thick] (2.5, 0) -- (ibmnode);
+
+	\node (phdnode) at (7.5, 3) [taskr, align=left] {\textbf{Inria Bordeaux, France}\\{\footnotesize PhD Student}};
+	\node [above, align=left, anchor=south west] at (phdnode.north west) {\mysymbolc \mysymbold Scheduling on heterogeneous resources};
+	
+	\draw [dotted, thick] (7.5, 0) -- (phdnode);
+	
+	\node (ericssonnode) at (12.5, -3) [taskr, align=left] {\textbf{Ericsson, Bangalore, India}\\{\footnotesize Senior Engineer}};
+	\node [below, align=left, anchor=north west] at (ericssonnode.south west) {\mysymbolc Use of remote GPUs in cloud};
+	
+	\draw [dotted, thick] (12.5, 0) -- (ericssonnode);
+	
+	\node (pnnlnode) at (17.5, 3) [taskr, align=left] {\textbf{Pacific Northwest National Laboratory, USA}\\{\footnotesize Postdoc}};
+	\node [above, align=left, anchor=south west] at (pnnlnode.north west) {\mysymbola \mysymbolb \mysymbolc \mysymbold Runtime systems for tensor operations};
+	
+	\draw [dotted, thick] (17.5, 0) -- (pnnlnode);
+	
+	\node (alpinesnode) at (21.5, -3) [taskr, align=left] {\textbf{Alpines team, Inria Paris, France}\\{\footnotesize Postdoc}};
+	\node [below, align=left, anchor=north west] at (alpinesnode.south west) {\mysymbola \mysymbolb \mysymbole Parallel algorithms for tensors};
+	
+	\draw [dotted, thick] (21.5, 0) -- (alpinesnode);
+\end{tikzpicture}
+}
+\end{frame}
+
+
+
+
+
+%%\begin{tikzpicture}[scale=0.625, every node/.style={transform shape}]
+%%%%\tikzstyle{taskmemory}=[draw=black, minimum height=18mm, minimum width=18mm, fill=blue!40, text=black]
+%%\tikzstyle{taskcompute}=[draw=black, minimum height=16mm, minimum width=16mm, fill=none, text=black, below]
+%%
+%%\node (t0) at (0,0) [taskcompute] {}; 
+%%\node (t1) at (4,0) [taskcompute] {};
+%%\node (t2) at (4,4) [taskcompute] {};
+%%\node (t3) at (0,4) [taskcompute] {};
+%%
+%%\draw [<->, line width=4, orange] (t0) -- (t1);
+%%\draw [<->, line width=4, orange] (t1) -- (t2);
+%%\draw [<->, line width=4, orange] (t2) -- (t3);
+%%\draw [<->, line width=4, orange] (t3) -- (t0);
+%%
+%%\node (td0)  at (t0.south) [above, scale=0.5] {$DRAM$};
+%%\node (td1) [above, scale=0.5] at (t1.south) {$DRAM$};
+%%\node (td2) [above, scale=0.5] at (t2.south) {$DRAM$};
+%%\node (td3) [above, scale=0.5] at (t3.south) {$DRAM$};
+%%
+%%\node [above] at (td0.north) {$CPU$};
+%%\node [above] at (td1.north) {$CPU$};
+%%\node [above] at (td2.north) {$CPU$};
+%%\node [above] at (td3.north) {$CPU$};
+%%
+%%%%\node [below] at (tm.south) {Memory Unit $M$};
+%%%%\node [above] at (tc.north) {Compute Unit $C$};
+%%%%
+%%%%\node [taskmemory, minimum height=6mm, minimum width=12mm, anchor=south] at (tc.south) {}; 
+%%\end{tikzpicture}
+
+
+%%\begin{tikzpicture}[shorten >=1pt,node distance=5cm,on grid,auto] 
+%%
+%%\node[state,initial] (q_0) {$q_0$}; 
+%%\path[->] (q_0) edge[loop above] node[text width=1cm,align=center] {0,1,2\\3,4,5} (q_0); 
+%%
+%%\end{tikzpicture}
+%%	\begin{itemize}
+%%		
+%%		\item 11/2019 -- Current, Postdoc, Alpines team, Inria Paris, France
+%%		\begin{itemize}
+%%			\item \mysymbola \mysymbolb \mysymbole Parallel algorithms for high dimensional tensor computations
+%%		\end{itemize}
+%%		
+%%		\item 05/2018 -- 10/2019, Postdoc, Pacific Northwest National Laboratory, USA
+%%		\begin{itemize}
+%%			\item \mysymbola \mysymbolb \mysymbolc \mysymbold Runtime systems for molecular simulations
+%%		\end{itemize}
+%%		
+%%		\item 08/2017 -- 02/2018, Senior Engineer, Ericsson, Bangalore, India
+%%		\begin{itemize}
+%%			\item\mysymbolc Use of remote GPUs in cloud
+%%		\end{itemize}
+%%		
+%%		
+%%		\item 12/2013 -- 06/2017, PhD Student, University of Bordeaux \& Inria Bordeaux, France
+%%		\begin{itemize}
+%%			\item \mysymbolc \mysymbold Scheduling of dense linear algebra kernels on heterogeneous resources
+%%		\end{itemize}
+%%		
+%%		
+%%		\item 07/2012 -- 11/2013, Software Engineer, IBM Research, New Delhi, India
+%%		\begin{itemize}
+%%			\item \mysymbole \mysymbolc Performance optimizations of seismic algorithms on GPU, \mysymbolc Schedulers for BG/P machine
+%%		\end{itemize}
+%%		
+%%		\item 08/2010 -- 06/2012, Master Student, Indian Institute of Science, Bangalore, India
+%%		\begin{itemize}
+%%			\item \mysymbolb Automatic parallelization of programs with linked-lists 
+%%		\end{itemize}
+%%		
+%%	\end{itemize}
+
+
+\begin{frame}{Past Experience}
+
+{\scriptsize
+\vspace*{-0.15cm}\begin{columns}
+	\begin{column}{0.31\linewidth}
+		\begin{block}{\footnotesize Parallelization in Polyhedral Model}
+			\begin{columns}
+				\begin{column}{0.56\linewidth}
+					%%					{\scriptsize
+					%%					$\bullet$ Linked-list operations\\
+					%%					$\bullet$ Improved spatial locality}
+					\begin{itemize}{\scriptsize
+							\item Linked-list operations
+							\item Improved spatial locality
+							%%				  	    \item Analyze dependencies among operations
+							\item Parallelization using OpenMP
+					}\end{itemize}
+				\end{column}
+				\begin{column}{0.425\linewidth}
+					\begin{center}
+						\includegraphics[scale=0.725]{PolyhedralFramework.png}
+					\end{center}
+				\end{column}
+			\end{columns}
+		\end{block}
+	\end{column}
+	\begin{column}{0.3\linewidth}
+		\begin{block}{\footnotesize Seismic Imaging on GPUs}{\tiny
+				\vspace*{-0.56cm}\begin{align*}
+				H_1 =& \sin^2\theta \cos^2 \phi \frac{\partial^2}{\partial x^2} + \sin^2\theta \sin^2\phi \frac{\partial^2}{\partial y^2}\\ &+ \cos^2 \theta \frac{\partial^2}{\partial z^2}
+				+ \sin^2 \theta \sin 2\phi \frac{\partial^2}{\partial x \partial y}\\ & + \sin 2\theta\sin\phi \frac{\partial^2}{\partial y\partial z} + \sin 2\theta \cos \phi \frac{\partial^2}{\partial x \partial z}\\
+				H_2 = & \frac{\partial^2}{\partial x^2} + \frac{\partial^2}{\partial y^2} + \frac{\partial^2}{\partial z^2} - H_1
+				%%			\frac{\partial^2 p}{\partial t^2} = v_{px}^2 H_2p + \alpha v_{pz}^2 H_1q + v_{sz}^2 H_1(p-\alpha q)\\
+				%%			\frac{\partial ^2 q}{\partial t^2} = \frac{v_{pn}^2}{\alpha}H_2p + \alpha v_{pz}^2 H_1q - v_{sz}^2 H_2(\frac{p}{\alpha} - q)
+				\end{align*}\vspace*{-0.5cm}
+				%%			∂2p∂2t=v2pxH2p+αv2pzH1q+v2szH1(p−αq)∂2q∂2t=v2pnαH2p+αv2pzH1q−v2szH2(1αp−q)
+				%%			\begin{center}
+				%%				\includegraphics[scale=0.425]{PolyhedralFramework.png}
+				%%			\end{center}
+		}\end{block}
+	\end{column}
+	\begin{column}{0.345\linewidth}
+		\begin{block}{\footnotesize Schedulers for Blue Gene Supercomputers}
+			\begin{columns}
+				\begin{column}{0.5\linewidth}
+					\begin{itemize}{\scriptsize
+							\item GASNET API
+							\item Unbalanced Tree Search benchmark
+							\item Comparison to Charm++
+					}\end{itemize}
+				\end{column}
+				\begin{column}{0.45\linewidth}
+					\begin{center}
+						\includegraphics[scale=0.25]{IBM_Blue_Gene_P_supercomputer.jpg}
+					\end{center}
+				\end{column}
+			\end{columns}
+		\end{block}
+	\end{column}
+\end{columns}
+\vfill
+\begin{columns}
+	\begin{column}{0.475\linewidth}
+		\begin{block}{\footnotesize Scheduling on Heterogeneous Platforms}
+			\begin{center}
+				%%				\includegraphics[scale=0.2]{taskGraph.eps}
+				\includegraphics[scale=0.095]{Cholesky-4.pdf}$\qquad$
+				\includegraphics[scale=0.145]{HeterogenousPlatform.png}
+			\end{center}
+		\end{block}
+	\end{column}
+	\begin{column}{0.475\linewidth}
+		\begin{block}{\footnotesize Molecular Simulations on Supercomputers}
+			\begin{columns}
+				\begin{column}{0.35\linewidth}
+					\begin{itemize}{\scriptsize
+							\item NWChemEx Project
+							\item TAMM library
+							\item Hartree Fock and CCSD applications
+					}\end{itemize}
+				\end{column}
+				\begin{column}{0.6\linewidth}
+					\vspace*{-0.4cm}\begin{center}
+						\includegraphics[scale=0.07]{SummitNode.jpg}
+					\end{center}\vspace*{-0.375cm}
+				\end{column}
+			\end{columns}
+		\end{block}
+	\end{column}
+\end{columns}
+}
+\end{frame}
+
+
+\begin{frame}{Present Collaborations}
+\begin{itemize}
+	\item Parallel algorithms for high dimensional tensors -- with Laura Grigori (Inria Paris) and Olivier Beaumont (Inria Bordeaux)
+	\vfill
+	\item Communication optimal algorithms for Tensor computations -- with Laura Grigori, Grey Ballard (Wake Forest University, USA), Kathryn Rouse (Inmar Intelligence, USA) and Hussam Al Daas (STFC Rutherford Appleton Laboratory, UK)
+	\vfill
+	\item Theoretical models to perform molecular dynamics simulations with a few number of parameters -- with Laura Grigori, Yvon Maday (Sorbonne
+	University), Eric Cances (Ecole des Ponts ParisTech) and Jean-Philip Piquemal (Sorbonne University)
+	\vfill 
+	\item Efficient implementation of density matrix renormalization group (DMRG) algorithm -- with Laura Grigori and Julien Toulouse (Sorbonne University)
+\end{itemize}
+\end{frame}
+
+
+
+
+\part[Past/Ongoing Work]{Past/Ongoing Work}
+\section{Introduction}
+\begin{frame}{Outline}
+\tableofcontents[currentsection]
+\end{frame}
+
+
+\begin{frame}{Tensors are used in Several Domains}
+\begin{minipage}{0.575\linewidth}
+\begin{itemize}
+	\item \textbf{Neuroscience}: Neuron $\times$ Time $\times$ Trial
+	\item \textbf{Transportation}: Pickup $\times$ Dropoff $\times$ Time
+	\item \textbf{Media}: User x Movie x Time 
+	\item \textbf{Ecommerce}: User x Product x Time
+\end{itemize}
+\end{minipage}
+\begin{minipage}{0.4\linewidth}
+	\begin{center}
+	\begin{tikzpicture}[scale=0.125, every node/.style={transform shape}]
+	\pgfmathsetmacro{\rectx}{4}
+	\pgfmathsetmacro{\recty}{0.5}
+	\draw[blue,fill=pastelgreen] (0,0) -- node [below, scale=6, black] {Vector}++(-\rectx,0) -- ++(0,\recty) -- ++(\rectx, 0) -- cycle;
+	\end{tikzpicture}$\quad$
+	\begin{tikzpicture}[scale=0.125, every node/.style={transform shape}]
+	\pgfmathsetmacro{\rectx}{4}
+	\pgfmathsetmacro{\recty}{4}
+	\draw[blue,fill=pastelgreen] (0,0) -- node [below, scale=6, black] {Matrix}++(-\rectx,0) -- ++(0,\recty) -- ++(\rectx, 0) -- cycle;
+	%%\addvmargin{4};
+	\end{tikzpicture}$\ $
+	\begin{tikzpicture}[scale=0.125, every node/.style={transform shape}]
+	\pgfmathsetmacro{\cubex}{4}
+	\pgfmathsetmacro{\cubey}{4}
+	\pgfmathsetmacro{\cubez}{4}
+	\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) --node [below, scale=6, black] {3-dimensional tensor} ++(\cubex,0,0) -- cycle;
+	\draw[blue,fill=pastelgreen] (0,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+	\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+	\end{tikzpicture}
+	\end{center}
+\begin{center}	
+	\begin{tikzpicture}[scale=0.125, every node/.style={transform shape}]
+	\pgfmathsetmacro{\cubex}{4}
+	\pgfmathsetmacro{\cubey}{4}
+	\pgfmathsetmacro{\cubez}{4}
+	\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+	\draw[blue,fill=pastelgreen] (0,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+	\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+	
+	\draw[blue,fill=pastelgreen] (\cubex +2,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+	\draw[blue,fill=pastelgreen] (\cubex +2,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+	\draw[blue,fill=pastelgreen] (\cubex +2,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+	
+	\draw[blue,fill=pastelgreen] (\cubex +2 + \cubex +2,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+	\draw[blue,fill=pastelgreen] (\cubex +2 + \cubex +2,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+	\draw[blue,fill=pastelgreen] (\cubex +2 + \cubex +2,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+	
+	\draw[blue, fill=none] (-\cubex -1, 2.5, 0) -- ++(0, -\cubey -3.5, 0) --node [below, scale=6, black] {4-dimensional tensor} ++(\cubex +2 + \cubex +2 + \cubex + \cubex,0,0) -- ++(0, \cubey +3.5, 0) -- cycle; 
+	
+	%%\node [scale=2] at (0, -8) {$hello$};
+	\end{tikzpicture}
+\end{center}
+\end{minipage}
+\vspace*{-0.2cm}
+\begin{itemize}
+	\item \textbf{Cyber-Traffic}: IP x IP x Port x Time
+	\item \textbf{Social-Network}: Person x Person x Time x Interaction-Type
+\end{itemize}
+\begin{block}{High Dimensional Tensors}
+\begin{itemize}
+	\item \textbf{Neural Network}: \begin{center}\vspace*{-0.35cm}
+	\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+	\tikzstyle{taskc}=[circle, draw=black, minimum size=2mm, fill=none]
+	
+	\node (t00) at (0,1) [taskc] {};
+	\node (t01) at (0,0) [taskc] {};
+	\node (t02) at (0,-1) [taskc] {};
+	
+	\draw (-0.5,1) -- (t00);
+	\draw (-0.5,0) -- (t01);
+	\draw (-0.5,-1) -- (t02);
+	
+	\node (t10) at (2,1.5) [taskc] {};
+	\node (t11) at (2,0.5) [taskc] {};
+	\node (t12) at (2,-0.5) [taskc] {};
+	\node (t13) at (2,-1.5) [taskc] {};
+	
+	\draw (t00) -- (t10);
+	\draw (t00) -- (t11);
+	\draw (t00) -- (t12);
+	\draw (t00) -- (t13);
+	
+	\draw (t01) -- (t10);
+	\draw (t01) -- (t11);
+	\draw (t01) -- (t12);
+	\draw (t01) -- (t13);
+	
+	\draw (t02) -- (t10);
+	\draw (t02) -- (t11);
+	\draw (t02) -- (t12);
+	\draw (t02) -- (t13);
+	
+	\node (t20) at (4,0.5) [taskc] {};
+	\node (t21) at (4,-0.5) [taskc] {};
+	
+	\draw (t10) -- (t20);
+	\draw (t10) -- (t21);
+	
+	\draw (t11) -- (t20);
+	\draw (t11) -- (t21);
+	
+	\draw (t12) -- (t20);
+	\draw (t12) -- (t21);
+	
+	\draw (t13) -- (t20);
+	\draw (t13) -- (t21);
+	
+	\draw (t20) -- (4.5, 0.5);
+	\draw (t21) -- (4.5, -0.5);
+%%	\node (t01) at (0,0) [taskc]{};
+%%	\draw (t01) -- (1,0);
+%%	\draw (t01) -- (-1,0);
+	\path (6.8, 0) -- (9.0,0);
+	\end{tikzpicture} 	
+\end{center}
+%%	\includegraphics[scale=0.02]{./tmp/neuralNetwork.jpg}
+	\item \textbf{Molecular Simulation}: To represent wave functions
+	\item \textbf{Quantum Computing}: Tensor network based models for computations
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+
+\begin{frame}{Tensor Computations}
+
+{\small
+\begin{itemize}
+%%	\item Tensors are used in several domains
+%%	\begin{itemize}
+%%		\item Quantum molecular dynamics, signal processing, data mining, neurosciences, computer vision, psychometrics, chemometrics, ...
+%%	\end{itemize}
+%%	\vfill
+	\item Memory and computation requirements are exponential in the number of dimensions
+	\begin{itemize}
+		\item A simulation involving just $100$ spatial orbitals manipulates a huge tensor with $4^{100}$ elements
+
+	\end{itemize}
+	\vfill
+	\item People work with low dimensional structure (decomposition) of the tensors
+	\begin{itemize}
+		\item A tensor is represented with smaller objects
+%%		\item Useful to find patterns in massive data
+		\item Improves memory and computation requirements
+	\end{itemize}
+	\vfill
+%%	\item Singular value decomposition (SVD) provides the most accurate low rank approximations for matrices
+%%	\vfill
+%%	\begin{itemize}
+%%		\item Most tensor decompositions are based on SVD of matricized tensors
+%%	\end{itemize} 
+%%	\vfill
+%%%%	\item Limited work on parallelization of tensor algorithms
+%%%%	
+%%%%	\vfill
+	\item Most tensor decompositions rely on Singular Value Decomposition (SVD) of matrices
+%%	\item Singular Value Decomposition (SVD) provides the most accurate low rank approximations of matrices
+	\begin{itemize}
+		%%	\item It decomposes a matrix $A$ $\in$ $\mathbb{R}^{m \times n}$ to the form $U\Sigma V^T$
+		%%	\begin{itemize}
+		%%		\item $U$ is an $m\times m$ orthogonal matrix
+		%%		\item $V$ is an $n\times n$ orthogonal matrix
+		%%		\item $\Sigma$ is an $m\times n$ rectangular diagonal matrix
+		%%	\end{itemize}
+		\item SVD represents a matrix as the sum of rank one matrices, $A= U\Sigma V^T= \sum_i\Sigma(i;i)U_i V_i^T$
+		%%%%	\begin{itemize}
+		%%%%%%		\item $A= \sum_i \Sigma(i;i)U_i V_i^T$
+		%%%%		\item Minimum number of rank one matrices required in the sum is called the rank of the matrix
+		%%%%	\end{itemize}
+		\begin{center}
+			\begin{tikzpicture}[scale=0.2, every node/.style={transform shape}]
+			\pgfmathsetmacro{\cubex}{4}
+			\pgfmathsetmacro{\cubey}{4}
+			\pgfmathsetmacro{\cubez}{4}
+			\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+			%%\draw[blue,fill=pastelgreen] (0,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+			%%\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+			
+			\node[draw=none, text=black, scale=4] at (1.5,-3,-3) {$=$};
+			
+			\draw[blue,fill=pastelgreen] (6,0,0) -- ++(-\cubex+2.15,0,0) -- ++(0,-\cubey,0) -- ++(\cubex-2.15,0,0) -- cycle;
+			
+			\draw[blue,fill=pastelgreen] (10.25,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey+2.15,0) -- ++(\cubex,0,0) -- cycle;
+			
+			\node[draw=none, text=black, scale=4] at (10.65,-3,-3) {$=$};
+			
+			\pgfmathsetmacro{\smallwidth}{0.5}
+			\draw[blue,fill=pastelgreen] (9+\cubex+2,0,0) -- ++(-\smallwidth,0,0) -- ++(0,-\cubey,0) -- ++(\smallwidth,0,0) -- cycle;
+			\draw[blue,fill=pastelgreen] (9+\cubex+2 +\cubex + 0.5,0.75,0) -- ++(-\cubex,0,0) -- ++(0,-\smallwidth,0) -- ++(\cubex,0,0) -- cycle;
+			%%\draw[blue,fill=pastelgreen] (\cubex+2,0.5,0) -- ++(-\smallwidth,0,0) -- ++(0,0,-\cubez) -- ++(\smallwidth,0,0) -- cycle;
+			
+			\node[draw=none, text=black, scale=4] at (9+2+\cubex+4.25,-3,-3) {$+$};
+			
+			\draw[blue,fill=pastelgreen] (9+\cubex+2.5 + \cubex+2,0,0) -- ++(-\smallwidth,0,0) -- ++(0,-\cubey,0) -- ++(\smallwidth,0,0) -- cycle;
+			\draw[blue,fill=pastelgreen] (9+\cubex+2.5+\cubex+2 +\cubex + 0.5,0.75,0) -- ++(-\cubex,0,0) -- ++(0,-\smallwidth,0) -- ++(\cubex,0,0) -- cycle;
+			%%\draw[blue,fill=pastelgreen] (\cubex+2.5+\cubex+2,0.5,0) -- ++(-\smallwidth,0,0) -- ++(0,0,-\cubez) -- ++(\smallwidth,0,0) -- cycle;
+			
+			\node[draw=none, text=black, scale=4] at (9+2+\cubex+5 + \cubex+ 4.25, -3,-3) {$+$ $\cdots$ $+$};
+			
+			\draw[blue,fill=pastelgreen] (9+12 + \cubex+2.5 + \cubex+2,0,0) -- ++(-\smallwidth,0,0) -- ++(0,-\cubey,0) -- ++(\smallwidth,0,0) -- cycle;
+			\draw[blue,fill=pastelgreen] (9+12+\cubex+2.5+\cubex+2 +\cubex + 0.5,0.75,0) -- ++(-\cubex,0,0) -- ++(0,-\smallwidth,0) -- ++(\cubex,0,0) -- cycle;
+			%%\draw[blue,fill=pastelgreen] (12 + \cubex+2.5+\cubex+2,0.5,0) -- ++(-\smallwidth,0,0) -- ++(0,0,-\cubez) -- ++(\smallwidth,0,0) -- cycle;
+			\end{tikzpicture}$\qquad\qquad\qquad\qquad$
+		\end{center}
+	\end{itemize}
+	
+	%%    \begin{itemize}
+	%%    	\item Matricized Tensor Times Khatri Rao Product (MTTKRP), tensor contraction
+	%%    \end{itemize}
+\end{itemize}
+}
+\end{frame}
+
+%%\begin{frame}{Use of Tensors}
+%%content...
+%%\end{frame}
+\begin{frame}{Popular Tensor Decompositions (Higher Order Generalization of SVD)}
+
+{\small
+%%\begin{block}{}
+\vspace*{-0.25cm}
+\begin{itemize}
+	\item Canonical decomposition (Also known as Canonical Polyadic or CANDECOMP/PARAFAC)
+	\begin{center}
+		\begin{tikzpicture}[scale=0.2, every node/.style={transform shape}]
+		\pgfmathsetmacro{\cubex}{4}
+		\pgfmathsetmacro{\cubey}{4}
+		\pgfmathsetmacro{\cubez}{4}
+		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+		
+		\node[draw=none, text=black, scale=4] at (2,-2.25,-3) {$=$};
+		\pgfmathsetmacro{\smallwidth}{0.5}
+		\draw[blue,fill=pastelgreen] (\cubex+2,0,0) -- ++(-\smallwidth,0,0) -- ++(0,-\cubey,0) -- ++(\smallwidth,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (\cubex+2 +\cubex + 0.5,0.75,0) -- ++(-\cubex,0,0) -- ++(0,-\smallwidth,0) -- ++(\cubex,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (\cubex+2,0.5,0) -- ++(-\smallwidth,0,0) -- ++(0,0,-\cubez) -- ++(\smallwidth,0,0) -- cycle;
+		
+		\node[draw=none, text=black, scale=4] at (2+\cubex+4.25,-2.25,-3) {$+$};
+		
+		\draw[blue,fill=pastelgreen] (\cubex+2.5 + \cubex+2,0,0) -- ++(-\smallwidth,0,0) -- ++(0,-\cubey,0) -- ++(\smallwidth,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (\cubex+2.5+\cubex+2 +\cubex + 0.5,0.75,0) -- ++(-\cubex,0,0) -- ++(0,-\smallwidth,0) -- ++(\cubex,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (\cubex+2.5+\cubex+2,0.5,0) -- ++(-\smallwidth,0,0) -- ++(0,0,-\cubez) -- ++(\smallwidth,0,0) -- cycle;
+		
+		\node[draw=none, text=black, scale=4] at (2+\cubex+5 + \cubex+ 4.25, -2.25,-3) {$+$ $\cdots$ $+$};
+		
+		\draw[blue,fill=pastelgreen] (12 + \cubex+2.5 + \cubex+2,0,0) -- ++(-\smallwidth,0,0) -- ++(0,-\cubey,0) -- ++(\smallwidth,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (12+\cubex+2.5+\cubex+2 +\cubex + 0.5,0.75,0) -- ++(-\cubex,0,0) -- ++(0,-\smallwidth,0) -- ++(\cubex,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (12 + \cubex+2.5+\cubex+2,0.5,0) -- ++(-\smallwidth,0,0) -- ++(0,0,-\cubez) -- ++(\smallwidth,0,0) -- cycle;
+		
+		\end{tikzpicture}
+	\end{center}
+	%%\vfill
+	\item Tucker decomposition
+	\vspace*{-0.75cm}\begin{center}
+		\begin{tikzpicture}[scale=0.2, every node/.style={transform shape}]
+		\pgfmathsetmacro{\cubex}{4}
+		\pgfmathsetmacro{\cubey}{4}
+		\pgfmathsetmacro{\cubez}{4}
+		\draw[blue,fill=pastelgreen] (-12,1,\cubez-2) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (-12,1,\cubez-2) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+		\draw[blue,fill=pastelgreen] (-12,1,\cubez-2) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+		\node[draw=none, text=black, scale=4] at (-8,-1,0) {$=$};
+		
+		\pgfmathsetmacro{\cubex}{2}
+		\pgfmathsetmacro{\cubey}{2}
+		\pgfmathsetmacro{\cubez}{2}
+		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+		
+		\draw[blue,fill=pastelgreen] (-\cubex-1,1,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey-2,0) -- ++(\cubex,0,0) -- cycle;
+		\draw[blue,fill=pastelgreen] (\cubex+2+1,0,-\cubey) -- ++(-\cubex-2,0,0) -- ++(0,-\cubey,0) -- ++(\cubex+2,0,0) -- cycle;
+		
+		\draw[blue,fill=pastelgreen] (0,0,-\cubez-1) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez-2) -- ++(\cubex,0,0) -- cycle;
+		
+		\path (-18,0) -- (20,0);
+		\end{tikzpicture}
+	\end{center}
+	%%\vfill
+	\item Tensor Train decomposition (equivalently known as Matrix Product States)
+		
+		\vspace*{-0.15cm}\begin{center}
+		\begin{tikzpicture}[scale=0.2, every node/.style={transform shape}]
+		
+		\node (t0) at (0,-2.75) [scale=4] {\tensor{A}};
+		\node [scale=4]at (2.5, -2.75) {$=$};
+		\path (5,-6) -- (0,0);
+		\end{tikzpicture}\hspace*{-0.15cm}
+		\includegraphics[scale=0.175]{./diagrams/ttentry-simple.eps}$\qquad\qquad$
+	\end{center}
+%%	\vspace*{-0.28cm}
+%%	\noindent Tensor notation: bold letters denote tensors, i.e., {\scriptsize \tensor{A}} $\in \mathbb{R}^{n_1 \times \ldots \times n_d}$ is a $d$-dimensional tensor.
+%%	\\
+%%	\noindent \tensor{A} is represented with $2$ matrices and $d$-$2$ $3$-dimensional tensors. 
+	%%\vfill
+\end{itemize}
+%%\end{block}
+}
+\end{frame}
+
+
+%%%------------------------------------------------
+%%\begin{frame}{Tensor Train decomposition}
+%%%%\begin{itemize}
+%%%%\item A $d$-dimensional tensor is represented with $2$ matrices and $d$-$2$ $3$-dimensional tensors.
+%%%%\end{itemize}
+%%
+%%%%\begin{figure}
+%%
+%%\vspace*{-0.25cm}\begin{center}
+%%\begin{tikzpicture}[scale=0.5, every node/.style={transform shape}]
+%%
+%%\node (t0) at (0,0) [scale=2.5] {\tensor{A}};
+%%\node [scale=2]at (2, 0.0) {$=$};
+%%\path (5,-6) -- (0,0);
+%%\end{tikzpicture}
+%%\includegraphics[scale=0.325]{./diagrams/ttentry.eps}
+%%\end{center}
+%%%%\end{figure}
+%%\vspace*{-0.15cm}
+%%\begin{itemize}
+%%	\item Tensor notation: bold letters denote tensors, i.e., \tensor{A} $\in \mathbb{R}^{n_1 \times \ldots \times n_d}$ is a $d$-dimensional tensor 
+%%	\item \tensor{A} is represented with $2$ matrices and $d$-$2$ $3$-dimensional tensors.
+%%%%	\item An entry is computed by multiplying corresponding matrix (or row/column) of each core.
+%%%%	\item For $n_1=\cdots=n_d=n$ and $r_1=\cdots=r_{d-1}=r$, the number of entries = $\mathcal{O}(ndr^2)$
+%%\end{itemize}
+%%\end{frame}
+
+%%\begin{frame}{Tensor Train Representation}
+%%
+%%\begin{block}{}
+%%$\tensor{A}$ $\in$ $\mathbb{R}^{n_1 \times \cdots \times n_d}$ is represented with cores $\tensor{G}_k$$\in$ $\mathbb{R}^{r_{k-1}\times n_k\times r_k}$, $k$=$1,2,\cdots d$, $r_0$=$r_d$=$1$ and its elements satisfy the following expression:
+%%{\small\begin{align*}
+%%\tensor{A}(i_1,\cdots ,i_d) 
+%%&= \sum_{\alpha_0 = 1}^{r_0} \cdots \sum_{\alpha_d = 1}^{r_d} \tensor{G}_1(\alpha_0, i_1, \alpha_1) \cdots \tensor{G}_d(\alpha_{d-1}, i_d, \alpha_d)\\
+%%&= \sum_{\alpha_1 = 1}^{r_1} \cdots \sum_{\alpha_{d-1} = 1}^{r_{d-1}} \tensor{G}_1(1, i_1, \alpha_1) \cdots \tensor{G}_d(\alpha_{d-1}, i_d, 1)
+%%\end{align*}}
+%%\begin{center}
+%%\begin{tikzpicture}[scale=0.625, every node/.style={transform shape}]
+%%\tikzstyle{taskc}=[circle, draw=orange, minimum size=11mm, fill=none, dashed, ultra thick]
+%%\tikzstyle{taskr}=[draw=black, minimum height=8mm, minimum width=15mm, anchor=south west, fill=pastelgreen, text=black]
+%%
+%%\node(t1) at (0,0) {};
+%%\node [above right=0cm and 0cm of t1.mid,taskr](T1) {$\textcolor{blue}{i_1}\alpha_1$};
+%%\node [above right=0cm and 0.8cm of T1.south east, taskc](C1) {$\alpha_1$};
+%%\node [above right=0cm and 0.8cm of C1.south east, taskr](T2) {$\alpha_1\textcolor{blue}{i_2}\alpha_2$};
+%%\node [above right=0cm and 0.8cm of T2.south east, taskc](C2) {$\alpha_2$};
+%%
+%%\node [above right=0cm and 4.5cm of T2.south east, taskc](Cd) {$\alpha_{d\text{-}1}$};
+%%\node [above right=0cm and 0.8cm of Cd.south east, taskr](Td) {$\alpha_{d\text{-}1}\textcolor{blue}{i_d}$};
+%%\draw (T1.east)--(C1.west);
+%%\draw (C1.east)--(T2.west);
+%%\draw (T2.east)--(C2.west);
+%%\draw [dotted] (C2.east)--(Cd.west);
+%%\draw (Cd.east)--(Td.west);
+%%\path (-0.1, -0.4) -- (2.5, -0.4); 
+%%%%\path (-0.1, -0.8) -- (2.5, -0.8); 
+%%\end{tikzpicture}
+%%\end{center}
+%%\end{block}
+%%\begin{itemize}
+%%\item For $n_1=n_2=\cdots=n_d=n$ and $r_1=r_2=\cdots=r_{d-1}=r$, the number of entries = $\mathcal{O}(ndr^2)$
+%%\end{itemize}
+%%\end{frame}
+
+
+
+%%\begin{frame}
+%%\frametitle{Previous Activities}
+%%\tableofcontents[currentsection]
+%%\tableofcontents
+
+
+%%\begin{tikzpicture}[scale=0.625, every node/.style={transform shape}]
+%%\tikzstyle{taskr}=[draw=black, rounded corners, minimum height=28mm, minimum width=86mm, fill=none, text=black]
+%%
+%%\path (0,0) --(1,0);
+%%
+%%
+%%\node (otheractivities) at (4,0) [taskr, anchor=south] {};
+%%%%\node at (mainfocus.south) [below] {\textbf{Main focus}};
+%%
+%%%%\node [below, align=left, text width=70mm]at (mainfocus.north) {		\textbf{$\ $Scalable communication optimal\\ $\ $algorithms for tensors\medskip}\\{\footnotesize \mybullet Analyze existing algorithms\\ 
+%%%%		\mybullet Determine communication lower bounds\\\mybullet Propose communication optimal algorithms\\\mybullet Implement the proposed algorithms}};
+%%%%
+%%%%
+%%%%\node (shorttermfocus) at (8,0) [taskr, minimum height=21mm, anchor=south] {};
+%%%%\node at (shorttermfocus.south) [below] {\textbf{Short/Mid term plans}};
+%%%%
+%%%%\node [below, align=left, text width=70mm]at (shorttermfocus.north) {\textbf{$\ $Extension of existing approaches\medskip}\\\footnotesize \mybullet Strassen's concepts to tensors\\\mybullet Concepts of hierarchical matrices to tensors\\\mybullet Separation order of dimensions in tensor train};
+%%%%
+%%%%
+%%%%\node (midtermfocus) at (16,0) [taskr, minimum height=25mm, anchor=south] {};
+%%%%\node at (midtermfocus.south) [below] {\textbf{Mid/Long term plans}};
+%%%%
+%%%%\node [below, align=left, text width=70mm]at (midtermfocus.north) {\textbf{$\ $Exploratory topics\medskip}\\\footnotesize \mybullet New tensor representations\\ \mybullet Architecture aware algorithms\\ \mybullet Randomization in tensors\\ \mybullet Factorizations of tensors};
+%%
+%%\node [below, align=left, text width=86mm]at (otheractivities.north) {
+%%\textbf{$\ $Other Significant Activities}:\medskip\\{\small
+%%\mybullet Performance optimizations on GPUs\\
+%%\mybullet Injecting static rules in dynamic schedulers\\
+%%\mybullet Large scale runtime systems\\
+%%%%\mybullet Parallel tensor algorithms to perform molecular simulations\\
+%%\mybullet Communication lower bounds for computations}};
+%%
+%%\end{tikzpicture}
+%%\end{frame}
+
+%%\section{Performance Optimizations on GPUs for a Specific Application (\textcolor{green}{Not today})}
+
+
+\begin{frame}{Tensor Train Representation: Product of Matrices View}
+\begin{itemize}
+	\item A $d$-dimensional tensor is represented with $2$ matrices and $d$-$2$ $3$-dimensional tensors.
+\end{itemize}
+\begin{figure}
+	\begin{center}	
+		\includegraphics[scale=0.35]{./ttentry.eps}
+	\end{center}
+\end{figure}
+\noindent An entry of $\tensor{A}$ $\in$ $\mathbb{R}^{n_1 \times \cdots \times n_d}$ is computed by multiplying corresponding matrix (or row/column) of each core.
+\end{frame}
+
+\section{Parallel Tensor Train Algorithms}
+\begin{frame}{Previous Activities}
+\tableofcontents[currentsection]
+\end{frame}
+
+%%\subsection{Scheduling of Dense Linear Algebra Kernels}
+%%\subsection{Communication Computation Overlap}
+
+
+%%\subsection{Tensor Train Decomposition}
+%%\begin{frame}{Tensor Train Decomposition}
+%%content...
+%%\end{frame}
+%%\begin{frame}{Parallel Tensor Train Decomposition and Approximation Algorithms}
+%%content...
+%%\end{frame}
+%%\begin{frame}{Unfolding Matrices of a Tensor \& Notations}
+%%%%\begin{itemize}
+%%%%	\item ($r_1, r_2,\cdots, r_{d-1}$) denotes the ranks of unfolding matrices of the tensor.
+%%%%\end{itemize}
+%%\end{frame}
+
+\begin{frame}{Tensor Train algorithms and Separation of dimensions}
+
+{\small\vspace*{-0.25cm}
+\begin{itemize}
+	\item A sequential algorithm to compute Tensor Train decomposition exists [Oseledets, 2011]  
+\end{itemize}
+\begin{minipage}{0.425\linewidth}
+\begin{block}{Sequential algorithm}
+	\begin{center}
+		\begin{tikzpicture}[scale=0.525, every node/.style={transform shape}]
+%%\draw[fill=cyan] (0,0) circle (0.8cm);
+%%		\node [draw,circle]{r};
+%%		\tikzstyle{task}=[circle, draw, minimum size=10mm]
+%%		\node (d) at (0,0)[task, fill=babyblueeyes] {$D$};
+%%		\node (e) at (2.5,0)[task, fill=pastelviolet] {$E$};
+%%		\draw[thick, ->] (d.east) -- (e);
+%%		
+%%		\node (a) at (0,2)[task, fill=pastelyellow] {$A$};
+%%		\node (b) at (2.5,2.75)[task, fill=pastelgreen] {$B$};
+%%		\node (c) at (2.5,1.25)[task, fill=pastelred] {$C$};
+%%		
+%%		\draw[thick, ->] (a.east) -- (b);
+%%		\draw[thick, ->] (a.east) -- (c);
+\tikzstyle{taskc}=[circle, draw=black, minimum size=2mm, fill=blue]
+\tikzstyle{taskr}=[draw=none, minimum height=2mm, minimum width=5mm, anchor=south west, fill=none, text=black]
+%%
+\node (t01) at (0,0) [taskc]{};
+\node (t11) at (-1,-1) [taskc] {};
+\node (t12) at (1, -1) [taskc] {};
+\node (t21) at (0, -2) [taskc] {};
+\node (t22) at (2, -2) [taskc] {};
+\node (t31) at (1,-3) [taskc] {};
+\node (t52) at (5, -5) [taskc] {};
+\node (t61) at (4, -6) [taskc] {};
+\node (t62) at (6, -6) [taskc] {};
+
+\draw (t01) -- (t11);
+\draw (t01) -- (t12);
+\draw (t12) -- (t21);
+\draw (t12) -- (t22);
+\draw (t22) -- (t31);
+\draw [dashed] (t22) -- (t52);
+\draw (t52) -- (t61);
+\draw (t52) -- (t62);
+
+\draw (6.8, -6) -- (6.8, -3.25);
+\draw (6.8, -2.75) -- (6.8, 0);
+
+\draw (6.65, -6) -- (6.95, -6);
+\draw (6.65, -0) -- (6.95, 0);
+\node at (6.8, -3) {$d\text{-}1$};
+
+\node [above left=0mm and 2mm of t01.mid, taskr](l01) {$\{i_1,i_2,\cdots i_d\}$};
+\node [below left=2mm and 9mm of t11.mid, taskr](l11) {$\{i_1\}$};
+\node [above left=0mm and 2mm of t12.mid, taskr](l12) {$\{i_2,\cdots i_d\}$};
+\node [below left=2mm and 9mm of t21.mid, taskr](l21) {$\{i_2\}$};
+\node [above left=0mm and 2mm of t22.mid, taskr](l22) {$\{i_3,\cdots i_d\}$};
+\node [below left=2mm and 9mm of t31.mid, taskr](l31) {$\{i_3\}$};
+
+\node [above left=0mm and 2mm of t52.mid, taskr](l52) {$\{i_{d\text{-}1}, i_d\}$};
+\node [below left=2mm and 12mm of t61.mid, taskr](l61) {$\{i_{d\text{-}1}\}$};
+\node [above left=0mm and 2mm of t62.mid, taskr](l62) {$\{i_d\}$};
+
+\path (-0.1, -6.4) -- (2.5, -6.4); 
+\end{tikzpicture}
+\end{center}
+\end{block}
+\end{minipage}$\qquad$
+\begin{minipage}{0.475\linewidth}
+\begin{block}{For better parallelization}
+\begin{center}
+\begin{tikzpicture}[scale=0.525, every node/.style={transform shape}]
+
+\tikzstyle{taskc}=[circle, draw=black, minimum size=2mm, fill=blue]
+%%	\tikzstyle{taskr}=[draw=none, minimum height=2mm, minimum width=5mm, anchor=south west, fill=none, text=black]
+
+
+\node (t01) at (0,0) [taskc]{};
+\node (t11) at (-1,-1) [taskc] {};
+\node (t12) at (1, -1) [taskc] {};
+
+\node (tinter1) at (-0.5,-2) [taskc, draw=none, fill=none] {};
+\node (tinter2) at (0.5,-2) [taskc, draw=none, fill=none] {};
+
+\node (t41) at (-4,-4) [taskc] {};
+\node (t42) at (4,-4) [taskc] {};
+\node (t51) at (-5,-5) [taskc] {};
+\node (t52) at (-3,-5) [taskc] {};
+\node (t53) at (3,-5) [taskc] {};
+\node (t54) at (5,-5) [taskc] {};
+
+
+\draw (t01) -- (t11);
+\draw (t01) -- (t12);
+
+\draw [dashed] (t11) -- (tinter1.west);
+\draw [dashed] (t12) -- (tinter2.east);
+
+\draw [dashed] (t11) -- (t41);
+\draw [dashed] (t12) -- (t42);
+
+\path (t41) -- (t42) node [midway] {$\cdots\cdots\cdots$};
+
+\draw (t41) -- (t51);
+\draw (t41) -- (t52);
+
+\draw (t42) -- (t53);
+\draw (t42) -- (t54);
+
+
+\draw (5.8, -5) -- (5.8, -2.75);
+\draw (5.8, -2.25) -- (5.8, 0);
+
+\draw (5.65, -5) -- (5.95, -5);
+\draw (5.65, 0) -- (5.95, 0);
+\node at (5.8, -2.5) {$\log_2 d$};
+
+\node [above right] at (t01.160) {$\{i_1,i_2,\cdots i_d\}$};	
+
+\node [above left] at (t11.mid) {$\{i_1,i_2,\cdots i_\frac{d}{2}\}$};	
+\node [above right] at (t12.160) {$\{i_{\frac{d}{2}+1},\cdots i_d\}$};
+
+\node [above left] at (t41.mid) {$\{i_1,i_2\}$};
+\node [above right] at (t42.160) {$\{i_{d-1}, i_d\}$};
+
+\node [above left] at (t51.mid) {$\{i_1\}$};
+\node [above right] at (t52.160) {$\{i_2\}$};
+
+\node [above left] at (t53.mid) {$\{i_{d-1}\}$};
+\node [above right] at (t54.160) {$\{i_d\}$};
+
+
+\path (-0.1, -6.4) -- (2.5, -6.4); 
+%%		\path (-6.5, 0) -- (0,0);
+\end{tikzpicture}
+\end{center}
+\end{block}
+\end{minipage}
+\begin{itemize}
+	\item Can obtain better parallelism by expressing the operation in a balanced binary tree shape
+	\begin{itemize}
+		\item Proposed a parallel algorithm based on this idea
+	\end{itemize}
+\end{itemize}
+}\end{frame}
+
+%%\begin{frame}{Separatation of Dimensions \only<1>{in Sequential Algorithm }\only<2>{for Maximum Parallelization}}
+%%\begin{block}{}
+%%	\begin{center}
+%%	\onslide<1->{
+%%
+%%	}
+%%	\onslide<2->{
+%%
+%%	}
+%%	\end{center}
+%%\end{block}
+%%\end{frame}
+
+%%%%\begin{frame}{Unfolding matrices of a tensor}
+%%%%
+%%%%{\small
+%%%%\vspace*{-0.15cm}\begin{block}{}
+%%%%	\begin{center}
+%%%%		\begin{tikzpicture}[scale=0.475, every node/.style={transform shape}]
+%%%%%%\draw[fill=cyan] (0,0) circle (0.8cm);
+%%%%%%		\node [draw,circle]{r};
+%%%%%%		\tikzstyle{task}=[circle, draw, minimum size=10mm]
+%%%%%%		\node (d) at (0,0)[task, fill=babyblueeyes] {$D$};
+%%%%%%		\node (e) at (2.5,0)[task, fill=pastelviolet] {$E$};
+%%%%%%		\draw[thick, ->] (d.east) -- (e);
+%%%%%%		
+%%%%%%		\node (a) at (0,2)[task, fill=pastelyellow] {$A$};
+%%%%%%		\node (b) at (2.5,2.75)[task, fill=pastelgreen] {$B$};
+%%%%%%		\node (c) at (2.5,1.25)[task, fill=pastelred] {$C$};
+%%%%%%		
+%%%%%%		\draw[thick, ->] (a.east) -- (b);
+%%%%%%		\draw[thick, ->] (a.east) -- (c);
+%%%%\tikzstyle{taskc}=[circle, draw=black, minimum size=2mm, fill=blue]
+%%%%\tikzstyle{taskr}=[draw=none, minimum height=2mm, minimum width=5mm, anchor=south west, fill=none, text=black]
+%%%%%%
+%%%%\node (t01) at (0,0) [taskc]{};
+%%%%\node (t11) at (-1,-1) [taskc] {};
+%%%%\node (t12) at (1, -1) [taskc] {};
+%%%%\node (t21) at (0, -2) [taskc] {};
+%%%%\node (t22) at (2, -2) [taskc] {};
+%%%%\node (t31) at (1,-3) [taskc] {};
+%%%%\node (t52) at (5, -5) [taskc] {};
+%%%%\node (t61) at (4, -6) [taskc] {};
+%%%%\node (t62) at (6, -6) [taskc] {};
+%%%%
+%%%%\draw (t01) -- (t11);
+%%%%\draw (t01) -- (t12);
+%%%%\draw (t12) -- (t21);
+%%%%\draw (t12) -- (t22);
+%%%%\draw (t22) -- (t31);
+%%%%\draw [dashed] (t22) -- (t52);
+%%%%\draw (t52) -- (t61);
+%%%%\draw (t52) -- (t62);
+%%%%
+%%%%\draw (6.8, -6) -- (6.8, -3.25);
+%%%%\draw (6.8, -2.75) -- (6.8, 0);
+%%%%
+%%%%\draw (6.65, -6) -- (6.95, -6);
+%%%%\draw (6.65, -0) -- (6.95, 0);
+%%%%\node at (6.8, -3) {$d\text{-}1$};
+%%%%
+%%%%\node [above left=0mm and 2mm of t01.mid, taskr](l01) {$\{i_1,i_2,\cdots i_d\}$};
+%%%%\node [below left=2mm and 9mm of t11.mid, taskr](l11) {$\{i_1\}$};
+%%%%\node [above left=0mm and 2mm of t12.mid, taskr](l12) {$\{i_2,\cdots i_d\}$};
+%%%%\node [below left=2mm and 9mm of t21.mid, taskr](l21) {$\{i_2\}$};
+%%%%\node [above left=0mm and 2mm of t22.mid, taskr](l22) {$\{i_3,\cdots i_d\}$};
+%%%%\node [below left=2mm and 9mm of t31.mid, taskr](l31) {$\{i_3\}$};
+%%%%
+%%%%\node [above left=0mm and 2mm of t52.mid, taskr](l52) {$\{i_{d\text{-}1}, i_d\}$};
+%%%%\node [below left=2mm and 12mm of t61.mid, taskr](l61) {$\{i_{d\text{-}1}\}$};
+%%%%\node [above left=0mm and 2mm of t62.mid, taskr](l62) {$\{i_d\}$};
+%%%%
+%%%%\path (-0.1, -6.4) -- (2.5, -6.4); 
+%%%%\end{tikzpicture}$\qquad$
+%%%%\begin{tikzpicture}[scale=0.475, every node/.style={transform shape}]
+%%%%
+%%%%\tikzstyle{taskc}=[circle, draw=black, minimum size=2mm, fill=blue]
+%%%%%%	\tikzstyle{taskr}=[draw=none, minimum height=2mm, minimum width=5mm, anchor=south west, fill=none, text=black]
+%%%%
+%%%%
+%%%%\node (t01) at (0,0) [taskc]{};
+%%%%\node (t11) at (-1,-1) [taskc] {};
+%%%%\node (t12) at (1, -1) [taskc] {};
+%%%%
+%%%%\node (tinter1) at (-0.5,-2) [taskc, draw=none, fill=none] {};
+%%%%\node (tinter2) at (0.5,-2) [taskc, draw=none, fill=none] {};
+%%%%
+%%%%\node (t41) at (-4,-4) [taskc] {};
+%%%%\node (t42) at (4,-4) [taskc] {};
+%%%%\node (t51) at (-5,-5) [taskc] {};
+%%%%\node (t52) at (-3,-5) [taskc] {};
+%%%%\node (t53) at (3,-5) [taskc] {};
+%%%%\node (t54) at (5,-5) [taskc] {};
+%%%%
+%%%%
+%%%%\draw (t01) -- (t11);
+%%%%\draw (t01) -- (t12);
+%%%%
+%%%%\draw [dashed] (t11) -- (tinter1.west);
+%%%%\draw [dashed] (t12) -- (tinter2.east);
+%%%%
+%%%%\draw [dashed] (t11) -- (t41);
+%%%%\draw [dashed] (t12) -- (t42);
+%%%%
+%%%%\path (t41) -- (t42) node [midway] {$\cdots\cdots\cdots$};
+%%%%
+%%%%\draw (t41) -- (t51);
+%%%%\draw (t41) -- (t52);
+%%%%
+%%%%\draw (t42) -- (t53);
+%%%%\draw (t42) -- (t54);
+%%%%
+%%%%
+%%%%\draw (5.8, -5) -- (5.8, -2.75);
+%%%%\draw (5.8, -2.25) -- (5.8, 0);
+%%%%
+%%%%\draw (5.65, -5) -- (5.95, -5);
+%%%%\draw (5.65, 0) -- (5.95, 0);
+%%%%\node at (5.8, -2.5) {$\log_2 d$};
+%%%%
+%%%%\node [above right] at (t01.160) {$\{i_1,i_2,\cdots i_d\}$};	
+%%%%
+%%%%\node [above left] at (t11.mid) {$\{i_1,i_2,\cdots i_\frac{d}{2}\}$};	
+%%%%\node [above right] at (t12.160) {$\{i_{\frac{d}{2}+1},\cdots i_d\}$};
+%%%%
+%%%%\node [above left] at (t41.mid) {$\{i_1,i_2\}$};
+%%%%\node [above right] at (t42.160) {$\{i_{d-1}, i_d\}$};
+%%%%
+%%%%\node [above left] at (t51.mid) {$\{i_1\}$};
+%%%%\node [above right] at (t52.160) {$\{i_2\}$};
+%%%%
+%%%%\node [above left] at (t53.mid) {$\{i_{d-1}\}$};
+%%%%\node [above right] at (t54.160) {$\{i_d\}$};
+%%%%
+%%%%
+%%%%\path (-0.1, -6.4) -- (2.5, -6.4); 
+%%%%%%		\path (-6.5, 0) -- (0,0);
+%%%%\end{tikzpicture}
+%%%%\end{center}
+%%%%\end{block}
+%%%%%%\begin{block}{$k$-th unfolding matrix}
+%%%%	$k$-th unfolding matrix of tensor $\tensor{A}$ is defined as, $ A_k = [A_k(i_1, i_2,\cdots, i_k; i_{k+1},\cdots ,i_d)]$
+%%%%	
+%%%%	\begin{itemize}
+%%%%		\item Size of $A_k$ is $(\prod_{l=1}^{k}n_l)\times(\prod_{l=k+1}^{d}n_l)$
+%%%%		\item $r_k$ = rank($A_k$)
+%%%%		\item Each node works with an unfolding matrix 
+%%%%	\end{itemize}
+%%%%%%\end{block}
+%%%%\vspace*{-0.15cm}
+%%%%\begin{block}{}
+%%%%Theorem: Our parallel algorithm produces a Tensor Train representation with ranks not higher than $r_k$.
+%%%%\end{block}
+%%%%}\end{frame}
+
+%%%%\begin{frame}{Diagramatic representation of our parallel algorithm}
+%%%%\begin{columns}
+%%%%	\begin{column}{0.425\linewidth}{\footnotesize
+%%%%
+%%%%}\end{column}
+%%%%\begin{column}{0.575\linewidth}
+%%%%\begin{center}
+%%%%	\begin{tikzpicture}[scale=0.5, every node/.style={transform shape}]
+%%%%	\tikzstyle{taskr}=[draw=black, minimum height=8mm, minimum width=8mm, fill=none, text=black]
+%%%%	%%	anchor=south west,
+%%%%	\node (t10) at (0,1.2) {$\tensor{A}(i_1,i_2,i_3,i_4,i_5,i_6)$};	
+%%%%	\node (b01) at (0,0) [taskr]{};
+%%%%	\node [above] at (b01.north) {$i_4i_5i_6$};
+%%%%	\node [left] at (b01.west) {$i_1i_2i_3$};		
+%%%%	
+%%%%	\node (t11) at (-3,-1.8) {$\tensor{A}(i_1,i_2,i_3,\alpha_3)$};
+%%%%	\node (t12) at (3,-1.8) {$\tensor{A}(\alpha_3, i_4, i_5, i_6)$};
+%%%%	
+%%%%	\draw (b01.south) -- (t11);	
+%%%%	\draw (b01.south) -- (t12);
+%%%%	
+%%%%	\node (b11) at (-3,-3) [taskr]{};
+%%%%	\node (b12) at (3,-3) [taskr]{};
+%%%%	
+%%%%	\node [above] at (b11.north) {$i_3\alpha_3$};
+%%%%	\node [left] at (b11.west) {$i_1i_2$};
+%%%%	
+%%%%	\node [above] at (b12.north) {$i_6$};
+%%%%	\node [left] at (b12.west) {$\alpha_3i_4i_5$};
+%%%%	
+%%%%	\node (t21) at (-5, -4.8) {$\tensor{A}(i_1,i_2,\alpha_2)$};
+%%%%	\node (t22) at (-1.2, -4.8) {$\tensor{A}(\alpha_2, i_3,\alpha_3)$};
+%%%%	
+%%%%	\node (t23) at (1.2, -4.8) {$\tensor{A}(\alpha_3,i_4,i_5,\alpha_5)$};
+%%%%	\node (t24) at (5, -4.8) {$\tensor{A}(\alpha_5, i_6)$};
+%%%%	
+%%%%	\draw (b11.south) -- (t21);
+%%%%	\draw (b11.south) -- (t22);
+%%%%	
+%%%%	\draw (b12.south) -- (t23);
+%%%%	\draw (b12.south) -- (t24);		
+%%%%	
+%%%%	\node (b21) at (-5,-6) [taskr]{};
+%%%%	\node [above] at (b21.north) {$i_2\alpha_2$};
+%%%%	\node [left] at (b21.west) {$i_1$};
+%%%%	
+%%%%	\node (b22) at (1.2,-6) [taskr]{};
+%%%%	\node [above] at (b22.north) {$i_5\alpha_5$};
+%%%%	\node [left] at (b22.west) {$\alpha_3i_4$};
+%%%%	
+%%%%	\node (t31) at (-6.25, -7.8) {$\tensor{A}(i_1,\alpha_1)$};
+%%%%	\node (t32) at (-3.75, -7.8) {$\tensor{A}(\alpha_1,i_2,\alpha_2)$};
+%%%%	
+%%%%	\draw (b21.south) -- (t31);
+%%%%	\draw (b21.south) -- (t32);
+%%%%	
+%%%%	\node (t33) at (0, -7.8) {$\tensor{A}(\alpha_3,i_4,\alpha_4)$};
+%%%%	\node (t34) at (2.5, -7.8) {$\tensor{A}(\alpha_4,i_5,\alpha_5)$};
+%%%%	
+%%%%	\draw (b22.south) -- (t33);
+%%%%	\draw (b22.south) -- (t34);
+%%%%	
+%%%%	\end{tikzpicture}
+%%%%\end{center}
+%%%%\end{column}
+%%%%\end{columns}
+%%%%
+%%%%%%\begin{theorem}{\small
+%%%%%%		Our parallel algorithm produces a Tensor Train representation with ranks not higher than $r_k$. It implies $\alpha_i \le r_i$ in the above diagram.}
+%%%%%%\end{theorem}
+%%%%\end{frame}
+
+
+\begin{frame}{Tensor Train approximation algorithms}
+
+{\footnotesize\vspace*{-0.15cm}
+\begin{block}{Sequential algorithm [Oseledets, 2011]}
+\begin{minipage}{0.35\linewidth}
+	\begin{center}
+		\begin{tikzpicture}[scale=0.375, every node/.style={transform shape}]
+		%%\draw[fill=cyan] (0,0) circle (0.8cm);
+		%%		\node [draw,circle]{r};
+		%%		\tikzstyle{task}=[circle, draw, minimum size=10mm]
+		%%		\node (d) at (0,0)[task, fill=babyblueeyes] {$D$};
+		%%		\node (e) at (2.5,0)[task, fill=pastelviolet] {$E$};
+		%%		\draw[thick, ->] (d.east) -- (e);
+		%%		
+		%%		\node (a) at (0,2)[task, fill=pastelyellow] {$A$};
+		%%		\node (b) at (2.5,2.75)[task, fill=pastelgreen] {$B$};
+		%%		\node (c) at (2.5,1.25)[task, fill=pastelred] {$C$};
+		%%		
+		%%		\draw[thick, ->] (a.east) -- (b);
+		%%		\draw[thick, ->] (a.east) -- (c);
+		\tikzstyle{taskc}=[circle, draw=black, minimum size=2mm, fill=blue]
+		\tikzstyle{taskr}=[draw=none, minimum height=2mm, minimum width=5mm, anchor=south west, fill=none, text=black]
+		%%
+		\node (t01) at (0,0) [taskc]{};
+		\node (t11) at (-1,-1) [taskc] {};
+		\node (t12) at (1, -1) [taskc] {};
+		\node (t21) at (0, -2) [taskc] {};
+		\node (t22) at (2, -2) [taskc] {};
+		\node (t31) at (1,-3) [taskc] {};
+		\node (t52) at (5, -5) [taskc] {};
+		\node (t61) at (4, -6) [taskc] {};
+		\node (t62) at (6, -6) [taskc] {};
+		
+		\draw (t01) -- (t11);
+		\draw (t01) -- (t12);
+		\draw (t12) -- (t21);
+		\draw (t12) -- (t22);
+		\draw (t22) -- (t31);
+		\draw [dashed] (t22) -- (t52);
+		\draw (t52) -- (t61);
+		\draw (t52) -- (t62);
+		
+		\draw (6.8, -6) -- (6.8, -3.25);
+		\draw (6.8, -2.75) -- (6.8, 0);
+		
+		\draw (6.65, -6) -- (6.95, -6);
+		\draw (6.65, -0) -- (6.95, 0);
+		\node at (6.8, -3) {$d\text{-}1$};
+		
+		\node [above left=0mm and 2mm of t01.mid, taskr](l01) {$\{i_1,i_2,\cdots i_d\}$};
+		\node [below left=2mm and 9mm of t11.mid, taskr](l11) {$\{i_1\}$};
+		\node [above left=0mm and 2mm of t12.mid, taskr](l12) {$\{i_2,\cdots i_d\}$};
+		\node [below left=2mm and 9mm of t21.mid, taskr](l21) {$\{i_2\}$};
+		\node [above left=0mm and 2mm of t22.mid, taskr](l22) {$\{i_3,\cdots i_d\}$};
+		\node [below left=2mm and 9mm of t31.mid, taskr](l31) {$\{i_3\}$};
+		
+		\node [above left=0mm and 2mm of t52.mid, taskr](l52) {$\{i_{d\text{-}1}, i_d\}$};
+		\node [below left=2mm and 12mm of t61.mid, taskr](l61) {$\{i_{d\text{-}1}\}$};
+		\node [above left=0mm and 2mm of t62.mid, taskr](l62) {$\{i_d\}$};
+		
+		\path (-0.1, -6.4) -- (2.5, -6.4); 
+		\end{tikzpicture}
+	\end{center}
+\end{minipage}
+\begin{minipage}{0.625\linewidth}
+
+%%		\begin{block}{Approximation of a $d$ dimensional tensor}
+%%			To obtain approximation error not more than $\epsilon$, at each node,
+			\begin{itemize}
+				\item Unfolding matrix: matricized representation of the tensor
+				\item Perform truncated SVD of unfolding matrix $A$, $A=U\Sigma V^T + E_A$
+%%				\item 
+%%				\item Apply constant truncation $\frac{\epsilon}{\sqrt{d-1}}$, i.e., $||E_A||_F \le \frac{\epsilon}{\sqrt{d-1}}$
+%%				\item Reshape $U$ as one of the tensor cores
+				\item Work with $\Sigma V^T$ on the right subtree   
+			\end{itemize}
+%%		\end{block}
+
+\end{minipage}	
+\end{block}
+\vspace*{-0.15cm}
+\begin{block}{Our parallel algorithm}
+\begin{minipage}{0.35\linewidth}
+	\begin{center}
+		\begin{tikzpicture}[scale=0.375, every node/.style={transform shape}]
+		
+		\tikzstyle{taskc}=[circle, draw=black, minimum size=2mm, fill=blue]
+		%%	\tikzstyle{taskr}=[draw=none, minimum height=2mm, minimum width=5mm, anchor=south west, fill=none, text=black]
+		
+		
+		\node (t01) at (0,0) [taskc]{};
+		\node (t11) at (-1,-1) [taskc] {};
+		\node (t12) at (1, -1) [taskc] {};
+		
+		\node (tinter1) at (-0.5,-2) [taskc, draw=none, fill=none] {};
+		\node (tinter2) at (0.5,-2) [taskc, draw=none, fill=none] {};
+		
+		\node (t41) at (-4,-4) [taskc] {};
+		\node (t42) at (4,-4) [taskc] {};
+		\node (t51) at (-5,-5) [taskc] {};
+		\node (t52) at (-3,-5) [taskc] {};
+		\node (t53) at (3,-5) [taskc] {};
+		\node (t54) at (5,-5) [taskc] {};
+		
+		
+		\draw (t01) -- (t11);
+		\draw (t01) -- (t12);
+		
+		\draw [dashed] (t11) -- (tinter1.west);
+		\draw [dashed] (t12) -- (tinter2.east);
+		
+		\draw [dashed] (t11) -- (t41);
+		\draw [dashed] (t12) -- (t42);
+		
+		\path (t41) -- (t42) node [midway] {$\cdots\cdots\cdots$};
+		
+		\draw (t41) -- (t51);
+		\draw (t41) -- (t52);
+		
+		\draw (t42) -- (t53);
+		\draw (t42) -- (t54);
+		
+		
+		\draw (5.8, -5) -- (5.8, -2.75);
+		\draw (5.8, -2.25) -- (5.8, 0);
+		
+		\draw (5.65, -5) -- (5.95, -5);
+		\draw (5.65, 0) -- (5.95, 0);
+		\node at (5.8, -2.5) {$\log_2 d$};
+		
+		\node [above right] at (t01.160) {$\{i_1,i_2,\cdots i_d\}$};	
+		
+		\node [above left] at (t11.mid) {$\{i_1,i_2,\cdots i_\frac{d}{2}\}$};	
+		\node [above right] at (t12.160) {$\{i_{\frac{d}{2}+1},\cdots i_d\}$};
+		
+		\node [above left] at (t41.mid) {$\{i_1,i_2\}$};
+		\node [above right] at (t42.160) {$\{i_{d-1}, i_d\}$};
+		
+		\node [above left] at (t51.mid) {$\{i_1\}$};
+		\node [above right] at (t52.160) {$\{i_2\}$};
+		
+		\node [above left] at (t53.mid) {$\{i_{d-1}\}$};
+		\node [above right] at (t54.160) {$\{i_d\}$};
+		
+		
+		%%\path (-0.1, -6.4) -- (2.5, -6.4); 
+		%%		\path (-6.5, 0) -- (0,0);
+		\end{tikzpicture}
+	\end{center}
+\end{minipage}
+\begin{minipage}{0.625\linewidth}
+%%		\begin{block}{Approximation of a $d$ dimensional tensor}
+%%			To obtain approximation error less than  or close $\epsilon$, at each node,
+			\begin{itemize}
+				\item Perform truncated SVD of unfolding matrix $A$, $A=U\Sigma V^T + E_A$
+				\item Find diagonal matrices $X$, $Y$, and $S$, such that $\Sigma=XSY$
+%%				\item Apply truncation based on the number of dimensions
+				\item Call left (resp. right) subtree with $UX$ (resp. $YV^T$)
+%%				\item Call right subtree with $YV^T$
+%%				\item Call right subtree with approximation error $\epsilon_1$
+%%				\item If $U$ (resp. $V^T$) corresponds to more than one dimension, reshape  and call left (resp. right) subtree with approximation error $\epsilon_1$ (resp. $\epsilon_2$)
+%%				%%		\item If $V^T$ corresponds to more than one dimension, reshape $YV^T$ and call right subtree with approximation error $\epsilon_2$
+%%				\item $\epsilon_1$ and $\epsilon_2$ depend on $X$, $Y$, $S$ and $\epsilon$
+			\end{itemize}
+		$\qquad$Approach 1: $X=I$, $Y=\Sigma$, $S=I$
+		
+		$\qquad$Approach 2: $X=Y=\Sigma^{\frac{1}{2}}$, $S=I$
+		
+		$\qquad$Approach 3: $X=Y=\Sigma$, $S=\Sigma^{-1}$
+%%		\begin{center}
+%%	\begin{tabular}{cc}
+%%		Approach 1: & $X=I$, $Y=\Sigma$, $S=I$\\
+%%		Approach 2: & $X=Y=\Sigma^{\frac{1}{2}}$, $S=I$\\
+%%		Approach 3: & $X=Y=\Sigma$, $S=\Sigma^{-1}$
+%%	\end{tabular}
+%%\end{center}
+%%	\end{block}}
+\end{minipage}
+\end{block}
+}\end{frame}
+
+%%\begin{frame}{Aprroximations in Sequential Tensor Train Algorithms }
+%%\vspace*{0.5cm}
+%%
+%%\begin{block}{}{\footnotesize
+%%		\begin{itemize}
+%%			\item Frobenius norm of a matrix $A$ is defined as, $||A||_F = \sqrt{\sum_{i,j} A(i;j)^2}$
+%%			\item Frobenius norm of a $d$-dimensional tensor \tensor{A} is defined as, $||\tensor{A}||_F=$ $\sqrt{\sum_{i_1, i_2, \cdots, i_d}\tensor{A}(i_1,i_2,\cdots, i_d)^2 }$
+%%	\end{itemize}}
+%%\end{block}
+%%
+%%\end{frame}
+%%\begin{frame}{Aprroximations in Parallel Tensor Train Algorithms}
+%%
+%%\bigskip
+%%\begin{minipage}{0.5\linewidth}
+%%{\footnotesize
+%%		\begin{center}
+%%			\begin{tabular}{cc}
+%%				Approach 1: & $X=I$, $Y=\Sigma$, $S=I$\\
+%%				Approach 2: & $X=Y=\Sigma^{\frac{1}{2}}$, $S=I$\\
+%%				Approach 3: & $X=Y=\Sigma$, $S=\Sigma^{-1}$
+%%			\end{tabular}
+%%		\end{center}
+%%}
+%%\end{minipage}
+%%%%\vfill
+%%%%{\footnotesize
+%%%%	\begin{block}{}
+%%%%\begin{center}
+%%%%
+%%%%\end{center}\hfill
+%%%%	\end{block}
+%%%%}
+%%%%{
+%%%%\noindnet Approach 1: $X=I$, $Y=\Sigma$, $S=I$\\
+%%%%\noindnet Approach 2: $X=Y=\Sigma^{\frac{1}{2}}$, $S=I$\\
+%%%%\noindnet Approach 3: $X=Y=\Sigma$, $S=\Sigma^{-1}$
+%%%%}
+%%\end{frame}
+%%\begin{frame}{Sequential Tensor Train Approximation}
+%%\begin{itemize}
+%%	\item Uniform truncation of $\Delta$=$\frac{\epsilon}{\sqrt{d-1}}$ is applied at each step
+%%	\item $\Sigma_2$ is selected based on $\Delta$
+%%	\item Approximation error of this approach is bounded by $\epsilon$
+%%\end{itemize}
+%%\end{frame}
+%%
+%%\begin{frame}{Parallel Tensor Train Approximation Algorithms}
+%%\begin{itemize}
+%%	\item We choose $X$, $S$, and $Y$ such that $XSY=\Sigma_1$
+%%	\item We assume $\frac{\epsilon_1^2}{d_1^2} = \frac{\epsilon_2^2}{d_2^2}$
+%%	\item $\Sigma_2$ is selected based on $\Delta$=$ \frac{\epsilon}{\sqrt{d-1}}$
+%%	\item $\epsilon_1$ = f($\epsilon, \epsilon_2, \Delta, X, S, Y$) 
+%%\end{itemize}
+%% \includegraphics[scale=0.02]{./tmp/leadingSingularValuesPassed-1.jpg}
+%% \includegraphics[scale=0.02]{./tmp/leadingSingularValuesPassed-2.jpg}
+%%\end{frame}
+%%
+%%\begin{frame}{Accuracy of parallel approximation algorithms}
+%%\begin{itemize}
+%%	\item \textit{Leading Singular values to Right subtensor} (\hfirst)
+%%	\item \textit{Square root of Leading Singular values to Both subtensors} (\hsecond)
+%%	\item \textit{Leading Singular values to Both subtensors} (\hthird) 
+%%\end{itemize}
+%%	
+%%\end{frame}
+
+%%\begin{frame}{Low Rank Functions}
+%%\begin{center}
+%%	\begin{tabular}{|l|c|}
+%%		\hline
+%%		$Log$ & $\log(\sum_{j=1}^{N}j i_j)$\\ \hline
+%%		$Sin$ & $\sin(\sum_{j=1}^{N}i_j)$\\ \hline
+%%		Inverse-Square-Root ($ISR$) & $\frac{1}{\sqrt{\sum_{j=1}^{N}i_j^2}}$\\ \hline
+%%		Inverse-Cube-Root ($ICR$) & $\frac{1}{\sqrt[3]{\sum_{j=1}^{N}i_j^3}}$\\ \hline
+%%		Inverse-Penta-Root ($IPR$) & $\frac{1}{\sqrt[5]{\sum_{j=1}^{N}i_j^5}}$\\ \hline
+%%	\end{tabular}
+%%\end{center}
+%%We consider $N=12$ and $i_j \in \{1, 2, 3, 4\}_{1\le j \le N}$. This setting produces a $12$-dimensional tensor with $4^{12}$ elements for each low rank function. Her we show results only for $Log$ tensor.
+%%\end{frame}
+
+\begin{frame}{Comparison of our approaches}
+
+{\footnotesize\vspace*{-0.25cm}
+\begin{itemize}
+	\item A 12-dimensional tensor with $4^{12}$ elements (generated with a popular low rank function)
+%%	, prescribed accuracy = $10^{-6}$
+	\item prescribed accuracy = $10^{-6}$
+	\item Compr: compression ratio, NE: number of elements, AA: approximation accuracy
+\end{itemize}
+	\begin{center}{\vspace*{-0.1cm}	
+			\begin{tabular}{|c|c|c|c|c|}
+				\hline
+				& & \multicolumn{3}{|c|}{Parallel Algo}\\  \cline{3-5}
+				Metric & Sequential Algo & Approach 1 & Approach 2 & Approach 3\\ \hline
+				Compr & 99.993  & 99.817 & 99.799 & 99.993\\ \hline
+				NE & 1212 & 30632 & 33772 & 1212\\ \hline
+				AA & 2.271e-07 & 3.629e-08 & 2.820e-08 & 2.265e-07\\ \hline
+			\end{tabular}
+	}\end{center}
+\vspace*{-0.25cm}
+\begin{block}{SVD is expensive}
+	\vspace*{-0.1cm}
+\begin{itemize}
+%%	\item SVD is expensive and hard to parallelize
+	\item Good alternatives to SVD: QR factorization with column pivoting (QRCP), randomized SVD (RSVD)
+\end{itemize}
+\vspace*{-0.56cm}
+	\begin{center}{
+		\begin{tabular}{|c|c|c|c|c|c|}
+			\hline
+			Approach & Rank & Compr & NE & Sequential-AA & Approach3-AA\\ \hline
+			{\scriptsize SVD} & \multirow{3}{*}{5} & \multirow{3}{*}{99.994} & \multirow{3}{*}{992} & 6.079e-06 & 6.079e-06\\ \cline{1-1} \cline{5-6}
+			{\scriptsize QRCP+SVD} &  &  &  & 1.016e-05 & 1.384e-05\\ \cline{1-1} \cline{5-6}
+			{\scriptsize RSVD} &  &  &  & 6.079e-06 & 6.079e-06\\ \hline
+			
+			
+			{\scriptsize SVD} &\multirow{3}{*}{6} & \multirow{3}{*}{99.992} & \multirow{3}{*}{1376} & 1.323e-07 & 1.340e-07\\ \cline{1-1} \cline{5-6}
+			{\scriptsize QRCP+SVD} & & & & 3.555e-07 & 5.737e-07\\ \cline{1-1} \cline{5-6}
+			{\scriptsize RSVD} & & & & 1.322e-07& 1.322e-07\\ \hline
+			
+			
+%%			SVD &\multirow{3}{*}{7} & \multirow{3}{*}{99.989} & \multirow{3}{*}{1824} & 2.753e-09 & 2.279e-08\\ \cline{1-1} \cline{5-6}
+%%			QRCP+SVD & & & & 6.620e-09 & 1.167e-08\\ \cline{1-1} \cline{5-6}
+%%			RSVD & & & & 2.760e-09 & 2.774e-09\\ \hline	
+		\end{tabular}\vspace*{-0.05cm}
+	}\end{center}
+\end{block}
+}
+\end{frame}
+
+%%\begin{frame}{Comparison of all Approaches}
+%%We consider a $Log$ tensor generated with low rank function $\log(\sum_{j=1}^{d}j i_j)$. For $d=12$ and $i_j \in \{1, 2, 3, 4\}_{1\le j \le d}$, this function produces a $12$-dimensional tensor with $4^{12}$ elements.
+%%
+%%\begin{block}{Comparison of all approaches for Log tensor}
+%%$\color{blue}{\bullet}$ Prescribed accuracy = $10^{-6}$\\
+%%%%$\color{blue}{\bullet}$ Prototyped all approached in Matlab\\
+%%$\color{blue}{\bullet}$ compr: compression ratio, ne: number of elements in aprroximation, OA: approximation accuracy
+%%
+%%\begin{center}{\small
+%%	\begin{tabular}{|c|c|c|c|c|}
+%%		\hline
+%%		& & \multicolumn{3}{|c|}{Parallel Algo}\\  \cline{3-5}
+%%		Metric & Sequential Algo & Approach 1 & Approach 2 & Approach 3\\ \hline
+%%		compr & 99.993  & 99.817 & 99.799 & 99.993\\ \hline
+%%		ne & 1212 & 30632 & 33772 & 1212\\ \hline
+%%		OA & 2.271e-07 & 3.629e-08 & 2.820e-08 & 2.265e-07\\ \hline
+%%	\end{tabular}
+%%%		\begin{tabular}{|c|c|c|c|c|c|c|}
+%%%			%%		\toprule
+%%%			\hline
+%%%			Appr. & Metric & $Log$ & $Sin$ & $ISR$ & $ICR$ & $IPR$\\ \hline
+%%%			\multirow{3}{*} {\otta} & compr & 99.993 & 99.999 & 99.987 & 99.981 & 99.971 \\ \cline{2-7} 
+%%%			& ne    & 1212 & 176 & 2240 & 3184 & 4864 \\ \cline{2-7} 
+%%%			& OA    & 2.271e-07 & 2.615e-09 & 1.834e-07 & 4.884e-07 & 4.836e-07 \\ \cline{1-7} 
+%%%			\multirow{3}{*} {\hfirst} & compr & 99.817 & 99.998 & 99.915 & 99.874 & 99.824 \\ \cline{2-7} 
+%%%			& ne    & 30632 & 344 & 14196 & 21176 & 29524 \\ \cline{2-7} 
+%%%			& OA    & 3.629e-08 & 1.412e-11 & 1.118e-07 & 8.520e-08 & 5.811e-08 \\ \cline{1-7} 
+%%%			\multirow{3}{*} {\hsecond} & compr & 99.799 & 99.999 & 99.952 & 99.912 & 99.870 \\ \cline{2-7} 
+%%%			& ne    & 33772 & 176 & 8068 & 14824 & 21792 \\ \cline{2-7} 
+%%%			& OA    & 2.820e-08 & 6.144e-12 & 1.118e-07 & 8.518e-08 & 5.664e-08 \\ \cline{1-7} 
+%%%			\multirow{3}{*} {\hthird} & compr & 99.993 & 99.999 & 99.987 & 99.981 & 99.970 \\ \cline{2-7} 
+%%%			& ne    & 1212 & 176 & 2240 & 3184 & 4964 \\ \cline{2-7} 
+%%%			& OA    & 2.265e-07 & 1.252e-11 & 1.834e-07 & 4.884e-07 & 3.999e-07 \\ \cline{1-7} 
+%%%		\end{tabular}
+%%}\end{center}
+%%$\color{blue}{\bullet}$ Approach 3 performs the best among all parallel approaches -- will use only this for further comparison
+%%%%$\color{blue}{\bullet}$  (leading singular values are passed on both sides of the tree)
+%%\end{block}
+%%\end{frame}
+%%
+%%
+%%\begin{frame}{Alternatives to SVD}
+%%\begin{itemize}
+%%	\item SVD is expensive and hard to parallelize
+%%	\item Good alternatives to SVD: QR factorization with column pivoting (QRCP), randomized SVD (RSVD)
+%%\end{itemize}
+%%\vspace*{-0.25cm}
+%%\begin{block}{SVD vs QRCP+SVD vs RSVD for $Log$ tensor}
+%%	\begin{center}
+%%		\begin{tabular}{|c|c|c|c|c|c|}
+%%			\hline
+%%			Approach & Rank & compr & ne & Sequential-OA & Parallel-OA\\ \hline
+%%			SVD & \multirow{3}{*}{5} & \multirow{3}{*}{99.994} & \multirow{3}{*}{992} & 6.079e-06 & 6.079e-06\\ \cline{1-1} \cline{5-6}
+%%			QRCP+SVD &  &  &  & 1.016e-05 & 1.384e-05\\ \cline{1-1} \cline{5-6}
+%%			RSVD &  &  &  & 6.079e-06 & 6.079e-06\\ \hline
+%%			
+%%			
+%%			SVD &\multirow{3}{*}{6} & \multirow{3}{*}{99.992} & \multirow{3}{*}{1376} & 1.323e-07 & 1.340e-07\\ \cline{1-1} \cline{5-6}
+%%			QRCP+SVD & & & & 3.555e-07 & 5.737e-07\\ \cline{1-1} \cline{5-6}
+%%			RSVD & & & & 1.322e-07& 1.322e-07\\ \hline
+%%			
+%%			
+%%			SVD &\multirow{3}{*}{7} & \multirow{3}{*}{99.989} & \multirow{3}{*}{1824} & 2.753e-09 & 2.279e-08\\ \cline{1-1} \cline{5-6}
+%%			QRCP+SVD & & & & 6.620e-09 & 1.167e-08\\ \cline{1-1} \cline{5-6}
+%%			RSVD & & & & 2.760e-09 & 2.774e-09\\ \hline	
+%%		\end{tabular}
+%%	\end{center}
+%%\end{block}
+%%\end{frame}
+
+%%\begin{frame}{Comparison of All Approaches for the $Log$ tensor}
+%%$\color{blue}{\bullet}$ Prescribed accuracy = $10^{-6}$\\
+%%%%$\color{blue}{\bullet}$ Prototyped all approached in Matlab\\
+%%$\color{blue}{\bullet}$ compr: compression ratio, ne: number of elements in aprroximation, OA: approximation accuracy
+%%%%\begin{center}{\small
+%%%%		\begin{tabular}{|c|c|c|c|c|c|c|}
+%%%%			%%		\toprule
+%%%%			\hline
+%%%%			Appr. & Metric & $Log$ & $Sin$ & $ISR$ & $ICR$ & $IPR$\\ \hline
+%%%%			\multirow{3}{*} {\otta} & compr & 99.993 & 99.999 & 99.987 & 99.981 & 99.971 \\ \cline{2-7} 
+%%%%			& ne    & 1212 & 176 & 2240 & 3184 & 4864 \\ \cline{2-7} 
+%%%%			& OA    & 2.271e-07 & 2.615e-09 & 1.834e-07 & 4.884e-07 & 4.836e-07 \\ \cline{1-7} 
+%%%%			\multirow{3}{*} {\hfirst} & compr & 99.817 & 99.998 & 99.915 & 99.874 & 99.824 \\ \cline{2-7} 
+%%%%			& ne    & 30632 & 344 & 14196 & 21176 & 29524 \\ \cline{2-7} 
+%%%%			& OA    & 3.629e-08 & 1.412e-11 & 1.118e-07 & 8.520e-08 & 5.811e-08 \\ \cline{1-7} 
+%%%%			\multirow{3}{*} {\hsecond} & compr & 99.799 & 99.999 & 99.952 & 99.912 & 99.870 \\ \cline{2-7} 
+%%%%			& ne    & 33772 & 176 & 8068 & 14824 & 21792 \\ \cline{2-7} 
+%%%%			& OA    & 2.820e-08 & 6.144e-12 & 1.118e-07 & 8.518e-08 & 5.664e-08 \\ \cline{1-7} 
+%%%%			\multirow{3}{*} {\hthird} & compr & 99.993 & 99.999 & 99.987 & 99.981 & 99.970 \\ \cline{2-7} 
+%%%%			& ne    & 1212 & 176 & 2240 & 3184 & 4964 \\ \cline{2-7} 
+%%%%			& OA    & 2.265e-07 & 1.252e-11 & 1.834e-07 & 4.884e-07 & 3.999e-07 \\ \cline{1-7} 
+%%%%		\end{tabular}
+%%%%}\end{center}
+%%
+%%\begin{center}
+%%	\begin{tabular}{|c|c|c|c|}
+%%		\hline
+%%		Approach & compr & ne & OA\\ \hline
+%%		\otta & 99.993 & 1212 & 2.271e-07 \\ \hline
+%%		\hfirst & 99.817 & 30632 & 3.629e-08 \\ \hline
+%%		\hsecond & 99.799 & 33772 & 2.820e-08 \\ \hline
+%%		\hthird & 99.993 & 1212 & 2.265e-07 \\ \hline
+%%	\end{tabular}
+%%\end{center}
+%%\end{frame}
+
+%%\begin{frame}{Accuracy Results}
+%%\begin{itemize}
+%%	\item SVD is expensive -- we also experimented with QRCP and Randomized SVD
+%%\end{itemize}
+%%\begin{center}
+%%	\begin{tabular}{|c|c|c|c|c|}
+%%		\hline
+%%		Approach & Rank & compr & ne & OA\\ \hline
+%%		SVD & 5 & 99.994 & 992 & 6.079e-06\\ \hline
+%%		QRCP & 5 & 99.994 & 992 & 1.016e-05\\ \hline
+%%		RSVD & 5 & 99.994 & 992 & 6.0791e-06\\ \hline
+%%		
+%%		SVD & 6 & 99.992 & 1376 & 1.323e-07\\ \hline
+%%		QRCP & 6 & 99.992 & 1376 & 3.555e-07\\ \hline
+%%		RSVD & 6 & 99.992 & 1376 & 1.3228e-07\\ \hline
+%%		
+%%		SVD & 7 & 99.989 & 1824 & 2.753e-09\\ \hline
+%%		QRCP & 7 & 99.989 & 1824 & 6.620e-09\\ \hline
+%%		RSVD & 7 & 99.989 & 1824 & 2.7602e-09\\ \hline
+%%%%		
+%%%%		\otta & 99.993 & 1212 & 2.271e-07 \\ \hline
+%%%%		\hfirst & 99.817 & 30632 & 3.629e-08 \\ \hline
+%%%%		\hsecond & 99.799 & 33772 & 2.820e-08 \\ \hline
+%%%%		\hthird & 99.993 & 1212 & 2.265e-07 \\ \hline
+%%	\end{tabular}
+%%\end{center}
+%%\end{frame}
+
+
+
+%%\begin{frame}{Performance Comparison}
+%%\begin{block}{Single core performance}
+%%	\begin{columns}
+%%		\begin{column}{0.4\textwidth}
+%%			\begin{itemize}
+%%				\item Number of computations for both RSVD algorithms = $\mathcal{O}(n^d)$
+%%				\item Approach3-SVD is very slow
+%%				\item Approach3-RSVD is much faster
+%%%%				 than Sequential-SVD
+%%%%				 (not in the diagram)
+%%			\end{itemize}
+%%
+%%		\end{column}
+%%		\begin{column}{0.45\textwidth}
+%%			\begin{center}
+%%				\includegraphics[scale=0.35]{single-core-performance-seq-svd-rsvd-parallel-rsvd.eps}
+%%%%				\includegraphics[scale=0.275]{single-core-performance-seq-svd-rsvd.eps}
+%%%%				\includegraphics[scale=0.275]{single-core-performance-seq-parallel-rsvd.eps}
+%%			\end{center}
+%%		\end{column}
+%%	\end{columns}
+%%	
+%%	
+%%\end{block}
+%%\begin{block}{Parallel performance counts along the critical path on $P$ processors}
+%%	\begin{center}
+%%		\begin{tabular}{|c|c|c|c|}
+%%			\hline
+%%			Algorithm & \# Computations& Communications & \# Messages\\ \hline
+%%%%			Sequential-RSVD & $\mathcal{O}(\frac{n^d}{P})$ & $\mathcal{O}(\frac{n^{d-1}}{\sqrt{P}}\log{}P)$ & $\mathcal{O}(d\log{}P)$\\ \hline
+%%			Sequential-RSVD & $\mathcal{O}(\frac{n^d}{P})$ & $\mathcal{O}(\frac{n^{d-1}}{P})$ & $\mathcal{O}(d\log{}P)$\\ \hline
+%%			Approach3-RSVD & $\mathcal{O}(\frac{n^d}{P})$ & $\mathcal{O}(\frac{n^\frac{d}{2}}{\sqrt{P}}\log{}P)$ & $\mathcal{O}(\log{}d \log{}P)$\\ \hline
+%%			%%		$\mathcal{O}(n\log{}n)$ 
+%%		\end{tabular}
+%%	\end{center}
+%%
+%%\end{block}
+%%\end{frame}
+
+
+
+
+\begin{frame}{Performance comparison}
+\vspace*{-0.125cm}
+\begin{block}{Single core performance}
+	\vspace*{-0.25cm}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\begin{itemize}
+				\item Number of computations for both RSVD algorithms = $\mathcal{O}(n^d)$
+				\item Approach3-SVD is very slow
+				\item Approach3-RSVD is much faster
+			\end{itemize}
+		\end{column}
+		\begin{column}{0.45\textwidth}
+			\begin{center}
+				\includegraphics[scale=0.325]{./single-core-performance-seq-svd-rsvd-parallel-rsvd.eps}
+			\end{center}
+		\end{column}
+	\end{columns}
+\end{block}
+\vspace*{-0.15cm}
+\begin{block}{RSVD algorithm of Approach3-RSVD}
+	\begin{itemize}
+		\item Input matrix is $A$ and the desired rank is $r$
+		\item Multiply with a random sketch matrix (depends on $r$), Y = A *RS
+		\item Perform QR factorization, [Q, $\sim$] = QR(Y)
+		\item Compute SVD decomposition, [U S V] = SVD($Q^T$ * A)
+		\item Update U, U = Q*U\vspace*{-0.0125cm}
+	\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Parallel performance counts on $P$ processors}
+\begin{block}{Communication cost analysis along the critical path}
+\begin{itemize}
+	%%		\item With pipelined broadcast/reduce operations 
+	\item To perform A*RS, \#data transfers = $\mathcal{O}(\frac{n^\frac{d}{2}}{\sqrt{P}}\log{}P)$
+	\item To perform $Q^T * A$, \#data transfers = $\mathcal{O}(\frac{n^\frac{d}{2}}{\sqrt{P}}\log{}P)$
+	\item To perform reshape operation, \#data transfers = $\mathcal{O}(\frac{n^\frac{d}{2}}{\sqrt{P}}\log{}P)$
+	\item At each step, \#messages = $\mathcal{O}(\log{}P)$  
+\end{itemize}
+\end{block}
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+	\hline
+	Algorithm & \# Computations& Communications\footnote{Assuming $n$ is large.} & \# Messages\\ \hline
+	Approach3-RSVD & $\mathcal{O}(\frac{n^d}{P})$ & $\mathcal{O}(\frac{n^\frac{d}{2}}{\sqrt{P}}\log{}P)$ & $\mathcal{O}(\log{}d \log{}P)$\\ \hline
+	%%		$\mathcal{O}(n\log{}n)$ 
+	Sequential-RSVD & $\mathcal{O}(\frac{n^d}{P})$ & $\mathcal{O}(\frac{n^{d-1}}{P}(1+\frac{\log{}P}{d}))$ & $\mathcal{O}(d\log{}P)$\\ \hline
+\end{tabular}
+\end{center}
+\end{frame}
+
+%%\begin{frame}{Performance Comparison}
+%%\begin{itemize}
+%%	\item Computation cost of the parallel algorithm decreases exponentially at each step
+%%	\item Each algorithm runs on $P$ processors
+%%\end{itemize}
+%%Cost along the critical path:
+%%\begin{center}
+%%	\begin{tabular}{|c|c|c|c|}
+%%		\hline
+%%		Algorithm & Computation cost & Communication volume & Number of Messages\\ \hline
+%%		Sequential & $\mathcal{O}(\frac{N^d}{P})$ & $\mathcal{O}(\frac{N^d}{\sqrt{P}}\log{}P)$ & $\mathcal{O}(d\log{}P)$\\ \hline
+%%		Parallel & $\mathcal{O}(\frac{N^d}{P})$ & $\mathcal{O}(\frac{N^d}{\sqrt{P}}\log{}P)$ & $\mathcal{O}(\log{}d \log{}P)$\\ \hline
+%%%%		$\mathcal{O}(n\log{}n)$ 
+%%	\end{tabular}
+%%\end{center}
+%%
+%%Cost along the critical path after the first step,
+%%\begin{center}
+%%	\begin{tabular}{|c|c|c|c|}
+%%		\hline
+%%		Algorithm & Computation cost & Communication volume & Number of Messages\\ \hline
+%%		Sequential & $\mathcal{O}(\frac{N^{d-1}}{P})$ & $\mathcal{O}(\frac{N^{d-1}}{\sqrt{P}}\log{}P)$ & $\mathcal{O}(d\log{}P)$\\ \hline
+%%		Parallel & $\mathcal{O}(\frac{N^\frac{d}{2}}{P})$ & $\mathcal{O}(\frac{N^\frac{d}{2}}{\sqrt{P}}\log{}P)$ & $\mathcal{O}(\log{}d \log{}P)$\\ \hline
+%%		%%		$\mathcal{O}(n\log{}n)$ 
+%%	\end{tabular}
+%%\end{center}
+%%\end{frame}
+
+
+
+%%\subsection{Communication Optimal Algorithms for Tensors}
+
+
+
+
+
+%%\section{Scheduling on Heterogeneous Systems}
+%%\begin{frame}
+%%\frametitle{Previous Research Activities}
+%%\tableofcontents[currentsection]
+%%\end{frame}
+
+
+
+%%\begin{frame}{NWChemEX and TAMM}
+%%content...
+%%\end{frame}
+
+
+
+%%\subsection{Scheduling of Dense Linear Algebra Kernels}
+%%\begin{frame}
+%%\frametitle{Table of Contents}
+%%\tableofcontents[currentsubsection]
+%%\end{frame}
+
+%%\section{Scheduling on Heterogeneous Systems}
+%%
+%%\begin{frame}{Scheduling on Heterogeneous Systems}
+%%
+%%{\footnotesize
+%%	\vspace*{-0.175cm}
+%%	\begin{itemize}
+%%				
+%%		\item Heterogeneous systems are common in High Performance Computing (HPC) ({\scriptsize 147 out of 500 in TOP500 list})
+%%		\vfill 
+%%		\item Task based runtimes are a popular approach to exploit these systems
+%%		
+%%		\begin{columns}
+%%		%%			\null \hfill
+%%		\begin{column}{0.35\linewidth}
+%%			%%			\begin{figure}
+%%			\begin{center}
+%%				\vspace*{-0.25cm}
+%%				\includegraphics[scale=0.085]{./diagrams/choleskyWithoutId_4.pdf}
+%%			\end{center}\vspace*{-0.35cm}
+%%			%%			\caption{Cholesky task graph for $4\times4$ tile matrix}
+%%			%%		\end{figure}
+%%		\end{column}
+%%		\begin{column}{0.745\linewidth}
+%%			\begin{itemize}{\footnotesize
+%%				\item Task based runtimes: StarPU, OmpSS, Legion, PaRSEC
+%%				\item Application is represented as a graph of tasks (computations)
+%%				\item E.g., Cholesky graph for $4\times4$ tile matrix
+%%			}\end{itemize}
+%%%%			\begin{itemize}
+%%%%				\item Application is represented as a direct acyclic graph
+%%%%				\item Vertices represent tasks (computations) and edges represent dependencies
+%%%%				%%			\item Edges represent dependencies among tasks
+%%%%				\vfill
+%%%%				\item E.g., Cholesky graph for $4\times4$ tile matrix
+%%%%			\end{itemize}
+%%	\end{column}
+%%		\end{columns}
+%%	  
+%%
+%%	\end{itemize}
+%%
+%%	\vspace*{-0.225cm}
+%%	
+%%	\begin{block}{StarPU scheduler performance}
+%%		\begin{minipage}{0.5\linewidth}
+%%			\vspace*{-1.2cm}
+%%			\begin{center}
+%%				\includegraphics[scale=0.56]{./plots/Actual_vs_GEMMBound.eps}	
+%%			\end{center}
+%%			\vspace*{-1.25cm}
+%%			%%\vspace*{-0.35cm}
+%%			%%\begin{block}{}
+%%		\end{minipage}$\quad$
+%%		\begin{minipage}{0.45\linewidth}
+%%			\begin{itemize}
+%%				\item A platform with 9 CPUs and 3 GPUs
+%%				\item Scheduler is based on popular heft strategy
+%%			\end{itemize}
+%%			\vspace*{-0.25cm}
+%%			\begin{block}{}{
+%%					%%		$\textcolor{green}{\bullet}$ Goal: Enhance performance bounds and propose better scheduling strategies \\
+%%					%%		$\bullet$Goal: Propose approaches to enhance performance bounds and better scheduling strategies\\
+%%					\setlength{\leftmargini}{1.5em}
+%%					\begin{itemize}
+%%						%%		\item A heterogeneous platform with 9 CPUs and 3 GPUs
+%%						%%		\item StarPU scheduler is based on popular heft strategy
+%%						\item Goal: Enhance performance bounds and propose better scheduling strategies
+%%					\end{itemize}\vspace*{-0.15cm}
+%%					%%			\mybullet Goal: Enhance performance bounds and propose better scheduling strategies\\
+%%					%%			
+%%					%%			
+%%					\noindent {\tiny Joint work with E. Agullo, O. Beaumont, L. Eyraud-Dubois, and S. Thibault during my PhD at Inria Bordeaux}
+%%					%%		$\bullet$Goal: Propose approaches to enhance performance bounds and better scheduling strategies
+%%					%%	\begin{itemize}
+%%					%%		\item Propose approaches to enhance performance bounds
+%%					%%		\item Propose better scheduling strategies
+%%					%%	\end{itemize}
+%%			}\end{block}
+%%		\end{minipage}
+%%	\end{block}
+%%	
+%%	%%\begin{minipage}{0.475\linewidth}
+%%	%%	\begin{block}{}{\scriptsize
+%%	%%		%%		$\textcolor{green}{\bullet}$ Goal: Enhance performance bounds and propose better scheduling strategies \\
+%%	%%		%%		$\bullet$Goal: Propose approaches to enhance performance bounds and better scheduling strategies\\
+%%	%%		\setlength{\leftmargini}{1.5em}
+%%	%%		\begin{itemize}
+%%	%%			%%		\item A heterogeneous platform with 9 CPUs and 3 GPUs
+%%	%%			%%		\item StarPU scheduler is based on popular heft strategy
+%%	%%			\item Goal: Enhance performance bounds and propose better scheduling strategies
+%%	%%		\end{itemize}\vspace*{-0.15cm}
+%%	%%		\noindent {\tiny Joint work with E. Agullo, O. Beaumont, L. Eyraud-Dubois, and S. Thibault during my PhD at Inria Bordeaux}
+%%	%%		%%		$\bullet$Goal: Propose approaches to enhance performance bounds and better scheduling strategies
+%%	%%		%%	\begin{itemize}
+%%	%%		%%		\item Propose approaches to enhance performance bounds
+%%	%%		%%		\item Propose better scheduling strategies
+%%	%%		%%	\end{itemize}
+%%	%%}\end{block}
+%%	%%\end{minipage}
+%%	
+%%}
+%%\end{frame}
+
+
+
+
+
+%%%%%%%\begin{frame}{Heterogeneous Systems \& Task Based Runtime Systems}
+%%%%%\begin{frame}{Scheduling on Heterogeneous Systems}
+%%%%%
+%%%%%{\footnotesize
+%%%%%	\vspace*{-0.175cm}
+%%%%%	\begin{itemize}
+%%%%%	%%	\item Challenges:
+%%%%%	%%	\begin{itemize}
+%%%%%	%%%%		\item Scheduling and resource allocation problems are NP hard
+%%%%%%%	\item Performance share of accelerators increased from 28\% to 43\% in the last 5 years [Top500 list] 
+%%%%%	\item  Significant performance share (more than 43\%) is produced by heterogeneous systems [Top500 list] 
+%%%%%%%	\item Heterogeneous systems are common in High Performance Computing (HPC)
+%%%%%	\vfill
+%%%%%	\item Almost impossible to develop optimized hand tune kernels for all the systems
+%%%%%%%	 architectures
+%%%%%	%%		\item Hard to obtain precise estimation of duration of tasks and data transfers
+%%%%%	%%	\end{itemize}
+%%%%%	\vfill
+%%%%%	\item Task based runtime systems, e.g., StarPU, OmpSS, Legion, PaRSEC
+%%%%%\end{itemize}
+%%%%%\begin{columns}
+%%%%%	%%			\null \hfill
+%%%%%	\begin{column}{0.25\linewidth}
+%%%%%		%%			\begin{figure}
+%%%%%		\begin{center}
+%%%%%			\vspace*{-0.5cm}
+%%%%%			\includegraphics[scale=0.085]{./diagrams/choleskyWithoutId_4.pdf}
+%%%%%		\end{center}\vspace*{-0.35cm}
+%%%%%		%%			\caption{Cholesky task graph for $4\times4$ tile matrix}
+%%%%%		%%		\end{figure}
+%%%%%	\end{column}
+%%%%%	\begin{column}{0.745\linewidth}
+%%%%%		\begin{itemize}
+%%%%%			\item Application is represented as a direct acyclic graph
+%%%%%			\item Vertices represent tasks (computations) and edges represent dependencies
+%%%%%%%			\item Edges represent dependencies among tasks
+%%%%%			\vfill
+%%%%%			\item E.g., Cholesky graph for $4\times4$ tile matrix
+%%%%%		\end{itemize}
+%%%%%	\end{column}
+%%%%%\end{columns}
+%%%%%	\vspace*{-0.225cm}
+%%%%%
+%%%%%	\begin{block}{StarPU scheduler performance}
+%%%%%		\begin{minipage}{0.5\linewidth}
+%%%%%		\vspace*{-1.2cm}
+%%%%%		\begin{center}
+%%%%%			\includegraphics[scale=0.56]{./plots/Actual_vs_GEMMBound.eps}	
+%%%%%		\end{center}
+%%%%%		\vspace*{-1.25cm}
+%%%%%		%%\vspace*{-0.35cm}
+%%%%%		%%\begin{block}{}
+%%%%%	\end{minipage}$\quad$
+%%%%%\begin{minipage}{0.45\linewidth}
+%%%%%	\begin{itemize}
+%%%%%		\item A platform with 9 CPUs and 3 GPUs
+%%%%%		\item Scheduler is based on popular heft strategy
+%%%%%	\end{itemize}
+%%%%%\vspace*{-0.25cm}
+%%%%%	\begin{block}{}{
+%%%%%			%%		$\textcolor{green}{\bullet}$ Goal: Enhance performance bounds and propose better scheduling strategies \\
+%%%%%			%%		$\bullet$Goal: Propose approaches to enhance performance bounds and better scheduling strategies\\
+%%%%%			\setlength{\leftmargini}{1.5em}
+%%%%%			\begin{itemize}
+%%%%%				%%		\item A heterogeneous platform with 9 CPUs and 3 GPUs
+%%%%%				%%		\item StarPU scheduler is based on popular heft strategy
+%%%%%				\item Goal: Enhance performance bounds and propose better scheduling strategies
+%%%%%			\end{itemize}\vspace*{-0.15cm}
+%%%%%%%			\mybullet Goal: Enhance performance bounds and propose better scheduling strategies\\
+%%%%%%%			
+%%%%%%%			
+%%%%%			\noindent {\tiny Joint work with E. Agullo, O. Beaumont, L. Eyraud-Dubois, and S. Thibault during my PhD at Inria Bordeaux}
+%%%%%			%%		$\bullet$Goal: Propose approaches to enhance performance bounds and better scheduling strategies
+%%%%%			%%	\begin{itemize}
+%%%%%			%%		\item Propose approaches to enhance performance bounds
+%%%%%			%%		\item Propose better scheduling strategies
+%%%%%			%%	\end{itemize}
+%%%%%	}\end{block}
+%%%%%\end{minipage}
+%%%%%	\end{block}
+%%%%%
+%%%%%%%\begin{minipage}{0.475\linewidth}
+%%%%%%%	\begin{block}{}{\scriptsize
+%%%%%%%		%%		$\textcolor{green}{\bullet}$ Goal: Enhance performance bounds and propose better scheduling strategies \\
+%%%%%%%		%%		$\bullet$Goal: Propose approaches to enhance performance bounds and better scheduling strategies\\
+%%%%%%%		\setlength{\leftmargini}{1.5em}
+%%%%%%%		\begin{itemize}
+%%%%%%%			%%		\item A heterogeneous platform with 9 CPUs and 3 GPUs
+%%%%%%%			%%		\item StarPU scheduler is based on popular heft strategy
+%%%%%%%			\item Goal: Enhance performance bounds and propose better scheduling strategies
+%%%%%%%		\end{itemize}\vspace*{-0.15cm}
+%%%%%%%		\noindent {\tiny Joint work with E. Agullo, O. Beaumont, L. Eyraud-Dubois, and S. Thibault during my PhD at Inria Bordeaux}
+%%%%%%%		%%		$\bullet$Goal: Propose approaches to enhance performance bounds and better scheduling strategies
+%%%%%%%		%%	\begin{itemize}
+%%%%%%%		%%		\item Propose approaches to enhance performance bounds
+%%%%%%%		%%		\item Propose better scheduling strategies
+%%%%%%%		%%	\end{itemize}
+%%%%%%%}\end{block}
+%%%%%%%\end{minipage}
+%%%%%
+%%%%%}
+%%%%%\end{frame}
+
+%%%%\begin{frame}{Heterogeneous Systems \& Task Based Runtime Systems}
+%%%%
+%%%%{\footnotesize
+%%%%\begin{minipage}{0.54\linewidth}
+%%%%\begin{block}{Share of Accelerators: TOP500 list}
+%%%%	\begin{center}
+%%%%		\begin{tabular}{|c|c|c|}
+%%%%			\hline
+%%%%			Year & \#Systems & \% Performance share\\ \hline
+%%%%			2015 & 103 & 28\\ \hline
+%%%%			2020 & 147 & 43\\ \hline
+%%%%		\end{tabular}
+%%%%	\end{center}
+%%%%\end{block}
+%%%%{\scriptsize
+%%%%\begin{block}{Task Based Runtime Systems}
+%%%%	\begin{itemize}
+%%%%		%%	\item Challenges:
+%%%%		%%	\begin{itemize}
+%%%%		%%%%		\item Scheduling and resource allocation problems are NP hard
+%%%%		\item Almost impossible to develop optimized hand tune kernels for all architectures
+%%%%%%		\item Hard to obtain precise estimation of duration of tasks and data transfers
+%%%%		%%	\end{itemize}
+%%%%		\vfill
+%%%%		\item Task based runtime systems, e.g., StarPU, Legion, PaRSEC
+%%%%	\end{itemize}
+%%%%	\begin{columns}
+%%%%		%%			\null \hfill
+%%%%		\begin{column}{0.25\linewidth}
+%%%%%%			\begin{figure}
+%%%%			\begin{center}
+%%%%				\vspace*{-0.45cm}
+%%%%				\includegraphics[scale=0.1]{./diagrams/choleskyWithoutId_4.pdf}
+%%%%			\end{center}\vspace*{-0.35cm}
+%%%%%%			\caption{Cholesky task graph for $4\times4$ tile matrix}
+%%%%%%		\end{figure}
+%%%%		\end{column}
+%%%%		\begin{column}{0.745\linewidth}
+%%%%			\begin{itemize}
+%%%%				\item Application is represented as a direct acyclic graph (DAG)
+%%%%				\item Vertices represent tasks (computations)
+%%%%				\item Edges represent dependencies among tasks
+%%%%				\vfill
+%%%%				\item E.g., Cholesky DAG for $4\times4$ tile matrix
+%%%%			\end{itemize}
+%%%%		\end{column}
+%%%%	\end{columns}
+%%%%\end{block}}
+%%%%\end{minipage}\hfill
+%%%%\begin{minipage}{0.435\linewidth}
+%%%%\begin{block}{StarPU scheduler performance}
+%%%%	\begin{center}
+%%%%		\includegraphics[scale=0.375]{./plots/Actual_vs_GEMMBound.eps}	
+%%%%	\end{center}
+%%%%\vspace*{-0.45cm}
+%%%%%%\vspace*{-0.35cm}
+%%%%%%\begin{block}{}
+%%%%	{\scriptsize
+%%%%		\begin{itemize}
+%%%%			\item A platform with 9 CPUs and 3 GPUs
+%%%%			\item Scheduler is based on popular heft strategy
+%%%%			%%			\item Goal: propose approaches to enhance performance bounds and better scheduling strategies
+%%%%		\end{itemize}
+%%%%		%%		$\bullet$Goal: Propose approaches to enhance performance bounds and better scheduling strategies
+%%%%		%%	\begin{itemize}
+%%%%		%%		\item Propose approaches to enhance performance bounds
+%%%%		%%		\item Propose better scheduling strategies
+%%%%		%%	\end{itemize}
+%%%%}
+%%%%\end{block}
+%%%%%%\end{block}
+%%%%
+%%%%\vspace*{-0.25cm}	
+%%%%\begin{block}{}{\scriptsize
+%%%%%%		$\textcolor{green}{\bullet}$ Goal: Enhance performance bounds and propose better scheduling strategies \\
+%%%%%%		$\bullet$Goal: Propose approaches to enhance performance bounds and better scheduling strategies\\
+%%%%    \setlength{\leftmargini}{1.5em}
+%%%%		\begin{itemize}
+%%%%			%%		\item A heterogeneous platform with 9 CPUs and 3 GPUs
+%%%%			%%		\item StarPU scheduler is based on popular heft strategy
+%%%%			\item Goal: Enhance performance bounds and propose better scheduling strategies
+%%%%		\end{itemize}\vspace*{-0.15cm}
+%%%%		\noindent {\tiny Joint work with E. Agullo, O. Beaumont, L. Eyraud-Dubois, and S. Thibault during my PhD at Inria Bordeaux}
+%%%%		%%		$\bullet$Goal: Propose approaches to enhance performance bounds and better scheduling strategies
+%%%%		%%	\begin{itemize}
+%%%%		%%		\item Propose approaches to enhance performance bounds
+%%%%		%%		\item Propose better scheduling strategies
+%%%%		%%	\end{itemize}
+%%%%}\end{block}
+%%%%\end{minipage}
+%%%%
+%%%%
+%%%%%%\begin{block}{Task Based Runtime Systems}
+%%%%%%\begin{itemize}
+%%%%%%	%%	\item Challenges:
+%%%%%%	%%	\begin{itemize}
+%%%%%%	%%%%		\item Scheduling and resource allocation problems are NP hard
+%%%%%%	\item Almost impossible to develop optimized hand tune kernels for all architectures
+%%%%%%	\item Hard to obtain precise estimation of duration of tasks and data transfers
+%%%%%%	%%	\end{itemize}
+%%%%%%	\vfill
+%%%%%%	\item Task based runtime systems, Eg: StarPU, OmpSS, Legion, QUARK, PaRSEC
+%%%%%%\end{itemize}
+%%%%%%		\begin{columns}
+%%%%%%%%			\null \hfill
+%%%%%%			\begin{column}{0.35\linewidth}
+%%%%%%				\begin{center}
+%%%%%%					\vspace*{-0.25cm}
+%%%%%%					\includegraphics[scale=0.175]{./diagrams/taskGraph.eps}
+%%%%%%				\end{center}
+%%%%%%			\end{column}
+%%%%%%			\begin{column}{0.6\linewidth}
+%%%%%%				\begin{itemize}
+%%%%%%					\item Application is represented as a direct acyclic graph
+%%%%%%					\item Vertices represent tasks (computations)
+%%%%%%					\item Edges represent dependencies among tasks
+%%%%%%					\vfill
+%%%%%%				\end{itemize}
+%%%%%%			\end{column}
+%%%%%%		\end{columns}
+%%%%%%\end{block}
+%%%%}
+%%%%\end{frame}
+
+%%\begin{frame}{Tiled Cholesky Factorization}	
+%%%%	\vfill
+%%\begin{columns}
+%%\begin{column}{0.56\linewidth}{\footnotesize
+%%Input: a positive definite matrix, A with N $\times$ N tiles \\
+%%Output: a lower triangular matrix L, A = LL$^\intercal$
+%%\vspace*{-0.25cm}
+%%\begin{algorithm}[H]
+%%	\begin{algorithmic}[1]
+%%		\FOR {$k = 0$ to $N-1$}
+%%		\STATE L[k][k] $\leftarrow$ \textcolor{yellow}{POTRF}(A[k][k])\;
+%%		\FOR {$i = k+1$ to $N-1$}
+%%		\STATE L[i][k] $\leftarrow$ \textcolor{blue}{TRSM}(L[k][k], A[i][k])\;
+%%		\ENDFOR
+%%		\FOR {$j = k+1$ to $N-1$}
+%%		\STATE A[j][j] $\leftarrow$ \textcolor{cyannew}{SYRK}(L[j][k], A[j][j])\;
+%%		\FOR {$i = j+1$ to $N-1$}
+%%		\STATE A[i][j] $\leftarrow$ \textcolor{greenhtml}{GEMM}(L[i][k], L[j][k], A[i][j])\;
+%%		\ENDFOR
+%%		\ENDFOR
+%%		\ENDFOR			
+%%	\end{algorithmic}
+%%	\caption{Tiled Cholesky factorization}
+%%\end{algorithm}
+%%}\end{column}
+%%	\begin{column}{0.4\linewidth}{\footnotesize
+%%		\vspace*{-0.25cm}
+%%		\begin{exampleblock}{Tiled Cholesky Task Graph (N=5)}
+%%			\vspace*{-0.25cm}
+%%			\begin{center}
+%%				\includegraphics[scale=0.19]{./diagrams/choleskyWithoutId_5.pdf}
+%%			\end{center}
+%%		\end{exampleblock}
+%%	}\end{column}
+%%\end{columns} 
+%%
+%%\end{frame}
+
+
+%%%%\begin{frame}{Performance vs Bounds of Cholesky Factorization}
+%%%%\vspace*{-0.25cm}\begin{minipage}{0.4\linewidth}{\footnotesize
+%%%%\begin{exampleblock}{Tiled Cholesky Task Graph (N=5)}\vspace*{-0.15cm}
+%%%%	\begin{center}
+%%%%		\includegraphics[scale=0.15]{./diagrams/choleskyWithoutId_4.pdf}
+%%%%	\end{center}
+%%%%\end{exampleblock}
+%%%%}\end{minipage}\hfill
+%%%%\begin{minipage}{0.525\linewidth}{\footnotesize
+%%%%\begin{block}{StarPU scheduler performance}
+%%%%		\begin{center}
+%%%%	\includegraphics[scale=0.425]{./diagrams/Actual_vs_GEMMBound.eps}	
+%%%%		\end{center}
+%%%%\end{block}\vspace*{-0.25cm}
+%%%%	\begin{block}{}{\footnotesize
+%%%%		\begin{itemize}
+%%%%			\item A heterogeneous platform with 9 CPUs and 3 GPUs
+%%%%			\item StarPU scheduler is based on popular heft strategy
+%%%%%%			\item Goal: propose approaches to enhance performance bounds and better scheduling strategies
+%%%%		\end{itemize}
+%%%%		%%		$\bullet$Goal: Propose approaches to enhance performance bounds and better scheduling strategies
+%%%%		%%	\begin{itemize}
+%%%%		%%		\item Propose approaches to enhance performance bounds
+%%%%		%%		\item Propose better scheduling strategies
+%%%%		%%	\end{itemize}
+%%%%}\end{block}
+%%%%}\end{minipage}
+%%%%\vspace*{-0.15cm}
+%%%%\begin{block}{}{\footnotesize
+%%%%	\begin{itemize}
+%%%%%%		\item A heterogeneous platform with 9 CPUs and 3 GPUs
+%%%%%%		\item StarPU scheduler is based on popular heft strategy
+%%%%		\item Goal: propose approaches to enhance performance bounds and better scheduling strategies
+%%%%	\end{itemize}
+%%%%\noindent {\scriptsize Joint work with E. Agullo, O. Beaumont, L. Eyraud-Dubois, and S. Thibault during my PhD at Inria Bordeaux}
+%%%%	%%		$\bullet$Goal: Propose approaches to enhance performance bounds and better scheduling strategies
+%%%%	%%	\begin{itemize}
+%%%%	%%		\item Propose approaches to enhance performance bounds
+%%%%	%%		\item Propose better scheduling strategies
+%%%%	%%	\end{itemize}
+%%%%}\end{block}
+%%%%\end{frame}
+
+%%\begin{frame}{Iterative Performance Bound}
+%%\begin{columns}
+%%	\begin{column}[c]{.475\linewidth}
+%%		\begin{block}{\centering {\scriptsize DAG}}
+%%			\only<1-3> {\centering \includegraphics[scale=0.25]{boundsDiagram/taskgraph}}
+%%			%\only<2-3> {\centering \includegraphics[scale=0.25]{boundsDiagram/taskgraphPath}}
+%%		\end{block}
+%%	\end{column}\hfill
+%%	\begin{column}[c]{.475\linewidth}
+%%		\begin{block}{\centering {\scriptsize \only<1> {No} \only<2-3> {Some} 
+%%					Dependencies}}
+%%			\only<1> {\centering \includegraphics[scale=0.25]{boundsDiagram/taskgraphNoDep}}
+%%			\only<2-3> {\centering \includegraphics[scale=0.25]{boundsDiagram/taskgraphOnePath}}
+%%		\end{block}
+%%	\end{column}
+%%\end{columns}
+%%\begin{block}{\centering {\scriptsize Minimum execution time (minimize \textit{l})}}
+%%	\begin{columns}
+%%		\begin{column}[c]{.5\linewidth}
+%%			\centering \includegraphics[scale=0.45]{boundsDiagram/schedule}   
+%%		\end{column}
+%%		\begin{column}[c]{.5\linewidth}
+%%			\only<2-3>
+%%			{
+%%				\begin{itemize}
+%%					\item[$\star$]{\scriptsize If any path in DAG is larger than \textit{l}}
+%%					\only<3>{
+%%						\begin{itemize}
+%%							\item {\scriptsize add this path as a constraint and repeat the procedure}
+%%						\end{itemize}
+%%					}
+%%				\end{itemize}
+%%			}
+%%			
+%%		\end{column}  
+%%	\end{columns}
+%%\end{block}
+%%
+%%\end{frame}
+%%
+%%\begin{frame}{Comparison of Simulated Performance and Bounds}
+%%\begin{center}
+%%	\includegraphics[scale=0.8]{./diagrams/boundsVsSimulation}
+%%\end{center}
+%%\end{frame}
+
+
+
+%%\begin{frame}{Scheduling strategies}
+%%
+%%{\footnotesize
+%%%%\begin{itemize}
+%%%%	\item Decide based on current state of resources
+%%%%\end{itemize}
+%%\vspace*{-0.1cm}
+%%\begin{block}{Heft Scheduler [Topcuoglu et al., 2002]}
+%%\begin{itemize}
+%%	\item Task centric scheduler and based on heterogeneous early finish time heuristic
+%%	%\item Based on minimum completion time (MCT) heuristic 
+%%%%	\item Based on Heterogeneous early finish time heuristic
+%%	%\item Similar to StarPU dmdas scheduler
+%%\end{itemize}
+%%	\begin{columns}
+%%		\begin{column}[c]{.5\linewidth}
+%%			\begin{itemize}
+%%				\item $A$ is highest priority ready task at $t$ 
+%%				\item Completion time on resource2 is minimum
+%%				\item Task $A$ is assigned to resource2
+%%			\end{itemize}
+%%		\end{column}
+%%		\begin{column}[c]{.5\linewidth}
+%%			\centering \includegraphics[scale=0.325]{basicSchedulers/heftp1} 
+%%			\centering \includegraphics[scale=0.325]{basicSchedulers/heftp2}
+%%		\end{column}
+%%	\end{columns}
+%%\end{block}
+%%\vspace*{-0.1cm}
+%%\begin{block}{\heteroprio Scheduler [Agullo et al., 2016]}
+%%\begin{itemize}
+%%	\item Resource centric scheduler and based on tasks heterogeneity factors   
+%%%%	\item Suitable for a large set of small independent tasks 
+%%\end{itemize}
+%%	\begin{columns}
+%%	\begin{column}[c]{.5\linewidth}
+%%		\begin{itemize}
+%%			\item $A$ is highest priority ready task at $t$
+%%			\item Resource1 is best suited to task $C$
+%%			\item Resource1 selects task $C$
+%%		\end{itemize}
+%%	\end{column}
+%%	\begin{column}[c]{.5\linewidth}
+%%		\centering \includegraphics[scale=0.325]{basicSchedulers/heteroprio1} 
+%%		\centering \includegraphics[scale=0.325]{basicSchedulers/heteroprio2}
+%%	\end{column}
+%%\end{columns}
+%%\end{block}
+%%
+%%}
+%%\end{frame}
+%%
+%%\begin{frame}{\heteroprio Scheduler}
+%%
+%%{\footnotesize
+%%\begin{block}{}
+%%\begin{columns}
+%%	\begin{column}[c]{.5\linewidth}
+%%	\begin{itemize}
+%%%%		\item $A$ is highest priority ready task at $t$
+%%%%		\item Resource1 is best suited to task $C$
+%%		\item Resource2 completes tasks $A$ and $B$
+%%		\item $C$ is running on resource1, wchich may be much faster on resource2
+%%	\end{itemize}
+%%\end{column}
+%%\begin{column}[c]{.5\linewidth}
+%%	\centering \includegraphics[scale=0.325]{basicSchedulers/heteroprio3} 
+%%\end{column}
+%%\end{columns}
+%%\medskip
+%%\begin{itemize}
+%%	\item Nothing prevents the slow resource to execute a long task
+%%	\item Suitable for small independent tasks
+%%\end{itemize}
+%%\end{block}
+%%
+%%
+%%\begin{block}{Generalization of \heteroprio}
+%%\begin{columns}
+%%	\begin{column}[c]{.5\linewidth}
+%%		\begin{itemize}
+%%			\item Spoliation: An idle resource restarts the highest priority task if it finishes earlier
+%%			%%		\item $A$ is highest priority ready task at $t$
+%%			%%		\item Resource1 is best suited to task $C$
+%%			\item Resource2 spoliates task $C$
+%%		\end{itemize}
+%%	\end{column}
+%%	\begin{column}[c]{.5\linewidth}
+%%		\centering \includegraphics[scale=0.325]{basicSchedulers/heteroprio4} 
+%%	\end{column}
+%%\end{columns}
+%%\medskip
+%%Other corrections to \heteroprio:
+%%\begin{itemize}
+%%	\item CPU selects lowest priority task among all tasks of 
+%%	same acceleration factor
+%%	\item GPU selects highest priority task among all tasks of 
+%%	similar acceleration factors
+%%\end{itemize}
+%%
+%%\end{block}
+%%}
+%%\end{frame}
+%%
+
+%%\begin{frame}{Our strategy and Performance comparison}
+%%
+%%{\scriptsize
+%%	\vspace*{-0.195cm}
+%%	\begin{block}{Trace for 12 X 12  tile matrix of Cholesky factorization}
+%%		\vspace*{-0.175cm}\begin{columns}
+%%			\begin{column}{0.475\linewidth}
+%%			\vspace*{-0.15cm}\begin{block}{}
+%%				\includegraphics[width=0.925\textwidth,height=0.215\textheight]{./diagrams/heftp-12}\newline\newline
+%%				\noindent StarPU scheduling strategy, performance = 686 GFlop/s \vspace*{-0.045cm}
+%%			\end{block}
+%%			\end{column}
+%%			\begin{column}{0.495\linewidth}
+%%				\vspace*{-0.15cm}\begin{block}{}
+%%				\includegraphics[width=0.925\textwidth,height=0.215\textheight]{./diagrams/heteroprio+PCEPT-12}\\
+%%				\noindent {\tiny \textcolor{blue}{$\bullet$} Resource selects the best suited task \textcolor{blue}{$\bullet$} Fast resource restarts the blocking task}\newline
+%%				\noindent Our strategy, performance = 760 GFlop/s \vspace*{-0.045cm}
+%%				\end{block}
+%%			\end{column}
+%%		\end{columns}	
+%%	\end{block}\vspace*{-0.185cm}
+%%	\begin{block}{Theoretical guarantees of our strategy and performance comparison}\vspace*{-0.35cm}
+%%		\begin{columns}
+%%			\begin{column}{0.45\linewidth}
+%%%%%%				\begin{block}{}
+%%%%%%					\textcolor{blue}{$\bullet$} Each resource selects the best suited task\\
+%%%%%%					\textcolor{blue}{$\bullet$} A fast resource restarts the blocking task
+%%%%%%				\end{block}
+%%%%%%				\vspace*{-0.1cm}
+%%\begin{block}{}
+%%				\setlength{\tabcolsep}{2pt}
+%%				\begin{center}
+%%					\begin{tabular}{|c|c|c|}
+%%						\hline
+%%						&\multicolumn{2}{|c|}{For a set of independent tasks}\\ \cline{2-3} 
+%%						({\tiny\#CPUs, \#GPUs}) & Approximation ratio & Worst case ex.\\ 
+%%						\hline
+%%						(1,1) & $\frac{1 + \sqrt{5}}{2}$ & $\frac{1 + \sqrt{5}}{2}$\\ \hline
+%%						(m,1) & $\frac{3 + \sqrt{5}}{2}$ & $\frac{3 + \sqrt{5}}{2}$\\ \hline
+%%						(m,n) & $2 + \sqrt{2} \approx 3.41 $ & $2 +
+%%						\frac{2}{\sqrt{3}} \approx 3.15$ \\ \hline
+%%					\end{tabular}
+%%				\end{center}
+%%\end{block}
+%%			\end{column}
+%%			\begin{column}{0.5\linewidth}\vspace*{-0.925cm}
+%%				\begin{center}
+%%					\includegraphics[scale=0.465]{./plots/BoundsVsHeftVsHeteroPrioPerformance}
+%%%%					\includegraphics[width=\textwidth,height=0.3\textheight]{./plots/BoundsVsHeftVsHeteroPrioPerformance}
+%%				\end{center}\vspace*{-1.0cm}
+%%			\noindent $\qquad\qquad$\textcolor{blue}{$\bullet$} Our upper bound is obtained by a linear program\vspace*{-0.045cm}
+%%%%#msize heft hp-best iterativeBound(5mins)
+%%%%4 199.95 204.52 208.01
+%%%%8 522.86 554.40 603.87
+%%%%12 674.93 759.99 835.75
+%%%%16 781.96 857.23 930.31
+%%%%20 843.70 907.50 956.59
+%%%%24 877.75 933.94 966.07
+%%%%28 897.97 951.22 971.79
+%%%%32 914.02 960.19 975.61			
+%%			\end{column}
+%%		\end{columns}
+%%\end{block}
+%%}
+%%\end{frame}
+%%
+
+%%%%
+%%%%\begin{frame}{Theoretical guarantees of our strategy and performance comparison}
+%%%%\begin{minipage}{0.475\linewidth}{\footnotesize
+%%%%		\setlength{\tabcolsep}{2pt}
+%%%%		\begin{block}{For a set of independent tasks}
+%%%%			\begin{center}
+%%%%				\begin{tabular}{|c|c|c|}
+%%%%					\hline
+%%%%					({\tiny\#CPUs, \#GPUs}) & Approximation ratio & Worst case ex.\\ 
+%%%%					\hline
+%%%%					(1,1) & $\frac{1 + \sqrt{5}}{2}$ & $\frac{1 + \sqrt{5}}{2}$\\ \hline
+%%%%					(m,1) & $\frac{3 + \sqrt{5}}{2}$ & $\frac{3 + \sqrt{5}}{2}$\\ \hline
+%%%%					(m,n) & $2 + \sqrt{2} \approx 3.41 $ & $2 +
+%%%%					\frac{2}{\sqrt{3}} \approx 3.15$ \\ \hline
+%%%%				\end{tabular}
+%%%%			\end{center}
+%%%%		\end{block}
+%%%%		\begin{block}{For task graphs}
+%%%%			\begin{center}
+%%%%				\begin{tabular}{|c|c|c|}
+%%%%					\hline
+%%%%					({\tiny\#CPUs, \#GPUs}) & Approximation ratio & Worst case ex.\\ 
+%%%%					\hline
+%%%%					(1,1) & $2$ & $2$\\ \hline
+%%%%					(m,n) & $2 + \max(\frac{m}{n}, \frac{n}{m})$ & $1 + \max(\frac{m}{n}, \frac{n}{m})$\\ \hline
+%%%%				\end{tabular}
+%%%%			\end{center}
+%%%%		\end{block}
+%%%%}\end{minipage}\hfill
+%%%%\begin{minipage}{0.475\linewidth}{\footnotesize
+%%%%		\begin{block}{Performance comparison}
+%%%%			\begin{center}
+%%%%				\includegraphics[scale=0.5]{./plots/BoundsVsHeftVsHeteroPrioPerformance}
+%%%%			\end{center}
+%%%%			%%\vspace*{-0.25cm}
+%%%%			%%\textcolor{blue}{$\bullet$} Iterative bound: obtained by adding longest path iteratively in a linear program
+%%%%		\end{block}
+%%%%}\end{minipage}
+%%%%\begin{itemize}
+%%%%	\item Iterative bound is obtained by adding longest path iteratively in a linear program
+%%%%	\item Performance of our strategy is close to the bound
+%%%%\end{itemize}
+%%%%\end{frame}
+%%%%
+
+
+%%\begin{frame}{Trace for 12 X 12  blocks of Cholesky factorization}
+%%
+%%{\scriptsize
+%%\vspace*{-0.15cm}
+%%\begin{block}{StarPU scheduling strategy}
+%%
+%%	\includegraphics[width=0.475\textwidth,height=0.225\textheight]{./diagrams/heftp-12}
+%%
+%%\noindent Achieved performance = 686 GFlop/s
+%%
+%%\end{block}
+%%\vspace*{-0.25cm}
+%%\begin{block}{Our scheduling strategy}
+%%%%\begin{center}
+%%\includegraphics[width=0.45\textwidth,height=0.225\textheight]{./diagrams/heteroprio+PCEPT-12}
+%%%%\end{center}
+%%\vspace*{-0.15cm}
+%%\begin{block}{}
+%%	\textcolor{blue}{$\bullet$} Each resource selects the best suited task\\
+%%	\textcolor{blue}{$\bullet$} An idle resource restarts the highest priority task if it finishes earlier
+%%\end{block}
+%%\vspace*{-0.1cm}
+%%\noindent Achieved performance = 760 GFlop/s
+%%\end{block}
+%%}
+%%\end{frame}
+
+
+
+%%\begin{frame}{Trace for 12 X 12  blocks of Cholesky with StarPU scheduling strategy}
+%%%%\framesubtitle{Trace for 12 X 12  blocks of Cholesky factorization with StarPU scheduling strategy}
+%%\includegraphics[width=\textwidth,height=0.72\textheight]{./diagrams/heftp-12}
+%%\vspace*{-0.25cm}
+%%\begin{itemize}
+%%\item Most of the CPU resources are not utilized (686 GFlop/s)
+%%%%\item SS performance = 791 GFlop/s
+%%\end{itemize}
+%%\end{frame}
+%%
+%%
+%%
+%%
+%%
+%%\begin{frame}{Trace for 12 X 12  blocks of Cholesky with our scheduling strategy}
+%%\includegraphics[width=\textwidth,height=0.625\textheight]{./diagrams/heteroprio+PCEPT-12}
+%%
+%%%%\only<1>{\includegraphics[width=\textwidth,height=0.725\textheight]{./diagrams/heteroprio+PCEPT-12}\vspace*{-0.25cm}}
+%%%%\only<2>{\includegraphics[width=\textwidth,height=0.725\textheight]{./diagrams/HP+PCEPTWithoutAbortedTasks}}
+%%\vspace*{-0.15cm}
+%%\begin{block}{}
+%%\textcolor{blue}{$\bullet$} Each resource selects the best suited task\\
+%%\textcolor{blue}{$\bullet$} An idle resource restarts the highest priority task if it finishes earlier
+%%\end{block}
+%%\vspace*{-0.185cm}
+%%Achieved performance = 760 GFlop/s, Performance with StarPU strategy = 686 GFlop/s
+%%\end{frame}
+
+%%%%
+%%%%\begin{frame}{Theoretical guarantees of our strategy and performance comparison}
+%%%%\begin{minipage}{0.475\linewidth}{\footnotesize
+%%%%\setlength{\tabcolsep}{2pt}
+%%%%\begin{block}{For a set of independent tasks}
+%%%%\begin{center}
+%%%%	\begin{tabular}{|c|c|c|}
+%%%%		\hline
+%%%%		({\tiny\#CPUs, \#GPUs}) & Approximation ratio & Worst case ex.\\ 
+%%%%		\hline
+%%%%		(1,1) & $\frac{1 + \sqrt{5}}{2}$ & $\frac{1 + \sqrt{5}}{2}$\\ \hline
+%%%%		(m,1) & $\frac{3 + \sqrt{5}}{2}$ & $\frac{3 + \sqrt{5}}{2}$\\ \hline
+%%%%		(m,n) & $2 + \sqrt{2} \approx 3.41 $ & $2 +
+%%%%		\frac{2}{\sqrt{3}} \approx 3.15$ \\ \hline
+%%%%	\end{tabular}
+%%%%\end{center}
+%%%%\end{block}
+%%%%\begin{block}{For task graphs}
+%%%%	\begin{center}
+%%%%		\begin{tabular}{|c|c|c|}
+%%%%			\hline
+%%%%			({\tiny\#CPUs, \#GPUs}) & Approximation ratio & Worst case ex.\\ 
+%%%%			\hline
+%%%%			(1,1) & $2$ & $2$\\ \hline
+%%%%			(m,n) & $2 + \max(\frac{m}{n}, \frac{n}{m})$ & $1 + \max(\frac{m}{n}, \frac{n}{m})$\\ \hline
+%%%%		\end{tabular}
+%%%%	\end{center}
+%%%%
+%%%%%%\begin{center}
+%%%%%%	\begin{tabular}{|c|c|c|c|c|}
+%%%%%%		\hline
+%%%%%%		&\multicolumn{2}{|c|}{set of independent tasks} &\multicolumn{2}{|c|}{task graphs}\\ \cline{2-5}
+%%%%%%		(\#CPUs, \#GPUs) & Approximation ratio & Worst case ex. & Approximation ratio & Worst case ex.\\ 
+%%%%%%		\hline
+%%%%%%		(1,1) & $\frac{1 + \sqrt{5}}{2}$ & $\frac{1 + \sqrt{5}}{2}$ & 2 & 2\\ \hline
+%%%%%%		%			(1,n) & $2$ \\ \hline
+%%%%%%		%%		(m,1) & $\frac{3 + \sqrt{5}}{2}$ & $\frac{3 + \sqrt{5}}{2}$\\ \hline
+%%%%%%		%			(m,n) \& $m \le n-1$ & $3$ \\ \hline
+%%%%%%		%			(m,n) & $2 + \sqrt{2} \approx 3.41 $ &  $3$\\ \hline
+%%%%%%		(m,n) & $2 + \sqrt{2} \approx 3.41 $ & $2 +
+%%%%%%		\frac{2}{\sqrt{3}} \approx 3.15$ & $2 + \max(\frac{m}{n}, \frac{n}{m})$ & $1 + \max(\frac{m}{n}, \frac{n}{m}) $\\ \hline
+%%%%%%	\end{tabular}
+%%%%%%\end{center}
+%%%%\end{block}
+%%%%}\end{minipage}\hfill
+%%%%\begin{minipage}{0.475\linewidth}{\footnotesize
+%%%%	\begin{block}{Performance comparison}
+%%%%\begin{center}
+%%%%	\includegraphics[scale=0.5]{./plots/BoundsVsHeftVsHeteroPrioPerformance}
+%%%%\end{center}
+%%%%%%\vspace*{-0.25cm}
+%%%%%%\textcolor{blue}{$\bullet$} Iterative bound: obtained by adding longest path iteratively in a linear program
+%%%%	\end{block}
+%%%%}\end{minipage}
+%%%%\begin{itemize}
+%%%%	\item Iterative bound is obtained by adding longest path iteratively in a linear program
+%%%%	\item Performance of our strategy is close to the bound
+%%%%\end{itemize}
+%%%%\end{frame}
+
+
+%%\subsection{Communication Computation Overlap}
+%%\begin{frame}
+%%\frametitle{Previous Activities}
+%%\tableofcontents[currentsubsection]
+%%\end{frame}
+
+\section{Minimize Impact of Data Transfers on Large Scale Systems}
+
+\begin{frame}{Previous Activities}
+\tableofcontents[currentsection]
+\end{frame}
+\begin{frame}{Minimizing impact of communications on Summit supercomputer}
+\begin{itemize}{\footnotesize
+\item Maximizing the overlap of communications and computations
+\item Implemented proposed approaches in Tensor Algebra for Manybody Methods (TAMM) library
+\item Molecular chemistry application (CCSD), Ubiqtin molecule, cc-pVDZ (737 basis functions, 220 nodes), aug-cc-pVDZ (1243 basis functions, 256 nodes)
+}\end{itemize}
+\begin{columns}
+\begin{column}{0.56\linewidth}
+\begin{center}\vspace*{-0.325cm}
+\includegraphics[scale=0.115]{./diagrams/Summit_Node.jpg}
+\end{center}
+\vspace*{-0.4cm}{\tiny Joint work with S. Krishnamoorthy and M. Zalewski during my postdoc at PNNL, USA}
+{\tiny Figure source: \url{https://www.olcf.ornl.gov}}
+\end{column}
+\begin{column}{0.45\linewidth}
+\includegraphics[scale=0.5]{./diagrams/tamm-performance.eps}
+\end{column}
+\end{columns}
+\end{frame}
+
+
+
+\part[Proposed Plan]{Proposed Plan}
+\begin{frame}{Project: Parallel Strategies for Quantum Computations}
+\frametitle{} % Table of contents slide, comment this block out to remove it
+\tableofcontents[part=2] % Throughout your presentation, if you choose to use \section{} and \subsection{} commands, these will automatically be printed on this slide as an overview of your presentation
+
+%%\begin{tikzpicture}[scale=0.625, every node/.style={transform shape}]
+%%\tikzstyle{taskr}=[draw=black, rounded corners, minimum height=30mm, minimum width=70mm, fill=none, text=black]
+%%
+%%
+%%%%\tikzstyle{taskcompute}=[draw=black, minimum height=16mm, minimum width=16mm, fill=none, text=black, below]
+%%
+%%
+%%\node (mainfocus) at (0,0) [taskr, anchor=south] {};
+%%\node at (mainfocus.south) [below] {\textbf{Main focus}};
+%%
+%%\node [below, align=left, text width=70mm]at (mainfocus.north) {		\textbf{$\ $Scalable communication optimal\\ $\ $algorithms for tensors\medskip}\\{\footnotesize \mybullet Analyze existing algorithms\\ 
+%%		\mybullet Determine communication lower bounds\\\mybullet Propose communication optimal algorithms\\\mybullet Implement the proposed algorithms}};
+%%
+%%
+%%\node (shorttermfocus) at (8,0) [taskr, minimum height=21mm, anchor=south] {};
+%%\node at (shorttermfocus.south) [below] {\textbf{Short/Mid term plans}};
+%%
+%%\node [below, align=left, text width=70mm]at (shorttermfocus.north) {\textbf{$\ $Extension of existing approaches\medskip}\\\footnotesize \mybullet Strassen's concepts to tensors\\\mybullet Concepts of hierarchical matrices to tensors\\\mybullet Separation order of dimensions in tensor train};
+%%
+%%
+%%\node (midtermfocus) at (16,0) [taskr, minimum height=25mm, anchor=south] {};
+%%\node at (midtermfocus.south) [below] {\textbf{Mid/Long term plans}};
+%%
+%%\node [below, align=left, text width=70mm]at (midtermfocus.north) {\textbf{$\ $Exploratory topics\medskip}\\\footnotesize \mybullet New tensor representations\\ \mybullet Architecture aware algorithms\\ \mybullet Randomization in tensors\\ \mybullet Factorizations of tensors};
+%%
+%%\end{tikzpicture}
+
+\end{frame}
+
+
+%%%%\begin{frame}{Test}
+%%%%\begin{tikzpicture}[scale=0.625, every node/.style={transform shape}]
+%%%%\tikzstyle{taskr}=[draw=black, rounded corners, minimum height=30mm, minimum width=70mm, fill=none, text=black]
+%%%%
+%%%%
+%%%%%%\tikzstyle{taskcompute}=[draw=black, minimum height=16mm, minimum width=16mm, fill=none, text=black, below]
+%%%%
+%%%%
+%%%%\node (mainfocus) at (0,0) [taskr, anchor=south] {};
+%%%%\node at (mainfocus.south) [below] {\textbf{Main Focus}};
+%%%%
+%%%%\node [below, align=left, text width=70mm]at (mainfocus.north) {		\textbf{$\ $Scalable communication optimal algorithms for tensors}\\{\footnotesize \mybullet Analyze existing algorithms\\ 
+%%%%		\mybullet Determine communication lower bounds\\\mybullet Propose communication optimal algorithms\\\mybullet Implement the proposed algorithms}};
+%%%%
+%%%%
+%%%%\node (shorttermfocus) at (8,0) [taskr, minimum height=15mm, anchor=south] {};
+%%%%\node at (shorttermfocus.south) [below] {\textbf{Short term plans}};
+%%%%
+%%%%\node [below, align=left, text width=70mm]at (shorttermfocus.north) {\footnotesize \mybullet Extend Strassen's concepts to tensors\\\mybullet Extend hierarchical matrices to tensors\\\mybullet Separation order of dimensions in tensor train};
+%%%%
+%%%%
+%%%%\node (midtermfocus) at (16,0) [taskr, minimum height=20mm, anchor=south] {};
+%%%%\node at (midtermfocus.south) [below] {\textbf{Mid term plans}};
+%%%%
+%%%%\node [below, align=left, text width=70mm]at (midtermfocus.north) {\footnotesize \mybullet New tensor representations\\ \mybullet Architecture aware algorithms\\ \mybullet Randomization in tensors\\ \mybullet Factorizations of tensors};
+%%%%
+%%%%
+%%%%%%		\textbf{Scalable communication optimal algorithms for tensors}\\{\footnotesize $\quad$Analyze existing algorithms\\ 
+%%%%%%		$\quad$Determine communication lower bounds\\$\quad$Propose communication optimal algorithms\\$\quad$Implement the proposed algorithms}};
+%%%%
+%%%%
+%%%%
+%%%%%%		\\Determine communication lower bounds\\Propose communication optimal algorithms\\Implement the proposed algorithms}};
+%%%%
+%%%%%%		\node (textmainfocus) at (mainfocus.south) [below] {Scalable communication optimal algorithms for tensors};
+%%%%%%%%%%		\textbf{}}
+%%%%\end{tikzpicture}
+%%%%\end{frame}
+
+
+\section{Teaching plan}
+\begin{frame}{Teaching plan for the next academic year}
+\begin{itemize}
+	\item Introduction to Tensors
+	\begin{itemize}
+		\item tensor notations and various tensor decompositions, tensor networks, use of tensors in data analysis and quantum molecular simulations, use of existing tensor libraries for some selected problems, analysis of the various tensor decompositions, computation and storage complexities of tensor computations, challenges with tensor computations, create new algorithms to mitigate some of these challenges 
+	\end{itemize}
+	\vfill
+	\item Algorithms and Data Structures
+	\begin{itemize}
+		\item stack, queue and heap data structures, time and space complexities of algorithms, popular ways of search and sort items, algorithm design strategies -- divide and conquer, greedy methods, dynamic programming,  algorithms for various popular problems based on these strategies, parallelization of algorithms, few hands-on sessions for some selected algorithms, P, NP and NP-complete classes  
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Other courses in the coming years}
+\begin{itemize}
+	\item Specialized courses
+	\begin{itemize}
+		\item Parallel and communication avoiding algorithms
+		\item Architecture aware algorithms
+	\end{itemize}
+	\vfill
+	\item Basic courses
+	\begin{itemize}
+		\item Compiler design
+		\item Computer architecture
+		\item Program analysis and verification
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\section{Validation of quantum algorithms on classical computers}
+\subsection{Scalability of the algorithms}
+\begin{frame}{Research Plan}
+\tableofcontents[currentsection]
+\end{frame}
+%%\section{Communication and its importance in HPC}
+\begin{frame}{Communication and its importance in classical computing}
+
+\begin{minipage}{0.6\linewidth}
+\begin{itemize}
+	\item Running time of an algorithm depends on 
+	\begin{itemize}
+		\item Computations
+		\begin{itemize}
+			\item Number of operations * time-per-operation
+		\end{itemize}
+		\item Data movement
+		\begin{itemize}
+			\item Volume of communication / Network-bandwidth
+			\item Number of messages * Network-latency
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+\end{minipage}
+\begin{minipage}{0.35\linewidth}
+\begin{tikzpicture}[scale=0.625, every node/.style={transform shape}]
+%%\tikzstyle{taskmemory}=[draw=black, minimum height=18mm, minimum width=18mm, fill=blue!40, text=black]
+\tikzstyle{taskcompute}=[draw=black, minimum height=16mm, minimum width=16mm, fill=none, text=black, below]
+
+\node (t0) at (0,0) [taskcompute] {}; 
+\node (t1) at (4,0) [taskcompute] {};
+\node (t2) at (4,4) [taskcompute] {};
+\node (t3) at (0,4) [taskcompute] {};
+
+\draw [<->, line width=4, orange] (t0) -- (t1);
+\draw [<->, line width=4, orange] (t1) -- (t2);
+\draw [<->, line width=4, orange] (t2) -- (t3);
+\draw [<->, line width=4, orange] (t3) -- (t0);
+
+\node (td0)  at (t0.south) [above, scale=0.5] {$DRAM$};
+\node (td1) [above, scale=0.5] at (t1.south) {$DRAM$};
+\node (td2) [above, scale=0.5] at (t2.south) {$DRAM$};
+\node (td3) [above, scale=0.5] at (t3.south) {$DRAM$};
+
+\node [above] at (td0.north) {$CPU$};
+\node [above] at (td1.north) {$CPU$};
+\node [above] at (td2.north) {$CPU$};
+\node [above] at (td3.north) {$CPU$};
+
+%%\node [below] at (tm.south) {Memory Unit $M$};
+%%\node [above] at (tc.north) {Compute Unit $C$};
+%%
+%%\node [taskmemory, minimum height=6mm, minimum width=12mm, anchor=south] at (tc.south) {}; 
+\end{tikzpicture}
+\end{minipage}
+\begin{itemize}
+	\item Gaps growing exponentially with time (Source: Getting up to speed: The future of supercomputing)
+		\begin{center}
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		& time-per-operation & Network-bandwidth & Network-latency\\ \hline
+		Annual improvements & 59 \% & 26 \% & 15 \%\\ \hline
+%%		\multicolumn{2}{|c|}{Annual improvements}\\ \hline
+%%		time-per-operation & 59\%\\ \hline
+%%		Network-bandwidth & 26\%\\ \hline
+%%		Network-latency & 15 \% \\ \hline
+	\end{tabular}
+		\end{center}
+	\vfill
+	%%\credit{Getting up to speed: The future of supercomputing}
+	\item Avoid communication to save time (and energy)
+\end{itemize}
+
+
+
+%%\includegraphics[scale=0.02]{./tmp/networkTopology.jpg}
+%%Source: GETTING UP TO SPEED THE FUTURE OF SUPERCOMPUTING
+%%Figures fromGetting up to speed:  The future of supercomputing, 2005,National Academies Press (2004 figure based on data on the period 1988-2002)
+\end{frame}
+
+%%\begin{frame}{Outline}
+%%\begin{itemize}
+%%	\item Validation of quantum algorithms on classical computers
+%%	\begin{itemize}
+%%		\item Scalability of the algorithms
+%%	\end{itemize}
+%%	\item Design of new parallel algorithms for quantum computations
+%%	\begin{itemize}
+%%		\item tensor network based algorithms
+%%	\end{itemize} 
+%%\end{itemize}
+%%\end{frame}
+
+
+%%\section{Design of Scalable Communication Optimal Algorithms for Tensors (Main Focus)}
+
+
+%%\begin{frame}
+%%\frametitle{Table of Contents}
+%%\tableofcontents[currentsection]
+%%\end{frame}
+
+\begin{frame}{Scalable algorithms on classical computers}
+\begin{itemize}
+	\item Most quantum circuits can be expressed as tensor operations
+	\vfill
+	\item Analyze the existing algorithms and communication performed by them
+	\vfill
+	\item Propose new scalable communication optimal algorithms
+	\vfill
+	\item Implement the proposed algorithms
+	\begin{itemize}
+		\item Load balancing
+		\item Memory awareness
+		\item Efficient scheduling of computations
+	\end{itemize}
+	
+\end{itemize}
+\end{frame}
+
+%\begin{frame}{Scalabale algorithms for popular tensor operations}
+%\begin{itemize}
+%	\item Determine the communication lower bounds for tensor decompositions
+%	\item Analyse the popular decomposition algorithms and communications performed by them
+%	\item Propose new scalable communication optimal algorithms
+%	\begin{itemize}
+%		\item If possible design tiles/tasks based algorithms
+%	\end{itemize}
+%	\item Implement the proposed algorithms
+%	\begin{itemize}
+%		\item Handle performance issues for homogeneous systems
+%		\begin{itemize}
+%			\item Load balancing
+%			\item Memory aware approaches
+%			\item scheduling strategies
+%		\end{itemize}
+%	\end{itemize}
+%	\item Same for manipulation operations of popular tensor representations
+%	\item Extend implementation for heterogeneous systems (start with Nvidia GPUs based heterogeneous systems)
+%	\item Create a tensor library
+%\end{itemize}
+%\end{frame}
+
+
+
+%%\begin{frame}{Tensor Diagram Notations }
+%%%%$Tensors are denoted by solid shapes aand number of lines coming out of the shapes denote the dimensions of the tensors.$
+%%\\
+%%\noindent For example,
+%%\begin{center}
+%%	\begin{tabular}{ccc}
+%%		Dimension & Name &\\
+%%		1 & Vector & \begin{tikzpicture}[scale=0.5, every node/.style={transform shape}]
+%%		\tikzstyle{taskc}=[circle, draw=black, minimum size=3mm, fill=\tensorcolor]
+%%		\node (t01) at (0,0) [taskc]{};
+%%		\draw (t01) -- (1,0);
+%%		\path (t01) -- (-1,0);
+%%		\end{tikzpicture} \\
+%%		2 & Matrix & \begin{tikzpicture}[scale=0.5, every node/.style={transform shape}]
+%%		\tikzstyle{taskc}=[circle, draw=black, minimum size=3mm, fill=\tensorcolor]
+%%		\node (t01) at (0,0) [taskc]{};
+%%		\draw (t01) -- (1,0);
+%%		\draw (t01) -- (-1,0);
+%%		\end{tikzpicture} \\
+%%		3 & $3$-dimensional tensor & \begin{tikzpicture}[scale=0.5, every node/.style={transform shape}]
+%%		\tikzstyle{taskc}=[circle, draw=black, minimum size=3mm, fill=\tensorcolor]
+%%		\node (t01) at (0,0) [taskc]{};
+%%		\draw (t01) -- (1,0);
+%%		\draw (t01) -- (-1,0);
+%%		\draw (t01) -- (0,1);	
+%%		%%	\draw[<->,thin] (2, -0.2) -- node[below]{$3$} (4, -0.2);
+%%		\end{tikzpicture}\\
+%%	\end{tabular}
+%%\end{center}
+
+%%Tensors are denoted by solid shapes and number of lines coming out of the shapes denote the dimensions of the tensors.
+
+%%\begin{itemize}
+%%	\item Connecting two lines implies summation over the connected dimensions
+%%	\item Multiplication of matrices \begin{tikzpicture}[scale=0.5, every node/.style={transform shape}]
+%%	\tikzstyle{taskc}=[circle, draw=black, minimum size=5mm, fill=\tensorcolor]
+%%	\node (t01) at (0,0) [taskc]{A};
+%%	%%	\node [below] at (t01.south) {A};
+%%	\draw (t01) -- node[above]{j}(1,0);
+%%	\draw (t01) -- node[above]{i}(-1,0);
+%%	%%	\draw (t01) -- (0,1);	
+%%	%%	\draw[<->,thin] (2, -0.2) -- node[below]{$3$} (4, -0.2);
+%%	\end{tikzpicture} and
+%%	\begin{tikzpicture}[scale=0.5, every node/.style={transform shape}]
+%%	\tikzstyle{taskc}=[circle, draw=black, minimum size=5mm, fill=\tensorcolor]
+%%	\node (t01) at (0,0) [taskc]{B};
+%%	%%	\node [below] at (t01.south) {A};
+%%	\draw (t01) -- node[above]{k}(1,0);
+%%	\draw (t01) -- node[above]{j}(-1,0);
+%%	%%	\draw (t01) -- (0,1);	
+%%	%%	\draw[<->,thin] (2, -0.2) -- node[below]{$3$} (4, -0.2);
+%%	\end{tikzpicture} is represented as 
+%%	\begin{tikzpicture}[scale=0.5, every node/.style={transform shape}]
+%%	\tikzstyle{taskc}=[circle, draw=black, minimum size=5mm, fill=\tensorcolor]
+%%	\node (t01) at (0,0) [taskc]{C};
+%%	%%	\node [below] at (t01.south) {A};
+%%	\draw (t01) -- node[above]{k}(1,0);
+%%	\draw (t01) -- node[above]{i}(-1,0);
+%%	%%	\draw (t01) -- (0,1);	
+%%	%%	\draw[<->,thin] (2, -0.2) -- node[below]{$3$} (4, -0.2);
+%%	\end{tikzpicture}
+%%	=
+%%	\begin{tikzpicture}[scale=0.5, every node/.style={transform shape}]
+%%	\tikzstyle{taskc}=[circle, draw=black, minimum size=5mm, fill=\tensorcolor]
+%%	\node (t01) at (0,0) [taskc]{A};
+%%	%%	\node [below] at (t01.south) {A};
+%%	%%	\draw (t01) -- node[above]{j}(1,0);
+%%	\draw (t01) -- node[above]{i}(-1,0);
+%%	
+%%	\node (t02) at (2,0) [taskc]{B};
+%%	%%	\node [below] at (t01.south) {A};
+%%	\draw (t02) -- node[above]{k}(3,0);
+%%	\draw (t01) -- node[above]{j}(t02);
+%%	%%	\draw (t01) -- (0,1);	
+%%	%%	\draw[<->,thin] (2, -0.2) -- node[below]{$3$} (4, -0.2);
+%%	\end{tikzpicture}
+%%	%%	\vfill
+%%	
+%%\end{itemize}
+%%\end{frame}
+
+
+
+%%\begin{frame}{Popular tensor decompositions}
+%%
+%%{\footnotesize\vspace*{-0.175cm}
+%%\begin{block}{Tucker decomposition}
+%%\begin{minipage}{0.325\linewidth}
+%%	\begin{center}
+%%		\begin{tikzpicture}[scale=0.2, every node/.style={transform shape}]
+%%		\pgfmathsetmacro{\cubex}{4}
+%%		\pgfmathsetmacro{\cubey}{4}
+%%		\pgfmathsetmacro{\cubez}{4}
+%%		\draw[blue,fill=pastelgreen] (-12,1,\cubez-2) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+%%		\draw[blue,fill=pastelgreen] (-12,1,\cubez-2) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+%%		\draw[blue,fill=pastelgreen] (-12,1,\cubez-2) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+%%		\node[draw=none, text=black, scale=4] at (-8,-1,0) {$=$};
+%%		
+%%		\pgfmathsetmacro{\cubex}{2}
+%%		\pgfmathsetmacro{\cubey}{2}
+%%		\pgfmathsetmacro{\cubez}{2}
+%%		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+%%		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+%%		\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+%%		
+%%		\draw[blue,fill=pastelgreen] (-\cubex-1,1,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey-2,0) -- ++(\cubex,0,0) -- cycle;
+%%		\draw[blue,fill=pastelgreen] (\cubex+2+1,0,-\cubey) -- ++(-\cubex-2,0,0) -- ++(0,-\cubey,0) -- ++(\cubex+2,0,0) -- cycle;
+%%		
+%%		\draw[blue,fill=pastelgreen] (0,0,-\cubez-1) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez-2) -- ++(\cubex,0,0) -- cycle;
+%%		\end{tikzpicture}
+%%	\end{center}
+%%\end{minipage}
+%%\begin{minipage}{0.665\linewidth}
+%%	\begin{itemize}
+%%		\item Determine communication lower bounds for this operation
+%%		\item Analyse communications performed by state of the art algorithms
+%%		\item Propose and implement new scalable communication algorithms
+%%	\end{itemize}
+%%\end{minipage}
+%%\end{block}\vspace*{-0.15cm}
+%%\begin{block}{Canonical decomposition}
+%%	\begin{minipage}{0.325\linewidth}
+%%\begin{center}
+%%	\begin{tikzpicture}[scale=0.15, every node/.style={transform shape}]
+%%	\pgfmathsetmacro{\cubex}{4}
+%%	\pgfmathsetmacro{\cubey}{4}
+%%	\pgfmathsetmacro{\cubez}{4}
+%%	\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+%%	\draw[blue,fill=pastelgreen] (0,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+%%	\draw[blue,fill=pastelgreen] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+%%	
+%%	\node[draw=none, text=black, scale=4] at (2,-2.25,-3) {$=$};
+%%	\pgfmathsetmacro{\smallwidth}{0.5}
+%%	\draw[blue,fill=pastelgreen] (\cubex+2,0,0) -- ++(-\smallwidth,0,0) -- ++(0,-\cubey,0) -- ++(\smallwidth,0,0) -- cycle;
+%%	\draw[blue,fill=pastelgreen] (\cubex+2 +\cubex + 0.5,0.75,0) -- ++(-\cubex,0,0) -- ++(0,-\smallwidth,0) -- ++(\cubex,0,0) -- cycle;
+%%	\draw[blue,fill=pastelgreen] (\cubex+2,0.5,0) -- ++(-\smallwidth,0,0) -- ++(0,0,-\cubez) -- ++(\smallwidth,0,0) -- cycle;
+%%	
+%%	\node[draw=none, text=black, scale=4] at (2+\cubex+4.25,-2.25,-3) {$+$};
+%%	
+%%	\draw[blue,fill=pastelgreen] (\cubex+2.5 + \cubex+2,0,0) -- ++(-\smallwidth,0,0) -- ++(0,-\cubey,0) -- ++(\smallwidth,0,0) -- cycle;
+%%	\draw[blue,fill=pastelgreen] (\cubex+2.5+\cubex+2 +\cubex + 0.5,0.75,0) -- ++(-\cubex,0,0) -- ++(0,-\smallwidth,0) -- ++(\cubex,0,0) -- cycle;
+%%	\draw[blue,fill=pastelgreen] (\cubex+2.5+\cubex+2,0.5,0) -- ++(-\smallwidth,0,0) -- ++(0,0,-\cubez) -- ++(\smallwidth,0,0) -- cycle;
+%%	
+%%	\node[draw=none, text=black, scale=4] at (2+\cubex+5 + \cubex+ 4.25, -2.25,-3) {$+$ $\cdots$ $+$};
+%%	
+%%	\draw[blue,fill=pastelgreen] (12 + \cubex+2.5 + \cubex+2,0,0) -- ++(-\smallwidth,0,0) -- ++(0,-\cubey,0) -- ++(\smallwidth,0,0) -- cycle;
+%%	\draw[blue,fill=pastelgreen] (12+\cubex+2.5+\cubex+2 +\cubex + 0.5,0.75,0) -- ++(-\cubex,0,0) -- ++(0,-\smallwidth,0) -- ++(\cubex,0,0) -- cycle;
+%%	\draw[blue,fill=pastelgreen] (12 + \cubex+2.5+\cubex+2,0.5,0) -- ++(-\smallwidth,0,0) -- ++(0,0,-\cubez) -- ++(\smallwidth,0,0) -- cycle;
+%%	
+%%	\end{tikzpicture}
+%%\end{center}
+%%	\end{minipage}
+%%	\begin{minipage}{0.665\linewidth}
+%%		\begin{itemize}
+%%			\item No deterministic algorithm to find the decomposition
+%%			\item Analyse one iteration of the popular existing algorithms
+%%%%			\item Matricized tensor times Khatri-Rao product (MTTKRP)  is the most time consuming operation
+%%%%			\begin{itemize}
+%%%%				\item MTTKRP: ({$\mathcal{X}$}, \{$A_1, \cdots ,A_{k-1}, A_{k+1},\cdots,A_d$\}) $\longrightarrow$ $A_k$
+%%%%			\end{itemize}
+%%%%			\item Determine communication lower bounds for MTTKRP operation
+%%			
+%%			\item Propose and implement scalable algorithms for one iteration
+%%		\end{itemize}	
+%%	\end{minipage}
+%%\end{block}\vspace*{-0.15cm}
+%%\begin{block}{Tensor Train decomposition}
+%%	\begin{minipage}{0.325\linewidth}
+%%			\begin{center}
+%%			\begin{tikzpicture}[scale=0.25, every node/.style={transform shape}]
+%%			
+%%			\node (t0) at (0,-2) [scale=4] {\tensor{A}};
+%%			\node [scale=4]at (2, -2) {$=$};
+%%			\path (5,-5) -- (0,0);
+%%			\end{tikzpicture}\hspace*{-0.25cm}
+%%			\includegraphics[scale=0.165]{./diagrams/ttentry-simple.eps}
+%%		\end{center}
+%%	\end{minipage}
+%%	\begin{minipage}{0.665\linewidth}
+%%		\begin{itemize}
+%%			\item Determine communication lower bounds for this operation
+%%			\vfill
+%%			\item Analyse communication performed by popular algorithm
+%%%%			: \textcolor{green}{Completed}
+%%			\vfill
+%%			\item Propose and implement new scalable communication algorithms
+%%		\end{itemize}
+%%	\end{minipage}
+%%\end{block}
+%%}
+%%\end{frame}
+
+
+
+
+\begin{frame}{Communication lower bounds for quantum computations}
+\vspace*{-0.15cm}
+{\footnotesize\begin{block}{How people did it on classical computers?}
+\begin{itemize}
+	\item People obtain results for matrix multiplication operations
+	\item Same lower bounds apply to almost all direct linear linear algebra operations using reduction [Ballard et. al., 09]
+	, for instance, bound for LU factorization\vspace*{-0.15cm}
+	{\scriptsize\begin{align*}
+		\begin{pmatrix}
+		I &  & -B\\
+		A & I &  &\\
+		& & I
+		\end{pmatrix}
+		&=
+	\begin{pmatrix}
+	I & &\\
+	A & I & \\
+	&& I
+	\end{pmatrix}
+	\begin{pmatrix}
+	I & & -B \\
+	& I & AB\\
+	& & I
+	\end{pmatrix}
+	\end{align*}}
+\end{itemize}
+\end{block}
+
+\begin{itemize}
+	\item Extend this approach for quantum computations on classical computers
+	\item Analyze this approach to understand how it can be extended for the quantum computers
+\end{itemize}
+\vspace*{-0.15cm}{\footnotesize\begin{block}{Approach to compute lower bounds for tensor computations}
+Notation: Tensors are denoted by solid shapes and number of lines denote the dimensions of the tensors. Connecting two lines implies summation (or contraction) over the connected dimensions. 	
+	\begin{itemize}
+		\item Obtain bounds for basic tensor operations
+%%		 Tensor times matrix (TTM), Multiple tensor times matrix (Multi-TTM), Tensor contraction
+		
+		
+%%		\includegraphics[scale=0.02]{./tmp/tensorBasicOperations.jpg}
+\vspace*{-0.325cm}\begin{center}
+%%	 \begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+%%	\tikzstyle{taskc}=[circle, draw=black, minimum size=3mm, fill=\tensorcolor]
+%%	\node (t01) at (0,0) [taskc]{};
+%%	\draw (t01) -- (0.75,0);
+%%	\draw (t01) -- (-0.75,0);
+%%	\draw (t01) -- (0,0.75);
+%%	\node (t02) at (0,0.75) [taskc]{};
+%%	
+%%	\path (0,-0.75) -- (0,-0.75);
+%%	\end{tikzpicture} $\qquad$
+	\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+	\tikzstyle{taskc}=[circle, draw=black, minimum size=3mm, fill=\tensorcolor]
+	\node (t01) at (0,0) [taskc]{};
+	\draw (t01) -- (1.5,0);
+	\draw (t01) -- (-0.75,0);
+	\draw (t01) -- (0,0.75);
+	\draw (t01) -- (0,-0.75);
+	\node (t02) at (0.75,0) [taskc]{};
+	
+	\path (0, -0.95) -- (0, 0.95);
+	
+	\end{tikzpicture} $\qquad$
+	\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+	\tikzstyle{taskc}=[circle, draw=black, minimum size=3mm, fill=\tensorcolor]
+
+		
+%%	\node (t01) at (0,-0.75) [taskc]{};
+%%	\node (t02) at (0.56,-0.56) [taskc]{};
+%%	\node (t03) at (0.56, 0.56) [taskc]{};
+%%	\node (t04) at (0,0.75) [taskc]{};
+%%	\node (t05) at (-0.56, 0.56) [taskc]{};
+%%	\node (t06) at (-0.56, -0.56) [taskc]{};
+%%	
+%%	
+%%	\draw (t01) -- (t04);
+%%	\draw (t02) -- (t05);
+%%	\draw (t03) -- (t06);
+
+	\draw (-0.95, 0) -- (0.95, 0);
+	\draw (0, -0.95) -- (0, 0.95);	
+
+	\node (t01) at (0,-0.55) [taskc]{};
+	\node (t02) at (0,0.55) [taskc]{};
+	\node (t03) at (-0.55, 0) [taskc]{};
+	\node (t04) at (0.55, 0) [taskc]{};
+	
+
+	\node (t00) at (0,0) [taskc]{};
+	
+	\path (0, -0.95) -- (0, 0.95);
+						
+%%	\draw (t01) -- (0.75,0);
+%%	\draw (t01) -- (-0.75,0);
+%%	\draw (t01) -- (0,0.75);
+%%	\draw (t01) -- (0,-0.75);
+%%	\node (t02) at (0.75,0) [taskc]{};
+	\end{tikzpicture} $\qquad$
+	\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+	\tikzstyle{taskc}=[circle, draw=black, minimum size=3mm, fill=\tensorcolor]
+	\node (t01) at (0,0) [taskc]{};
+	\draw (t01) -- (0.75,0);
+	\draw (t01) -- (-0.75,0);
+	\draw (t01) -- (0,0.75);
+	\draw (t01) -- (0,-0.75);
+	\draw (t01) -- (-0.56, -0.56);
+	
+	\node (t02) at (0.75,0) [taskc]{};
+	\draw (t02) -- (0.75,0.75);
+	\draw (t02) -- (0.75,-0.75);
+	
+	\path (0, -0.95) -- (0, 0.95);
+	\end{tikzpicture}
+\end{center}
+%%\vspace*{-0.25cm}				
+%%	\item Express decompositions and manipulations in terms of these basis operations
+\end{itemize}
+\end{block}}
+}\end{frame}
+
+
+%%\subsection{Multi-TTM Computation}
+%%\begin{frame}
+%%\frametitle{Table of Contents}
+%%\tableofcontents[currentsubsection]
+%%\end{frame}
+
+
+%%\begin{frame}{Communication lower bounds on $P$ processors}
+%%\begin{itemize}
+%%	\item Recently started to work with L. Grigori (Inria Paris, France), H. Daas (Rutherford Appleton Laboratory, UK)  and G. Ballard (Wake Forest University, USA)
+%%	\vfill
+%%	\item Revisited communication lower bounds for matrix multiplications
+%%	\begin{minipage}{0.475\linewidth}
+%%		\begin{itemize}
+%%			\item Expressed existing approaches in suitable forms for tensors
+%%			\item Lower bounds also instruct arrangement of processors in optimal algorithms 
+%%			\item Improved the constants in the existing ranges of P (Demmel et.al [IPDPS 2013])
+%%		\end{itemize}
+%%	\end{minipage}$\quad$
+%%	\begin{minipage}{0.45\linewidth}
+%%		\begin{exampleblock}{Arrangements of $8$ processors}
+%%\begin{center}
+%%	\begin{tikzpicture}[scale=0.35, every node/.style={transform shape}]	
+%%	\foreach \x in {0, 1, 2, 3, 4, 5, 6, 7, 8}
+%%	\draw (-1, \x) -- (0, \x);
+%%	
+%%	\foreach \x in {0, 1, 2, 3, 4, 5, 6, 7, 8}
+%%	\draw (0, \x)--(0.6, 0.5+\x);
+%%	
+%%	\draw (0,0) -- (0,8);
+%%	\draw(-1,0)--(-1,8);
+%%	\draw (0.6,0.5) -- (0.6,8.5);
+%%	\draw (-1,8) -- (-1+0.6,8.5);
+%%	
+%%	\draw (-1+0.6,8.5) -- (0.6,8.5);
+%%	
+%%	\end{tikzpicture}$\qquad\quad$
+%%	\begin{tikzpicture}[scale=0.35, every node/.style={transform shape}]
+%%	
+%%	\foreach \x in {0, 1, 2, 3, 4}
+%%	\draw (-2, \x) -- (0, \x);
+%%	
+%%	\foreach \x in {0, 1, 2, 3, 4}
+%%	\draw (0, \x)--(0.6, 0.5+\x);
+%%	
+%%	\draw (0,0) -- (0,4);
+%%	\draw (-1,0) -- (-1,4);
+%%	\draw(-2,0)--(-2,4);
+%%	
+%%	\draw (0.6,0.5) -- (0.6,4.5);
+%%	
+%%	\draw (-2,4) -- (-2+0.6, 4+0.5);
+%%	\draw (-2+0.6, 4+0.5) -- (0.6, 4.5);
+%%	
+%%	\draw (-1,4) -- (-1+0.6, 4+0.5);
+%%	
+%%	%%\draw (-1,8) -- (0,8.5);
+%%	%%\draw (0,8.5) -- (1,8.5);
+%%	
+%%	\end{tikzpicture}$\qquad\quad$
+%%	\begin{tikzpicture}[scale=0.35, every node/.style={transform shape}]
+%%	
+%%	\def\xref{0.6}
+%%	\def\yref{0.5}
+%%	
+%%	\foreach \x in {0, 1, 2}
+%%	\draw (-2, \x) -- (0, \x);
+%%	
+%%	\foreach \x in {0, 1, 2}
+%%	\draw (0, \x)--(2*\xref, 2*\yref+\x);
+%%	
+%%	\draw (0,0) -- (0,2);
+%%	\draw (-1,0) -- (-1,2);
+%%	\draw (-2,0)--(-2,2);
+%%	\draw (\xref,\yref) -- (\xref, 2+\yref);
+%%	\draw (2*\xref,2*\yref) -- (2*\xref, 2+ 2*\yref);
+%%	
+%%	\draw (-2,2) -- (-2+2*\xref, 2+2*\yref);
+%%	\draw (-1,2) -- (-1+2*\xref, 2+2*\yref);
+%%	
+%%	\draw (-2+2*\xref, 2+2*\yref) -- (2*\xref, 2+2*\yref);
+%%	\draw (-2+\xref, 2+\yref) -- (\xref, 2+\yref);
+%%	\end{tikzpicture}
+%%\end{center}
+%%		\end{exampleblock}
+%%	\end{minipage}
+%%	\vfill
+%%	\item Plan to continue this collaboration to compute lower bounds for tensor computations
+%% \end{itemize}
+%%\end{frame}
+
+
+\section{Design of new parallel algorithms for quantum computations}
+\subsection{Tensor network (equivalent to quantum circuit) based algorithms}
+
+\begin{frame}
+\frametitle{Research Project}
+\tableofcontents[currentsection]
+\end{frame}
+
+
+
+
+
+\begin{frame}{Challenges with low-rank representation of high dimensional tensors}
+\begin{itemize}
+	\item Tensor Train is a popular representation to work with high dimensional tensors
+	\item Adding tensors and aplying an operator in this representation
+	\begin{minipage}{0.475\linewidth}
+	\begin{center}
+			\begin{tikzpicture}[scale=0.35, every node/.style={transform shape}]
+		\tikzstyle{taskc}=[circle, draw=black, minimum size=5mm, fill=\tensorcolor]
+		%%	\node (t01) at (0,0) [taskc]{};
+			
+		\draw (2,0) -- (-2,0);
+		
+		\foreach \x in {1, 0.5, 0, -0.5, -1}
+		\draw (2*\x, 0) -- (2*\x,0.75);
+		
+		\foreach \x in {1, 0.5, 0, -0.5, -1}
+		\node at (2*\x, 0) [taskc] {};
+		
+		\node [below,scale=1.5] at (0,-1) {rank=$r$};
+		
+		\node [scale=2] at (3.25, 0) {$+\ $};
+		
+		\path (0, 1.45) -- (0, -1.45);
+		\end{tikzpicture}
+		\begin{tikzpicture}[scale=0.35, every node/.style={transform shape}]
+		\tikzstyle{taskc}=[circle, draw=black, minimum size=5mm, fill=\tensorcolor]
+		%%	\node (t01) at (0,0) [taskc]{};
+		
+		\draw (2,0) -- (-2,0);
+		
+		\foreach \x in {1, 0.5, 0, -0.5, -1}
+		\draw (2*\x, 0) -- (2*\x,0.75);
+		
+		\foreach \x in {1, 0.5, 0, -0.5, -1}
+		\node at (2*\x, 0) [taskc] {};
+		
+		\node [below,scale=1.5] at (0,-1) {rank=$s$};
+		
+		\node [scale=2] at (3.25, 0) {$=\ $};
+		\path (0, 1.45) -- (0, -1.45);
+		\end{tikzpicture}
+		\begin{tikzpicture}[scale=0.35, every node/.style={transform shape}]
+		\tikzstyle{taskc}=[circle, draw=black, minimum size=5mm, fill=\tensorcolor]
+		%%	\node (t01) at (0,0) [taskc]{};
+		
+		\draw (2,0) -- (-2,0);
+		
+		\foreach \x in {1, 0.5, 0, -0.5, -1}
+		\draw (2*\x, 0) -- (2*\x,0.75);
+		
+		\foreach \x in {1, 0.5, 0, -0.5, -1}
+		\node at (2*\x, 0) [taskc] {};
+		
+		\node [below,scale=1.5] at (0,-1) {rank=$r+s$};
+		\path (0, 1.45) -- (0, -1.45);
+		\end{tikzpicture}
+	\end{center}
+	\end{minipage}$\quad$
+\begin{minipage}{0.475\linewidth}
+%%	\item Applying an operator in this representation
+	\begin{center}
+	\begin{tikzpicture}[scale=0.35, every node/.style={transform shape}]
+	\tikzstyle{taskc}=[circle, draw=black, minimum size=5mm, fill=\tensorcolor]
+	%%	\node (t01) at (0,0) [taskc]{};
+	
+	\draw (2,0) -- (-2,0);
+	
+	\foreach \x in {1, 0.5, 0, -0.5, -1}
+	\draw (2*\x, 0) -- (2*\x,0.75);
+	
+	\foreach \x in {1, 0.5, 0, -0.5, -1}
+	\node at (2*\x, 0) [taskc] {};
+	
+	\node [below,scale=1.5] at (0,-1) {rank=$r$};
+	
+	\node [scale=2] at (3.25, 0) {$\ $};
+	\path (0, 1.45) -- (0, -1.45);
+	\end{tikzpicture}
+	\begin{tikzpicture}[scale=0.35, every node/.style={transform shape}]
+	\tikzstyle{taskc}=[circle, draw=black, minimum size=5mm, fill=\tensorcolor]
+	%%	\node (t01) at (0,0) [taskc]{};
+	
+	\draw (2,0) -- (-2,0);
+	
+	\foreach \x in {1, 0.5, 0, -0.5, -1}
+	\draw (2*\x, 0) -- (2*\x,0.75);
+	
+	\foreach \x in {1, 0.5, 0, -0.5, -1}
+	\draw (2*\x, 0) -- (2*\x,-0.75);
+	
+	\foreach \x in {1, 0.5, 0, -0.5, -1}
+	\node at (2*\x, 0) [taskc] {};
+	
+	\node [below,scale=1.5] at (0,-1) {rank=$s$};
+	
+	\node [scale=2] at (3.25, 0) {$=\ $};
+	\path (0, 1.45) -- (0, -1.45);
+	\end{tikzpicture}
+	\begin{tikzpicture}[scale=0.35, every node/.style={transform shape}]
+	\tikzstyle{taskc}=[circle, draw=black, minimum size=5mm, fill=\tensorcolor]
+	%%	\node (t01) at (0,0) [taskc]{};
+	
+	\draw (2,0) -- (-2,0);
+	
+	\foreach \x in {1, 0.5, 0, -0.5, -1}
+	\draw (2*\x, 0) -- (2*\x,0.75);
+	
+	\foreach \x in {1, 0.5, 0, -0.5, -1}
+	\node at (2*\x, 0) [taskc] {};
+	
+	\node [below,scale=1.5] at (0,-1) {rank=$r*s$};
+	\path (0, 1.45) -- (0, -1.45);
+	\end{tikzpicture}
+\end{center}
+\end{minipage}
+
+	\item Requires a truncation  process which iterates over cores one by one 
+	\item This representation is not much suited to work in parallel 
+\end{itemize}
+
+%%\begin{frame}{Parallelization of Density Matrix Renormalization Group (DMRG) algorithm}
+%%}
+%%
+%%
+%%%%\medskip
+%%\begin{block}{}
+%%	\begin{itemize}
+%%		\item Distribute load of $k$ number of sites on each node
+%%		\item Perform computations in a tree structure
+%%	\end{itemize}
+%%\end{block}: 
+%%\end{frame}
+\vspace*{-0.125cm}
+\begin{block}{Density Matrix Renormalization Group (DMRG) algorithm}
+\begin{center}
+	\includegraphics[scale=0.2]{dmrg.png}\\
+	\vspace*{-0.15cm}\noindent {\small(Figure source: Markus Reiher)$\qquad\qquad\qquad\qquad$}\vspace*{-0.05cm}
+	\end{center}
+\end{block}
+
+\end{frame}
+
+\begin{frame}{Parallel algorithms to work with new tensor representations}
+%%\begin{block}{}
+	\begin{itemize}
+		\item Look at new representations in tree format -- suitable for parallelization
+		%%	\vfill
+		\begin{center}
+			\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+			\tikzstyle{taskc}=[circle, draw=black, minimum size=5mm, fill=\tensorcolor]
+			
+			\node (t) at (0,0) [taskc]{};
+			\node (t0) at (-1,-1) [taskc]{};
+			\node (t00) at (-2,-2) [taskc]{};
+			\node (t01) at (-0.5,-2) [taskc]{};
+			\node (t000) at (-3,-3) [taskc]{};
+			\node (t001) at (-1.8,-3) [taskc]{};
+			\node (t010) at (-1,-3) [taskc]{};
+			\node (t011) at (-0.285,-3) [taskc]{};
+			
+			\draw (t) -- (t0);
+			\draw (t0) -- (t00);
+			\draw (t0) -- (t01);
+			\draw (t00) -- (t000);
+			\draw (t00) -- (t001);
+			\draw (t01) -- (t010);
+			\draw (t01) -- (t011);
+			
+			
+			\node (t1) at (1,-1) [taskc]{};
+			\node (t10) at (0.5,-2) [taskc]{};
+			\node (t11) at (2,-2) [taskc]{};
+			\node (t100) at (0.285,-3) [taskc]{};
+			\node (t101) at (1,-3) [taskc]{};
+			\node (t110) at (1.8,-3) [taskc]{};
+			\node (t111) at (3,-3) [taskc]{};
+			
+			\draw (t) -- (t1);
+			\draw (t1) -- (t10);
+			\draw (t1) -- (t11);
+			\draw (t10) -- (t100);
+			\draw (t10) -- (t101);
+			\draw (t11) -- (t110);
+			\draw (t11) -- (t111);
+			
+			\node [scale=2] at (4.5,-2) {or};
+			\end{tikzpicture} $\qquad$
+			\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+			\tikzstyle{taskc}=[circle, draw=black, minimum size=5mm, fill=\tensorcolor]
+			
+			\node (t) at (0,0) [taskc]{};
+			\node (t0) at (-1,-1) [taskc]{};
+			\node (t00) at (-2,-2) [taskc]{};
+			\node (t01) at (-0.5,-2) [taskc]{};
+			\node (t000) at (-3,-3) [taskc]{};
+			\node (t001) at (-1.8,-3) [taskc]{};
+			\node (t010) at (-1,-3) [taskc]{};
+			\node (t011) at (-0.285,-3) [taskc]{};
+			
+			\draw (t) -- (t0);
+			\draw (t0) -- (t00);
+			\draw (t0) -- (t01);
+			\draw (t00) -- (t000);
+			\draw (t00) -- (t001);
+			\draw (t01) -- (t010);
+			\draw (t01) -- (t011);
+			
+			
+			\node (t1) at (1,-1) [taskc]{};
+			\node (t10) at (0.5,-2) [taskc]{};
+			\node (t11) at (2,-2) [taskc]{};
+			\node (t100) at (0.285,-3) [taskc]{};
+			\node (t101) at (1,-3) [taskc]{};
+			\node (t110) at (1.8,-3) [taskc]{};
+			\node (t111) at (3,-3) [taskc]{};
+			
+			\draw (t) -- (t1);
+			\draw (t1) -- (t10);
+			\draw (t1) -- (t11);
+			\draw (t10) -- (t100);
+			\draw (t10) -- (t101);
+			\draw (t11) -- (t110);
+			\draw (t11) -- (t111);
+			
+			%%		\draw [thick,green] (t0) -- (t1);
+			%%		\draw [thick,green] (t00) -- (t01);
+			%%		\draw [thick,green] (t000) -- (t001);
+			%%		\draw [thick,green] (t010) -- (t011);
+			%%		\draw [thick,green] (t10) -- (t11);
+			%%		\draw [thick,green] (t100) -- (t101);
+			%%		\draw [thick,green] (t110) -- (t111);
+			
+			\draw [thick,green] (t01) -- (t10);
+			\end{tikzpicture} 
+			%%			\includegraphics[scale=0.02]{./tmp/newTensorRepresenattion.jpg}
+		\end{center}
+%%		\begin{itemize}
+			\item Data will be stored at the leaf nodes
+			\vfill
+			\item Interal nodes will help to manipulate tensors in parallel
+%%		\end{itemize}
+			\vfill
+			\item Some tensor representations exhibit tree structure
+			\begin{itemize}
+				\item Mainly designed to reduce storage or model long range interactions
+				\item Not suitable to work with them in parallel
+			\end{itemize}
+			\vfill
+			\item Design new (or modify existing) algorithms to work with the proposed representations
+	\end{itemize}
+%%\end{block}
+\end{frame}
+
+\begin{frame}{Parallelization of tensorized deep neural network models}
+\begin{block}{Conventional deep neural network}
+	\begin{center}
+	\begin{tikzpicture}[scale=0.65, every node/.style={transform shape}]
+	\tikzstyle{taskc}=[circle, draw=black, minimum size=2mm, fill=none]
+	
+	\node (t00) at (0,1) [taskc] {};
+	\node (t01) at (0,0) [taskc] {};
+	\node (t02) at (0,-1) [taskc] {};
+	
+	\draw (-0.5,1) -- (t00);
+	\draw (-0.5,0) -- (t01);
+	\draw (-0.5,-1) -- (t02);
+	
+	\node (t10) at (2,1.5) [taskc] {};
+	\node (t11) at (2,0.5) [taskc] {};
+	\node (t12) at (2,-0.5) [taskc] {};
+	\node (t13) at (2,-1.5) [taskc] {};
+	
+	\draw (t00) -- (t10);
+	\draw (t00) -- (t11);
+	\draw (t00) -- (t12);
+	\draw (t00) -- (t13);
+	
+	\draw (t01) -- (t10);
+	\draw (t01) -- (t11);
+	\draw (t01) -- (t12);
+	\draw (t01) -- (t13);
+	
+	\draw (t02) -- (t10);
+	\draw (t02) -- (t11);
+	\draw (t02) -- (t12);
+	\draw (t02) -- (t13);
+	
+	\node (t20) at (4,0.5) [taskc] {};
+	\node (t21) at (4,-0.5) [taskc] {};
+	
+	
+	\draw (t10) -- (t20);
+	\draw (t10) -- (t21);
+	
+	\draw (t11) -- (t20);
+	\draw (t11) -- (t21);
+	
+	\draw (t12) -- (t20);
+	\draw (t12) -- (t21);
+	
+	\draw (t13) -- (t20);
+	\draw (t13) -- (t21);
+	
+	\node (t30) at (5.5,0) [taskc] {};
+	
+	\draw (t20) -- (t30);
+	\draw (t21) -- (t30);
+	
+	\draw (t30) -- (6, 0);
+
+	\path (6.8, 0) -- (9.0,0);
+	\end{tikzpicture}
+	\end{center}
+\end{block}
+
+
+\begin{block}{Tensorized neural networks}
+	\begin{center}
+		\begin{tikzpicture}[scale=0.525, every node/.style={transform shape}]
+		\tikzstyle{taskc}=[ellipse, draw=black, minimum width=40mm, minimum height=15mm, fill=\tensorcolor]
+		\node (t0) at (0,0) [taskc] {};
+		
+		\draw(0, -1.5) -- (t0);
+		\draw(-0.5, -1.5) -- (-0.5, 0);
+		\draw(0.5, -1.5) -- (0.5, 0);
+		
+		\draw (0,0) -- (0,1.5);
+		
+%%		\draw(-0.25,0) -- (-0.25,1.5);
+%%		\draw(0.25,0) -- (0.25,1.5);
+		
+		
+		\node (t0) at (0,0) [taskc] {};
+		\end{tikzpicture}		
+		\begin{tikzpicture}[scale=0.525, every node/.style={transform shape}]
+		\tikzstyle{taskc}=[circle, draw=black, minimum size=5mm, fill=\tensorcolor]
+		%%	\node (t01) at (0,0) [taskc]{};
+		
+		\draw (2,0) -- (-2,0);
+		
+		\foreach \x in {1, 0.5, 0, -0.5, -1}
+		\draw (2*\x, 0) -- (2*\x,-0.75);
+		
+		\draw (0,0) -- (0,0.75);
+		
+		\foreach \x in {1, 0.5, 0, -0.5, -1}
+		\node at (2*\x, 0) [taskc] {};
+		
+%%		\node [below,scale=1.5] at (0,-1) {rank=$r$};
+%%		
+		\node [scale=2] at (-3.75, 0) {$\quad\approx$};
+		
+		\path (0, 1.45) -- (0, -1.45);
+		\end{tikzpicture}
+	\end{center}
+\end{block}
+\begin{itemize}
+	\item Parallel methods to train tensorized neural networks
+\end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}{Bringing additional skills in the team}
+	\begin{itemize}
+		\item High dimensional dense tensor computations
+		\vfill
+		\item Communication lower bounds for tensor computations
+		\vfill 
+		\item Parallel algorithms for large computing systems
+		\vfill
+		\item Scheduling strategies to make better utilization of resources
+%%			\item Use of tensors in quantum and molecular simulations
+		%%		\item Designing strategies to work with high dimensional tensor computations
+		%%		\item Determining communication lower bounds for linear algebra computations
+		%%		\item Designing scalable approaches for large HPC systems
+		%%		\item Familiar with molecular and quantum simulations and how tensors are used in these domains 
+	\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+\Huge{\centerline{Thank You!}}
+\end{frame}
+
+
+
+\end{document} 

@@ -1,0 +1,7 @@
+\beamer@sectionintoc {1}{For Matrix Matrix Multiplication}{8}{0}{1}
+\beamer@subsectionintoc {1}{1}{Communication lower bounds \& optimal algorithms}{14}{0}{1}
+\beamer@subsectionintoc {1}{2}{Conclusion}{18}{0}{1}
+\beamer@sectionintoc {2}{For Multi-TTM Computation}{20}{0}{2}
+\beamer@subsectionintoc {2}{1}{Communication lower bounds \& optimal algorithms}{21}{0}{2}
+\beamer@subsectionintoc {2}{2}{Simulated experiments}{27}{0}{2}
+\beamer@subsectionintoc {2}{3}{Conclusion}{30}{0}{2}

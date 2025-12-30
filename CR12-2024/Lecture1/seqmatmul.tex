@@ -602,7 +602,7 @@ The first pseudo code that comes to mind:
 	      // (total b^2 * n/b * n/b * n/b = n^3/b reads)
 	      //perform block matrix multiplication
 	      C(i,j) = C(i,j) + A(i,k) * B(k,j);
-	    // write block C(i,j) into fast memory 
+	    // write block C(i,j) into slow memory 
 	    // (total b^2 * n/b * n/b = n^2 writes)
 	\end{verbatim}
 	\medskip
@@ -632,6 +632,17 @@ Here $A \in\mathbb{R}^{m \times \ell}$, $B \in\mathbb{R}^{\ell \times n}$, and  
 	\item {\small Prove that all the $6$ permutations of the loops produce the same output.}
 	\item {\small Compute the number of cache misses for each permutation of the loops. All matrices are stored in the row-major order in the slow memory. Size of each cache line is $L$ and the cache capacity $< <$ $\min(m,n,\ell)$. Assume that the cache is fully associative and the least recently used (LRU) strategy is employed to evict a cache line.}
 \end{enumerate} 
+\end{frame}
+\begin{frame}{Summary of the last class}
+	\begin{itemize}
+		\item Course details (motivation, course structure, and assessment)
+		\vfill
+		\item Different ways to perform matrix multiplication
+		\vfill
+		\item Data transfer cost analysis for traditional matrix multiplication
+		\vfill
+		\item Deadline of assignment 1: Sept. 19  
+	\end{itemize}
 \end{frame}
 
 %		\item $C= AB$, where $A \in\mathbb{R}^{m \times k}$, $B \in\mathbb{R}^{k \times n}$, and  $C$ $\in$ $\mathbb{R}^{m \times n}$.
@@ -736,8 +747,10 @@ Here $A \in\mathbb{R}^{m \times \ell}$, $B \in\mathbb{R}^{\ell \times n}$, and  
 	\end{array}
 	\right.
 	$$
-	Using Lagrange multipliers, maximal value obtained when $N_A=N_B=N_C$
+	{\small Here $N_A$, $N_B$ and $N_C$ represent the number of entries of $A$, $B$ and $C$, respectively.}
 	\vfill
+	Using Lagrange multipliers, maximal value obtained when $N_A=N_B=N_C$.
+	
 \end{frame}
 
 \begin{frame}[fragile]{Selection of $R$}

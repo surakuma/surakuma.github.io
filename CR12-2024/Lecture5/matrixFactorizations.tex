@@ -781,6 +781,28 @@ $Q$ is represented implicitly as a product.
 \end{block}
 \end{frame}
 
-
+\section{Randomized SVD}
+\begin{frame}{Table of Contents}		
+	\tableofcontents[currentsection, currentsubsection] % Output the table of contents (all sections on one slide)		
+\end{frame}
+\begin{frame}{Main idea of randomized SVD}
+	\small
+	We want to find $r$-rank approximation of $A\in \mathbb{R}^{m\times n}$. We select a matrix $Q$ with $\ell$ ($r\le \ell \le n$) orthonormal columns that well approximates the action of $A$, $A\approx QQ^TA$.
+	\begin{enumerate}
+		\item Construct $B=Q^TA$
+		\item Perform SVD of $B$, $B=\tilde{U}\Sigma V^T$
+		\item Set $U= Q\tilde{U}$
+		\item Return $U$, $\Sigma$, $V$
+	\end{enumerate}
+	\vfill
+	\begin{block}{A simple way to find $Q$}
+		\begin{enumerate}
+			\item Construct a Gaussian random matrix $\Omega$ of $n\times \ell$ size
+			\item Form $X=A\Omega$
+			\item Obtain an orthonormal matrix using QR factorization, $X=QR$
+		\end{enumerate}
+		Usually $\ell -r$ is a small constant, such as $5$ or $10$. 
+	\end{block}
+\end{frame}
 
 \end{document} 

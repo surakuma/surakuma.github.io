@@ -1,0 +1,6 @@
+\beamer@sectionintoc {1}{Parallel Tensor Train Algorithms}{7}{1}{1}
+\beamer@sectionintoc {2}{Scheduling on Heterogeneous Systems}{11}{1}{2}
+\beamer@sectionintoc {3}{Minimize Impact of Data Transfers on Large Scale Systems}{13}{1}{3}
+\beamer@sectionintoc {1}{Design of Scalable Communication Optimal Algorithms for Tensors (Main Focus)}{16}{2}{1}
+\beamer@sectionintoc {2}{Extension of Existing Approaches/Algorithms (Short/Mid Term Research Plans)}{20}{2}{2}
+\beamer@sectionintoc {3}{Exploratory Topics (Mid/Long Term Research Plans)}{23}{2}{3}

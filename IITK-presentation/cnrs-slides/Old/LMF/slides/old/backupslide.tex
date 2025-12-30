@@ -1,0 +1,266 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Beamer Presentation
+% LaTeX Template
+% Version 1.0 (10/11/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+
+\documentclass[aspectratio=169]{beamer}
+%%\documentclass{beamer}
+\mode<presentation> {
+
+% The Beamer class comes with a number of default slide themes
+% which change the colors and layouts of slides. Below this is a list
+% of all the themes, uncomment each in turn to see what they look like.
+
+%\usetheme{default}
+%\usetheme{AnnArbor}
+%\usetheme{Antibes}
+%\usetheme{Bergen}
+%\usetheme{Berkeley}
+%\usetheme{Berlin}
+%\usetheme{Boadilla}
+%\usetheme{CambridgeUS}
+%\usetheme{Copenhagen}
+%\usetheme{Darmstadt}
+%\usetheme{Dresden}
+%\usetheme{Frankfurt}
+%\usetheme{Goettingen}
+%\usetheme{Hannover}
+%\usetheme{Ilmenau}
+%\usetheme{JuanLesPins}
+%\usetheme{Luebeck}
+\usetheme{Madrid}
+%\usetheme{Malmoe}
+%\usetheme{Marburg}
+%\usetheme{Montpellier}
+%\usetheme{PaloAlto}
+%\usetheme{Pittsburgh}
+%\usetheme{Rochester}
+%\usetheme{Singapore}
+%\usetheme{Szeged}
+%\usetheme{Warsaw}
+
+% As well as themes, the Beamer class has a number of color themes
+% for any slide theme. Uncomment each of these in turn to see how it
+% changes the colors of your current slide theme.
+
+%\usecolortheme{albatross}
+%\usecolortheme{beaver}
+%\usecolortheme{beetle}
+%\usecolortheme{crane}
+%\usecolortheme{dolphin}
+%\usecolortheme{dove}
+%\usecolortheme{fly}
+%\usecolortheme{lily}
+%\usecolortheme{orchid}
+%\usecolortheme{rose}
+%\usecolortheme{seagull}
+%\usecolortheme{seahorse}
+%\usecolortheme{whale}
+%\usecolortheme{wolverine}
+
+%\setbeamertemplate{footline} % To remove the footer line in all slides uncomment this line
+%\setbeamertemplate{footline}[page number] % To replace the footer line in all slides with a simple slide count uncomment this line
+
+%\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
+}
+%%\documentclass[mathserif,hyperref={pdfpagemode=FullScreen}]{beamer}
+%%% \documentclass[handout]{beamer}
+%%% \usetheme{Dresden}
+%%\usetheme{340}
+%%\beamertemplatetransparentcovereddynamic
+%%\usepackage[latin1]{inputenc}
+%%\usepackage{pgf}
+
+
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{xspace}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{xcolor}
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+%%\usepackage{xspace}
+
+\usepackage{braket}
+\usepackage{multirow}
+\usepackage{todonotes}
+
+
+\usepackage{appendixnumberbeamer}
+
+
+%%\usepackage{enumitem}
+
+
+\newcommand{\heteroprio}{{HeteroPrio}\xspace}
+\newcommand{\heteroprioD}{{HeteroPrioDep}\xspace}
+
+
+%%\usepackage{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{matrix, decorations, patterns, positioning, shapes, calc, intersections, arrows, fit}
+
+
+\usetikzlibrary{patterns}
+\usetikzlibrary{fit,calc,positioning,decorations.pathreplacing,matrix}
+
+\graphicspath{{./diagrams/}{./plots/}}
+
+%%\tikzset{xtick/.style={inner xsep=0pt, inner ysep=3pt, minimum
+%%		size=0pt, draw, label=below:#1},%
+%%	comm/.style args={#1start#2length#3color#4}{rounded corners=1mm, draw, inner
+%%		sep=0pt, fill=#4, label=center:#1, fit={(#2,0.75)
+%%			(#2+#3,1.5)}},%
+%%	comp/.style args={#1start#2length#3color#4}{rounded corners=1mm, draw, inner
+%%		sep=0pt, fill=#4, label=center:#1, fit={(#2,0)
+%%			(#2+#3,0.75)}},%
+%%}
+%%
+%%\newcommand{\schedule}[3]{
+%%	\draw[->] (-0.2, 0) -- (#1, 0) node[below] {$t$};
+%%	\draw (0, 0) -- (0, 1.5);
+%%	\node at (-0.8, 0.75)[rotate=90] {#2};
+%%	\draw[dashed,gray] (0, 0.75) -- (#1, 0.75);
+%%	\foreach \t in {0,#3} {
+%%		\node[xtick=\t] at (\t, 0){};
+%%	}
+%%}
+%%\newcommand{\task}[6][0]{
+%%	\node[comm=#2 start #3 length #4 color #6]{};
+%%	\node[comp=#2 start #3+#4+#1 length #5 color #6]{}; 
+%%}
+
+
+\newcommand\addvmargin[1]{
+	\node[fit=(current bounding box),inner ysep=#1,inner xsep=0]{};
+}
+
+\newcommand{\tensor}[1]{{\cal\textbf{#1}\xspace}}
+\newcommand{\ttrain}{{\it Tensor-Train}\xspace}
+
+\newcommand{\hfirst}{{\it LSR}\xspace}
+\newcommand{\hsecond}{{\it SLSB}\xspace}
+\newcommand{\hthird}{{\it LSB}\xspace}
+\newcommand{\otta}{{\it STTA}\xspace}
+
+
+\newcommand{\credit}[1]{\vspace*{-0.2cm}\par\hfill {\footnotesize Source:~\itshape#1}}
+
+%%\newcommand{\tensorcolor}{patternblue}
+\newcommand{\tensorcolor}{cyan}
+
+%% Colors from https://latexcolor.com/
+\definecolor{pastelviolet}{rgb}{0.8, 0.6, 0.79}
+\definecolor{babyblueeyes}{rgb}{0.63, 0.79, 0.95}
+\definecolor{pastelyellow}{rgb}{0.99, 0.99, 0.59}
+%%\definecolor{pastelgreen}{rgb}{0.47, 0.87, 0.47}
+\definecolor{pastelgreen}{rgb}{0, 1, 0}
+\definecolor{pastelred}{rgb}{1.0, 0.41, 0.38}
+\colorlet{patternblue}{blue!60}
+
+
+
+
+\definecolor{forestgreen}{rgb}{0.13, 0.55, 0.13}
+\definecolor{greenhtml}{rgb}{0.0, 0.5, 0.0}
+\definecolor{cyannew}{rgb}{0.0, 1.0, 1.0}
+
+
+\newcommand{\mycolora}{green}
+\newcommand{\mycolorb}{blue}
+\newcommand{\mycolorc}{cyan}
+\newcommand{\mycolord}{violet}
+\newcommand{\mycolore}{orange}
+\newcommand{\mycolorf}{forestgreen}
+
+
+\newcommand{\mysymbola}{\textcolor{\mycolora}{$\blacksquare$}}
+\newcommand{\mysymbolb}{\textcolor{\mycolorb}{$\blacksquare$}}
+\newcommand{\mysymbolc}{\textcolor{\mycolorc}{$\blacksquare$}}
+\newcommand{\mysymbold}{\textcolor{\mycolord}{$\blacksquare$}}
+\newcommand{\mysymbole}{\textcolor{\mycolore}{$\blacksquare$}}
+\newcommand{\mysymbolf}{\textcolor{\mycolorf}{$\blacksquare$}}
+
+
+\newcommand{\mybullet}{\textcolor{blue}{$\quad\bullet$}\xspace}
+
+%%\newcommand{\mysymbola}{\mycolorb}
+%%\newcommand{\mysymbola}{\mycolorc}
+%%\newcommand{\mysymbola}{\mycolord}
+%%\newcommand{\mysymbola}{\mycolore}
+%%\newcommand{\mysymbola}{\mycolorf}
+
+
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title[Scalable Tensor Algorithms]{Scalable Tensor Algorithms for Modern Computing Systems} % The short title appears at the bottom of every slide, the full title is only on the title page
+
+\author[Suraj {\sc Kumar}]{Suraj {\sc Kumar}} % Your name
+%%\institute[UCLA] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space\institute[Inria Paris] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
+%%{
+%%	Alpines team, Inria Paris, France\\ % Your institution for the title page
+%%	\medskip
+%%	\textit{Suraj.kumar@inria.fr} % Your email address
+%%}
+%%{
+%%University of California \\ % Your institution for the title page
+%%\medskip
+%%\textit{john@smith.com} % Your email address
+%%}
+
+\institute[ROMA Applicant]{Inria ROMA Applicant}
+%%%%\institute[Inria Paris] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
+%%%%{
+%%%%	Alpines team, Inria Paris, France\\ % Your institution for the title page
+%%%%	\medskip
+%%%%	\textit{Suraj.kumar@inria.fr} % Your email address
+%%%%}
+\date{\today} % Date, can be changed to a custom date
+
+
+
+\makeatletter
+\AtBeginPart{%
+	\beamer@tocsectionnumber=0\relax
+	\setcounter{section}{0}
+%%	\frame{\partpage}%
+}
+\makeatother
+
+\begin{document}
+
+\begin{frame}
+\titlepage % Print the title page as the first slide
+\end{frame}
+
+
+
+
+
+
+\appendix
+% And your backup slides here
+\begin{frame}{Hello}
+content...
+\end{frame}
+
+
+
+
+
+\end{document} 

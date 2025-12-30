@@ -1,0 +1,77 @@
+#!/usr/bin/gnuplot
+
+
+set terminal postscript eps enhanced color 18
+#set termoption dash
+set xtic 4
+set ytic 100 
+set grid y
+set grid x
+set xrange [0:35]
+set yrange [0:1000]
+set colors classic 
+#set border 3
+#set tics nomirror out
+#unset border
+#unset tics
+#set title "Simulated performance vs Theoretical results"
+set xlabel "Matrix Size(multiple of 960)"
+set ylabel "GFlop/s"
+set style line 1 lt 0 lc rgb "red" lw 5 pt 1
+set style line 2 lt 2 lc rgb "orange" lw 4 pt 2
+set style line 3 lt 2 lc rgb "yellow" lw 4 pt 3
+set style line 4 lt 2 lc rgb "green" lw 4  pt 4
+set style line 5 lt 2 lc rgb "magenta" lw 4 pt 5
+set style line 6 lt 2 lc rgb "magenta" lw 4 
+set style line 7 lt 2 lc rgb "blue" lw 4  pt 6
+set style line 8 lt 2 lc rgb "brown" lw 4 pt 7
+
+
+#set style line 21 lt 2 lc rgb "red" lw 5 pt 1
+#set style line 22 lt 2 lc rgb "orange" lw 4 pt 2
+#set style line 23 lt 2 lc rgb "yellow" lw 4 pt 3
+#set style line 24 lt 2 lc rgb "green" lw 4  pt 4
+#set style line 25 lt 2 lc rgb "magenta" lw 4 pt 5
+#set style line 26 lt 2 lc rgb "magenta" lw 4 
+#set style line 27 lt 2 lc rgb "blue" lw 4  pt 6
+#set style line 28 lt 2 lc rgb "brown" lw 4 pt 7
+#
+#set style line 11 lt 1 lc rgb "red" lw 5 pt 1
+#set style line 12 lt 1 lc rgb "orange" lw 4 pt 2
+#set style line 13 lt 1 lc rgb "yellow" lw 4 pt 3
+#set style line 14 lt 1 lc rgb "green" lw 4  pt 4
+#set style line 15 lt 1 lc rgb "magenta" lw 4 pt 5
+#set style line 16 lt 1 lc rgb "magenta" lw 4 
+#set style line 17 lt 1 lc rgb "blue" lw 4  pt 6
+#set style line 18 lt 1 lc rgb "brown" lw 4 pt 7
+#
+#
+#set style line 31 lt 3 lc rgb "red" lw 5 pt 1
+#set style line 32 lt 3 lc rgb "orange" lw 4 pt 2
+#set style line 33 lt 3 lc rgb "yellow" lw 4 pt 3
+#set style line 34 lt 3 lc rgb "green" lw 4  pt 4
+#set style line 35 lt 3 lc rgb "magenta" lw 4 pt 5
+#set style line 36 lt 3 lc rgb "magenta" lw 4 
+#set style line 37 lt 3 lc rgb "blue" lw 4  pt 6
+#set style line 38 lt 3 lc rgb "brown" lw 4 pt 7
+#set obj 1 rect from 27.5,920 to 33, 730 fillstyle empty fc rgb "white" border -1 front
+#set obj 1 rect from 27.5,920 to 33, 730  fc rgb "white" 
+#
+#set label 1 'Critical Path' at 28, 900 tc rgb "red"
+#set label 2 'Area Bound' at 28, 850 tc rgb "green"
+#set label 3 'Mixed Bound' at 28, 800 tc rgb "magenta"
+#set label 4 'Gemm Peak' at 28, 750 tc rgb "orange"
+#set object circle at first 4,201 radius char 1.0  fillstyle empty border lc rgb '#aa1100' lw 2
+#set object circle at first 4,201 radius char 1.0  fillstyle empty border lc rgb "orange" lw 2
+#set label 1 'CP Optimal Solution' at 5, 201 tc rgb "orange"
+set key bottom right
+
+#set boxwidth 0.45
+#set key below
+set output 'bestVariantsWithBound.eps'
+
+plot 'bestVariantsVSBounds.txt' u 1:2 ls 2  w lp  t "SS-best", '' u 1:3 ls 7  w lp  t "heft-best", '' u 1:4 ls 4  w lp  t "HP-best", '' u 1:5 ls 8  w lp  t "Iterative Bound"
+#plot 986.34 w l ls 7 t "Gemm Peak Bound", 'theoretical_bounds_heteregenous_unrelated.txt'  u 1:3 ls 4 w lp  t "Area Bound", 'theoretical_bounds_heteregenous_unrelated.txt' u 1:2 ls 1 w lp t "Critical Path Bound", '' u 1:5 ls 5 w lp t "Mixed Bound", '' u 1:6 w lp ls 8 t "Iterative Bound",  'theoretical_bounds_heteregenous_unrelated.txt' u 1:4 ls 2 w lp t "CP Achievable Solution (23 hrs)"
+#plot 986.34 w l ls 7 t "Gemm Peak Bound", 'theoretical_bounds_heteregenous_unrelated.txt'  u 1:3 ls 4 w lp  t "Area Bound", 'theoretical_bounds_heteregenous_unrelated.txt' u 1:2 ls 1 w lp t "Critical Path Bound", '' u 1:5 ls 5 w lp t "Mixed Bound", 'bound_gflops_5mins.txt' u 1:7 w lp ls 8 t "Iterative Bound",  'theoretical_bounds_heteregenous_unrelated.txt' u 1:4 ls 2 w lp t "CP Achievable Solution (23 hrs)"
+#plot 'theoretical_bounds_heteregenous_unrelated.txt' u 1:2 ls 1 w lp t "Critical Path Bound",''  u 1:3 ls 4 w lp  t "Area Bound", '' u 1:5 ls 5 w lp t "Mixed Bound",  986.34 w l ls 7 t "Gemm Peak Bound", '' u 1:4 ls 2 w lp t "CP Achievable Solution (23 hrs)"
+#plot 'comparison_heterogeneous_unrelated_simulation.txt'  u ($1-0.45):2 w boxes lt rgb "red"  t "random",''u ($1-0.45):2:3 with yerror ls 1 lt rgb "black"  t "standard deviation", '' u 1:4 w boxes lt rgb "blue" t 'dmda', '' u ($1+0.45):5 w boxes lt rgb "green" t 'dmdas', '' u 1:6 t "mixed bound" w lp pt 6 lt rgb "magenta", 986.34  t "Gemm Peak" w l lt rgb "magenta"

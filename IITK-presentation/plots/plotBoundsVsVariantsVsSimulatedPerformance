@@ -1,0 +1,40 @@
+#!/usr/bin/gnuplot
+
+
+set terminal postscript eps enhanced color 18
+#set termoption dash
+set xtic 4
+set ytic 100 
+set grid y
+set grid x
+set xrange [0:35]
+set yrange [0:1000]
+#set border 3
+#set tics nomirror out
+#unset border
+#unset tics
+#set title "Simulated performance vs Theoretical results"
+set xlabel "Matrix Size(multiple of 960)"
+set ylabel "GFlop/s"
+set style line 1 lt 0 lc rgb "red" lw 4 pt 1
+set style line 2 lt 2 lc rgb "orange" lw 4 pt 2
+set style line 3 lt 2 lc rgb "yellow" lw 4 pt 3
+set style line 4 lt 2 lc rgb "green" lw 4  pt 4
+set style line 5 lt 2 lc rgb "magenta" lw 4 pt 5
+set style line 6 lt 2 lc rgb "magenta" lw 4 
+set style line 7 lt 2 lc rgb "blue" lw 4  pt 6
+set style line 8 lt 2 lc rgb "brown" lw 4 pt 7
+
+set key bottom right
+
+#set boxwidth 0.45
+#set key below
+set output 'BoundsVsVariantsVsSimulatedPerformance.eps'
+
+plot 'bestVariantsVSBounds.txt' u 1:2 ls 1  w lp  t "SS", '' u 1:3 ls 5  w lp  t "Heft", '' u 1:4 ls 4  w lp  t "Heteroprio", '' u 1:5 ls 8  w lp  t "Iterative Bound",  'Actual_VS_Simgrid.txt' u 1:4 ls 7 w lp t "Simulation with no communication", 986.34 w l ls 2 t "Gemm Peak Bound"
+
+##plot 986.34 w l ls 2 t "Gemm Peak Bound", 'theoretical_bounds_heteregenous_unrelated.txt'  u 1:3 ls 4 w lp  t "Area Bound", '' u 1:6 w lp ls 8 t "Iterative Bound",  'Actual_VS_Simgrid.txt' u 1:4 ls 7 w lp t "Simulation with no communication"
+#plot 986.34 w l ls 7 t "Gemm Peak Bound", 'theoretical_bounds_heteregenous_unrelated.txt'  u 1:3 ls 4 w lp  t "Area Bound", 'theoretical_bounds_heteregenous_unrelated.txt' u 1:2 ls 1 w lp t "Critical Path Bound", '' u 1:5 ls 5 w lp t "Mixed Bound", '' u 1:6 w lp ls 8 t "Iterative Bound",  'theoretical_bounds_heteregenous_unrelated.txt' u 1:4 ls 2 w lp t "CP Achievable Solution (23 hrs)"
+#plot 986.34 w l ls 7 t "Gemm Peak Bound", 'theoretical_bounds_heteregenous_unrelated.txt'  u 1:3 ls 4 w lp  t "Area Bound", 'theoretical_bounds_heteregenous_unrelated.txt' u 1:2 ls 1 w lp t "Critical Path Bound", '' u 1:5 ls 5 w lp t "Mixed Bound", 'bound_gflops_5mins.txt' u 1:7 w lp ls 8 t "Iterative Bound",  'theoretical_bounds_heteregenous_unrelated.txt' u 1:4 ls 2 w lp t "CP Achievable Solution (23 hrs)"
+#plot 'theoretical_bounds_heteregenous_unrelated.txt' u 1:2 ls 1 w lp t "Critical Path Bound",''  u 1:3 ls 4 w lp  t "Area Bound", '' u 1:5 ls 5 w lp t "Mixed Bound",  986.34 w l ls 7 t "Gemm Peak Bound", '' u 1:4 ls 2 w lp t "CP Achievable Solution (23 hrs)"
+#plot 'comparison_heterogeneous_unrelated_simulation.txt'  u ($1-0.45):2 w boxes lt rgb "red"  t "random",''u ($1-0.45):2:3 with yerror ls 1 lt rgb "black"  t "standard deviation", '' u 1:4 w boxes lt rgb "blue" t 'dmda', '' u ($1+0.45):5 w boxes lt rgb "green" t 'dmdas', '' u 1:6 t "mixed bound" w lp pt 6 lt rgb "magenta", 986.34  t "Gemm Peak" w l lt rgb "magenta"

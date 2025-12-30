@@ -1,0 +1,9 @@
+\BOOKMARK [1][]{Outline1}{Past/Ongoing Work}{}% 1
+\BOOKMARK [2][]{Outline1.1}{Parallel Tensor Train Algorithms}{Outline1}% 2
+\BOOKMARK [2][]{Outline1.2}{Scheduling on Heterogeneous Systems}{Outline1}% 3
+\BOOKMARK [3][]{Outline1.2.1.11}{Scheduling of Dense Linear Algebra Kernels}{Outline1.2}% 4
+\BOOKMARK [3][]{Outline1.2.2.13}{Communication Computation Overlap}{Outline1.2}% 5
+\BOOKMARK [1][]{Outline2}{Proposed Plan}{}% 6
+\BOOKMARK [2][]{Outline2.1}{Design of Scalable Communication Optimal Algorithms for Tensors \(Main Focus\)}{Outline2}% 7
+\BOOKMARK [2][]{Outline2.2}{Extension of Existing Approaches/Algorithms \(Short/Mid Term Research Plans\)}{Outline2}% 8
+\BOOKMARK [2][]{Outline2.3}{Exploratory Topics \(Mid/Long Term Research Plans\)}{Outline2}% 9
