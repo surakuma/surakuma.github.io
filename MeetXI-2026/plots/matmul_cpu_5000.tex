@@ -1,0 +1,51 @@
+% MatMul on CPU
+% Rank = 5000
+% Data file (inline table with fake values)
+\pgfplotstableread[col sep=comma]{plots/data/matmul_cpu_5000.csv}\datafile
+
+% === MAIN PLOT ===
+\begin{tikzpicture}
+\begin{axis}[\matmulCPUrankFiveT
+    after end axis/.code={ % draw after axis so it doesn't get clipped
+      \node(A14) at (axis cs:Algo-\gen-\proca,0) {};
+      \node(A24) at (axis cs:Algo-\comm-\proca,0) {};
+      \node(A18) at (axis cs:Algo-\gen-\procb,0) {};
+      \node(A28) at (axis cs:Algo-\comm-\procb,0) {};
+      \node(A116) at (axis cs:Algo-\gen-\procc,0) {};
+      \node(A216) at (axis cs:Algo-\comm-\procc,0) {};
+      \node(A132) at (axis cs:Algo-\gen-\procd,0) {};
+      \node(A232) at (axis cs:Algo-\comm-\procd,0) {};
+      \node(A164) at (axis cs:Algo-\gen-\proce,0) {};
+      \node(A264) at (axis cs:Algo-\comm-\proce,0) {};
+      \node(A1128) at (axis cs:Algo-\gen-\procf,0) {};
+      \node(A2128) at (axis cs:Algo-\comm-\procf,0) {};
+      \node[yshift=-30, xshift=-5] at (A24) {\scriptsize $4$};
+      \node[yshift=-30, xshift=-5] at (A28) {\scriptsize $8$};
+      \node[yshift=-30, xshift=-5] at (A216) {\scriptsize $16$};
+      \node[yshift=-30, xshift=-5] at (A232) {\scriptsize $32$};
+      \node[yshift=-30, xshift=-5] at (A264) {\scriptsize $64$};
+      \node[yshift=-30, xshift=-5] at (A2128) {\scriptsize $128$};
+      % \node[anchor=south] at (axis cs:old-\mb-\pga,151) {$\vdots$};
+    },
+    x tick label style={font=\scriptsize},
+    y tick label style={font=\scriptsize,/pgf/number format/fixed,/pgf/number format/precision=2},
+        grid=both,
+    major grid style={line width=0.8pt, draw=gray!50},
+     minor grid style={line width=0.4pt, draw=gray!20},
+    minor tick num=5
+    ]
+    \pgfplotsset{cycle list={ black, fill=color3 \\ black, fill=color2  \\}}
+    
+    %\addplot table[x=alg, y expr=(\thisrow{localMultiplyTime})] {\datafile};
+     \addplot table[x=alg, y expr=(\thisrow{genBTime})] {\datafile};
+    \addplot table[x=alg, y expr=(\thisrow{gatherBTime})] {\datafile};
+
+    \iflegend
+    	%\legend{Generate B, Gather B};
+    \fi
+  \end{axis}
+
+\end{tikzpicture}
+
+
+%alg,gatherATime,genBTime,gatherBTime,localMultiplyTime,cpuGpuDataMoveTime,scatterReduceTime

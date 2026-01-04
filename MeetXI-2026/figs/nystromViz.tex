@@ -1,0 +1,166 @@
+%!TEX root = ../paper.tex
+\newcommand{\nOne}{9}
+\newcommand{\nTwo}{9}
+\newcommand{\nThree}{3}
+\newcommand{\nP}{3}
+\pgfmathsetmacro{\offset}{.33}
+\newcommand{\mycolor}{red}
+\newcommand{\x}{0}
+
+\newcommand{\shadingleft}{
+% top face of left comp cube
+\begin{scope}[canvas is zx plane at y=(\nTwo-.5-\x),rotate=90,shift={(-\nOne+.5,-.5)}]
+	\draw[draw=\mycolor,fill=\mycolor!25] (0,\nThree) rectangle (\nOne,0);
+\end{scope}
+% right face of left comp cube
+\begin{scope}[canvas is yz plane at x=.5,rotate=-90,yscale=-1,shift={(-.5,-\nOne+.5+\x)}]
+	\draw[draw=\mycolor,fill=\mycolor!25] (0,0) rectangle (\nThree,\nOne/\nP);
+\end{scope}
+%front face of left comp cube
+\begin{scope}[canvas is yx plane at z=.5,yscale=-1,rotate=180,shift={(-\nTwo+\x+.5,.5)}]
+	\draw[draw=\mycolor,fill=\mycolor!25] (0,0) rectangle (\nOne/\nP,-\nOne);
+\end{scope}
+}
+
+\newcommand{\shadingright}{
+%front face of right comp cube
+\begin{scope}[canvas is yx plane at z=.5-\x,yscale=-1,rotate=180,shift={(.5,.5)}]
+	\draw[draw=\mycolor,fill=\mycolor!25] (0,0) rectangle (-\nOne,\nThree);
+\end{scope}
+% right face of right comp cube
+\begin{scope}[canvas is yz plane at x=.5+\nThree,rotate=-90,yscale=-1,shift={(-.5+\x,-\nOne+.5)}]
+	\draw[draw=\mycolor,fill=\mycolor!25] (0,0) rectangle (\nThree/\nP,\nOne);
+\end{scope}
+% top face of right comp cube
+\begin{scope}[canvas is zx plane at y=(\nTwo-.5),rotate=90,shift={(.5,-.5+\x)}]
+	\draw[draw=\mycolor,fill=\mycolor!25] (0,0) rectangle (\nThree,\nThree/\nP);
+\end{scope}
+}
+
+\newcommand{\shadingnoredist}{
+%front face
+\begin{scope}[canvas is yx plane at z=.5,yscale=-1,rotate=180,shift={(-\nTwo+\x+.5,.5)}]
+	\draw[draw=\mycolor,fill=\mycolor!25] (0,\nThree) rectangle (\nOne/\nP,-\nOne);
+\end{scope}
+% top face 
+\begin{scope}[canvas is zx plane at y=(\nTwo-.5-\x),rotate=90,shift={(-\nOne+.5,-.5)}]
+	\draw[draw=\mycolor,fill=\mycolor!25] (0,\nThree) rectangle (\nOne+\nThree,0);
+\end{scope}
+% right face 
+\begin{scope}[canvas is yz plane at x=.5+\nThree,rotate=-90,yscale=-1,shift={(-.5,-\nOne+.5+\x)}]
+	\draw[draw=\mycolor,fill=\mycolor!25] (0,0) rectangle (\nThree,\nOne/\nP);
+\end{scope}
+}
+
+\newcommand{\compprism}{
+% dimension labels
+\node[shift={(.5,-.5,.5)},scale=2] at (-\nOne/2,-0.5,0) {$n$};
+\node[shift={(.5,-.5,.5)},scale=2] at (\nThree/2,-0.5,0) {$r$};
+\node[shift={(.5,-.5,.5)},scale=2] at (\nThree+0.5/2,-0.5/2,-\nThree/2) {$r$};
+\node[shift={(.5,-.5,.5)},scale=2] at (-\nOne-0.5,\nTwo/2,0) {$n$};
+
+% right face of comp cube
+\begin{scope}[canvas is yz plane at x=.5,rotate=-90,yscale=-1,shift={(-.5,-\nTwo+.5)}]
+	\draw[black,xscale=\nThree/1,yscale=\nTwo/1] (0,0) grid (1,1);
+	\node[yscale=-1,scale=2] at (\nThree/2,\nTwo/2) {\Huge$\M{B}$};
+\end{scope}
+		
+% left face of comp cube
+\begin{scope}[canvas is yz plane at x=.5-\nOne,rotate=-90,yscale=-1,shift={(-.5,-\nTwo+.5)}]
+	\draw[black,dashed,xscale=\nThree/1,yscale=\nTwo/1] (0,0) grid (1,1);
+\end{scope}
+
+% front face of comp cube
+\begin{scope}[canvas is yx plane at z=.5,yscale=-1,rotate=180,shift={(-\nTwo+.5,-\nOne+.5)}]
+	\draw[black,xscale=\nTwo/1,yscale=\nOne/1] (0,0) grid (1,1);
+	\node[rotate=90,scale=2] at (\nTwo/2,\nOne/2) {\Huge$\M{A}$};
+\end{scope}
+
+% back face of comp cube
+\begin{scope}[canvas is yx plane at z=.5-\nThree,yscale=-1,rotate=180,shift={(-\nTwo+.5,-\nOne+.5)}]
+	\draw[black,dashed,xscale=\nTwo/1,yscale=\nOne/1] (0,0) grid (1,1);
+\end{scope}
+
+% top face of left comp cube
+\begin{scope}[canvas is zx plane at y=(\nTwo-.5),rotate=90,shift={(-\nOne+.5,-.5)}]
+	\draw[black,xscale=\nOne/1,yscale=\nThree/1] (0,0) grid (1,1);
+	\node[rotate=90,scale=2] at (\nOne/2,\nThree/2) {\Huge$\M{\Omega}$};
+\end{scope}
+		
+% top face of right comp cube
+\begin{scope}[canvas is zx plane at y=(\nTwo-.5),rotate=90,shift={(.5,-.5)}]
+	\draw[black,xscale=\nThree/1,yscale=\nThree/1] (0,0) grid (1,1);
+	\node[rotate=90,scale=2] at (\nThree/2,\nThree/2) {\Huge$\M{C}$};
+\end{scope}
+		
+% front face of right comp cube
+\begin{scope}[canvas is yx plane at z=.5,yscale=-1,rotate=180,shift={(.5,.5)}]
+	\draw[black,xscale=\nTwo/1,yscale=\nThree/1] (0,0) grid (-1,1);
+	\node[rotate=90,scale=2] at (-\nTwo/2,\nThree/2) {\Huge$\M{\Omega}$};
+\end{scope}
+		
+% right face of right comp cube
+\begin{scope}[canvas is yz plane at x=.5+\nThree,rotate=-90,yscale=-1,shift={(-.5,-\nTwo+.5)}]
+	\draw[black,xscale=\nThree/1,yscale=\nTwo/1] (0,0) grid (1,1);
+	\node[yscale=-1,scale=2] at (\nThree/2,\nTwo/2) {\Huge$\M{B}$};
+\end{scope}
+		
+% back face of rightcomp cube
+\begin{scope}[canvas is yx plane at z=.5-\nThree,yscale=-1,rotate=180,shift={(-\nTwo+.5,.5)}]
+	\draw[black,dashed,xscale=\nTwo/1,yscale=\nThree/1] (0,0) grid (1,1);
+\end{scope}
+}
+
+
+
+\begin{tikzpicture}[every node/.append style={transform shape},scale=.45]
+		
+	% shade processor assignments for 1d-redist-1d 1st matmul	
+	\renewcommand{\x}{6}
+	\renewcommand{\mycolor}{blue}
+	\shadingleft
+		
+	\renewcommand{\x}{3}
+	\renewcommand{\mycolor}{green}
+	\shadingleft
+			
+	\renewcommand{\x}{0}
+	\renewcommand{\mycolor}{red}
+	\shadingleft	
+			
+	% shade processor assignments for 1d-redist-1d 2nd matmul	
+	\renewcommand{\x}{2}
+	\renewcommand{\mycolor}{blue}
+	\shadingright
+			
+	\renewcommand{\x}{1}
+	\renewcommand{\mycolor}{green}
+	\shadingright
+			
+	\renewcommand{\x}{0}
+	\renewcommand{\mycolor}{red}
+	\shadingright
+		
+	% draw computational prism structure
+	\compprism
+	
+	\begin{scope}[shift={(\nOne+\nThree+\nThree,0)}]
+		% shade processor assignments for 1d-redist-1d 1st matmul	
+		\renewcommand{\x}{6}
+		\renewcommand{\mycolor}{blue}
+		\shadingnoredist
+		
+		\renewcommand{\x}{3}
+		\renewcommand{\mycolor}{green}
+		\shadingnoredist
+			
+		\renewcommand{\x}{0}
+		\renewcommand{\mycolor}{red}
+		\shadingnoredist
+	
+		% draw computational prism structure
+		\compprism
+	\end{scope}
+
+\end{tikzpicture}
+

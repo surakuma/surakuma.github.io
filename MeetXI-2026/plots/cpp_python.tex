@@ -1,0 +1,51 @@
+% MatMul on CPU
+% Rank = 50000
+% CPP vs Python
+
+% Data file (inline table with fake values)
+\pgfplotstableread[col sep=comma]{plots/data/cpp_python.csv}\datafile
+
+\begin{tikzpicture}
+\begin{axis}[\cppVSpython
+    %width=0.6\linewidth,
+    height=0.25\textwidth,
+    after end axis/.code={ % draw after axis so it doesn't get clipped
+      \node(A14) at (axis cs:Algo-\impla-\proca,0) {};
+      \node(A24) at (axis cs:Algo-\implb-\proca,0) {};
+      \node(A18) at (axis cs:Algo-\impla-\procb,0) {};
+      \node(A28) at (axis cs:Algo-\implb-\procb,0) {};
+      \node(A116) at (axis cs:Algo-\impla-\procc,0) {};
+      \node(A216) at (axis cs:Algo-\implb-\procc,0) {};
+      \node(A132) at (axis cs:Algo-\impla-\procd,0) {};
+      \node(A232) at (axis cs:Algo-\implb-\procd,0) {};
+      \node(A164) at (axis cs:Algo-\impla-\proce,0) {};
+      \node(A264) at (axis cs:Algo-\implb-\proce,0) {};
+      \node(A1128) at (axis cs:Algo-\impla-\procf,0) {};
+      \node(A2128) at (axis cs:Algo-\implb-\procf,0) {};
+      \node[yshift=-30, xshift=-5] at (A24) {\scriptsize $4$};
+      \node[yshift=-30, xshift=-5] at (A28) {\scriptsize $8$};
+      \node[yshift=-30, xshift=-5] at (A216) {\scriptsize $16$};
+      \node[yshift=-30, xshift=-5] at (A232) {\scriptsize $32$};
+      \node[yshift=-30, xshift=-5] at (A264) {\scriptsize $64$};
+      \node[yshift=-30, xshift=-5] at (A2128) {\scriptsize $128$};
+      % \node[anchor=south] at (axis cs:old-\mb-\pga,151) {$\vdots$};
+    },
+    x tick label style={font=\scriptsize},
+    y tick label style={font=\scriptsize,/pgf/number format/fixed,/pgf/number format/precision=2},
+    ymajorgrids
+    ]
+    \pgfplotsset{cycle list={black, fill=color7 \\ black, fill=color2 \\ black, fill=color1 \\ black, fill=color4 \\}}
+    
+    \addplot table[x=alg, y expr=(\thisrow{gatherATime})] {\datafile};
+    \addplot table[x=alg, y expr=(\thisrow{gatherBTime})] {\datafile};
+    \addplot table[x=alg, y expr=(\thisrow{localMultiplyTime})] {\datafile};
+    \addplot table[x=alg, y expr=(\thisrow{scatterReduceTime})] {\datafile};
+    \iflegend
+    	\legend{Gather A, Gather B, Local Multiply, Reduce Scatter};
+    \fi
+  \end{axis}
+\end{tikzpicture}
+
+
+
+% alg,gatherATime,genBTime,gatherBTime,localMultiplyTime,cpuGpuDataMoveTime,scatterReduceTime

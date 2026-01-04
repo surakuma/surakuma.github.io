@@ -1,0 +1,56 @@
+
+\begin{tikzpicture}
+    \begin{axis}[
+        xlabel={P},
+        ylabel={Time (seconds)},
+        ymin=0,         grid=major,
+        xmode=log,
+	log basis x=2,
+	ymode=log,
+	log basis y=2,
+	width=4.8cm, height=4.5cm,
+	legend style={
+        at={(0.25,1.15)},     % Position (x,y)
+        anchor=west,         % Anchor point of legend box
+    },
+     legend columns=2,
+      legend style={draw=none, cells={align=left}, nodes={scale=0.7}},
+        xtick={2^2,2^3,2^4,2^5,2^6,2^7},
+        ytick={2^-3,2^-2,2^-1, 2^0, 2^1},
+    ]
+        \pgfplotsset{cycle list={black, fill=color1 \\ black, fill=color2 \\ black, fill=color3 \\ black, fill=color4 \\ black, fill=color5 \\ black, fill=color9 \\}}
+    % Plot 1: 1DredCPU
+    \addplot[
+        mark=square,
+        color=color1,
+        thick,
+    ] table [x=proc, y=1DredCPU, col sep=comma] {plots/data/lineplot500.csv};
+    \addlegendentry{Redist-CPU}
+    
+    % Plot 2: 1DnoredCPU
+    \addplot[
+        mark=*,
+        color=color2,
+        thick,
+    ] table [x=proc, y=1DnoredCPU, col sep=comma] {plots/data/lineplot500.csv};
+    \addlegendentry{No-Redist-CPU}
+    
+    % Plot 3: 1DredGPU
+    \addplot[
+        mark=triangle,
+        color=color3,
+        thick,
+    ] table [x=proc, y=1DredGPU, col sep=comma] {plots/data/lineplot500.csv};
+    \addlegendentry{Redist-GPU}
+    
+    % Plot 4: 1DnoredGPU
+    \addplot[
+        mark=x,
+        color=color4,
+        thick,
+    ] table [x=proc, y=1DnoredGPU, col sep=comma] {plots/data/lineplot500.csv};
+    \addlegendentry{No-Redist-GPU}
+    
+    \end{axis}
+\end{tikzpicture}
+
