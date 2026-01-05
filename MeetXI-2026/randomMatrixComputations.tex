@@ -378,7 +378,9 @@
 
 \begin{document}
 
-\title[Communication costs with random matrices]{Nyström Low-Rank Approximation: Communication Lower Bounds and Algorithms} % The short title appears at the bottom of every slide, the full title is only on the title page
+%\title[Communication costs with random matrices]{Nyström Low-Rank Approximation: Communication Lower Bounds and Algorithms} % The short title appears at the bottom of every slide, the full title is only on the title page
+\title[Communication costs with random matrices]{Parallel Communication Lower Bounds and Algorithms for Computations with Random Matrices} % The short title appears at the bottom of every slide, the full title is only on the title page
+
 
 %%\author{John Smith} % Your name
 %%\institute[UCLA] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
@@ -388,14 +390,13 @@
 %%\textit{john@smith.com} % Your email address
 %%}
 
-\author[Suraj {\sc Kumar}]{\small Hussam {\sc Al Daas}\inst{1}, Grey {\sc Ballard}\inst{2}, Laura {\sc Grigori}\inst{3}, Md Taufique {\sc Hussain}\inst{2}, \underline{Suraj {\sc Kumar}}\inst{4}, Mohammad Marufur {\sc Rahman}\inst{2} and Kathryn {\sc Rouse}\inst{5}}
-
+\author[Suraj {\sc Kumar}]{\small Hussam {\sc Al Daas}\inst{1}, Grey {\sc Ballard}\inst{2}, Laura {\sc Grigori}\inst{3}, Md Taufique {\sc Hussain}\inst{2}, \underline{Suraj {\sc Kumar}}\inst{4}, Md Marufur {\sc Rahman}\inst{2} and Kathryn {\sc Rouse}\inst{5}\vspace*{-0.15cm}}
 \institute[Inria Lyon]{\inst{1} Rutherford Appleton Laboratory, UK \and %
 	\inst{2} Wake Forest University, USA \and
 	\inst{3} Ecole Polytechnique Fédérale de Lausanne (EPFL), Switzerland \and
 	\inst{4} Inria Lyon, France \and
 	\inst{5} Inmar Intelligence, USA}
-\date[METT XI (2026)]{11th Workshop on Matrix Equations and Tensor Techniques\\\today} % Date, can be changed to a custom date
+\date[METT XI (2026)]{11th Workshop on Matrix Equations and Tensor Techniques (Jan 08, 2026)} % Date, can be changed to a custom date
 
 
 
@@ -404,9 +405,9 @@
 	\titlepage % Print the title page as the first slide
 \end{frame}
 
-\begin{frame}{Table of Contents} 
-	\tableofcontents[currentsection] % Output the table of contents (all sections on one slide)
-\end{frame}
+%\begin{frame}{Table of Contents} 
+%	\tableofcontents[currentsection] % Output the table of contents (all sections on one slide)
+%\end{frame}
 
 \begin{frame}{Communication lower bounds for a computation on $P$ processors}
 	minimum amount of communication required to perform the computation in parallel
@@ -425,7 +426,7 @@
 	\vfill
 	\begin{block}{Our assumptions}
 		\begin{itemize}
-			\item Load balanced computation: Each processor performs equal amount of operations
+			\item Load balanced computation: each processor performs equal amount of operations
 			\vfill
 			\item There is one copy of data in the system
 		\end{itemize}
@@ -454,20 +455,47 @@
 \vfill
 \end{frame}
 
+\begin{frame}{Focus on $A\Omega$ and $\Omega^T A\Omega$ computations}
+	\begin{block}{$B=A\Omega$ computation}
+		\begin{itemize}
+			\item $A \in \mathbb{R}^{n_1\times n_2}$ and $\Omega$ is a $n_2 \times r$ random matrix
+			\vfill
+			\item Fundamental to all randomized linear algebra techniques including randomized SVD 
+		\end{itemize}
+	\end{block}
+	\vfill
+	\begin{block}{$B=A\Omega$ and $C=\Omega^T A\Omega$ computations together}
+		\begin{itemize}
+			%			\item 
+			\item $A$ is a $n\times n$ matrix and $\Omega$ is a $n \times r$ random matrix
+			\item Useful for Nystrom approximation, $\widetilde{\M{A}} = (\M{A}\M{\Omega}) (\M{\Omega}^T\M{A}\M{\Omega})^\dag (\M{A}\M{\Omega})^T$
+		\end{itemize}
+	\end{block}
+	\vfill
+	$r$ is (much) less than the contracted dimension ($r\leq n_2$ and $r\leq n$).
+\end{frame}
+
+
 \section{Existing results for classical matrix multiplication}
 \begin{frame}{Table of Contents} 
-	\tableofcontents[currentsection] % Output the table of contents (all sections on one slide)
+	\tableofcontents[hideallsubsections] % Output the table of contents (all sections on one slide)
+\end{frame}
+\begin{frame}{Table of Contents} 
+	\tableofcontents[currentsection, hideallsubsections] % Output the table of contents (all sections on one slide)
 \end{frame}
 \begin{frame}{Classical matrix multiplication bound}
 	\begin{itemize}
 		\item $C=AB$ with $A \in \mathbb{R}^{n_1\times n_2}, B \in \mathbb{R}^{n_2\times n_3}$, and $C \in \mathbb{R}^{n_1\times n_3}$
 	\end{itemize}
+\vfill
 Let $k=\min(n_1,n_2,n_3) \leq \ell= median(n_1,n_2,n_3) \leq m=\max(n_1,n_2,n_3)$.
+\vfill
 \begin{itemize}
-%	\item 
-	\item $\phi_A, \phi_B, \phi_C$: projections of computations on arrays $A$, $B$, $C$
-	\item Amount of array accessed = $\phi_A + \phi_B + \phi_C$
-\end{itemize}
+	\item $\phi_A, \phi_B, \phi_C$: number of elements accessed by a processor in arrays $A$, $B$, $C$
+	\vfill
+	\item Minimum number of elements accessed in the critical path = $\phi_A + \phi_B + \phi_C$
+	\vfill
+%\end{itemize}
 \begin{center}
 	\begin{tikzpicture}[scale=0.75, every node/.style={transform shape}]
 	%%\draw (-2,0) -- node[below] {a} ++(2,0) -- node[above] {b} ++(2,0);
@@ -482,36 +510,21 @@ Let $k=\min(n_1,n_2,n_3) \leq \ell= median(n_1,n_2,n_3) \leq m=\max(n_1,n_2,n_3)
 	\node[align=center,below,scale=1.2] at (12.75, -0.5) {$\phi_A + \phi_B + \phi_C =$ \\ $\qquad  (\frac{k\ell m}{P})^{2/3}$};	
 	\end{tikzpicture}
 \end{center}
-\begin{itemize}
-	\item Communication lower bound = $\phi_A + \phi_B + \phi_C - \text{data owned by the processor} = \phi_A + \phi_B + \phi_C - \frac{n_1n_2+n_2n_3+n_1n_3}{P}$
+%\begin{itemize}
+	\item Communication lower bound = $\phi_A + \phi_B + \phi_C - \frac{n_1n_2+n_2n_3+n_1n_3}{P}$
 \end{itemize}
-{Can we improve this bound when one matrix is randomly generated?}
+\vfill
+\centering\brown{Can we improve this bound when one matrix is randomly generated?}
 \end{frame}
 
 
-\begin{frame}{Focus on $A\Omega$ and $\Omega^T A\Omega$ computations}
-	\begin{block}{$B=A\Omega$ computation}
-		\begin{itemize}
-			\item $A \in \mathbb{R}^{n_1\times n_2}$ and $\Omega$ is a random matrix
-			\vfill
-			\item Fundamental to all randomized linear algebra techniques including randomized SVD 
-		\end{itemize}
-	\end{block}
-	\vfill
-	\begin{block}{$B=A\Omega$ and $C=\Omega^T A\Omega$ computations together}
-		\begin{itemize}
-%			\item 
-			\item $A$ is a $n\times n$ symmetric matrix and $\Omega$ is a random matrix
-			\item Useful for Nystrom approximation, $\widetilde{\M{A}} = (\M{A}\M{\Omega}) (\M{\Omega}^T\M{A}\M{\Omega})^\dag (\M{A}\M{\Omega})^T$
-		\end{itemize}
-	\end{block}
 
-\end{frame}
 
 \section{$A\Omega$ computation}
 \subsection{Communication lower bounds}
 \begin{frame}{Table of Contents} 
 	\tableofcontents[currentsubsection] % Output the table of contents (all sections on one slide)
+%	hideothersubsections
 \end{frame}
 
 \begin{frame}{Approach to obtain communication lower bounds}
@@ -519,40 +532,42 @@ Let $k=\min(n_1,n_2,n_3) \leq \ell= median(n_1,n_2,n_3) \leq m=\max(n_1,n_2,n_3)
 		A special case of H\"{o}lder-Brascamp-Lieb (HBL) inequality:
 		\begin{itemize}
 			\item For the $3$d object $B$, $\phi_{i}\phi_{jk} \ge Volume(B)$
-			\item $\phi_{i}$, $\phi_{jk}$: projections of $B$ on $i$-axis and $j-k$ plane
-			\item Also implies that: $\phi_{ik}\phi_{jk} \ge Volume(B)$ and $\phi_{ij}\phi_{jk} \ge Volume(B)$
+			\item $\phi_{j}$, $\phi_{ik}$: projections of $B$ on $j$-axis and $i-k$ plane
+			\item Also implies that: $\phi_{ij}\phi_{ik} \ge Volume(B)$ and $\phi_{jk}\phi_{ik} \ge Volume(B)$
 		\end{itemize}
 	\end{minipage}$\quad$
 	\begin{minipage}{0.25\linewidth}
 		\begin{center}
-			\begin{tikzpicture}[scale=0.215, every node/.style={transform shape}]
+			\begin{tikzpicture}[scale=0.375, every node/.style={transform shape}]
 			\draw (0,0) -- ++(5,0) -- ++(0, 5) -- ++(-5,0) -- cycle;
 			\draw (0,5,0) -- ++(0,0, -5) -- ++(5,0,0) -- ++(0,0,5) -- cycle;
 			\draw (5,0,0) -- ++(0,0,-5) -- ++(0,5,0) -- ++(0,0,5) -- cycle;
 			\draw (0,0,-5) -- ++(5,0,0) -- ++(0,5,0) -- ++(-5,0,0) -- cycle;
 			\draw [<->] (0,6) -- (0,0) -- (6,0);
 			\draw [->] (0,0,0) -- (0,0,-12);
-			\node [left, scale=2, rotate=0] at (0,0,-12) {$z$};
-			\node [below right, scale=2] at (6,0) {$x$};
-			\node [left, scale=2] at (0,6) {$y$};
+			\node [left, scale=2, rotate=0] at (0,0,-12) {$k$};
+			\node [below right, scale=2] at (6,0) {$i$};
+			\node [left, scale=2] at (0,6) {$j$};
 			
 			\draw [fill=gray!70] (2,2.25) to [curve through={(2.4,3) .. (2.5,3) .. (2.8,3.8) .. (3.1,2.1) .. (2.6,1.7)}] (2,2.25);
 			
-			\node [scale=2] at (2.5,2.5) {$A$};
+%			\node [scale=2] at (2.5,2.5) {$A$};
 			\draw [dotted] (1.7,2.25) -- (1.7,0.2);
 			\draw [dotted] (3.6,2.4) -- (3.6,0.3);
 			
 			\draw [fill=green!40] (1.75,0.25) to [curve through={(1.8, 0.35) .. (3.5, 0.65) .. (2,0.25)}] (1.75,0.25);
-			\node[above, scale=1.5] at (2.6,0,-0.75) {$\phi_{xz}$};
+			\node[above, scale=1.5] at (2.6,0,-0.75) {$\phi_{ik}$};
 			
 			\draw [dotted] (2,1.75) -- (0.3,1.75);
 			\draw [dotted] (2.8,4) -- (0.385,4);
 			
-			\draw [fill=red!40] (0.3, 1.75) to [curve through={(0.5,2) .. (1, 2.5) .. (1,3.95) .. (0.2, 2.5)}] (0.3,1.75);
-			\node[right, scale=1.5] at (0,3, -0.75) {$\phi_{yz}$};
+			\draw [fill=red!40, |-|] (0.3, 1.75)-- (0.3,3.95);
+			 to [curve through={(0.3,1.85) .. (0.3,3.95) }] (0.3,1.75);
+%			\draw [fill=red!40] (0.3, 1.75) to [curve through={(0.5,2) .. (1, 2.5) .. (1,3.95) .. (0.2, 2.5)}] (0.3,1.75);
+			\node[right, scale=1.5] at (0,3, -0.75) {$\phi_{j}$};
 			
-			\draw [fill=yellow!40] (3.85,3.9) to [curve through={(3.7,3.8) .. (3.5,3.4) .. (3.45,3.2)}] (3.85, 3.9);
-			\node [scale=1.5] at (3.65,3.1,-1) {$\phi_{xy}$};
+%			\draw [fill=yellow!40] (3.85,3.9) to [curve through={(3.7,3.8) .. (3.5,3.4) .. (3.45,3.2)}] (3.85, 3.9);
+%			\node [scale=1.5] at (3.65,3.1,-1) {$\phi_{xy}$};
 			\draw [dotted] (2.8,4) -- (3.8,3.9);
 			\draw [dotted] (2.56,1.65) -- (4,2.5);
 			
@@ -562,23 +577,27 @@ Let $k=\min(n_1,n_2,n_3) \leq \ell= median(n_1,n_2,n_3) \leq m=\max(n_1,n_2,n_3)
 			\end{tikzpicture}
 		\end{center}
 	\end{minipage}
-
-\begin{block}{\small Constraints for load balanced computation}
+%\vspace*{-0.15cm}
+\begin{block}{Constraints for load balanced computation}
 	\begin{itemize}
-		\item $B=A\Omega$ with $A \in \mathbb{R}^{n_1\times n_2}, B \in \mathbb{R}^{n_1\times r}$, $\Omega$ is a random matrix
-	\end{itemize}
-	\vspace*{-0.45cm}\begin{align*}
+		\item $B=A\Omega$ with $A \in \mathbb{R}^{n_1\times n_2}, B \in \mathbb{R}^{n_1\times r}$, and $\Omega$ is a random matrix
+%	\end{itemize}
+
+	\begin{center}
+	\vspace*{-0.75cm}
+	\begin{align*}
 	&\text{for $i = 1{:}n_1$, for $k = 1{:}n_2$, for $j = 1{:}r$}\\
 	&\quad \quad C[i][j] += A[i][k]*B[k][j]
 	\end{align*}
-	\vspace*{-0.20cm}
-	\begin{itemize}
+	\end{center}
+	\vspace*{-0.35cm}
+%	\begin{itemize}
 		\item $\phi_A, \phi_B$ : projections of computations on arrays $A$, $B$
 		\item From the HBL inequality: $\phi_A \phi_B \ge \text{number of multiplications per processor}=\frac{n_1n_2r}{P}$
 		\item Extra constraints: $\frac{n_1n_2}{P} \le \phi_A \le n_1n_2$, $\frac{n_1r}{P} \le \phi_B \le n_1r$
 	\end{itemize}
-\hfill
 \end{block}
+\vfill
 \end{frame}
 
 \begin{frame}{Optimization problem and communication lower bounds}
@@ -643,7 +662,7 @@ Let $k=\min(n_1,n_2,n_3) \leq \ell= median(n_1,n_2,n_3) \leq m=\max(n_1,n_2,n_3)
 	\vfill
 \end{frame}
 
-\begin{frame}{Matrix Multiplication with a Random Matrix}
+\begin{frame}{Matrix multiplication with a random matrix}
 	\vspace*{-0.15cm}
 	\begin{algorithmic}[1]		
 		\Require $\Pi$ is a $p_1\times p_2 \times p_3$  grid of processors, $|\Pi| = P$.
@@ -686,7 +705,7 @@ Let $\M{A} \in \mathbb{R}^{n\times n}$ be a symmetric positive definite matrix a
 
 
 	\begin{block}{Constraints for load balanced computation}
-		$$\M{B}=\M{A}\M{\Omega}, \quad \M{C}=\M{\Omega}^T\M{B}$$
+		\centering$\M{B}=\M{A}\M{\Omega}, \quad \M{C}=\M{\Omega}^T\M{B}$
 		\begin{itemize}
 			\item $\phi_A, \phi_B, \phi_C$ : projections of computations on arrays $A$, $B$, $C$
 			\item Each processor performs $1/P$th portion of each computation
@@ -705,7 +724,7 @@ Let $\M{A} \in \mathbb{R}^{n\times n}$ be a symmetric positive definite matrix a
 		\frac{n^2}{P} \leq \phi_A \leq n^2, \frac{nr}{P} & \leq \phi_B \leq nr, \frac{r^2}{P}\leq \phi_C\leq r^2
 		\end{align*}
 	\end{center}
-	\vspace*{-0.35cm}
+	\vspace*{-0.25cm}
 	\begin{block}{Amount of non-random array accesses = $\phi_A + \phi_B + \phi_C$}
 		\begin{itemize}\small
 			\item Estimate the solution and prove optimality using all Karush--Kuhn--Tucker conditions are satisfied
@@ -735,7 +754,8 @@ Let $\M{A} \in \mathbb{R}^{n\times n}$ be a symmetric positive definite matrix a
 
 
 \begin{frame}{Parallel algorithms for $\M{B}=\M{A}\M{\Omega}$ and $\M{C}=\M{\Omega^T}\M{B}$}
-	\vspace*{-0.15cm}\small
+	\vspace*{-0.15cm}
+	\small
 	\begin{algorithmic}[1]
 		\Require $\Pi$ is a $p_1\times p_2 \times p_3$  processor grid, $\Psi$ is a $q_1 \times q_2 \times q_3$ processor grid, and $|\Pi| = |\Psi| = P$.
 		\Require $\M{A}$ is evenly divided into a $p_1\times p_2$ grid of rectangular blocks, and each block $\M{A}_{ij}$ is evenly divided across a set of $p_3$ processors with $\M{A}_{ij}^{(k)}$ is owned by processor rank $(i,j,k)$ in $\Pi$.
@@ -746,17 +766,12 @@ Let $\M{A} \in \mathbb{R}^{n\times n}$ be a symmetric positive definite matrix a
 		\State Perform $\M{B} = \M{A}\M{\Omega}$ in $p_1\times p_2 \times p_3$  grid of processors
 		\State //Change distribution of $\M{B}$ so that it is suitable for $q_1 \times q_2 \times q_3$ grid 
 		\State $(i',j',k') = \Call{MyRank}{\Psi}$
-		\If{\emph{for any} $i, p_i \neq q_i$}
-		\State $\M{B}_{i'k'}^{(j')} $ = \Call{Redistribute}{$\M{B}$}
-		\EndIf
+%		\If{\textbf{if} \emph{for any} $i, p_i \neq q_i$ \textbf{then}}
+		\State {\textbf{if} \emph{for any} $i, p_i \neq q_i$ \textbf{then}} $\M{B}_{i'k'}^{(j')} $ = \Call{Redistribute}{$\M{B}$} {\textbf{end if}}
+%		\EndIf
 		\State Perform $\M{C}=\M{\Omega^T}\M{B}$ in $q_1\times q_2 \times q_3$  grid of processors
 		\EndFunction
 		\end{algorithmic}
-	
-	\vfill
-%	\brown{Communication cost is optimal when $p_1$, $p_2$ \& $p_3$ are chosen based on lower bounds.}
-%	
-%	\vfill
 \end{frame}
 
 \begin{frame}{Processor grid dimensions}
@@ -764,7 +779,7 @@ Let $\M{A} \in \mathbb{R}^{n\times n}$ be a symmetric positive definite matrix a
 		\item Not clear how to obtain processor grid dimensions that exactly match lower bounds ($p_i=q_i$ for $i=0,1,2$)
 	\end{itemize}
 \vfill
-Approach 1 (\brown{\emph{redistribution}}):
+Approach 1 (\brown{\emph{Redist}ribution}):
 \begin{itemize}
 	\item Perform $\M{B} = \M{A}\M{\Omega}$ in $p_1\times p_2 \times p_3$ grid of processors and $\M{C}=\M{\Omega^T}\M{B}$ in $q_1\times q_2 \times q_3$  grid of processors
 	\begin{itemize}
@@ -772,11 +787,11 @@ Approach 1 (\brown{\emph{redistribution}}):
 	\end{itemize} 
 \end{itemize}
 \vfill
-Approach 2 (\brown{\emph{no-redistribution}}):
+Approach 2 (\brown{\emph{No-Redist}ribution}):
 \begin{itemize}
 	\item $\M{B} = \M{A}\M{\Omega}$ is the dominating computation
 	\begin{itemize}
-		\item Utilize the optimal processor grid of this computation to also perform $\M{C}=\M{\Omega^T}\M{B}$
+		\item Use the optimal processor grid of this computation to also perform $\M{C}=\M{\Omega^T}\M{B}$
 	\end{itemize}
 \end{itemize}
 \vfill
@@ -893,23 +908,25 @@ Approach 2 (\brown{\emph{no-redistribution}}):
 
 \end{frame}
 \begin{frame}{Runtime breakdown for both approaches with $r=5000$}
-	
+	\vspace*{-0.15cm}
 			\begin{columns}
-		\begin{column}{0.24\linewidth}
+		\begin{column}{0.21\linewidth}
 			\input{plots/nystrom_cpu_5000_all.tex}
-			$\qquad\qquad\qquad\text{CPU}$
+			\vspace*{-0.15cm}$\qquad\qquad\qquad\text{CPU}$
 		\end{column}
-		\begin{column}{0.24\linewidth}
+		\begin{column}{0.21\linewidth}
 			\vspace*{0.56cm}
 			\input{plots/nystrom_gpu_5000_all.tex}
-			$\qquad\qquad\text{GPU}$
+			\vspace*{-0.15cm}$\qquad\qquad\qquad\text{GPU}$
 		\end{column}\hfill
 	\end{columns}
-	\vspace*{-0.25cm}
+\vfill
+%	\vspace*{-0.15cm}
 %	\medskip
 	\begin{itemize}
 		\item CPU-only implementation is dominated by the local matrix multiplication
 	\end{itemize}
+\vfill
 \end{frame}
 
 \section{Conclusion}
@@ -927,7 +944,7 @@ Approach 2 (\brown{\emph{no-redistribution}}):
 	\vfill
 	\begin{block}{Future Work}
 		\begin{itemize}
-			\item Explot symmetry to further reduce computation and communication costs
+			\item Exploit symmetry to further reduce computation and communication costs
 			\item Study how to perform all computations of generalized Nyström approximations for nonsymmetric matrices efficiently
 			\item Extend our approaches to other sketching methods that use structured matrices, such as CountSketch and Subsampled Randomized Hadamard Transform methods
 		\end{itemize}
