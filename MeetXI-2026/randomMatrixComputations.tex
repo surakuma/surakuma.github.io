@@ -468,7 +468,7 @@
 		\begin{itemize}
 			%			\item 
 			\item $A$ is a $n\times n$ matrix and $\Omega$ is a $n \times r$ random matrix
-			\item Useful for Nystrom approximation, $\widetilde{\M{A}} = (\M{A}\M{\Omega}) (\M{\Omega}^T\M{A}\M{\Omega})^\dag (\M{A}\M{\Omega})^T$
+			\item Useful for Nyström approximation, $\widetilde{\M{A}} = (\M{A}\M{\Omega}) (\M{\Omega}^T\M{A}\M{\Omega})^\dag (\M{A}\M{\Omega})^T$
 		\end{itemize}
 	\end{block}
 	\vfill
@@ -506,8 +506,8 @@ Let $k=\min(n_1,n_2,n_3) \leq \ell= median(n_1,n_2,n_3) \leq m=\max(n_1,n_2,n_3)
 	\draw (10, 0.1) -- node [below, pastelred, scale=1.6] {$\frac{\ell m}{k^2}$}(10,-0.1);
 	
 	\node[align=left,below,scale=1.2] at (2.25, -0.15) {$\phi_A + \phi_B + \phi_C =$ \\ $\qquad  k\ell + \frac{km + \ell m}{P}$};
-	\node[align=left,below,scale=1.2] at (7.25, -0.25) {$\phi_A + \phi_B + \phi_C =$ \\ $\qquad (\frac{k^2\ell m}{P})^{1/2} + \frac{\ell m}{P}$};
-	\node[align=center,below,scale=1.2] at (12.75, -0.5) {$\phi_A + \phi_B + \phi_C =$ \\ $\qquad  (\frac{k\ell m}{P})^{2/3}$};	
+	\node[align=left,below,scale=1.2] at (7.25, -0.25) {$\phi_A + \phi_B + \phi_C =$ \\ $\qquad 2(\frac{k^2\ell m}{P})^{1/2} + \frac{\ell m}{P}$};
+	\node[align=center,below,scale=1.2] at (12.75, -0.5) {$\phi_A + \phi_B + \phi_C =$ \\ $\qquad  3(\frac{k\ell m}{P})^{2/3}$};	
 	\end{tikzpicture}
 \end{center}
 %\begin{itemize}
@@ -587,12 +587,12 @@ Let $k=\min(n_1,n_2,n_3) \leq \ell= median(n_1,n_2,n_3) \leq m=\max(n_1,n_2,n_3)
 	\vspace*{-0.75cm}
 	\begin{align*}
 	&\text{for $i = 1{:}n_1$, for $k = 1{:}n_2$, for $j = 1{:}r$}\\
-	&\quad \quad C[i][j] += A[i][k]*B[k][j]
+	&\quad \quad B[i][j] += A[i][k]*\Omega[k][j]
 	\end{align*}
 	\end{center}
 	\vspace*{-0.35cm}
 %	\begin{itemize}
-		\item $\phi_A, \phi_B$ : projections of computations on arrays $A$, $B$
+		\item $\phi_A, \phi_B$ : projection sizes of computation on arrays $A$, $B$
 		\item From the HBL inequality: $\phi_A \phi_B \ge \text{number of multiplications per processor}=\frac{n_1n_2r}{P}$
 		\item Extra constraints: $\frac{n_1n_2}{P} \le \phi_A \le n_1n_2$, $\frac{n_1r}{P} \le \phi_B \le n_1r$
 	\end{itemize}
@@ -707,7 +707,7 @@ Let $\M{A} \in \mathbb{R}^{n\times n}$ be a symmetric positive definite matrix a
 	\begin{block}{Constraints for load balanced computation}
 		\centering$\M{B}=\M{A}\M{\Omega}, \quad \M{C}=\M{\Omega}^T\M{B}$
 		\begin{itemize}
-			\item $\phi_A, \phi_B, \phi_C$ : projections of computations on arrays $A$, $B$, $C$
+			\item $\phi_A, \phi_B, \phi_C$ : projection sizes of computations on arrays $A$, $B$, $C$
 			\item Each processor performs $1/P$th portion of each computation
 			\item From the HBL inequality: $\phi_A \phi_B  \geq \frac{n^2r}{P}$, $\phi_B \phi_C  \geq \frac{nr^2}{P}$
 			\item Extra constraints: $\frac{n^2}{P} \leq \phi_A \leq n^2$, $\frac{nr}{P} \leq \phi_B \leq nr$, $\frac{r^2}{P}\leq \phi_C\leq r^2$
