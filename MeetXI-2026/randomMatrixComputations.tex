@@ -378,8 +378,8 @@
 
 \begin{document}
 
-%\title[Communication costs with random matrices]{Nyström Low-Rank Approximation: Communication Lower Bounds and Algorithms} % The short title appears at the bottom of every slide, the full title is only on the title page
-\title[Communication costs with random matrices]{Parallel Communication Lower Bounds and Algorithms for Computations with Random Matrices} % The short title appears at the bottom of every slide, the full title is only on the title page
+\title[Communication costs with random matrices]{Nyström Low-Rank Approximation: Communication Lower Bounds and Algorithms} % The short title appears at the bottom of every slide, the full title is only on the title page
+%\title[Communication costs with random matrices]{Parallel Communication Lower Bounds and Algorithms for Computations with Random Matrices} % The short title appears at the bottom of every slide, the full title is only on the title page
 
 
 %%\author{John Smith} % Your name
@@ -396,7 +396,7 @@
 	\inst{3} Ecole Polytechnique Fédérale de Lausanne (EPFL), Switzerland \and
 	\inst{4} Inria Lyon, France \and
 	\inst{5} Inmar Intelligence, USA}
-\date[METT XI (2026)]{11th Workshop on Matrix Equations and Tensor Techniques (Jan 08, 2026)} % Date, can be changed to a custom date
+\date[METT XI (2026)]{11th Workshop on Matrix Equations and Tensor Techniques} % Date, can be changed to a custom date
 
 
 
@@ -434,7 +434,7 @@
 	\vfill
 	
 	\begin{itemize}
-		\item There exist one processor that has at most $1/P$th amount of overall data -- we examine the required data transfers for this processor to establish the lower bound
+		\item There exists one processor that has at most $1/P$th amount of overall data -- we examine the required data transfers for this processor to establish the lower bound
 %		\item We consider communication cost along the critical path of the algorithm -- the path along which the sum of all data transfers is maximum
 	\end{itemize}
 
@@ -532,7 +532,7 @@ Let $k=\min(n_1,n_2,n_3) \leq \ell= median(n_1,n_2,n_3) \leq m=\max(n_1,n_2,n_3)
 		A special case of H\"{o}lder-Brascamp-Lieb (HBL) inequality:
 		\begin{itemize}
 			\item For the $3$d object $B$, $\phi_{i}\phi_{jk} \ge Volume(B)$
-			\item $\phi_{j}$, $\phi_{ik}$: projections of $B$ on $j$-axis and $i-k$ plane
+			\item $\phi_{j}$, $\phi_{ik}$: projection sizes of $B$ on $j$-axis and $i$-$k$ plane
 			\item Also implies that: $\phi_{ij}\phi_{ik} \ge Volume(B)$ and $\phi_{jk}\phi_{ik} \ge Volume(B)$
 		\end{itemize}
 	\end{minipage}$\quad$
@@ -720,7 +720,7 @@ Let $\M{A} \in \mathbb{R}^{n\times n}$ be a symmetric positive definite matrix a
 	\begin{center}
 		\vspace*{-0.375cm}\begin{align*}
 		Minimize &\ \phi_A + \phi_B  +\phi_C  \text{ s.t.}\\
-		\phi_A \phi_B \geq \frac{n^2r}{P} & \phi_B \phi_C \geq \frac{nr^2}{P}\\
+		\phi_A \phi_B \geq \frac{n^2r}{P},\quad & \phi_B \phi_C \geq \frac{nr^2}{P}\\
 		\frac{n^2}{P} \leq \phi_A \leq n^2, \frac{nr}{P} & \leq \phi_B \leq nr, \frac{r^2}{P}\leq \phi_C\leq r^2
 		\end{align*}
 	\end{center}
