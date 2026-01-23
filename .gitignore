@@ -1,0 +1,15 @@
+*.nav
+*.snm
+*.toc
+*.thm
+*.aug
+*.log
+*.out
+*.synctex.gz
+*.aux
+*.bbl
+*.blg
+*eps-converted-to.pdf
+*DS_Store
+*.ipynb_checkpoints
+comment.cut
