@@ -1,0 +1,48 @@
+% Nystrom on GPU
+% Rank = 5000
+
+% Data file (inline table with fake values)
+\pgfplotstableread[col sep=comma]{plots/data/nystrom_gpu_5000.csv}\datafile
+
+\begin{tikzpicture}
+\begin{axis}[\nystromGPUrankFiveT
+    after end axis/.code={ % draw after axis so it doesn't get clipped
+      \node(A14) at (axis cs:Algo-\algoa-\proca,0) {};
+      \node(A24) at (axis cs:Algo-\algob-\proca,0) {};
+      \node(A18) at (axis cs:Algo-\algoa-\procb,0) {};
+      \node(A28) at (axis cs:Algo-\algob-\procb,0) {};
+      \node(A116) at (axis cs:Algo-\algoa-\procc,0) {};
+      \node(A216) at (axis cs:Algo-\algob-\procc,0) {};
+      \node(A132) at (axis cs:Algo-\algoa-\procd,0) {};
+      \node(A232) at (axis cs:Algo-\algob-\procd,0) {};
+      \node(A164) at (axis cs:Algo-\algoa-\proce,0) {};
+      \node(A264) at (axis cs:Algo-\algob-\proce,0) {};
+      \node(A1128) at (axis cs:Algo-\algoa-\procf,0) {};
+      \node(A2128) at (axis cs:Algo-\algob-\procf,0) {};
+      \node[yshift=-35, xshift=-5] at (A24) {\scriptsize $4$};
+      \node[yshift=-35, xshift=-5] at (A28) {\scriptsize $8$};
+      \node[yshift=-35, xshift=-5] at (A216) {\scriptsize $16$};
+      \node[yshift=-35, xshift=-5] at (A232) {\scriptsize $32$};
+      \node[yshift=-35, xshift=-5] at (A264) {\scriptsize $64$};
+      \node[yshift=-35, xshift=-5] at (A2128) {\scriptsize $128$};
+      % \node[anchor=south] at (axis cs:old-\mb-\pga,151) {$\vdots$};
+    },
+    x tick label style={font=\scriptsize},
+    y tick label style={font=\scriptsize,/pgf/number format/fixed,/pgf/number format/precision=2},
+        grid=both,
+    major grid style={line width=0.8pt, draw=gray!50},
+     minor grid style={line width=0.4pt, draw=gray!20},
+    minor tick num=5
+    ]
+        \pgfplotsset{cycle list={black, fill=color5 \\ black, fill=color4 \\ black, fill=color9 \\ black, fill=color4 \\ black, fill=color5 \\ black, fill=color9 \\}}
+    
+     \addplot table[x=alg, y expr=(\thisrow{all2allTime})] {\datafile};
+     \addplot table[x=alg, y expr=(\thisrow{reduceScatterTime})] {\datafile};
+    \addplot table[x=alg, y expr=(\thisrow{unpackTime})] {\datafile};
+    \iflegend
+    	%\legend{ All2All, Reduce scatter, Unpack};
+    \fi
+  \end{axis}
+\end{tikzpicture}
+
+%alg,totalTime,genOmegaTime,dgemm1Time,dgemm2Time,all2allTime,reduceScatterTime,reduceScatter1Time,reduceScatter2Time,unpackTime,packTime

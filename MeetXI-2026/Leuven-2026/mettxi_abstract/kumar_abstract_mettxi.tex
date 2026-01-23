@@ -1,0 +1,195 @@
+% Instructions for authors.
+%
+% Please prepare your abstract by only altering the parts following the
+% "Beginning of document" comment that you find below. Do not change any
+% commands in the header, and please refrain from including additional
+% packages.
+\documentclass[english,toc=bib,fontsize=11pt,paper=a4]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+\usepackage[english]{babel}
+\usepackage{csquotes}
+\usepackage{microtype}
+\usepackage{authblk}
+\renewcommand\Affilfont{\small}
+
+% Mathematics
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{mathtools}
+
+% Tables
+\usepackage{booktabs,multirow}
+
+% Figures
+\usepackage{graphics,graphicx}
+\usepackage{epstopdf}
+
+% Hyperlinks
+\usepackage[dvipsnames]{xcolor}
+\definecolor{rwth}{RGB}{  0  84 159}
+\definecolor{rwth-50}{RGB}{142 186 229}
+\definecolor{magenta}{RGB}{227   0 102}
+\usepackage{hyperref}
+\hypersetup{colorlinks,urlcolor=rwth,citecolor=rwth,linkcolor=rwth}
+\usepackage{url}
+\newcommand*{\doi}[1]{\textsc{doi}: \href{https://doi.org/#1}{#1}}
+
+% Missing figures
+\usepackage{todonotes}
+
+\usepackage[mathscr]{eucal}
+\usepackage{mathtools}
+\usepackage{bm}
+
+% vector
+\newcommand{\V}[2][]{{\bm{#1\mathbf{\MakeLowercase{#2}}}}} 
+% matrices
+\newcommand{\M}[2][]{{\bm{#1\mathbf{\MakeUppercase{#2}}}}} 
+% tensor
+\newcommand{\T}[2][]{{\boldsymbol{#1\mathscr{\MakeUppercase{#2}}}}}
+% matrix in series
+\newcommand{\Mn}[3][]{{\bm{#1\mathbf{\MakeUppercase{#2}}}}^{(#3)}} 
+% Transpose
+\newcommand{\Tra}{{\sf T}} 
+
+
+\newcommand{\Real}{\mathbb{R}}
+\newcommand{\vc}[1]{\bm{#1}}
+\newcommand{\frobenius}[1]{\left\| #1 \right\|}
+
+
+
+% TODO: If you use bibtex please change this to backend=bibtex or comment it out if you use a bibliography at the end of the document
+\usepackage[backend=biber,style=numeric,maxbibnames=5,giveninits=true,hyperref=true,isbn=false,url=false,doi=true,date=year]{biblatex}
+\addbibresource{kumar_bib_mettxi.bib}
+
+% Logo with grid on white background.
+\usepackage{tikz}
+\newcommand{\drawsquare}[1][black]{%
+  \draw[draw=#1,thick] (0,0) -- (7,0) -- (7,7) -- (0,7) -- (0,0);
+  \ifdefined\plotgrid
+  \foreach \y in {1,...,8}
+  \draw[color=rwth-50,thin] (0,\y) -- (7,\y);
+  \foreach \y in {1,...,6}
+  \draw[color=rwth-50,thin] (\y,0) -- (\y,7);
+  \fi}
+\newcommand{\drawlogo}{%
+  \parbox{4.7cm}{
+    \centering
+    \begin{tikzpicture}[scale=0.14]
+      \def\maa{0.7};\def\mab{0.7};\def\mba{0};\def\mbb{1};
+      \def\ca{rwth};\def\cb{magenta};\def\cc{white};\def\b{5.5};
+      \begin{scope}[shift={(0,0)},cm={\maa,\mab,\mba,\mbb,(0,0)}]
+        \drawsquare
+        \filldraw[fill=\ca,draw=black,thick] (1,1) -- (2,1) -- (2,5) -- (3.5,3.5) -- (5,5) -- (5,1) -- (6,1) -- (6,6) -- (5,6) -- (3.5,4.5) -- (2,6) -- (1,6) -- cycle;
+        %
+      \end{scope}
+      \begin{scope}[shift={(\b,0)},cm={\maa,\mab,\mba,\mbb,(0,0)}]
+        \drawsquare
+        \filldraw[fill=\ca,draw=black,thick] (1,1) -- (6,1) -- (6,2) -- (2,2) -- (2,3) -- (4,3) -- (4,4) -- (2,4) -- (2,5) -- (6,5) -- (6,6) -- (1,6) -- cycle;
+        %
+      \end{scope}
+      \begin{scope}[shift={(2*\b,0)},cm={\maa,\mab,\mba,\mbb,(0,0)}]
+        \drawsquare
+        \filldraw[fill=\ca,draw=black,thick] (3,1) -- (4,1) -- (4,5) -- (6,5) -- (6,6) -- (1,6) -- (1,5) -- (3,5) -- (3,1) -- cycle;
+        %
+      \end{scope}
+      \begin{scope}[shift={(3*\b,0)},cm={\maa,\mab,\mba,\mbb,(0,0)}]
+        \drawsquare
+        \filldraw[fill=\ca,draw=black,thick] (3,1) -- (4,1) -- (4,5) -- (6,5) -- (6,6) -- (1,6) -- (1,5) -- (3,5) -- (3,1) -- cycle;
+        %
+      \end{scope}
+      \begin{scope}[shift={(4*\b,0)},cm={\maa,\mab,\mba,\mbb,(0,0)}]
+        \drawsquare
+        \filldraw[fill=\cb,draw=black,thick] (1,1) -- (2,1) -- (3.5,3) -- (5,1) -- (6,1) -- (4,3.5) -- (6,6) -- (5,6) -- (3.5,4) -- (2,6) -- (1,6) -- (3,3.5) -- cycle;
+        %
+      \end{scope}
+      \begin{scope}[shift={(5*\b,0)},cm={\maa,\mab,\mba,\mbb,(0,0)}]
+      	\drawsquare
+      	\filldraw[fill=\cb,draw=black,thick] (1.5,1) -- (5.5,1) -- (5.5,2) -- (4,2) -- (4,5) -- (5.5,5) -- (5.5,6) -- (1.5,6) -- (1.5,5) -- (3,5) -- (3,2) -- (1.5,2) -- cycle;
+      	%
+      \end{scope}
+    \end{tikzpicture}
+  }
+}
+%
+\newcommand{\email}[1]{\href{mailto:#1}{#1}}
+\newcommand{\presenter}[3][]{\author[#1]{\emph{#2}\thanks{Corresponding author: e-mail \email{#3}}}}
+%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Beginning of document. %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\pagestyle{empty}
+\titlehead{
+\begin{flushright}
+\drawlogo \\[2ex]
+
+Matrix Equations and Tensor Techniques XI
+
+Leuven, January 7--9, 2026
+\end{flushright}
+}
+
+
+% TODO: TITLE goes here.
+\title{Nyström Low-Rank Approximation: Communication Lower Bounds and Algorithms}
+
+% TODO: AUTHORS go here. Use:
+% * \presenter{} for the name of the author presenting this work at the conference;
+% * \author{} for all other authors.
+
+\author[1]{Hussam Al Daas}
+\author[2]{Grey Ballard}
+\author[3]{Laura Grigori}
+\author[2]{Md Taufique Hussain}
+\presenter[,4]{Suraj Kumar}{suraj.kumar@inria.fr}
+\author[2]{Mohammad Marufur Rahman}
+\author[5]{Kathryn Rouse}
+\affil[1]{STFC, Rutherford Appleton Laboratory, UK}
+\affil[2]{Wake Forest University, USA}
+\affil[3]{École Polytechnique Fédérale de Lausanne, Switzerland}
+\affil[4]{ Institut national de recherche en sciences et technologies du numérique, France}
+\affil[5]{Inmar Intelligence, USA}
+
+
+% Alternativly if there is only 1 Affiliation you can use the following style:
+%\author{Contributing Author}
+%\presenter{Presenting Author}{email@adress.com}
+%\author{Another Contributing Author}
+%\affil{Department, University, Address, City}
+
+\date{}
+
+\maketitle{}
+\thispagestyle{empty}
+
+
+The general form of a Nystr\"{o}m approximation of a positive semidefinite matrix $\M{A}$ is given as $\widetilde{\M{A}} = (\M{A}\M{\Omega}) (\M{\Omega}^T\M{A}\M{\Omega})^\dag (\M{A}\M{\Omega})^T$ \cite{Nys930,WilS00,GitM16}, for some random matrix $\M{\Omega}$. 
+Theoretical guarantees of the quality of the approximation have been presented for several types of random matrices including Gaussian random matrices and random matrices based on Fourier-like transforms \cite{HalMT11,MarT20}.
+
+Many low-rank approximation methods compute the product of a matrix with a random matrix.
+Because each processor can generate its portion of the random matrix, these products can be computed without communicating the random matrix, decreasing the amount of communication required from that of dense matrix multiplication.
+The goal of this work is to design efficient parallel algorithms for computing a Nystr\"{o}m approximation with a particular focus of avoiding unnecessary communication of random matrices.
+We address this question theoretically, establishing communication lower bounds and analyzing asymptotic algorithmic costs, as well as practically, implementing the most communication efficient algorithms and applying them to large data sets on 10s of nodes (100s of GPUs or 1000s of CPU cores) of a supercomputer.
+Our lower bound approach uses a geometric inequality that relates computation to data to build a constrained optimization problem whose analytical solution yields communication lower bounds.
+We consider both a single matrix multiplication involving a random input as well as the entire Nystr\"{o}m computation.
+We develop implementations using both Python and C++ and adapt them for both CPU-only and GPU platforms and explore the performance tradeoffs among the various configurations.
+Our results show the benefits of GPUs for performing dense matrix multiplication to accelerate Nystr\"{o}m approximation and the effectiveness of direct communication among GPUs to scale to large problems, and we obtain low-rank approximations of symmetric matrices of dimension 50,000 in fractions of a second.
+
+
+We focus on $\M{A}\M{\Omega}$ and $\M{\Omega}^T\M{A}\M{\Omega}$ computations. The main contributions of our work are to
+\begin{enumerate}
+	\item establish communication lower bounds for the parallel computation of $\M{B} = \M{A}\M{\Omega}$ where $\M{\Omega}$ is a random matrix and present parallel algorithms whose communication costs are optimal in all ranges;
+	\item establish communication lower bounds for the parallel computation of the sequence of computations $\M{B} = \M{A}\M{\Omega}$ followed by $\M{C}=\M{\Omega}^T\M{B}$ where $\M{\Omega}$ is a random matrix, and present parallel algorithms whose communication costs are close to the lower bounds;
+	\item implement the most efficient algorithms using both Python and C++ for CPUs and GPUs and benchmark the implementations to demonstrate the communication efficiency of the algorithms and their parallel scaling.
+\end{enumerate}	
+
+
+\printbibliography
+
+
+\end{document}

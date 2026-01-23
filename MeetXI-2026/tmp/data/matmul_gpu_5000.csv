@@ -1,0 +1,13 @@
+alg,gatherATime,genBTime,gatherBTime,localMultiplyTime,cpuGpuDataMoveTime,scatterReduceTime
+Algo-MatMul_Gen-4,0.0,0.088004,0.0,1.514018,0.0,0.0
+Algo-MatMul_Gen-8,0.0,0.078934,0.0,0.771334,0.0,0.0
+Algo-MatMul_Gen-16,0.0,0.080691,0.0,0.408321,0.0,0.0
+Algo-MatMul_Gen-32,0.0,0.054368,0.0,0.232298,0.0,0.0
+Algo-MatMul_Gen-64,0.0,0.081093,0.0,0.151577,0.0,0.0
+Algo-MatMul_Gen-128,0.0,0.124818,0.0,0.118903,0.0,0.0
+Algo-MatMul_Comm-4,0.0,0.025634,0.131062,1.475078,0.0,0.0
+Algo-MatMul_Comm-8,0.0,0.044602,0.173747,0.744079,0.0,0.0
+Algo-MatMul_Comm-16,0.0,0.029174,0.278804,0.384761,0.0,0.0
+Algo-MatMul_Comm-32,0.0,0.029882,0.31895,0.203455,0.0,0.0
+Algo-MatMul_Comm-64,0.0,0.027926,0.334298,0.125227,0.0,0.0
+Algo-MatMul_Comm-128,0.0,0.040415,0.263557,0.074142,0.0,0.0
