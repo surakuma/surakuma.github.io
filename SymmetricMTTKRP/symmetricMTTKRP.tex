@@ -103,6 +103,10 @@
 
 
 \newcommand{\Real}{\mathbb{R}}
+\newcommand{\vc}[1]{\bm{#1}}
+\newcommand{\frobenius}[1]{\left\| #1 \right\|}
+
+
 % vector
 \newcommand{\V}[2][]{{\bm{#1\mathbf{\MakeLowercase{#2}}}}}
 % matrix
@@ -132,13 +136,12 @@
 %% the commands and values with those provided to you when you
 %% complete the rights form.
 \setcopyright{acmlicensed}
-\copyrightyear{2018}
-\acmYear{2018}
+\copyrightyear{2026}
+\acmYear{2026}
 \acmDOI{XXXXXXX.XXXXXXX}
 %% These commands are for a PROCEEDINGS abstract or paper.
-\acmConference[SPAA '26]{Make sure to enter the correct
-  conference title from your rights confirmation email}{June 03--05,
-  2018}{Woodstock, NY}
+\acmConference[SPAA '26]{Communication Lower Bounds for Symmetric Matricized-Tensor Times Khatri-Rao Product}{July 06--10,
+  2026}{London, UK}
 %%
 %%  Uncomment \acmBooktitle if the title of the proceedings is different
 %%  from ``Proceedings of ...''!
@@ -229,12 +232,15 @@
 %% The abstract is a short summary of the work to be presented in the
 %% article.
 \begin{abstract}
-  A clear and well-documented \LaTeX\ document is presented as an
-  article formatted for publication by ACM in a conference proceedings
-  or journal publication. Based on the ``acmart'' document class, this
-  article presents and explains many of the common variations, as well
-  as many of the formatting elements an author may use in the
-  preparation of the documentation of their work.
+TODO....
+
+
+%Al Daas et al.~\cite{} 
+
+Our earlier conference article~\cite{} studied the parallel communication cost of multiplying the same vector along two modes of a $3$-dimensional symmetric tensor. This can be viewed as a special case of the present work where the CP rank is $1$.
+
+
+
 \end{abstract}
 
 %%
@@ -272,8 +278,7 @@
 %\ccsdesc[100]{Do Not Use This Code~Generate the Correct Terms for Your Paper}
 
 
-\keywords{Do, Not, Use, This, Code, Put, the, Correct, Terms, for,
-  Your, Paper}
+\keywords{CP Tensor decomposition, MTTKRP computation, Communication lower bounds, Parallel algorithms}
 
 
 
@@ -312,21 +317,20 @@ An $R$-rank symmetric Canonical Polyadic (CP) decomposition of a $3$-dimensional
 
 
 
+\section{Related Work}
+\label{sec:relatedwork}
+TODO..
 
-Plan:
-\begin{itemize}
-	\item Communication lower bounds -- cubical tensors, symmetric tensors
-	\item Future work -- design algorithms. $d$-dimensional computations
-\end{itemize}
 
-\section{Notations}
+
+\section{Notations and Preliminaries}
 \label{sec:notations}
 
 
-Now we present our notations. $\T{X}$ denotes a $3$-dimensional symmetric tensor of dimensions $n\times n\times n$. $\M{X}_{(i)}$ represents $i$th unfolding matrix of $\T{X}$ of dimensions $n \times n^2$. $\M{U}\in \Real^{n\times R}$ is the factor matrix associated with a $R$-rank CP decomposition of $\T{X}$. $\M{U}_{ir}$ denotes the $i$th row and $r$th column element of $\M{U}$. Similarly, $\T{X}_{ijk}$ denotes the element at index $(i,j,k)$ of $\T{X}$. As $\T{X}$ is symmetric, therefore we have $\M{X}_{(1)} = \M{X}_{(2)} = \M{X}_{(3)}$. We also have same $\T{X}_{ijk}$ for all permutations of $i$, $j$ and $k$, i.e., $\T{X}_{ijk} =\T{X}_{ikj}=\T{X}_{jik}=\T{X}_{jki}=\T{X}_{kij}=\T{X}_{kji}$.  $\M{A}_{ir}\odot \M{B}_{jr}$ denotes Khatri-Rao Product of matrices $\M{A} \in \Real^{n_1\times R}$ and $\M{B} \in \Real^{n_2\times R}$, and has dimensions $n_1n_2 \times R$. The $(i\cdot n_2 +j, r)$th element of $\M{A} \odot \M{B}$ is computed as $\M{A}_{ir}\cdot \M{B}_{jr}$.
+Now we present our notations. $\T{X}$ denotes a $3$-dimensional symmetric tensor of dimensions $n\times n\times n$. $\M{X}_{(i)}$ represents $i$th unfolding matrix of $\T{X}$ of dimensions $n \times n^2$. $\M{U}\in \Real^{n\times R}$ is the factor matrix associated with a $R$-rank CP decomposition of $\T{X}$. $\M{U}_{ir}$ denotes the $i$th row and $r$th column element of $\M{U}$. Similarly, $\T{X}_{ijk}$ denotes the element at index $(i,j,k)$ of $\T{X}$. As $\T{X}$ is symmetric, therefore we have $\M{X}_{(1)} = \M{X}_{(2)} = \M{X}_{(3)}$. We also have same $\T{X}_{ijk}$ for all permutations of $i$, $j$ and $k$, i.e., $\T{X}_{ijk} =\T{X}_{ikj}=\T{X}_{jik}=\T{X}_{jki}=\T{X}_{kij}=\T{X}_{kji}$.  $\M{A}_{ir}\odot \M{B}_{jr}$ denotes Khatri-Rao Product of matrices $\M{A} \in \Real^{n_1\times R}$ and $\M{B} \in \Real^{n_2\times R}$, and has dimensions $n_1n_2 \times R$. The $(i\cdot n_2 +j, r)$th element of $\M{A} \odot \M{B}$ is computed as $\M{A}_{ir}\cdot \M{B}_{jr}$. The CP rank of a cubical tensor of dimensions $n\times n\times n$ is at most $n^2$~\cite{Kruskal89,LandsbergBook}. Therefore, we also have $1\leq R\leq n^2$. 
 
 
-
+%\todo[inline]{Also find another reference for rank bound.}
 
 We present a direct way to perform symmetric MTTKRP in \Cref{alg:symmMTTKRP:naive}. It does not take symmetry into account. We call the operation $\T{X}_{ijk}\cdot \M{U}_{jr} \cdot \M{U}_{kr}$ as \emph{\arraymul}. The algorithm performs a total of $n^3R$ \emph{\arraymul} operations.
 
@@ -388,30 +392,217 @@ We present a direct way to perform symmetric MTTKRP in \Cref{alg:symmMTTKRP:naiv
 
 A parallel atomic symmetric MTTKRP algorithm computes each \emph{\arraymul} on one processor. This implies that while computing a single \arraymul all $3$ inputs are accessed on that processor. This assumption is necessary for our communication lower bounds. We focus only on parallel atomic algorithms for symmetric MTTKRP that perform $n^2(n+1)/2$ \arraymul operations. It is reasonable for an algorithm to break our assumption as it restricts partial reuse across processors. For instance, one way to compute $\M{X_{(1)}} (\M{U}\odot \M{U})$ is to first compute $\M{U}\odot \M{U}$ and then perform a matrix multiplication of $\M{X_{(1)}}$ and the result. Minimum data transfer cost of this approach is $\mathcal{O}(n^2R/P)^{2/3}$~\cite{ABGKR22}. We show in \Cref{sec:symmMTTKRP} that the cost of our approach is asymptotically better.  
 
+\subsection{Computation Model}
+\label{sec:model}
+
+\section{Fundamental Results}
+\label{sec:dundamental}
+We relate the amount of computations to data accesses in order to determine the minimum amount of data a processor must access to perform its local computations.
 
 
+We obtain the following lemma from \cite[Lemma 4.1]{BKR18} by fixing the number of dimensions. We consider the projections based on the indices of the tensor and matrices used in \Cref{alg:symmMTTKRP:naive}. 
+
+\begin{lemma}
+	\label{lem:basicHBL}
+	Let $V$ be a finite set of points in $\mathbb{Z}^4$. Let $\phi_{ijk}(V)$ be the projection of $V$ in $i-j-k$ space, i.e., all points $(i,j,k)$ such that there exists a $r$ so that $(i,j,k,r) \in V$. Let $\phi_{ir}(V)$ be the projection of $V$ in $i-r$ plane, i.e., all points $(i,r)$ such that there exists a $(j,k)$ so that $(i,j,k,r) \in V$.  Define $\phi_{jr}(V)$ and $\phi_{kr}(V)$ similarly. 
+	Then 
+	$$|V| \leq |\phi_{ijk}(V)|^{2/3} \cdot |\phi_{ir}(V)|^{1/3}\cdot |\phi_{jr}(V)|^{1/3}\cdot |\phi_{kr}(V)|^{1/3}.$$
+\end{lemma}
+
+We now extend \Cref{lem:basicHBL}  for a symmetry et of points corresponding to the first three coordinates.
+\begin{lemma}
+	\label{lem:symmHBL}
+	Let $V$ be a finite set of points in  $\{(i, j, k, r)\in\mathbb{Z}^4 \, | \, i>j>k\}$. Let $\phi_{ijk}(V)$ be the projection of $V$ in $i-j-k$ space, i.e., all points $(i,j,k)$ such that there exists a $r$ so that $(i,j,k,r) \in V$. Let $\phi_{ir}(V)$ be the projection of $V$ in $i-r$ plane, i.e., all points $(i,r)$ such that there exists a $(j,k)$ so that $(i,j,k,r) \in V$.  Define $\phi_{jr}(V)$ and $\phi_{kr}(V)$ similarly. 
+	Then 
+	$$6|V| \leq (6|\phi_{ijk}(V)|)^{2/3} \cdot |\phi_{ir}(V) \cup \phi_{jr}(V) \cup \phi_{kr}(V)|.$$
+\end{lemma}
+
+\begin{proof}
+	TODO....
+\end{proof}
+
+\subsection{Existing Results}
+\label{sec:fundamental:existingResults}
+
+We now present some definitions and results that we use in \Cref{sec:symmMTTKRP} to analytically solve our optimization problems.
+
+\begin{definition}[{\cite[eq. (3.20)]{BV04}}]
+	\label{def:quasiconvex}
+	A differentiable function $g:\Real^d\rightarrow \Real$ is \emph{quasiconvex} if its domain is a convex set and for all $\vc{x},\vc{y} \in \textbf{dom} \; g$, 
+	$$g(\vc{y}) \leq g(\vc{x}) \text{ implies that } \langle \nabla g(\vc{x}), \vc{y} - \vc{x} \rangle \leq 0.$$
+\end{definition}
+
+\begin{definition}[{\cite[eq. (5.49)]{BV04}}]
+	\label{def:KKT}
+	Consider an optimization problem of the form 
+	\begin{equation}
+	\label{eq:optprob}
+	\min_{\vc{x}} f(\vc{x}) \quad \text{ subject to } \quad \vc{g}(\vc{x}) \leq \vc{0}
+	\end{equation} 
+	where $f:\Real^d \rightarrow \Real$ and $\vc{g}:\Real^d\rightarrow \Real^c$ are both differentiable. 
+	Define the dual variables $\vc{\mu}\in\mathbb{R}^c$, and let $\vc{J}_{\vc{g}}$ be the Jacobian of $\vc{g}$.
+	The \emph{Karush-Kuhn-Tucker (KKT)} conditions of $(\vc{x},\vc{\mu})$ are as follows:
+	\begin{itemize}
+		\item \emph{Primal feasibility}: $\vc{g}(\vc{x}) \leq \vc{0}$;
+		\item \emph{Dual feasibility}: $\vc{\mu} \geq 0$;
+		\item \emph{Stationarity}: $\nabla f(\vc{x}) + \vc{\mu} \cdot \vc{J}_{\vc{g}}(\vc{x}) = \vc{0}$;
+		\item \emph{Complementary slackness}: $\mu_i g_i(\vc{x})=0$ for all $i\in \{1,\dots,c\}$. 
+	\end{itemize}
+\end{definition}
+
+
+\begin{lemma}[{\cite[Lemma 3]{ABGKR22}}]
+	\label{lem:KKT}
+	Consider an optimization problem of the form given in \cref{eq:optprob}.
+	If $f$ is a convex function and each $g_i$ is a quasiconvex function, then the KKT conditions are sufficient for optimality.	
+\end{lemma}
+
+\begin{lemma}
+	\label{lem:quasiconvex:x23y}
+	The function $g_0(\vc{x}) = L - x^{2/3}y$, for some constant $L$, is quasiconvex in the positive quadrant.
+\end{lemma}
+\begin{proof}
+	TODO...
+\end{proof}
+
+
+
+
+
+
+
+
+\section{Symmetric MTTKRP Lower Bounds}
+\label{sec:symmMTTKRP}
+
+
+\begin{lemma}
+	\label{lem:projlb}
+	Consider a parallel algorithm that performs the symmetric MTTKRP computation, $\M{V}=\M{X}_{(1)} (U\odot U)$, where $\M{U}$ and $\M{V}$ are matrices of dimensions $n \times R$ and $\M{X}_{(1)}$, which is the $1$st unfolding matrix of symmetric tensor $\T{X}$, has dimensions $n\times n^2$. Any processor that performs at least $1/P$th of the points in the iteration space involving the strict lower tetrahedron of $\T{X}$ must access at least $nR/P$ elements of each $\M{U}$ and $\M{V}$, and $n(n-1)(n-2)/6P$ elements of the strict lower tetrahedron of $\T{X}$.    
+\end{lemma}
+
+
+
+\begin{proof}
+	The total number of iteration points that must be performed involving lower tetrahedron of $\T{X}$ is $n(n-1)(n-2)R/6$.
+	Consider a processor that performs at least $1/P$th of these iteration points. We first focus on the number of elements of $\M{U}$ this processor must access. Each element of $\M{U}$ is involved in $(n-1)(n-2)/2$ iteration points. Three different elements of $\M{U}$ is accessed in each iteration point.
+	If the processor accesses fewer than $nR/P$ elements of $\M{U}$, then it would perform fewer than $n(n-1)(n-2)R/6P$ iteration points, which is a contradiction. The same set of arguments applies for $\M{V}$. 
+	Finally, each element of $\T{X}$ is involved in $R$ iteration points.
+	If the processor accesses fewer than $n(n-1)(n-2)/6P$ elements of $\T{X}$, then it would perform fewer than $n(n-1)(n-2)R/6P$ iteration points, which is again a contradiction.
+\end{proof}
+
+
+
+
+
+\begin{lemma}
+	\label{lem:symmMTTKRPOpt}
+	Consider the following optimization problem 
+	$$\min_{\V{x}\in\mathbb{R}^2} x_1 + 2x_2$$
+	such that
+	$x_1^2x_2^3 \geq \frac{1}{6^2}(\frac{n(n-1)(n-2)R}{P})^3,$\\ 
+	$\frac{n(n-1)(n-2)}{6P} \leq x_1 \leq \frac{n(n-1)(n-2)}{6P},$\\
+	$\frac{nR}{P} \leq x_2 \leq nR,$
+	where $P,n$, and $R$ are all positive integers greater than or equal to 1.
+	The constraints induce three scenarios for the optimal solution $\V{x}^*$ :
+	\begin{itemize}
+		\item If $1\leq R \leq \frac{(n-1)(n-2)}{2^3}$  and $P\leq \frac{n(n-1)(n-2)}{(2^3 R)^{3/2}}$ then $x_1^* = \frac{n(n-1)(n-2)}{6P}, x_2^* = (\frac{n(n-1)(n-2)}{P})^{1/3}R;$
+		
+		\item If $\frac{(n-1)(n-2)}{2^3} \leq R \leq n^2$ and $P\leq \frac{2^3nR}{((n-1)(n-2))^{3/2}}$ then $x_1^* = \frac{((n-1)(n-2))^{3/2}}{6}, x_2^* = \frac{nR}{P};$
+		\item If ($1\leq R \leq \frac{(n-1)(n-2)}{2^3}$  and $P > \frac{n(n-1)(n-2)}{(2^3 R)^{3/2}}$) or ($\frac{(n-1)(n-2)}{2^3} \leq R \leq n^2$ and $P > \frac{2^3nR}{((n-1)(n-2))^{3/2}}$) then $x_1^* = \frac{2^{4/5}}{3} (\frac{n(n-1)(n-2)R}{P})^{3/5},  x_2^* =\frac{3x_1^*}{4}$.
+	\end{itemize}
+	This can be visualized as follows:
+	\todo[inline]{complete the visualization part}
+	Case I: $1\leq R \leq \frac{(n-1)(n-2)}{2^3}$\\
+	Case II: $\frac{(n-1)(n-2)}{2^3} \leq R \leq n^2$
+%	\begin{center}
+%		\begin{tikzpicture}[scale=0.5, every node/.style={transform shape}]
+%		\draw [->, thick] (-0.1,0) -- (16,0) node [below right,pastelgreen,scale=2] {$P$};
+%		\draw (0, 0.1) -- node [below, pastelred, scale=2]{$1$}(0,-0.1);
+%		\draw (5, 0.1) -- node [below, pastelred, scale=2]{$n_1$}(5,-0.1);
+%		\draw (10, 0.1) -- node [below, pastelred, scale=2] {$\frac{n_1n_2}{r}$}(10,-0.1);
+%		
+%		\node[align=left,below,scale=1.5] at (2.5, -0.4) {$x_1^*=\frac{n_1n_2}{P}$\\ $x_2^*=\frac{n_1r}{P}$};
+%		\node[align=left,below,scale=1.5] at (7.5, -0.6) {$x_1^*=\frac{n_1n_2}{P}$\\ $x_2^*=r$};
+%		\node[align=center,below,scale=1.5] at (13.25, -0.8) {$x_1^*=x_2^*= \left(\frac{n_1n_2r}{P}\right)^{1/2}$};	
+%		\end{tikzpicture}
+%	\end{center}
+\end{lemma}
+
+
+\begin{theorem}
+	\label{thm:memindeplb}
+	Consider the symmetric MTTKRP computation, $\M{V}=\M{X}_{(1)} (U\odot U)$, where $\M{U}$ and $\M{V}$ are matrices of dimensions $n \times R$ and $\M{X}_{(1)}$, which is the $1$st unfolding matrix of symmetric tensor $\T{X}$, has dimensions $n\times n^2$. 
+	Suppose a parallel atomic algorithm using $P$ processors begins with one copy of $\M{U}$ and the strict lower tetrahedron of $\T{X}$, and ends with one copy of $\M{V}$. 
+	If each processor performs the ternary multiplications associated with $1/P$th of the points in the iteration space involving the strict lower tetrahedron of $\T{X}$, then at least one processor must communicate at least $W$ words of data where 
+	$$W= \begin{cases}
+	\quad 2(\frac{n(n-1)(n-2)}{P})^{1/3}R - 2\frac{nR}{P} &\text{ if } \quad 1\leq R \leq \frac{(n-1)(n-2)}{2^3}  \text{ and } P\leq \frac{n(n-1)(n-2)}{(2^3 R)^{3/2}}\\
+	\quad \frac{((n-1)(n-2))^{3/2}}{6} - \frac{n(n-1)(n-2)}{6P} &\text{ if } \quad \frac{(n-1)(n-2)}{2^3} \leq R \leq n^2 \text{ and } P\leq \frac{2^3nR}{((n-1)(n-2))^{3/2}}\\
+	\quad \frac{5}{2^{1/5}\cdot 3} (\frac{n(n-1)(n-2)R}{P})^{3/5}  - \frac{n(n-1)(n-2)}{6P} - 2\frac{nR}{P} &\text{ if } \quad (1\leq R \leq \frac{(n-1)(n-2)}{2^3}  \text {and } P > \frac{n(n-1)(n-2)}{(2^3 R)^{3/2}}) \text{ or } (\frac{(n-1)(n-2)}{2^3} \leq R \leq n^2 \text{ and } P > \frac{2^3nR}{((n-1)(n-2))^{3/2}})\\
+	\end{cases}.$$
+	
+\end{theorem}
+
+
+\begin{proof}
+	To begin we note that there are $\frac{n(n-1)(n-2)}{6}$ elements in the strict lower tetrahedron of $\T{X}$ and $nR$ elements each in $\M{U}$ and $\M{V}$.
+	There must be a processor that owns at most $1/P$th of these elements as otherwise input and output elements need to be replicated contradicting our assumptions.
+	
+	We determine how many elements this processor must access to perform the ternary multiplications of the assigned iteration points. Let $F$ be the set of points $(i,j,k,r)$ associated with the strict lower tetrahedron of $\T{X}$ assigned to this processor.
+	Then $F\subseteq \{(i,j,k,r)\in\mathbb{Z}^4|i>j>k\}$ and $|F| = \frac{n(n-1)(n-2)R}{6P}$
+	by our assumption that this processor performs $1/P$th of the iteration points.
+	
+	By \Cref{lem:symmHBL}, we know that 
+	$$(6|\phi_{ijk}(F)|)^{2/3}|\phi_{ir}(F) \cup \phi_{jr}(F) \cup \phi_{kr}(F)| \geq 6|F| = \frac{n(n-1)(n-2)R}{P}\text.$$ 
+	
+	The union of projections of $F$, $\phi_{ir}(F) \cup \phi_{jr}(F) \cup \phi_{kr}(F)$, gives the indices of the elements of each matrix $\M{U}$ and $\M{V}$ accessed or modified by the processor.  Similarly, $\phi_{ijk}(F)$ gives the indices of the tensor elements that are accessed by the processor. 
+	By \cref{lem:projlb}, we have lower bound constraints on $|\phi_{ir}(F) \cup \phi_{jr}(F) \cup \phi_{kr}(F)|$ and $|\phi_{ijk}(F)|$: $\frac{nR}{P} \leq |\phi_{ir}(F) \cup \phi_{jr}(F) \cup \phi_{kr}(F)|$ and $\frac{n(n-1)(n-2)}{6P} \leq |\phi_{ijk}(F)|$. Clearly a projection onto an array cannot be larger than the array itself, thus we have $|\phi_{ir}(F) \cup \phi_{jr}(F) \cup \phi_{kr}(F)| \leq nR$ and $ |\phi_{ijk}(F)| \leq \frac{n(n-1)(n-2)}{6}$.
+	
+	To minimize the communication we want to minimize the number of elements accessed by this processor.
+	Thus we want to minimize $|\phi_{ijk}(F)| + 2|\phi_{ir}(F) \cup \phi_{jr}(F) \cup \phi_{kr}(F)|$ subject to the constraints above and the result follows by \cref{lem:symmMTTKRPOpt}.
+\end{proof}
+
+
+\begin{figure*}[htb]
+	\includegraphics[width=0.85\linewidth]{symmetricMTTKRP.JPEG}
+\end{figure*}
+
+
+\section{Parallel Algorithms}
+\label{sec:algorithms}
+\section{Conclusion}
+\label{sec:conclusion}
 
 
 \begin{itemize}
-	\item KKT condition
-	\item HBL inequality
+	\item Future work -- $d$-dimensional computations
 \end{itemize}
 
+%\subsection{Communication lower bounds for the full computation}
+%\begin{theorem}
+%	\label{thm:memindeplb:simplified}
+%	Consider the symmetric MTTKRP computation, $\M{V}=\M{X}_{(1)} (U\odot U)$, where $\M{U}$ and $\M{V}$ are matrices of dimensions $n \times R$ and $\M{X}_{(1)}$, which is the $1$st unfolding matrix of symmetric tensor $\T{X}$, has dimensions $n\times n^2$. 
+%	Suppose a parallel atomic algorithm using $P$ processors begins with one copy of $\M{U}$ and $\T{X}$, and ends with one copy of $\M{V}$. 
+%	If each processor performs the ternary multiplications associated with $1/P$th of the points in the iteration space, then at least one processor must communicate at least $W$ words of data where 
+%	$$W= \begin{cases}
+%	\quad 2(\frac{n(n-1)(n-2)}{P})^{1/3}R - 2\frac{nR}{P} &\text{ if } \quad 1\leq R \leq \frac{(n-1)(n-2)}{2^3}  \text{ and } P\leq \frac{n(n-1)(n-2)}{(2^3 R)^{3/2}}\\
+%	\quad \frac{((n-1)(n-2))^{3/2}}{6} - \frac{n(n-1)(n-2)}{6P} &\text{ if } \quad \frac{(n-1)(n-2)}{2^3} \leq R \leq n^2 \text{ and } P\leq \frac{2^3nR}{((n-1)(n-2))^{3/2}}\\
+%	\quad \frac{5}{2^{1/5}\cdot 3} (\frac{n(n-1)(n-2)R}{P})^{3/5} &\text{ if } \quad (1\leq R \leq \frac{(n-1)(n-2)}{2^3}  \text {and } P > \frac{n(n-1)(n-2)}{(2^3 R)^{3/2}}) \text{ or } (\frac{(n-1)(n-2)}{2^3} \leq R \leq n^2 \text{ and } P > \frac{2^3nR}{((n-1)(n-2))^{3/2}})\\
+%	\end{cases}.$$
+%	
+%\end{theorem}
+%
+%\begin{proof}
+%	\todo[inline]{TODO: for the general statement}
+%\end{proof}
 
-
+\newpage
 
 \section{Cubical MTTKRP Lower Bounds}
 \label{sec:cubMTTKRP}
 \begin{figure*}[htb]
 	\includegraphics[width=0.85\linewidth]{cubicalMTTKRP.JPEG}
 \end{figure*}
-
-\section{Symmetric MTTKRP Lower Bounds}
-\label{sec:symmMTTKRP}
-\begin{figure*}[htb]
-	\includegraphics[width=0.85\linewidth]{symmetricMTTKRP.JPEG}
-\end{figure*}
-
 
 
 %\subsection{Template Parameters}
