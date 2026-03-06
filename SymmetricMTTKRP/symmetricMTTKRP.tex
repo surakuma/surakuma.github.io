@@ -119,12 +119,20 @@
 \newcommand{\aaomttkrp}{All-at-Once MTTKRP\xspace}
 \newcommand{\arraymul}{\emph{ternary multiplication}\xspace}
 \newcommand{\pluseq}{\mathrel{+}=}
-
+\newcommand{\Tra}{{\sf T}} 
 
 \newcommand{\GB}[1]{\textcolor{red}{\textbf{GB:} #1}}
 \newcommand{\KR}[1]{\textcolor{blue}{\textbf{KR:} #1}}
 \newcommand{\SK}[1]{\textcolor{orange}{\textbf{SK:} #1}}
 
+
+
+%% Colors from https://latexcolor.com/
+\definecolor{pastelviolet}{rgb}{0.8, 0.6, 0.79}
+\definecolor{babyblueeyes}{rgb}{0.63, 0.79, 0.95}
+\definecolor{pastelyellow}{rgb}{0.99, 0.99, 0.59}
+\definecolor{pastelgreen}{rgb}{0.47, 0.87, 0.47}
+\definecolor{pastelred}{rgb}{1.0, 0.41, 0.38}
 
 
 \graphicspath{{Figs/}{./}} % Specifies where to look for included images (trailing slash required)
@@ -191,7 +199,7 @@
 %%
 %% The "title" command has an optional parameter,
 %% allowing the author to define a "short title" to be used in page headers.
-\title[Communication Lower Bounds for Symmetric MTTKRP]{Brief Announcement: Communication Lower Bounds for Symmetric Matricized-Tensor Times Khatri-Rao Product}
+\title[Communication Lower Bounds for Symmetric MTTKRP]{Communication Lower Bounds for Symmetric Matricized-Tensor Times Khatri-Rao Product}
 
 %%
 %% The "author" command and its associated commands are used to define
@@ -236,8 +244,6 @@ TODO....
 
 
 %Al Daas et al.~\cite{} 
-
-Our earlier conference article~\cite{} studied the parallel communication cost of multiplying the same vector along two modes of a $3$-dimensional symmetric tensor. This can be viewed as a special case of the present work where the CP rank is $1$.
 
 
 
@@ -321,6 +327,9 @@ An $R$-rank symmetric Canonical Polyadic (CP) decomposition of a $3$-dimensional
 \label{sec:relatedwork}
 TODO..
 
+Our earlier conference article~\cite{} studied the parallel communication cost of multiplying the same vector along two modes of a $3$-dimensional symmetric tensor. This can be viewed as a special case of the present work where the associated CP rank is $1$.
+
+
 
 
 \section{Notations and Preliminaries}
@@ -394,35 +403,25 @@ A parallel atomic symmetric MTTKRP algorithm computes each \emph{\arraymul} on o
 
 \subsection{Computation Model}
 \label{sec:model}
+We use the $\alpha-\beta-\gamma$ computation model \cite{Thakur:CollectiveCommunications:2005,Chan:CollectiveCommunications:2007} on $P$ processor. Each processor operates with data of its local memory. It performs communication to access data residing on other processor's local memory. We assume that the network is fully connected and bi-directional, and each processor can send and receive at most one message at a time. Communication refers to send and receive operations performed by processors. Communication cost depends on the number of messages (latency cost) and the volume of communication (bandwidth cost). For large messages, usually the bandwidth cost dominates latency cost. Therefore, we mainly focus on bandwidth cost in this work. The communication cost of an algorithm is defined as the cost along the critical path.      
+
 
 \section{Fundamental Results}
-\label{sec:dundamental}
-We relate the amount of computations to data accesses in order to determine the minimum amount of data a processor must access to perform its local computations.
-
-
-We obtain the following lemma from \cite[Lemma 4.1]{BKR18} by fixing the number of dimensions. We consider the projections based on the indices of the tensor and matrices used in \Cref{alg:symmMTTKRP:naive}. 
-
-\begin{lemma}
-	\label{lem:basicHBL}
-	Let $V$ be a finite set of points in $\mathbb{Z}^4$. Let $\phi_{ijk}(V)$ be the projection of $V$ in $i-j-k$ space, i.e., all points $(i,j,k)$ such that there exists a $r$ so that $(i,j,k,r) \in V$. Let $\phi_{ir}(V)$ be the projection of $V$ in $i-r$ plane, i.e., all points $(i,r)$ such that there exists a $(j,k)$ so that $(i,j,k,r) \in V$.  Define $\phi_{jr}(V)$ and $\phi_{kr}(V)$ similarly. 
-	Then 
-	$$|V| \leq |\phi_{ijk}(V)|^{2/3} \cdot |\phi_{ir}(V)|^{1/3}\cdot |\phi_{jr}(V)|^{1/3}\cdot |\phi_{kr}(V)|^{1/3}.$$
-\end{lemma}
-
-We now extend \Cref{lem:basicHBL}  for a symmetry et of points corresponding to the first three coordinates.
-\begin{lemma}
-	\label{lem:symmHBL}
-	Let $V$ be a finite set of points in  $\{(i, j, k, r)\in\mathbb{Z}^4 \, | \, i>j>k\}$. Let $\phi_{ijk}(V)$ be the projection of $V$ in $i-j-k$ space, i.e., all points $(i,j,k)$ such that there exists a $r$ so that $(i,j,k,r) \in V$. Let $\phi_{ir}(V)$ be the projection of $V$ in $i-r$ plane, i.e., all points $(i,r)$ such that there exists a $(j,k)$ so that $(i,j,k,r) \in V$.  Define $\phi_{jr}(V)$ and $\phi_{kr}(V)$ similarly. 
-	Then 
-	$$6|V| \leq (6|\phi_{ijk}(V)|)^{2/3} \cdot |\phi_{ir}(V) \cup \phi_{jr}(V) \cup \phi_{kr}(V)|.$$
-\end{lemma}
-
-\begin{proof}
-	TODO....
-\end{proof}
+\label{sec:fundamental}
 
 \subsection{Existing Results}
 \label{sec:fundamental:existingResults}
+The following lemma is proved in \cite{Christ:EECS-2013-61} but we use the statement from~\cite[Lemma 4.1]{BKR18}.
+\begin{lemma}
+	\label{lem:hbl}
+	Consider any positive integers $\ell$ and $m$ and any $m$ projections $\phi_j:\mathbb{Z}^\ell\rightarrow\mathbb{Z}^{\ell_j}$ ($\ell_j\leq \ell$), each of which extracts $\ell_j$ coordinates $S_j\subseteq [\ell]$ and forgets the $\ell-\ell_j$ others.
+	Define
+	$\mathcal{C} = \big\{\V{s} \in[0,1]^m:\M{\Delta}\cdot\V{s}\ge\V{1}\big\}\text,$
+	where the $\ell\times m$ matrix $\M{\Delta}$ has entries
+	$\M{\Delta}_{i,j} = 1 \text{ if } i\in S_j \text{ and } \M{\Delta}_{i,j} = 0 \text{ otherwise}\text.$
+	If $[s_1\ \cdots \ s_m]^\Tra\in\mathcal{C}$, then for all $F\subseteq \mathbb{Z}^\ell$,
+	\vspace*{-0.15cm}$$ |F| \leq \prod_{j\in [m]}|\phi_j(F)|^{s_j}\text.$$
+\end{lemma}
 
 We now present some definitions and results that we use in \Cref{sec:symmMTTKRP} to analytically solve our optimization problems.
 
@@ -456,6 +455,44 @@ We now present some definitions and results that we use in \Cref{sec:symmMTTKRP}
 	Consider an optimization problem of the form given in \cref{eq:optprob}.
 	If $f$ is a convex function and each $g_i$ is a quasiconvex function, then the KKT conditions are sufficient for optimality.	
 \end{lemma}
+
+\subsection{New Results}
+\label{sec:fundamental:new}
+To analyze communication requirements, we focus on the amount of data required by a processor to perform its local computations.
+We relate the set of points in $\mathbb{Z}^4$ which correspond to elements in the iteration space to projections onto three and two dimensional spaces which indicate data accesses.
+
+
+We obtain the following lemma from \cref{lem:hbl} by fixing the number of dimensions. We consider the projections based on the indices of the tensor and matrices used in \Cref{alg:symmMTTKRP:naive}. 
+
+\begin{lemma}
+	\label{lem:simplifiedHBL}
+	Let $V$ be a finite set of points in $\mathbb{Z}^4$. Let $\phi_{ijk}(V)$ be the projection of $V$ on $i-j-k$ space, i.e., all points $(i,j,k)$ such that there exists a $r$ so that $(i,j,k,r) \in V$. Let $\phi_{ir}(V)$ be the projection of $V$ on $i-r$ plane, i.e., all points $(i,r)$ such that there exists a $(j,k)$ so that $(i,j,k,r) \in V$.  Define $\phi_{jr}(V)$ and $\phi_{kr}(V)$ similarly. 
+	Then 
+	$$|V| \leq |\phi_{ijk}(V)|^{2/3} \cdot |\phi_{ir}(V)|^{1/3}\cdot |\phi_{jr}(V)|^{1/3}\cdot |\phi_{kr}(V)|^{1/3}.$$
+\end{lemma}
+\begin{proof}
+%	We focus on projections that are accessed by loop indices in \Cref{alg:symmMTTKRP:naive}. 
+	We define $\phi_{ijk}(V)$ to be the projection of $V$ on $i-j-k$ space, i.e., all points $(i,j,k)$ such that there exists a $r$ so that $(i,j,k,r) \in V$. Similarly, $\phi_{ir}(V)$ to be the projection of $V$ on $i-r$ plane, i.e., all points $(i,r)$ such that there exists a $(j,k)$ so that $(i,j,k,r) \in V$. The projections $\phi_{jr}(V)$ and $\phi_{kr}(V)$ are defined analogously.
+	
+	We recall from \Cref{lem:hbl} that $\M{\Delta}_{a,p}=1$ if index $a$ is present in projection $p$ and $\Delta_{a,p}=0$ otherwise. We set 	$$\Delta = \begin{bmatrix} 1 &  1 & 0  & 0\\ 1 &  0 & 1  & 0 \\ 1 &  0 & 0  & 1 \\ 0 &  1 & 1  & 1 \end{bmatrix}\text.$$
+	
+	The columns of $\M{\Delta}$ correspond to projections $\phi_{ijk}(V)$, $\phi_{ir}(V)$, $\phi_{jr}(V)$ and $\phi_{kr}(V)$, respectively. The rows of $\M{\Delta}$ correspond to indices $i$, $j$, $k$ and $r$, respectively. Note that $\M{\Delta}\cdot\V{s}\ge\V{1}$ for $\V{s} = \begin{bmatrix} 2/3 & 1/3 & 1/3 & 1/3 \end{bmatrix}$. Therefore, by \Cref{lem:hbl}, we obtain the result.
+\end{proof}
+
+
+We now extend \Cref{lem:simplifiedHBL}  for a symmetric set of points corresponding to the first three coordinates.
+\begin{lemma}
+	\label{lem:symmHBL}
+	Let $V$ be a finite set of points in  $\{(i, j, k, r)\in\mathbb{Z}^4 \, | \, i>j>k\}$. Let $\phi_{ijk}(V)$ be the projection of $V$ in $i-j-k$ space, i.e., all points $(i,j,k)$ such that there exists a $r$ so that $(i,j,k,r) \in V$. Let $\phi_{ir}(V)$ be the projection of $V$ in $i-r$ plane, i.e., all points $(i,r)$ such that there exists a $(j,k)$ so that $(i,j,k,r) \in V$.  Define $\phi_{jr}(V)$ and $\phi_{kr}(V)$ similarly. 
+	Then 
+	$$6|V| \leq (6|\phi_{ijk}(V)|)^{2/3} \cdot |\phi_{ir}(V) \cup \phi_{jr}(V) \cup \phi_{kr}(V)|.$$
+\end{lemma}
+
+\begin{proof}
+	TODO....
+\end{proof}
+
+
 
 \begin{lemma}
 	\label{lem:quasiconvex:x23y}
@@ -511,10 +548,28 @@ We now present some definitions and results that we use in \Cref{sec:symmMTTKRP}
 		\item If $\frac{(n-1)(n-2)}{2^3} \leq R \leq n^2$ and $P\leq \frac{2^3nR}{((n-1)(n-2))^{3/2}}$ then $x_1^* = \frac{((n-1)(n-2))^{3/2}}{6}, x_2^* = \frac{nR}{P};$
 		\item If ($1\leq R \leq \frac{(n-1)(n-2)}{2^3}$  and $P > \frac{n(n-1)(n-2)}{(2^3 R)^{3/2}}$) or ($\frac{(n-1)(n-2)}{2^3} \leq R \leq n^2$ and $P > \frac{2^3nR}{((n-1)(n-2))^{3/2}}$) then $x_1^* = \frac{2^{4/5}}{3} (\frac{n(n-1)(n-2)R}{P})^{3/5},  x_2^* =\frac{3x_1^*}{4}$.
 	\end{itemize}
-	This can be visualized as follows:
-	\todo[inline]{complete the visualization part}
+	This can be visualized as follows:\\
+%	\todo[inline]{complete the visualization part}
 	Case I: $1\leq R \leq \frac{(n-1)(n-2)}{2^3}$\\
-	Case II: $\frac{(n-1)(n-2)}{2^3} \leq R \leq n^2$
+	\begin{center}
+		\begin{tikzpicture}[scale=0.5, every node/.style={transform shape}]
+		\draw [->, thick] (-0.1,0) -- (16,0) node [below right,pastelgreen,scale=2] {$P$};
+		\draw (0, 0.1) -- node [below, pastelred, scale=2]{$1$}(0,-0.1);
+		\draw (8, 0.1) -- node [below, pastelred, scale=2]{$\frac{n(n-1)(n-2)}{(2^3 R)^{3/2}}$}(8,-0.1);	
+		\node[align=left,below,scale=1.5] at (3.5, -0.4) {$x_1^*=\frac{n(n-1)(n-2)}{6P}$\\ $x_2^*=(\frac{n(n-1)(n-2)}{P})^{1/3}R$};
+		\node[align=left,below,scale=1.5] at (12.5, -0.6) {$x_1^*=\frac{2^{4/5}}{3} (\frac{n(n-1)(n-2)R}{P})^{3/5}$\\ $x_2^*=\frac{3x_1^*}{4}$};
+		\end{tikzpicture}
+	\end{center}
+	Case II: $\frac{(n-1)(n-2)}{2^3} \leq R \leq n^2$\\
+	\begin{center}
+		\begin{tikzpicture}[scale=0.5, every node/.style={transform shape}]
+		\draw [->, thick] (-0.1,0) -- (16,0) node [below right,pastelgreen,scale=2] {$P$};
+		\draw (0, 0.1) -- node [below, pastelred, scale=2]{$1$}(0,-0.1);
+		\draw (8, 0.1) -- node [below, pastelred, scale=2]{$\frac{2^3nR}{((n-1)(n-2))^{3/2}}$}(8,-0.1);	
+		\node[align=left,below,scale=1.5] at (3.5, -0.4) {$x_1^*=\frac{((n-1)(n-2))^{3/2}}{6}$\\ $x_2^*=\frac{nR}{P}$};
+		\node[align=left,below,scale=1.5] at (12.5, -0.6) {$x_1^*=\frac{2^{4/5}}{3} (\frac{n(n-1)(n-2)R}{P})^{3/5}$\\ $x_2^*=\frac{3x_1^*}{4}$};
+		\end{tikzpicture}
+	\end{center}
 %	\begin{center}
 %		\begin{tikzpicture}[scale=0.5, every node/.style={transform shape}]
 %		\draw [->, thick] (-0.1,0) -- (16,0) node [below right,pastelgreen,scale=2] {$P$};
@@ -528,6 +583,15 @@ We now present some definitions and results that we use in \Cref{sec:symmMTTKRP}
 %		\end{tikzpicture}
 %	\end{center}
 \end{lemma}
+\begin{proof}
+	TODO ..
+	\begin{itemize}
+		\item $P \leq \frac{n(n-1)(n-2)}{(2^3 R)^{3/2}}$ then $\mu_0 =  \frac{2}{3x^2y^2}, \mu_3 = 1-\frac{4y}{3x}$
+		\item $P > \frac{n(n-1)(n-2)}{(2^3 R)^{3/2}}$ then $\mu_0 = \frac{1}{2xy^3} = \frac{2}{3x^2y^2}$
+		\item $P \leq \frac{2^3nR}{((n-1)(n-2))^{3/2}}$ then $\mu_0 = \frac{1}{2xy^3}, \mu_1 = 2-\frac{3x}{2y}$
+		\item $P > \frac{2^3nR}{((n-1)(n-2))^{3/2}}$ then $\mu_0 = \frac{1}{2xy^3} = \frac{2}{3x^2y^2}$
+	\end{itemize}
+\end{proof}
 
 
 \begin{theorem}
@@ -559,13 +623,13 @@ We now present some definitions and results that we use in \Cref{sec:symmMTTKRP}
 	By \cref{lem:projlb}, we have lower bound constraints on $|\phi_{ir}(F) \cup \phi_{jr}(F) \cup \phi_{kr}(F)|$ and $|\phi_{ijk}(F)|$: $\frac{nR}{P} \leq |\phi_{ir}(F) \cup \phi_{jr}(F) \cup \phi_{kr}(F)|$ and $\frac{n(n-1)(n-2)}{6P} \leq |\phi_{ijk}(F)|$. Clearly a projection onto an array cannot be larger than the array itself, thus we have $|\phi_{ir}(F) \cup \phi_{jr}(F) \cup \phi_{kr}(F)| \leq nR$ and $ |\phi_{ijk}(F)| \leq \frac{n(n-1)(n-2)}{6}$.
 	
 	To minimize the communication we want to minimize the number of elements accessed by this processor.
-	Thus we want to minimize $|\phi_{ijk}(F)| + 2|\phi_{ir}(F) \cup \phi_{jr}(F) \cup \phi_{kr}(F)|$ subject to the constraints above and the result follows by \cref{lem:symmMTTKRPOpt}.
+	Thus we want to minimize $|\phi_{ijk}(F)| + 2|\phi_{ir}(F) \cup \phi_{jr}(F) \cup \phi_{kr}(F)|$ subject to the above constraints above. By \Cref{lem:symmMTTKRPOpt}, we obtain the minimum number of elements that must be accessed by this processor. Subtracting the data the processor can own from the result proves the lower bound.
 \end{proof}
 
 
-\begin{figure*}[htb]
-	\includegraphics[width=0.85\linewidth]{symmetricMTTKRP.JPEG}
-\end{figure*}
+%\begin{figure*}[htb]
+%	\includegraphics[width=0.85\linewidth]{symmetricMTTKRP.JPEG}
+%\end{figure*}
 
 
 \section{Parallel Algorithms}
@@ -596,13 +660,13 @@ We now present some definitions and results that we use in \Cref{sec:symmMTTKRP}
 %	\todo[inline]{TODO: for the general statement}
 %\end{proof}
 
-\newpage
-
-\section{Cubical MTTKRP Lower Bounds}
-\label{sec:cubMTTKRP}
-\begin{figure*}[htb]
-	\includegraphics[width=0.85\linewidth]{cubicalMTTKRP.JPEG}
-\end{figure*}
+%\newpage
+%
+%\section{Cubical MTTKRP Lower Bounds}
+%\label{sec:cubMTTKRP}
+%\begin{figure*}[htb]
+%	\includegraphics[width=0.85\linewidth]{cubicalMTTKRP.JPEG}
+%\end{figure*}
 
 
 %\subsection{Template Parameters}
