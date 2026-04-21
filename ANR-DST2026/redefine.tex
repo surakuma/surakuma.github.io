@@ -1,0 +1,587 @@
+%\documentclass{article}
+\documentclass[a4paper,11pt]{article}
+\usepackage[margin=2cm,bottom=4cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage[table]{xcolor}
+\usepackage{makecell}
+\usepackage{lipsum}
+
+
+
+
+\usepackage[light,math]{iwona}
+\usepackage{fullpage}
+\usepackage[utf8]{inputenc}
+\usepackage[american]{babel}
+\usepackage{amsfonts,amsmath,wasysym} %% Additional math chars
+\usepackage{marvosym}
+\usepackage{eurosym}
+
+\usepackage{booktabs}
+\usepackage{colortbl}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{eurosym}
+
+\usepackage{etoolbox}
+\usepackage{tikz}
+\usepackage{tikzscale}
+\usetikzlibrary{matrix}
+\usetikzlibrary{fit}
+\usetikzlibrary{trees}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{patterns}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{arrows}
+\usetikzlibrary{matrix}
+\usetikzlibrary{trees}
+\usetikzlibrary{positioning}
+\usepackage{mdframed}
+
+
+
+
+\pagestyle{fancy}
+
+% Clear default header/footer
+\fancyhf{}
+
+% Define header
+%\fancyhead[L]{Your Name}        % Left side
+\fancyhead[C]{
+%\makebox[\paperwidth]{%
+{
+\footnotesize
+%\small
+%\setlength{\tabcolsep}{3pt}
+	\rowcolors{1}{cyan!20}{cyan!20} 
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		%	\rowcolor{cyan!20} % light blue row
+		\rowcolor{cyan!35} % darker cyan for header
+		\cellcolor{cyan!35}\makecell{ANR-DST\\ $\ $ bilateral call $\ \;$} & \multicolumn{2}{c|}{\normalsize \textbf{REDEFINE}} & 2026 Edition \\
+		\hline
+		\rowcolor{cyan!10} % lighter cyan for content
+		Coordinated by: & \makecell{French PI: Suraj KUMAR $\quad$\\
+			Indian PI: Arijit MONDAL} & \makecell{Duration: 36 months} & \makecell{ANR Requested Funding: 267.3K Euros $\ $\\
+			DST Requested Funding: 12922.2K INR} \\
+		\hline
+	\end{tabular}
+}
+}  % Center
+%\fancyhead[R]{\thepage}        % Right side (page number)
+
+%% Adjust header height (very important)
+\setlength{\headheight}{45pt}
+\renewcommand{\headrulewidth}{0pt}
+\setlength{\headsep}{12pt}
+
+\fancyfoot[R]{\thepage}
+\setlength{\footskip}{5pt}
+%\renewcommand{\footrulewidth}{0.4pt}
+
+\begin{document}
+	
+\vspace*{0.5cm} % space below header
+
+\begin{center}
+	{\LARGE \textbf{REDEFINE: Robust and Explainable DEep neural networks For INfErence}}
+\end{center}
+
+\vfill
+	\emph{Deep learning models have achieved remarkable success across a wide range of applications; however, their vulnerability to adversarial perturbations and lack of interpretability limit their deployment in safety-critical domains. Small, human-imperceptible changes to input data can lead to significant misclassification, raising serious concerns regarding the robustness, reliability, and trustworthiness of such systems. Addressing these challenges requires a unified approach that combines robust model design with meaningful and stable explanations.}
+	
+	\emph{This project aims to develop a comprehensive framework for robust and explainable deep learning, grounded in matrix analysis, spectral theory, and adaptive learning mechanisms. The proposed approach introduces an ensemble of small, orthogonal neural networks with controlled spectral properties to reduce perturbation amplification and improve stability under adversarial conditions. To enhance interpretability, the project explores non-negative matrix and tensor factorization techniques for extracting low-rank, semantically meaningful representations from model parameters and feature spaces.}
+	
+	\emph{A key innovation lies in integrating large language models (LLMs) as reasoning engines that utilize matrix-derived properties such as singular values, condition numbers, and covariance structures along with saliency-based information to generate robustness-aware, human-interpretable explanations. Furthermore, a reinforcement learning (RL)-based control module will be developed to enable adaptive inference, where multiple evaluation strategies and model configurations are dynamically selected to ensure reliable decision-making.}
+
+	\emph{By unifying spectral robustness, factorization-based interpretability, LLM-driven reasoning, and RL-based adaptive control, the proposed project seeks to advance the state of the art in trustworthy AI. The outcomes are expected to facilitate the deployment of safe, reliable, and explainable deep learning systems in critical applications such as healthcare, autonomous systems, and cybersecurity.
+	}
+%\section{Persons involved in the project}
+\vfill
+\begin{center}
+	\textbf{Persons involved in the project.}
+	\begin{tabular}{|c|c|c|c|c|c|}
+		\hline
+		\textbf{Country} & \textbf{Institution} & \textbf{Full Name} & \textbf{Current Position} & \makecell{\bf Involvement\\ (person months)} \\
+		\hline
+		France & Inria Lyon & Suraj KUMAR   & ISFP  & 20\\ \hline
+		France & CNRS & Loris MARCHAL & DR2  & 8\\ \hline
+		France & Inria Lyon & PhD student & To be hired  & 36\\ \hline
+		France & Inria Lyon & Engineer & To be hired & 12\\ \hline
+		\hline
+		India & IIT Patna & Arijit MONDAL  & Assistant Professor & 9\\ \hline
+		India & IIT Patna & Jimson MATHEW & Professor & 4.5\\ \hline
+		India & IIT Patna & Research fellow & To be hired & 36\\ \hline
+		India & IIT Patna & Research fellow & To be hired & 36\\ \hline
+		India & IIT Patna & Research fellow & To be hired & 36\\ \hline
+	\end{tabular}
+	
+\end{center}
+\vfill
+\newpage
+
+\section{Context, positioning and objectives}
+%Importance of the proposed project in the context of current status: (500)
+
+Adversarial vulnerabilities in deep learning models have become a critical concern. It is well known that adding small, human-imperceptible perturbations to input images can cause even highly accurate models to produce incorrect predictions. These attacks reveal fundamental weaknesses, particularly the high sensitivity and instability of current deep learning systems.
+
+The risks are especially severe in safety-critical applications such as autonomous driving, medical diagnosis, and patient monitoring in intensive care units, where incorrect predictions can lead to catastrophic consequences. As deep learning systems are increasingly deployed in real-world environments, ensuring their robustness, reliability, and trustworthiness is essential.
+
+Although training on large-scale datasets improves accuracy, it does not guarantee robustness against adversarial or distributional perturbations. Moreover, most state-of-the-art models operate as black boxes, providing little insight into their decision-making processes. This lack of interpretability reduces user trust and limits their adoption in high-stakes domains.
+
+The proposed project addresses these challenges by developing robust and explainable deep learning frameworks. It proposes ensembles of small, orthogonal neural networks that provide complementary strengths, improving resistance to adversarial perturbations. By incorporating spectral constraints and matrix-theoretic principles, the approach enhances stability and numerical conditioning.
+
+In addition, the project focuses on generating transparent and human-understandable explanations. Overall, the work aims to enable safe, reliable, and trustworthy AI systems for critical applications.
+
+
+
+%\subsection{Objectives and research hypothesis}
+\subsection{Objectives}
+%Objective of the Project
+The primary objective of this project is to design and develop robust, explainable, and reliable deep learning models for inference under adversarial and distributional uncertainties, leveraging matrix analysis, spectral theory, and adaptive learning frameworks.
+
+\begin{enumerate}
+	\item We aim to develop robust deep neural network architectures capable of defending against state-of-the-art adversarial attacks on image data. The approach will utilize an ensemble of small, spectrally-constrained and orthogonal neural networks, where complementary behaviors across models mitigate individual vulnerabilities. By enforcing orthogonality, bounded spectral norms, and low condition numbers, the proposed models will limit perturbation amplification and improve stability. The ensemble strategy will further enhance fault tolerance, generalization, and attack resilience.
+
+	\item To enhance model transparency, we propose to develop non-negative matrix and tensor factorization (NMF/NTF)-based methods for interpreting learned representations. These methods will enable decomposition of deep network parameters and feature maps into parts-based, low-rank, and semantically meaningful components, facilitating explainable feature attribution. Additionally, factorization will support model compression, dimensionality reduction, and efficient inference, reducing the complexity of large-scale architectures while preserving performance.
+	\item We propose a novel large language model (LLM)-driven interpretability framework, where algebraic and statistical properties of network parameters such as singular values, spectral norms, condition numbers, and covariance structures are used as auxiliary inputs. The LLM will act as a reasoning and explanation engine, translating these matrix-derived metrics into human-interpretable insights, enabling diagnostic analysis, consistency checking, and robustness-aware explanations.
+	\item To further enhance robustness, we aim to integrate a reinforcement learning (RL)-based decision and control module that dynamically guides inference. The RL agent will leverage feedback from robustness metrics, uncertainty estimates, and sensitivity analysis to perform adaptive evaluation, model selection, and confidence calibration. This enables multi-stage inference, where predictions are refined iteratively to ensure stability, reliability, and robustness under adversarial and uncertain conditions.
+\end{enumerate}
+
+
+%\subsection{Position of the project as it relates to the state of the art}
+%%State-of-the-art
+\subsection{State of the art and novelty of the proposed work}
+%Developing adversarial attacks and defense against such attacks have drawn attention to many researchers. This is like cat and mouse games. People have proposed many different kinds of attacks such as FGSM, PGD, BIM, AutoAttack, CW, etc.There exists many defense techniques to counter adversarial attack. This includes adversarial training, ensemble based models, different noise filtering techniques, etc. Researchers have come up with different interpretation techniques as well. This includes grad-cam, saliency map, integrated gradients, heat map, etc. However, robust deep learning models are still the need of the hour to avoid unwanted situations in the critical care system.
+
+%Research on adversarial machine learning has attracted signifcant
+%attention in recent years, often described as a “cat-and-mouse” game
+%between attack and defense strategies. A wide range of adversarial
+%attacks—such as Fast Gradient Sign Method (FGSM), Projected Gradient
+%Descent (PGD), BIM, AutoAttack, and Carlini \& Wagner Attack have
+%been proposed to expose vulnerabilities in deep learning models. In
+%response, researchers have developed various defense mechanisms,
+%including adversarial training, ensemble-based approaches, input
+%transformation, and noise fltering techniques. Parallel eforts in model
+%interpretability have led to methods such as Grad-CAM, saliency maps,
+%and Integrated Gradients, which aim to provide insights into model
+%decisions. Despite these advances, achieving truly robust and
+%trustworthy deep learning systems remains an open challenge. Many
+%defenses are effective only against specifc attacks and often fail under
+%adaptive or unseen adversarial strategies. Similarly, existing
+%interpretability methods, while useful, may lack stability and
+%consistency under perturbations. This gap is particularly concerning in
+%safety-critical applications, where unreliable predictions can lead to
+%severe consequences. Therefore, there is a pressing need to develop
+%holistic frameworks that jointly address robustness and interpretability,
+%ensuring dependable performance of deep learning models in real-
+%world and high-risk environments.
+
+
+Research on adversarial machine learning has attracted significant attention in recent years, often described as a “cat-and-mouse” game between attack and defense strategies~\cite{PM+17,BR18}. A wide range of adversarial attacks such as Fast Gradient Sign Method (FGSM)~\cite{goodfellow2015explainingharnessingadversarialexamples}, Projected Gradient Descent (PGD)~\cite{madry2019deeplearningmodelsresistant}, BIM~\cite{kurakin2017adversarialexamplesphysicalworld}, AutoAttack~\cite{CH20}, and Carlini \& Wagner Attack~\cite{carlini2017evaluatingrobustnessneuralnetworks} have been proposed to expose vulnerabilities in deep learning models. In response, researchers have developed various defense mechanisms, including adversarial training~\cite{madry2019deeplearningmodelsresistant}, ensemble-based approaches~\cite{D00}, input transformation~\cite{guo2018counteringadversarialimagesusing}, and noise filtering techniques~\cite{ZL+23}. Parallel efforts in model interpretability have led to methods such as Grad-CAM~\cite{SC+17}, saliency maps~\cite{simonyan2014deepinsideconvolutionalnetworks}, and Integrated Gradients~\cite{STY17}, which aim to provide insights into model decisions. Despite these advances, achieving truly robust and trustworthy deep learning systems remains an open challenge~\cite{tsipras2019robustnessoddsaccuracy}. Many defenses are effective only against specific attacks and often fail under adaptive or unseen adversarial strategies~\cite{uesato2018adversarialriskdangersevaluating}. Similarly, existing interpretability methods, while useful, may lack stability and consistency under perturbations~\cite{GAZ19}. This gap is particularly concerning in safety-critical applications, where unreliable predictions can lead to severe consequences~\cite{LZ24}. Therefore, there is a pressing need to develop holistic frameworks that jointly address robustness and interpretability, ensuring dependable performance of deep learning models in real-world and high-risk environments~\cite{LZ24,tsipras2019robustnessoddsaccuracy}.
+
+
+
+
+\subsubsection{Scientific and technical novelty of the proposed work}
+The proposed project introduces a set of novel, integrated methodologies that advance the state of the art in robust and explainable deep learning, with a strong foundation in matrix analysis, spectral theory, and adaptive learning frameworks.
+\begin{enumerate}
+	\item We propose the design of ensembles of small, orthogonal deep neural networks with explicitly controlled spectral norms and condition numbers. Unlike conventional monolithic architectures, this modular approach leverages complementary decision boundaries across models, enabling one model to compensate for the vulnerabilities of others. By enforcing orthogonality and Lipschitz constraints, the framework inherently limits perturbation amplification, leading to improved adversarial robustness, numerical stability, and generalization. This represents a shift from single-model defenses to cooperative, matrix-theoretically grounded architectures.
+	
+	\item The project introduces non-negative matrix and tensor factorization (NMF/NTF) as a principled tool for interpreting deep neural networks. By decomposing weight matrices and feature tensors into low-rank, parts-based representations, the approach yields semantically meaningful and human-interpretable components. In addition to explainability, this factorization enables model compression, redundancy reduction, and efficient inference, bridging the gap between interpretability and computational efficiency -- an area that remains underexplored in current literature.
+	
+	\item A key novelty lies in integrating large language models (LLMs) with algebraic analysis of neural network parameters. The proposed framework feeds the LLM with matrix-derived descriptors including singular values, spectral distributions, condition numbers, and covariance structures along with saliency maps and feature attributions. This enables the LLM to generate context-aware, robustness-informed explanations, moving beyond surface-level interpretations toward structured reasoning over model internals. Furthermore, the project explores fine-tuning LLMs using algebraic and saliency-guided supervision, a novel direction for enhancing explanation fidelity and consistency.
+	
+	\item The project proposes a reinforcement learning (RL)-based agent that dynamically orchestrates the inference process. Instead of relying on a single forward pass, the RL agent utilizes robustness metrics, uncertainty estimates, and sensitivity analyses to guide multi-stage evaluation, model selection, and decision refinement. This enables adaptive inference, where the system can re-evaluate, defer, or calibrate predictions before issuing a final verdict. Such a closed-loop, feedback-driven mechanism significantly enhances reliability, robustness, and trustworthiness, particularly in adversarial and uncertain environments.
+	
+\end{enumerate}
+
+\subsection{Our methodology details}
+
+%Proposed Methodology Details: (1000)
+
+The project is structured around two tightly coupled verticals: (i) robustness of deep learning models under adversarial and distributional perturbations, and (ii) explainability through principled, matrix-based analysis. A unifying layer based on matrix metrics (spectral norms, singular values, condition numbers, and covariance structures) bridges these verticals, while a reinforcement learning (RL) engine provides adaptive control for reliable inference.
+
+Robustness of deep learning models:
+\begin{itemize}
+	\item Ensemble of small orthogonal models - Conventional monolithic models often rely on a limited set of highly discriminative features, making them vulnerable to small, adversarial perturbations. To address this, we propose an ensemble of compact, orthogonally-constrained deep neural networks, designed to learn diverse and complementary feature subspaces. Each model will be trained with orthogonality constraints and bounded spectral norms, ensuring Lipschitz continuity and limiting perturbation amplification. This will improve numerical stability and gradient flow. We will explicitly promote representation diversity across models using decorrelation losses / subspace separation, so that failures of one model are compensated by others. Predictions will be aggregated using robust fusion strategies (e.g., confidence-weighted averaging, disagreement-aware voting, or learned gating), improving fault tolerance. Models will be evaluated against gradient-based (FGSM/PGD), optimization-based (C\&W), and black-box attacks, along with distribution shift scenarios. Robustness is quantified using attack success rate, worst-case accuracy, and certified bounds (via spectral/Lipschitz estimates). This module delivers a modular, spectrally grounded architecture that is inherently more resistant to adversarial noise than single large models.
+	
+	\item Matrix metric aware LLM based explanation generation - To ensure trustworthy inference, we will introduce a novel LLM-driven explainability layer that reasons over matrix-theoretic descriptors of the model. A set of matrix features will be extracted and the same will be used to fine tune the LLM. From each model (and the ensemble), we will compute singular values / spectral norms (stability, sensitivity), condition numbers (numerical conditioning), feature covariance / eigen-spectra (representation structure), saliency maps / attribution scores (input relevance). These descriptors, along with predictions and uncertainties, are fed into an LLM via structured prompts. We further explore fine-tuning with algebraic supervision, aligning explanations with spectral and perturbation-based evidence. The LLM will generate human-interpretable justifications, robustness diagnostics (e.g., “high sensitivity due to elevated spectral norm in layer k”), consistency checks across ensemble members. We will evaluate perturbation-stability of explanations, ensuring that explanations remain consistent under small input changes -- crucial for reliable interpretability. This module will move beyond surface-level saliency to reasoned, matrix-aware explanations, tightly coupled with robustness.
+	
+	\item RL engine for improving robustness - We will design a high-level RL agent that orchestrates inference to enhance robustness, reliability, and user-aligned performance. The agent will observe prediction confidence, disagreement across ensemble, spectral metrics, gradient-based sensitivity, and uncertainty estimates. The agent will select ensemble members, trigger re-evaluation (e.g., with input smoothing, augmentation, or alternative pathways), adjust thresholds (accept/reject/defer), invoke explanation checks via the LLM. We will develop a reward function that balances accuracy, adversarial robustness (worst-case loss), stability (low sensitivity), and explanation consistency. Moreover, the agent enables iterative decision-making, performing multiple evaluation rounds before issuing a final verdict when risk is high.  Over time, the RL policy learns to allocate compute and model choices efficiently, improving robustness under varying attack strengths and data shifts.
+	
+\end{itemize}
+
+Explainability aspects of the deep neural networks:
+%Generation of explanations -- In this part, we focus on the explainable aspects of the deep neural networks. 
+\begin{itemize}
+	\item Low-rank adaptation (LoRA)~\cite{hu2021loralowrankadaptationlarge} based analysis: LoRA is an efficient technique for fine-tuning large language models without updating all their parameters. It freezes the original weights and trains only a small number of additional parameters in their low-rank formats. We plan to apply this technique to classify images in two ways.
+	\begin{itemize}
+		\item First, we train the network in a conventional way. After that, we divide it into two parts. In the first part, we keep the weights fixed; in the second part, we retrain the parameters in a low-rank format. The main idea behind our approach is that the first part extracts important features from the images, while the second, low-rank part makes the decision.
+		
+		\item Similar to the first approach, we view the network as consisting of two parts. The first part detects important features from the images. The second part is composed of several LoRA adapters, some of which are selected based on the input image.
+	\end{itemize}
+	\item Gradient-weighted Class Activation Mapping (Grad-CAM) based analysis: Grad-CAM is a popular technique to visualize which parts of an image are important in the network to make a decision. We plan to focus on such parts. This approach will enable us to consider the explainability of small segments.
+	
+	\item Non-negative Matrix Factorization (NMF) based analysis: NMF decomposes a matrix into parts that are additive and non-negative. The results are relatively easy to interpret. We also plan to analyze weight matrices in deep neural networks using NMF.
+	
+	\item Similarity between models: Comparing two models, in general, is difficult. We plan to analyze two models based on Grad-CAM analysis. If the decisions are made based on the same segments, there are high chances that both models are similar. We also plan to analyze portions of two models with the help of low-rank and/or non-negative factorizations.
+\end{itemize}
+
+
+
+%\subsection{Methodology and risk management}
+%risk management
+\subsection{Risk management}
+The proposed project involves development of mathematical models and software. The risk associated with the project are as follows:
+Limited robustness improvement - In case orthogonal deep learning models may not yield expected robustness, we can characterize joint effects of multiple models. This can provide more insight to the problem. Such knowledge can provide us with more ideas how the models can be improved. 
+Robustness vs accuracy tradeoff - Improving robustness may degrade clean accuracy. We will use multi-objective optimization and ensemble fusion strategies to balance accuracy–robustness trade-offs.
+
+
+%\subsection{Ability of the project to address the research issues covered by the chosen research theme}
+
+\section{Organisation and implementation of the project}
+
+
+
+We present the French and Indian PIs and their teams in Section~\ref{sec:org:team}. Table~\ref{tab:human} summarizes the implication of each member of the project, including people hired by this project. We detail the cost of the project in Section~\ref{sec:org:costs}.
+	\begin{table}[htb]
+	\begin{center}
+		\begin{center}
+			\begin{tabular}{|c|c|c|c|c|c|}
+				\hline
+				\textbf{Country} & \textbf{Institution} & \textbf{Full Name} & \textbf{Current Position} & \makecell{\bf Involvement\\ (person months)} \\
+				\hline
+				France & Inria Lyon & Suraj KUMAR   & ISFP  & 20\\ \hline
+				France & CNRS & Loris MARCHAL & DR2  & 8\\ \hline
+				France & Inria Lyon & PhD student & To be hired  & 36\\ \hline
+				France & Inria Lyon & Engineer & To be hired & 12\\ \hline
+				\hline
+				India & IIT Patna & Arijit MONDAL  & Assistant Professor & 9\\ \hline
+				India & IIT Patna & Jimson MATHEW & Professor & 4.5\\ \hline
+				India & IIT Patna & Research fellow & To be hired & 36\\ \hline
+				India & IIT Patna & Research fellow & To be hired & 36\\ \hline
+				India & IIT Patna & Research fellow & To be hired & 36\\ \hline
+			\end{tabular}
+		\end{center}
+	\end{center}
+	\caption{Human resources.}
+	\label{tab:human}
+\end{table}
+
+
+\subsection{Scientific coordinators and their teams}
+\label{sec:org:team}
+
+\subsubsection{French coordinator and his team}
+Suraj Kumar holds an Inria Starting Faculty Position (ISFP) since October 2022 in the ROMA Inria team, which is hosted at École Normale Supérieure de Lyon (ENS Lyon). He is an expert in designing algorithms for low-rank approximations and in tensor computations. He has active collaborations with EPFL, in particular with Laura Grigori, and with Wake Forest University, USA, in particular with Grey Ballard, both of whom are experts in designing efficient algorithms for low-rank approximations. These collaborations will be beneficial to the implementation of the project. The French PI will dedicate 20 person months on this project.
+
+The project also includes Loris Marchal (DR2, CNRS, HdR). He is an expert in designing approaches to efficiently utilize resources for generative AI. The major recruitments of the project for the French side are a PhD student and an engineer. The PhD student is expected to join the project from the beginning and will focus on the explainability of deep neural network models. Loris Marchal will help the PI in supervising the PhD student and is expected to be a PhD co-advisor. The engineer is expected to be hired for 12 months, starting at the middle of the 2nd year. He/She will implement the proposed approaches by the PhD student on multiple GPUs.
+
+
+\subsubsection{Indian coordinator and his team}
+Arijit Mondal is an Assistant Professor at IIT Patna. He has expertise in the robustness of deep learning models, with prior work focusing on adversarial resilience, secure inference, and practical deployment in real-world scenarios. The Indian PI will dedicate 9 person-months to this project. Jimson Mathew (Professor, IIT Patna) is also involved in the project. He is an expert in computer vision.
+
+The major recruitment on the Indian side for this project includes three research fellows. They will join the project from the beginning. They may also continue as PhD students after the project concludes. In such a scenario, they will receive stipends from the institute after three years.
+
+%Justification for collaboration
+
+\subsubsection{Justification for collaboration}
+The proposed collaboration between Indian Institute of Technology Patna and INRIA is strategically designed to leverage complementary expertise and address the interdisciplinary challenges of robust and explainable deep learning.
+
+The Indian team at IIT Patna brings substantial expertise in robustness of deep learning models, with prior work focusing on adversarial resilience, secure inference, and practical deployment in real-world scenarios. Their experience in developing and evaluating defense mechanisms against adversarial and distributional attacks provides a strong application-driven foundation for the project.
+
+In contrast, the INRIA team contributes deep theoretical strength in mathematical analysis of matrices and tensors, including spectral theory, matrix perturbation analysis, and tensor decomposition techniques. Their expertise enables rigorous formulation of stability guarantees, interpretability frameworks, and principled model design grounded in advanced mathematics.
+
+The convergence of these two domains -- applied robustness and theoretical matrix analysis -- is essential for addressing the emerging need for trustworthy AI systems. Robustness and interpretability are inherently multi-disciplinary problems, requiring insights from machine learning, linear algebra, optimization, and statistical analysis. The proposed collaboration uniquely positions the team to bridge this gap and develop a holistic framework that integrates theoretical guarantees with practical robustness and explainability.
+
+Furthermore, both teams have demonstrated strong research capabilities, evidenced by publications in leading international venues and successful execution of high-impact, funded research projects. Their prior experience in handling large-scale, collaborative research initiatives ensures effective coordination, knowledge exchange, and timely delivery of project outcomes.
+
+This collaboration is expected to foster bilateral knowledge transfer, combining algorithmic innovation with mathematical rigor, and enabling the development of novel methodologies that neither team could achieve independently. The partnership will also strengthen long-term research ties between India and France in the domain of trustworthy and reliable artificial intelligence, aligning with global priorities in AI safety and deployment.
+
+%\subsection{Implemented and requested resources to reach the objectives}
+
+
+\subsection{Requested resources}
+\label{sec:org:costs}
+
+\subsubsection{Requested resources from ANR by the French side}
+\paragraph{Staff} A PhD student (36 months), an engineer (12 months) will be hired for the project. 
+
+\paragraph{Mission, traveling} The project includes funding for participation in international and national conferences and workshops. It also covers travel costs for French partners visiting India, as well as expenses for hosting Indian partners in Lyon. The details are as follows:
+
+\begin{itemize}
+	\item Attending 2 international conferences for the PI, 2 for the PhD student during 3 years. Cost: (2+2) $\times $ 3.75K Euros $=$ 15K Euros.
+	\item Attending 3 workshops/conferences in France for the PI, 3 for the PhD student during 3 years. Cost: (3+3) $\times$ 1K Euros $=$ 6K Euros.
+	\item Flight tickets to visit Patna (2 for the PI, 3 for the student, and 1 for the Co-PI) during 3 years. Cost: (2+3+1) $\times$ 1.6K Euros $=$ 9.6K Euros.
+	\item Hosting Indian partners in Lyon (15 days for the Indian PI, 90 days for Indian students (3 students, 30 days for each student)) during 3 years: (15+90) $\times$ 180 Euros $=$ 18.9K Euros.  
+\end{itemize}
+We plan to organize a two-day workshop on leveraging low-rank approximations in deep neural networks  in Lyon at the middle of Year 2, whose cost (food and breaks) will be partly supported by this project (20 people). Cost: 3K Euros.
+
+\paragraph{Inward billing} Laptops for the PhD student and the engineer. Cost: 2$\times$2.5K Euro $=$ 5K Euro.
+\paragraph{Experimental resources for the French side} We will initially use the machines available at ENS Lyon for our experiments. We also plan to ask compute-hours on GENCI to test scalability of our proposed approaches. We are not requesting any funding for experimental platforms.
+	\begin{table}
+		\begin{center}
+  			 \begin{tabular}{|c|c|c|c|c|}
+				\hline 
+				 Items & \multicolumn{4}{c|}{Budget in Euros}\\ 
+				\hline 
+				  & 1st Year & 2nd Year & 3rd Year & Total\\ 
+				\hline 
+				 PhD Student (36 months) & 42K & 42K & 42K & 126K \\ \hline
+				 Engineer (12 months) & 0 & 26 K & 26K & 52K \\ \hline
+				 Laptop (2) & 2.5K & 2.5K & 0 & 5K  \\ \hline
+				 Local conferences/workshops (6) & 2K & 2K & 2K & 6K \\ \hline
+				 Round trip flight ticket to India (6) & 3.2K & 3.2K & 3.2K & 9.6K \\ \hline
+				 International conferences (4) & 3K & 6K & 6K & 15K \\ \hline
+				 Host Indian partners (105 days) & 8.1K & 5.4K & 5.4K & 18.9K \\ \hline
+				 Organize a workshop (partial cost) & 0 & 3K & 0 & 3K \\ \hline
+				 Administrative cost & 31.8K & 0 & 0 & 31.8K \\ \hline
+				Total & 92.6K  & 90.1K  & 84.6K & 267.3K \\ \hline
+			\end{tabular}
+		\caption{Estimated cost of the project for the French side.	\label{tab:costs:French}}
+		\end{center}
+	\end{table}
+
+
+\subsubsection{Requested resources from DST by the Indian side}
+
+Three research fellows, each for 36 months, will be hired for the project. Other expenses mainly include travel, hosting French partners in India, and purchasing hardware equipment (a GPU server, a Jetson board, and a Workstation).
+
+\begin{table}[htb]
+	\begin{center}
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		Items              & \multicolumn{4}{l}{Budget in Lakhs INR (1 Lakh = 100K)}      \\ \hline
+%		& Y1     & Y2     & Y3     & Total   \\ \hline
+  		& 1st Year & 2nd Year & 3rd Year & Total\\ \hline
+		Capital Equipment & 33     & 0      & 0      & 33      \\ \hline
+		Software          & 0      & 0      & 0      & 0       \\ \hline
+		Consumables       & 1.85   & 0.85   & 0.85   & 3.55    \\ \hline
+		Manpower          & 15.12  & 15.12  & 15.12  & 45.36   \\ \hline
+		Travel            & 1      & 2      & 2      & 5       \\ \hline
+		Exchange visit    & 3.35   & 3.725  & 5.2    & 12.275  \\ \hline
+		Others            & 0      & 0      & 7      & 7       \\ \hline
+		Contingencies     & 0.5    & 0.5    & 0.5    & 1.5     \\ \hline
+		Overhead (20\%)   & 10.964 & 4.439  & 6.134  & 21.537  \\ \hline
+		Total             & 65.784 & 26.634 & 36.804 & 129.222\\ \hline
+	\end{tabular}
+		\caption{Estimated cost of the project for the Indian side.	\label{tab:costs:Indian}}
+	\end{center}
+\end{table}
+
+\subsection{Exchange visits}
+We provide the details of our exchange visits here.
+\subsubsection*{Patna (India) to Lyon (France)}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+	\hline
+	\textbf{Year} & \textbf{Number of visitors} & \textbf{Duration (Number of Days)} & \textbf{Details of visitors}\\ \hline
+	1st Year & 1 & 30 & Research fellow 1\\ \hline
+	2nd Year & 1 & 30 & Research fellow 2\\ \hline
+	3rd Year & 2 & 45 & \makecell{Research fellow 3 for 30 days,\\ Indian PI for 15 days}\\ \hline
+\end{tabular}
+\end{center}
+
+\subsubsection*{Lyon (France) to Patna (India)}
+
+\begin{center}
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\textbf{Year} & \textbf{Number of visitors} & \textbf{Duration (Number of Days)} & \textbf{Details of visitors}\\ \hline
+		1st Year & 2 & 45 & \makecell{PhD student for 30 days,\\ French PI for 15 days}\\ \hline
+		2nd Year & 2 & 60 & \makecell{PhD student for 45 days,\\ French Co-PI for 15 days}\\ \hline
+		3rd Year & 2 & 30 & \makecell{PhD student for 15 days,\\ French PI for 15 days}\\ \hline
+	\end{tabular}
+\end{center}
+
+\subsection{Year wise work}
+The Indian team will primarily focus on the robustness aspect of deep learning models. The team will plan to develop an ensemble of small orthogonal deep learning models. Small models can reduce computing resources and orthogonality of models can improve robustness of the model. The team will also build a LLM based methodology to provide explanations. They will also be responsible for development of an RL agent that can guide the user for better robustness through a series of evaluations. 
+
+
+The primary role for the French team will be development of mathematical models for the analysis of deep learning models. This will include low rank based analysis. It can help reduce the size of models as well as provide more insight about the model in terms of orthogonality, condition number, etc. Further, the team will also look into different schemes of interpretability models such as saliency map, grad-cam, etc. Both teams will collaborate with each other.
+
+
+\subsubsection*{Year 1:}
+\begin{itemize}
+	\item \textbf{Objectives}
+	\begin{enumerate}
+		\item Literature survey on adversarial attacks (FGSM, PGD, CW, etc.), robustness measures, LLM based explainability method, reinforcement learning based policy design
+		\item Design of small orthogonal models for building robust model, analysis of robustness measures
+		\item Development of LLM based pipeline for explainability generation taking account algebraic analysis outcomes, evaluation of explanation quality
+		\item Development of RL agent with reward function that considers accuracy, sensitivity, confidence score etc. for improving robustness
+		
+		\item Perform a low-rank based analysis to understand which patterns are detected across different portions.
+	\end{enumerate}
+	\item \textbf{Relevant activity}
+	\begin{itemize}
+		\item Indian team: Literature survey, development of small models, evaluation for orthogonality measures, setting up LLM pipeline, development of RL engine
+		\item French team: Literature survey on mathematical models for deep learning models, low rank based analysis
+	\end{itemize}
+	\item \textbf{Responsible for each objective} Indian team (1,2,3,4), French team (5)
+\end{itemize}
+
+\subsubsection*{Year 2:}
+\begin{itemize}
+	\item \textbf{Objectives}
+	\begin{enumerate}
+		\item Development of ensemble of orthogonal models, study and evaluation of complementarity and diversity metrics, evaluation against attacks such as PGD, AutoAttack, etc.
+		\item Fine tuning of LLMs using matrix metrics, saliency maps, heat maps, etc. Development of structured prompt for better explanation generation, comparison of explanation under perturbation
+		\item Integration of robustness metrics in RL engine, evaluation against adversarial attack, development of multi stage pipeline, adaptive re-evaluation strategy.
+		
+		\item Use Grad-CAM based analysis to identify the parts that are important for making a decision.
+		\item Apply non-negative matrix/tensor factorization to the weight matrices to improve the explainability of the networks.
+		\item Implementation of the proposed low-rank based networks on state-of-the-art hardware platforms.
+	\end{enumerate}
+	\item \textbf{Relevant activity}
+	\begin{itemize}
+		\item Indian team: Development of ensemble of orthogonal models, evaluation against attacks, algebraic analysis based fine tuning of LLM for explainability, multi-stage RL engine development and performance evaluation
+		\item French team: Grad-CAM based analysis to identify the important parts, non-negative matrix/tensor factorization to the weight matrices, implementation of low-rank based analyzer
+	\end{itemize}
+	\item \textbf{Responsible for each objective} Indian team (1,2,3), French team (4,5,6)
+\end{itemize}
+
+\subsubsection*{Year 3:}
+\begin{itemize}
+	\item \textbf{Objectives}
+	\begin{enumerate}
+		\item Rigorous testing of robust models against different attacks, optimization for efficient inference, final benchmarking
+		\item Development of robustness aware explanations, explainability engine, integration with other blocks
+		\item Combine RL with LLM feedback, full system integration, performance evaluation of the system
+		\item Full integration of all modules in a single platform
+		%Suraj:
+		\item Study similarities between deep neural network models to understand their learned representations, architectural behaviors, and decision-making processes.
+		\item Scalability study of the low-rank based implementations on multiple GPUs.
+	\end{enumerate}
+	\item \textbf{Relevant activity}
+	\begin{itemize}
+		\item Indian team: Full integration of different modules, rigorous testing of tool, performance evaluation, optimization for inference
+		\item French team: Similarity analysis between learned representation of deep learning models and decision making process, scalability of low rank analysis
+	\end{itemize}
+	\item \textbf{Responsible for each objective} Indian team (1,2,3,4), French team (5,6)
+\end{itemize}
+
+
+
+
+%\begin{tabular}{|c|c|c|c|c|c|}
+%	\hline
+%	\textbf{Country} & \textbf{Institution} & \textbf{Full Name} & \textbf{Current Position} & \textbf{Role in the project} & \makecell{\bf Involvement\\ (person months)} \\
+%	\hline
+%	France & Inria Lyon & Suraj KUMAR   & ISFP & R1 & 20\\ \hline
+%	France & CNRS & Loris MARCHAL & DR2 & R1 & 8\\ \hline
+%	France & Inria Lyon & PhD student & To be hired & R3 & 36\\ \hline
+%	France & Inria Lyon & Engineer & To be hired & R3 & 12\\ \hline
+%	\hline
+%	India & IIT Patna & Arijit MONDAL  & Assistant Professor & R1 & 9\\ \hline
+%	India & IIT Patna & Jimson MATHEW & Professor & R1 & 4.5\\ \hline
+%	India & IIT Patna & Research fellow & To be hired & R3 & 36\\ \hline
+%	India & IIT Patna & Research fellow & To be hired & R3 & 36\\ \hline
+%	India & IIT Patna & Research fellow & To be hired & R3 & 36\\ \hline
+%\end{tabular}
+
+
+
+
+
+
+%\section{Impact and benefits of the project}
+\section{Impact of the project}
+%Expected results of this corporation (e.g. joint publications, patents, etc. Please explain whether the expected results are likely to have commercial value and how intellectual property rights will be shared.)
+
+Through this project we expect that several joint publications will be made. There will be separate publications from the individual team also. Depending on the progress of the project we may plan for patents or commercializing the intellectual property. In such a case, the ownership will lie with both teams.
+ 
+
+Through this project we plan to develop mathematical models as well as software tools. Depending on the outcome we may explore commercialization of the software tools. Also, we may plan to come up with a more focused elective subject for the undergraduate, graduate students. We may also plan for a short term course on a similar domain.
+
+%
+%At the Collaborating Indian Institutions *
+%The Indian team will look into mostly the robustness aspect of the project. For which it will rely on orthogonal deep learning models. The Indian will develop an LLM based pipeline for explanation generation. They will also develop a multi-stage RL engine. Both teams will interact on a regular basis and contribute to all aspects.
+%
+%
+%At the Collaborating French Institutions : *
+%The French team will primarily be responsible for developing mathematical models. This will include a low rank approximation of the weight matrix/tensor. The team will analyze the models using matrix based methods and the extracted information will be propagated to LLM for more meaningful explanation generation.
+%
+
+
+
+%\vspace{1cm}
+
+%{\Large \sc \textbf{REDEFINE: Robust and Explainable DEep neural networks for INfErence}}
+%\section{First Section}
+
+
+
+%{\footnotesize
+%\rowcolors{1}{cyan!20}{cyan!20} 
+%\begin{tabular}{|c|c|c|c|}
+%	\hline
+%%	\rowcolor{cyan!20} % light blue row
+%	\rowcolor{cyan!35} % darker cyan for header
+%	\cellcolor{cyan!35}\makecell{ANR-DST\\ $\ $ bilateral call $\ \;$} & \multicolumn{2}{c|}{\small \textbf{REDEFINE}} & 2026 Edition \\
+%	\hline
+%	\rowcolor{cyan!10} % lighter cyan for content
+%	Coordinated by: & \makecell{French PI: Suraj KUMAR\\
+%	Indian PI: Arijit MONDAL} & \makecell{Duration\\ 36 months} & \makecell{ANR Requested Funding: 267.3K Euros\\
+%	DST Requested Funding: abc INR} \\
+%	\hline
+%\end{tabular}
+%}
+
+
+\bibliographystyle{IEEEtranS}
+%\bibliographystyle{unsrt}
+\bibliography{redefine}
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+%\documentclass{article}
+%\usepackage[a4paper,margin=1in]{geometry}
+%\usepackage{fancyhdr}
+%
+%\pagestyle{fancy}
+%\fancyhf{} % clear default header/footer
+%
+%% Put table in header
+%\fancyhead[L]{%
+%	\begin{tabular}{|c|c|c|c|}
+%		\hline
+%		A & \multicolumn{2}{c|}{B and C} & D \\
+%		\hline
+%		E & F & G & H \\
+%		\hline
+%	\end{tabular}
+%}
+%
+%% Adjust header height (very important)
+%\setlength{\headheight}{60pt}
+%
+%\begin{document}
+%	
+%	\section{Page 1}
+%	Some text.
+%	
+%	\newpage
+%	
+%	\section{Page 2}
+%	More text.
+%	
+%\end{document}
+
+
