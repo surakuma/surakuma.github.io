@@ -1,0 +1,575 @@
+% Gemini theme
+% https://github.com/anishathalye/gemini
+
+\documentclass[final]{beamer}
+
+% ====================
+% Packages
+% ====================
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+%\usepackage[size=custom,width=118.9,height=84.1,scale=1.0]{beamerposter}
+\usepackage[orientation=portrait,size=a0,scale=1.05]{beamerposter}
+\usetheme{gemini}
+\usecolortheme{gemini}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.14}
+\usepackage{anyfontsize}
+\usepackage{xcolor}
+
+
+
+\usepackage{todonotes}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{xspace}
+
+%\usepackage{amsthm}
+%\newtheorem{lemma}{Lemma}
+%\newtheorem{theorem}{Theorem}
+
+\usepackage{cleveref}
+\Crefname{definition}{Definition}{Definitions}
+\crefname{definition}{Def.}{Defs.}
+\Crefname{theorem}{Theorem}{Theorems}
+\crefname{theorem}{Theorem}{Theorems}
+\Crefname{lemma}{Lemma}{Lemmas}
+\crefname{lemma}{Lemma}{Lemmas}
+\Crefname{section}{Section}{Sections}
+\crefname{section}{\S}{\S}
+\crefname{algorithm}{Alg.}{Algs.}
+\Crefname{algorithm}{Algorithm}{Algorithms}
+\crefname{figure}{Fig.}{Figs.}
+\Crefname{figure}{Figure}{Figures}
+\crefname{table}{Tab.}{Tabs.}
+\Crefname{table}{Table}{Tables}
+
+
+
+% ====================
+% Lengths
+% ====================
+
+% If you have N columns, choose \sepwidth and \colwidth such that
+% (N+1)*\sepwidth + N*\colwidth = \paperwidth
+\newlength{\sepwidth}
+\newlength{\colwidth}
+\setlength{\sepwidth}{0.025\paperwidth}
+\setlength{\colwidth}{0.465\paperwidth}
+
+\newcommand{\separatorcolumn}{\begin{column}{\sepwidth}\end{column}}
+
+
+
+
+
+
+
+
+% vector
+\newcommand{\V}[2][]{{\bm{#1\mathbf{\MakeLowercase{#2}}}}}
+% matrix
+\newcommand{\M}[2][]{{\bm{#1\mathbf{\MakeUppercase{#2}}}}}
+% tensor
+\newcommand{\T}[2][]{\boldsymbol{#1\mathscr{\MakeUppercase{#2}}}}
+
+
+\newcommand{\Real}{\mathbb{R}}
+\newcommand{\vc}[1]{\bm{#1}}
+\newcommand{\frobenius}[1]{\left\| #1 \right\|}
+
+\newcommand{\arraymul}{\emph{ternary multiplication}\xspace}
+\newcommand{\pluseq}{\mathrel{+}=}
+\newcommand{\Tra}{{\sf T}} 
+
+% ====================
+% Title
+% ====================
+
+\title{Minimizing Communication for Parallel Symmetric Matricized-Tensor Times Khatri-Rao Products}
+
+\author{Grey Ballard \inst{1} \and Alimzhan Gumran \inst{2} \and \underline{Suraj Kumar} \inst{2} \and Kathryn Rouse \inst{3}}
+
+\institute[shortinst]{\inst{1} Wake Forest University, USA \samelineand \inst{2} Inria and ENS Lyon, France \samelineand \inst{3} Inmar Intelligence, USA}
+
+
+
+%Ballard, Grey (2); Gumran, Alimzhan (1); Kumar, Suraj (1); Rouse, Kathryn (3)
+%Organisation(s): 1: Inria and ENS Lyon, France; 2: Wake Forest University; 3: Inmar Intelligence
+% ====================
+% Footer (optional)
+% ====================
+
+\footercontent{
+	Suraj Kumar (Inria \& ENS Lyon, France) \hfill
+%  \href{https://www.example.com}{https://www.example.com} \hfill
+%  ABC Conference 2025, New York --- XYZ-1234 \hfill
+  \href{mailto:suraj.kumar@inria.fr}{suraj.kumar@inria.fr}
+}
+% (can be left out to remove footer)
+
+% ====================
+% Logo (optional)
+% ====================
+
+% use this to include logos on the left and/or right side of the header:
+% \logoright{\includegraphics[height=7cm]{logo1.pdf}}
+% \logoleft{\includegraphics[height=7cm]{logo2.pdf}}
+
+% ====================
+% Body
+% ====================
+
+\begin{document}
+
+\begin{frame}[t]
+\begin{columns}[t]
+\separatorcolumn
+
+
+
+\begin{column}{\colwidth}
+\begin{block}{Symmetric MTTKRP}
+	An $R$-rank Canonical Polyadic (CP) decomposition of a $3$-dimensional symmetric tensor $\T{X}$ expresses it as a sum of $R$ symmetric rank-one tensors. More precisely, there is a matrix $\M{U}$ whose $r$th column is denoted by $\V{u}_r$, such that $\T{X} \approx \sum_{r=1}^R \V{u}_r \circ \V{u}_{r} \circ \V{u}_{r}$, where $\circ$ denotes an outer product. As $\T{X}$ is symmetric, therefore $\T{X}_{ijk}$ is same for all permutations of $i$, $j$ and $k$.
+%	 \Cref{alg:cpals} specifies a method to compute symmetric CP decomposition of a $3$-dimensional tensor.
+\begin{algorithm}[H]
+	\caption{CP-ALS method to compute symmetric CP decomposition\label{alg:cpals}}
+	\begin{algorithmic}[1]
+		\Require $\T{X}\in \Real^{n\times n\times n}$ is a symmetric 3-dimensional tensor, initial factor matrix $\M{U}\in \Real^{n\times R}$
+		\Ensure $\big(\lambda \in \Real^R, \M{U} \in \Real^{n\times R}\big)$ : A rank-$R$ CP decomposition of $\T{X}$
+		\State Initialize each column of $\M{U}$ to a random unit vector (or based on a heuristic)
+		\Repeat
+		\State $\M{G} = (\M{U}^T\M{U}) \ast (\M{U}^T\M{U})$ \Comment{$\ast$ denotes the elementwise product}
+		\State $\M{V} = \M{X_{(1)}}(\M{U}\odot \M{U})$
+		\State $\M{U} = \M{V}\M{G}^\dagger$ \Comment $G^\dagger$ is the pseudo inverse of $G$
+		\State Normalize columns of $\M{U}$ and store norms in $\lambda$
+		\Until{convergence or the maximum number of iterations}
+	\end{algorithmic}
+\end{algorithm}
+ $\M{X_{(1)}}(U\odot U)$ is the bottleneck computation of this algorithm and known as the symmetric Matricized-Tensor Times Khatri-Rao Product (MTTKRP). Here $\M{X_{(1)}}$ denotes the first unfolding matrix of $\T{X}$ and $\odot$ denotes Khatri-Rao product.
+
+\end{block}
+\begin{block}{Symmetric MTTKRP pseudocode}
+		\begin{algorithmic}
+			\Require $\T{X}\in \Real^{n\times n\times n}$ is a symmetric tensor and $\M{U}\in \Real^{n\times R}$ is a matrix.
+			\Ensure $\M{V}\in \Real^{n\times R}$ such that  $\M{V} = \M{X_{(1)}} (\M{U}\odot \M{U})$.
+			\State Initialize matrix $\M{V}$ to $0$
+			\For{$i=1 \text{ to } n$}
+			\For{$j=1 \text{ to } i$}
+			\For{$k=1 \text{ to } j$}
+			\Statex\Comment{Make all possible uses of $\T{X}_{ijk}$, $i\geq j\geq k$ }
+			\For{$r=1 \text{ to } R$}
+
+%			\State $\M{V}_{ir} \pluseq \T{X}_{ijk}\cdot \M{U}_{jr} \cdot \M{U}_{kr}$
+			\If{$i\neq j$ and $j\neq k$}\Comment{An off-diagonal entry}
+			\State $\M{V}_{ir} \pluseq 2\T{X}_{ijk}\cdot \M{U}_{jr} \cdot \M{U}_{kr}$
+			\State $\M{V}_{jr} \pluseq 2\T{X}_{ijk}\cdot \M{U}_{ir} \cdot \M{U}_{kr}$
+			\State $\M{V}_{kr} \pluseq 2\T{X}_{ijk}\cdot \M{U}_{ir} \cdot \M{U}_{jr}$
+			\ElsIf{$i==j$ and $j\neq k$}\Comment{A non-central diagonal entry}
+			\State $\M{V}_{ir} \pluseq 2\T{X}_{ijk}\cdot \M{U}_{jr} \cdot \M{U}_{kr}$
+			\State $\M{V}_{kr} \pluseq \T{X}_{ijk}\cdot \M{U}_{ir} \cdot \M{U}_{jr}$
+			\ElsIf{$i\neq j$ and $j==k$}\Comment{A non-central diagonal entry}
+			\State $\M{V}_{ir} \pluseq \T{X}_{ijk}\cdot \M{U}_{jr} \cdot \M{U}_{kr}$
+			\State $\M{V}_{jr} \pluseq 2\T{X}_{ijk}\cdot \M{U}_{ir} \cdot \M{U}_{kr}$
+			\Else\Comment{A central diagonal entry, $i==j==k$ case}
+			\State $\M{V}_{ir} \pluseq \T{X}_{ijk}\cdot \M{U}_{jr} \cdot \M{U}_{kr}$
+			\EndIf
+			\EndFor
+			\EndFor
+			\EndFor
+			\EndFor
+		\end{algorithmic}
+%	\end{algorithm}
+%\end{column}
+	The $\M{V} = \M{X_{(1)}} (\M{U}\odot \M{U})$ computation can be computed directly element-wise as $\M{V}_{ir} =\sum_{j}\sum_{k} \T{X}_{ijk}\cdot \M{U}_{jr} \cdot \M{U}_{kr}$. We call the operation $\T{X}_{ijk}\cdot \M{U}_{jr} \cdot \M{U}_{kr}$ as \arraymul. The above algorithm takes advantage of symmetry and performs roughly half of the \arraymul operations compared to the direct way.
+
+\end{block}
+
+\begin{block}{Existing work on symmetric matrix computtions}
+	\begin{minipage}{0.725\linewidth}
+		\begin{itemize}
+			\item To work with $a\times a$ \textcolor{red}{square block} of the symmetric matrix
+			\begin{itemize}
+				\item requires $2a$ elements of a non-symmetric matrix
+			\end{itemize}
+			\item For the same amount of computation with a \textcolor{orange}{triangle block}
+			\begin{itemize}
+				\item requires only $\sqrt{2}a$ elements of a non-symmetric matrix
+			\end{itemize}
+		\end{itemize}
+	\end{minipage}\hfill
+\begin{minipage}{0.265\linewidth}
+	\begin{tikzpicture}[scale=0.75]
+
+% Lower triangular matrix region
+\fill[cyan!20] (0,0) -- (0,16) -- (16,0) -- cycle;
+
+\fill[orange] (4,7.8) -- ++(4.2,0) -- ++(-4.2, 4.2) --cycle;
+
+\fill[red] (1,1) -- ++(3,0) -- ++(0,3) -- ++(-3,0) --cycle;
+
+
+\end{tikzpicture}
+\end{minipage}
+
+	
+
+
+\textcolor{brown}{Approach to minimize communication}:  express computations in terms of triangle blocks
+
+\heading{An example for $13\times13$ blocks on $13$ processors}
+
+
+\begin{minipage}{0.495\linewidth}
+	Each color represents the blocks handled by a \newline specific processor.
+	\vspace*{2cm}
+	\begin{itemize}
+		\item Triangle block set of processor $7$: $\{2,7,9,13\}$
+		\begin{itemize}
+			\item Performs all computations associated with $6$ off-diagonal blocks: $(7,2), (9,2), (13,2), (9,7), (13,7), (13,9)$
+		\end{itemize}
+		\item Also performs computations associated with one diagonal block: $(7,7)$
+	\end{itemize}
+\end{minipage}\hfill
+\begin{minipage}{0.475\linewidth}
+\vspace*{-0.375cm}\begin{center}	
+	\begin{tikzpicture}[scale=1.325]
+	
+	% colors
+	\definecolor{c1}{RGB}{230,230,255}
+	\definecolor{c2}{RGB}{210,235,255}
+	\definecolor{c3}{RGB}{255,235,190}
+	\definecolor{c4}{RGB}{220,220,220}
+	\definecolor{c5}{RGB}{255,255,180}
+	\definecolor{c6}{RGB}{255,210,220}
+	\definecolor{c7}{RGB}{220,200,255}
+	\definecolor{c8}{RGB}{255,220,190}
+	\definecolor{c9}{RGB}{220,255,200}
+	\definecolor{c10}{RGB}{190,255,210}
+	\definecolor{c11}{RGB}{200,255,255}
+	\definecolor{c12}{RGB}{255,210,255}
+	\definecolor{c13}{RGB}{255,230,120}
+	
+	% matrix size
+	\def\n{13}
+	
+	% grid
+	\foreach \i in {0,...,13}{
+		\draw (\i,0)--(\i,13);
+		\draw (0,\i)--(13,\i);
+	}
+	
+	% labels
+	\foreach \i in {1,...,13}{
+		\node at (\i-0.5,13.4) {\bfseries \i};
+		\node at (-0.4,13.5-\i) {\bfseries \i};
+	}
+	
+	% helper:
+	% \cell{row}{col}{block}
+	\newcommand{\cell}[3]{
+		\fill[c#3] (#2-1,13-#1) rectangle (#2,14-#1);
+		\node at (#2-0.5,13.5-#1) {\small #3};
+	}
+
+
+
+	
+
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	% Lower triangular entries
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\cell{2}{1}{1}
+	
+	\cell{3}{1}{1}
+	\cell{3}{2}{1}
+	
+	\cell{4}{1}{1}
+	\cell{4}{2}{1}
+	\cell{4}{3}{1}
+	
+	\cell{5}{1}{2}
+	\cell{5}{2}{5}
+	\cell{5}{3}{8}
+	\cell{5}{4}{11}
+	
+	\cell{6}{1}{2}
+	\cell{6}{2}{6}
+	\cell{6}{3}{9}
+	\cell{6}{4}{12}
+	\cell{6}{5}{2}
+	
+	\cell{7}{1}{2}
+	\cell{7}{2}{7}
+	\cell{7}{3}{10}
+	\cell{7}{4}{13}
+	\cell{7}{5}{2}
+	\cell{7}{6}{2}
+	
+	\cell{8}{1}{3}
+	\cell{8}{2}{5}
+	\cell{8}{3}{10}
+	\cell{8}{4}{12}
+	\cell{8}{5}{5}
+	\cell{8}{6}{12}
+	\cell{8}{7}{10}
+	
+	\cell{9}{1}{3}
+	\cell{9}{2}{7}
+	\cell{9}{3}{9}
+	\cell{9}{4}{11}
+	\cell{9}{5}{11}
+	\cell{9}{6}{9}
+	\cell{9}{7}{7}
+	\cell{9}{8}{3}
+	
+	\cell{10}{1}{3}
+	\cell{10}{2}{6}
+	\cell{10}{3}{8}
+	\cell{10}{4}{13}
+	\cell{10}{5}{8}
+	\cell{10}{6}{6}
+	\cell{10}{7}{13}
+	\cell{10}{8}{3}
+	\cell{10}{9}{3}
+	
+	\cell{11}{1}{4}
+	\cell{11}{2}{5}
+	\cell{11}{3}{9}
+	\cell{11}{4}{13}
+	\cell{11}{5}{5}
+	\cell{11}{6}{9}
+	\cell{11}{7}{13}
+	\cell{11}{8}{5}
+	\cell{11}{9}{9}
+	\cell{11}{10}{13}
+	
+	\cell{12}{1}{4}
+	\cell{12}{2}{6}
+	\cell{12}{3}{10}
+	\cell{12}{4}{11}
+	\cell{12}{5}{11}
+	\cell{12}{6}{6}
+	\cell{12}{7}{10}
+	\cell{12}{8}{10}
+	\cell{12}{9}{11}
+	\cell{12}{10}{6}
+	\cell{12}{11}{4}
+	
+	\cell{13}{1}{4}
+	\cell{13}{2}{7}
+	\cell{13}{3}{8}
+	\cell{13}{4}{12}
+	\cell{13}{5}{8}
+	\cell{13}{6}{12}
+	\cell{13}{7}{7}
+	\cell{13}{8}{12}
+	\cell{13}{9}{7}
+	\cell{13}{10}{8}
+	\cell{13}{11}{4}
+	\cell{13}{12}{4}
+	
+	
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	% Diagonal tile entries
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\cell{1}{1}{3}
+	\cell{2}{2}{5}
+	\cell{3}{3}{10}
+	\cell{4}{4}{1}
+	\cell{5}{5}{11}
+	\cell{6}{6}{2}
+	\cell{7}{7}{7}
+	\cell{8}{8}{13}
+	\cell{9}{9}{6}
+	\cell{10}{10}{12}
+	\cell{11}{11}{9}
+	\cell{12}{12}{8}
+	\cell{13}{13}{4}
+	
+	
+	\end{tikzpicture}
+	
+\end{center}
+\end{minipage}	
+
+\begin{itemize}
+	\item A triangle block partition for $n \times n$ blocks symmetric matrix exists on $P$ processors when $n=P=q^2+q+1$ for some prime $q$ (by the properties of projective planes or Steiner systems) 
+%	\item Existence of the bound
+\end{itemize}
+\heading{References}
+{\small
+\begin{itemize}
+	\item Beaumont et al. (2022) I/O-Optimal Algorithms for Symmetric Linear Algebra Kernels. In Proceedings of the 34th ACM Symposium on Parallelism in Algorithms and Architectures (SPAA '22)
+	\item Al Daas et al. (2025) Communication Lower Bounds and Optimal Algorithms for Symmetric Matrix Computations. ACM Transactions on Parallel Computing (TOPC '25)
+\end{itemize}
+}
+
+\end{block}
+
+
+
+\end{column}
+
+\separatorcolumn
+
+\begin{column}{\colwidth}
+
+\begin{block}{Communication lower bound}
+	We obtain the following result by fixing the number of dimensions in \emph{Lemma 4.1} of (Ballard et al., Communication Lower Bounds for Matricized Tensor Times Khatri-Rao Product, (IPDPS '18)).
+	
+%	\begin{lemma}
+\emph{
+		Let $V$ be a finite set of points in $\mathbb{Z}^4$. Let $\phi_{ijk}(V)$ be the projection of $V$ on $i-j-k$ space, i.e., all points $(i,j,k)$ such that there exists a $r$ so that $(i,j,k,r) \in V$. Let $\phi_{ir}(V)$ be the projection of $V$ on $i-r$ plane, i.e., all points $(i,r)$ such that there exists a $(j,k)$ so that $(i,j,k,r) \in V$.  Define $\phi_{jr}(V)$ and $\phi_{kr}(V)$ similarly. 
+		Then 
+		$$|V| \leq |\phi_{ijk}(V)|^{2/3} \cdot |\phi_{ir}(V)|^{1/3}\cdot |\phi_{jr}(V)|^{1/3}\cdot |\phi_{kr}(V)|^{1/3}.$$
+	}
+%	\end{lemma}
+We extend the above result for a symmetric set of points corresponding to the first three coordinates. Let $V$ be a finite set of points in  $\{(i, j, k, r)\in\mathbb{Z}^4 \, | \, i>j>k\}$, then
+	$$6|V| \leq (6|\phi_{ijk}(V)|)^{2/3} \cdot |\phi_{ir}(V) \cup \phi_{jr}(V) \cup \phi_{kr}(V)|.$$
+We consider that each processor performs equal amount of \arraymul operations, We solve the following optimization problem to determine the minimum number of entries accessed on a processor to perform its share of operations.
+\heading{Optimization problem}
+	$$\min |\phi_{ijk}(V)| + 2|\phi_{ir}(V) \cup \phi_{jr}(V) \cup \phi_{kr}(V)| \quad \text{subject to}\qquad\qquad\qquad\qquad\qquad\qquad$$
+$$(6|\phi_{ijk}(V)|)^{2/3} \cdot |\phi_{ir}(V) \cup \phi_{jr}(V) \cup \phi_{kr}(V)| \geq 6\left(\frac{n(n-1)(n-2)R}{6P}\right) $$
+%$$|\phi_{ijk}(V)|^2|\phi_{ir}(V) \cup \phi_{jr}(V) \cup \phi_{kr}(V)|^3 \geq \frac{1}{6^2}\left(\frac{n(n-1)(n-2)R}{P}\right)^3,$$
+$$\frac{n(n-1)(n-2)}{6P} \leq |\phi_{ijk}(V)| \leq \frac{n(n-1)(n-2)}{6},$$
+$$\frac{nR}{P} \leq |\phi_{ir}(V) \cup \phi_{jr}(V) \cup \phi_{kr}(V)| \leq nR,$$
+where $P,n$, and $R$ are all positive integers greater than or equal to 1.
+\heading{Minimum communication (bandwidth) cost}
+\emph{Communication lower bound} = $|\phi_{ijk}(V)|^* + 2|\phi_{ir}(V) \cup \phi_{jr}(V) \cup \phi_{kr}(V)|^* -W$, where $W$ denotes the data owned by the processor.
+
+We assume that there is one copy of input and output data at the beginning and the end. There exists a processor who has at most $1/Pth$ of overall data. Therefore, $W=\frac{n(n-1)(n-2)}{6P} + 2\frac{nR}{P}$.
+
+Usually $R$ is not very large. For $R \leq \frac{(n-1)(n-2)}{2^3}$ and small $P$, \emph{communication lower bound} $= 2\left(\frac{n(n-1)(n-2)}{P}\right)^{\frac13}R - 2\frac{n}{P}R\text.$
+
+%For the typical case where $R$ is not very large, ($R \leq \frac{(n-1)(n-2)}{2^3}$), and small $P$, \emph{communication lower bound} $= 2\left(\frac{n(n-1)(n-2)}{P}\right)^{1/3}R - 2\frac{nR}{P}\text.$
+\end{block}
+\begin{block}{Communication optimal algorithm for symmetric MTTKRP}
+\textcolor{brown}{Approach}: express computations in terms of tetrahedron blocks
+
+\begin{itemize}
+	\item construct equal size sets such that each triplet is covered and appears in exactly one set
+	\item assign diagonal blocks such that the remaining load is almost balanced and no new entries of the symmetric tensor are required
+\end{itemize}
+
+\vspace*{-0.35cm}
+\heading{An example for $10\times 10 \times 10$ blocks of a symmetric tensor on $30$ processors.}
+%	\begin{tabular}{|c|c|c|c|c|}
+%	\hline
+%	$p$ & $R_p$ & $N_p$ & $D_p$ \\
+%	\hline
+%	1 & \{1,2,3,7\} & \{(2,2,1), (2,1,1), (7,2,2)\} & \{(1,1,1)\} \\
+%	2 & \{1,2,4,5\} & \{(4,4,1), (4,1,1), (5,1,1)\} & \{(2,2,2)\} \\
+%	3 & \{1,2,6,10\} & \{(6,6,1),(10,10,2), (6,1,1)\} & \{(6,6,6)\} \\
+%	4 & \{1,2,8,9\} & \{(8,8,1),(9,9,8), (8,1,1)\} & \{(8,8,8)\} \\
+%	5 & \{1,3,4,10\} & \{(10,10,1),(10,10,3), (10,1,1)\} & \{(3,3,3)\} \\
+%	6 & \{1,3,5,8\} & \{(3,3,1),(8,8,5), (3,1,1)\} & \{(5,5,5)\} \\
+%	7 & \{1,3,6,9\} & \{(9,9,1),(9,9,3), (9,1,1)\} & \{(9,9,9)\} \\
+%	8 & \{1,4,6,8\} & \{(6,6,4),(8,8,6), (6,4,4)\} & \{(4,4,4)\} \\
+%	9 & \{1,4,7,9\} & \{(7,7,1), (9,9,4), (7,1,1))\} & \{(7,7,7)\} \\
+%	10 & \{1,5,6,7\} & \{(5,5,1), (7,7,6), (7,6,6)\} & \{\} \\
+%	11 & \{1,5,9,10\} & \{(9,9,5),(10,10,9), (9,5,5)\} & \{(10,10,10)\}  \\
+%	12 & \{1,7,8,10\} & \{(8,8,7),(10,10,8), (10,8,8)\} & \{\} \\
+%	13 & \{2,3,4,8\} & \{(3,3,2), (3,2,2),(4,2,2)\} & \{\}  \\
+%	14 & \{2,3,5,6\} & \{(5,5,2), (5,2,2),(6,5,5)\} & \{\}  \\
+%	15 & \{2,3,9,10\} & \{(9,9,2), (9,2,2),(10,2,2)\} & \{\}  \\
+%	16 & \{2,4,6,9\} & \{(4,4,2), (9,9,6), (9,6,6)\} & \{\}  \\
+%	17 & \{2,4,7,10\} & \{(7,7,2),(10,10,4), (10,4,4)\} & \{\}  \\
+%	18 & \{2,5,7,9\} & \{(7,7,5),(9,9,7), (7,5,5)\} & \{\} \\
+%	19 & \{2,5,8,10\} & \{(8,8,2), (8,2,2),(10,5,5)\} & \{\}  \\
+%	20 & \{2,6,7,8\} & \{(6,6,2), (6,2,2),(8,6,6)\} & \{\}  \\
+%	21 & \{3,4,5,9\} & \{(4,4,3), (4,3,3),(9,4,4)\} & \{\}  \\
+%	22 & \{3,4,6,7\} & \{(6,6,3), (6,3,3),(7,3,3)\} & \{\}  \\
+%	23 & \{3,5,7,10\} & \{(5,5,3), (5,3,3),(10,3,3)\} & \{\}  \\
+%	24 & \{3,6,8,10\} & \{(8,8,3),(10,10,6), (8,3,3)\} & \{\}  \\
+%	25 & \{3,7,8,9\} & \{(7,7,3), (9,7,7),(9,3,3)\} & \{\}  \\
+%	26 & \{4,5,6,10\} & \{(5,5,4), (5,4,4),(10,10,5)\} & \{\}  \\
+%	27 & \{4,5,7,8\} & \{(7,7,4), (7,4,4),(8,7,7)\} & \{\}  \\
+%	28 & \{4,8,9,10\} & \{(8,8,4), (8,4,4),(10,9,9)\} & \{\}  \\
+%	29 & \{5,6,8,9\} & \{(6,6,5), (8,5,5) (9,8,8)\} & \{\} \\
+%	30 & \{6,7,9,10\} & \{(10,6,6),(10,10,7), (10,7,7)\} & \{\}  \\
+%	\hline
+%\end{tabular}
+
+\begin{center}
+	\scalebox{0.965}{
+	\begin{tabular}{|c|c|c|c|c|}
+	\hline
+	$p$ & $R_p$ & $N_p$ & $D_p$ \\
+		\hline
+		1  & $\{1,2,3,4\}$ & $\{(2,2,1),(2,1,1),(3,3,1)\}$ & $\{(1,1,1)\}$ \\
+		2  & $\{1,2,5,6\}$ & $\{(6,6,1),(6,1,1),(6,2,2)\}$ & $\{(2,2,2)\}$ \\
+		3  & $\{1,2,7,8\}$ & $\{(7,7,1),(7,1,1),(8,8,7)\}$ & $\{(7,7,7)\}$ \\
+		4  & $\{1,2,9,10\}$ & $\{(10,10,1),(10,1,1),(9,2,2)\}$ & $\{(9,9,9)\}$ \\
+		5  & $\{1,3,5,7\}$ & $\{(3,1,1),(5,5,3),(5,3,3)\}$ & $\{(3,3,3)\}$ \\
+		6  & $\{1,3,6,9\}$ & $\{(9,9,1),(9,1,1),(9,9,6)\}$ & $\{(6,6,6)\}$ \\
+		7  & $\{1,3,8,10\}$ & $\{(8,8,1),(8,1,1),(10,10,8)\}$ & $\{(10,10,10)\}$ \\
+		8  & $\{1,4,5,10\}$ & $\{(4,4,1),(4,1,1),(5,4,4)\}$ & $\{(5,5,5)\}$ \\
+		9  & $\{1,4,6,8\}$ & $\{(6,6,4),(6,4,4),(8,8,4)\}$ & $\{(8,8,8)\}$ \\
+		10 & $\{1,4,7,9\}$ & $\{(7,7,4),(7,4,4),(9,9,7)\}$ & $\{(4,4,4)\}$ \\
+		11 & $\{1,5,8,9\}$ & $\{(5,5,1),(5,1,1),(9,5,5)\}$ & $\{\}$ \\
+		12 & $\{1,6,7,10\}$ & $\{(10,10,6),(10,6,6),(10,10,7)\}$ & $\{\}$ \\
+		13 & $\{2,3,5,8\}$ & $\{(3,3,2),(3,2,2),(8,5,5)\}$ & $\{\}$ \\
+		14 & $\{2,3,6,10\}$ & $\{(10,10,3),(10,3,3),(6,6,2)\}$ & $\{\}$ \\
+		15 & $\{2,3,7,9\}$ & $\{(9,9,3),(9,3,3),(9,7,7)\}$ & $\{\}$ \\
+		16 & $\{2,4,5,9\}$ & $\{(4,4,2),(4,2,2),(9,9,2)\}$ & $\{\}$ \\
+		17 & $\{2,4,6,7\}$ & $\{(7,7,2),(7,2,2),(7,6,6)\}$ & $\{\}$ \\
+		18 & $\{2,4,8,10\}$ & $\{(8,8,2),(8,2,2),(10,10,2)\}$ & $\{\}$ \\
+		19 & $\{2,5,7,10\}$ & $\{(5,5,2),(5,2,2),(10,2,2)\}$ & $\{\}$ \\
+		20 & $\{2,6,8,9\}$ & $\{(8,6,6),(9,6,6),(9,8,8)\}$ & $\{\}$ \\
+		21 & $\{3,4,5,6\}$ & $\{(4,4,3),(4,3,3),(5,5,4)\}$ & $\{\}$ \\
+		22 & $\{3,4,7,10\}$ & $\{(7,7,3),(7,3,3),(10,10,4)\}$ & $\{\}$ \\
+		23 & $\{3,4,8,9\}$ & $\{(8,8,3),(8,3,3),(8,4,4)\}$ & $\{\}$ \\
+		24 & $\{3,5,9,10\}$ & $\{(9,9,5),(10,10,9),(10,9,9)\}$ & $\{\}$ \\
+		25 & $\{3,6,7,8\}$ & $\{(6,6,3),(6,3,3),(8,8,6)\}$ & $\{\}$ \\
+		26 & $\{4,5,7,8\}$ & $\{(7,7,5),(7,5,5),(8,8,5)\}$ & $\{\}$ \\
+		27 & $\{4,6,9,10\}$ & $\{(9,9,4),(9,4,4),(10,4,4)\}$ & $\{\}$ \\
+		28 & $\{5,6,7,9\}$ & $\{(6,6,5),(6,5,5),(7,7,6)\}$ & $\{\}$ \\
+		29 & $\{5,6,8,10\}$ & $\{(10,10,5),(10,5,5),(10,8,8)\}$ & $\{\}$ \\
+		30 & $\{7,8,9,10\}$ & $\{(8,7,7),(10,7,7),(9,9,8)\}$ & $\{\}$ \\
+		\hline
+	\end{tabular}
+}
+\end{center}
+
+$R_p$: computations associated with each triplet of this set are performed on processor $p$\\
+$N_p \text{ and } D_p$: computations associated with diagonal blocks on processor $p$
+
+%\vspace*{-0.21cm}
+\heading{Work performed by processor $5$}
+%As $R_7= \{1,3,6,9\},  N_7 = \{(9,9,1),(9,9,3), (9,1,1)\} \text{ and } D_7 \{(9,9,9)\}$. THis processor will perform all computations associated with $(6,3,1), (9,3,1), (9,6,1), (9,6,3)$ off-diagonal tiles and $(9,9,1),(9,9,3), (9,1,1), (9,9,9)$ diagonal tiles.  
+
+As $R_5= \{1,3,5,7\},$  $N_5 = \{(3,1,1),(5,5,3),(5,3,3)\} \text{ and } D_5 = \{(3,3,3)\}$. Processor $5$ performs all computations associated with $(5,3,1), (7,3,1), (7,5,1), (7,5,3)$ off-diagonal blocks and $(3,1,1),(5,5,3),(5,3,3), (3,3,3)$ diagonal blocks.  
+
+%$\bullet$  A tetrahedron block partition for $n \times n \times $ blocks symmetric tensor exists on $P$ processors when $n=q^2+1$ and $P=q(q^2+1)$ for some prime $q$ (by the properties of Steiner systems)
+\vspace*{-0.25cm}
+\begin{itemize}
+	\item A tetrahedron block partition for $n \times n \times n$ blocks symmetric tensor exists on $P$ processors when $n=q^2+1$ and $P=q(q^2+1)$ for some prime $q$ (by the properties of Steiner systems) 
+	%	\item Existence of the bound
+\end{itemize}
+
+\end{block}
+
+
+%  \begin{block}{References}
+%
+%    \nocite{*}
+%    \footnotesize{\bibliographystyle{plain}\bibliography{poster}}
+%
+%  \end{block}
+
+\end{column}
+
+\separatorcolumn
+\end{columns}
+\end{frame}
+
+\end{document}
