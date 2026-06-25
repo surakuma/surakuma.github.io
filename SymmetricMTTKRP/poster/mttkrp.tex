@@ -90,7 +90,7 @@
 % Title
 % ====================
 
-\title{Minimizing Communication for Parallel Symmetric Matricized-Tensor Times Khatri-Rao Products}
+\title{Minimizing Communication for Parallel Symmetric Matricized-Tensor Times Khatri-Rao Product}
 
 \author{Grey Ballard \inst{1} \and Alimzhan Gumran \inst{2} \and \underline{Suraj Kumar} \inst{2} \and Kathryn Rouse \inst{3}}
 
@@ -189,7 +189,7 @@
 
 \end{block}
 
-\begin{block}{Existing work on symmetric matrix computtions}
+\begin{block}{Existing work on symmetric matrix computations}
 	\begin{minipage}{0.725\linewidth}
 		\begin{itemize}
 			\item To work with $a\times a$ \textcolor{red}{square block} of the symmetric matrix
@@ -435,7 +435,7 @@
 %	\end{lemma}
 We extend the above result for a symmetric set of points corresponding to the first three coordinates. Let $V$ be a finite set of points in  $\{(i, j, k, r)\in\mathbb{Z}^4 \, | \, i>j>k\}$, then
 	$$6|V| \leq (6|\phi_{ijk}(V)|)^{2/3} \cdot |\phi_{ir}(V) \cup \phi_{jr}(V) \cup \phi_{kr}(V)|.$$
-We consider that each processor performs equal amount of \arraymul operations, We solve the following optimization problem to determine the minimum number of entries accessed on a processor to perform its share of operations.
+We consider that each processor performs equal amount of \arraymul operations. We solve the following optimization problem to determine the minimum number of entries accessed on a processor to perform its share of operations.
 \heading{Optimization problem}
 	$$\min |\phi_{ijk}(V)| + 2|\phi_{ir}(V) \cup \phi_{jr}(V) \cup \phi_{kr}(V)| \quad \text{subject to}\qquad\qquad\qquad\qquad\qquad\qquad$$
 $$(6|\phi_{ijk}(V)|)^{2/3} \cdot |\phi_{ir}(V) \cup \phi_{jr}(V) \cup \phi_{kr}(V)| \geq 6\left(\frac{n(n-1)(n-2)R}{6P}\right) $$
