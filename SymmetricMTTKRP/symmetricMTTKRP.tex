@@ -1,55 +1,32 @@
 %%
-%% This is file `sample-sigconf.tex',
-%% generated with the docstrip utility.
-%%
-%% The original source files were:
-%%
-%% samples.dtx  (with options: `all,proceedings,bibtex,sigconf')
-%% 
-%% IMPORTANT NOTICE:
-%% 
-%% For the copyright see the source file.
-%% 
-%% Any modified versions of this file must be renamed
-%% with new filenames distinct from sample-sigconf.tex.
-%% 
-%% For distribution of the original source see the terms
-%% for copying and modification in the file samples.dtx.
-%% 
-%% This generated file may be distributed as long as the
-%% original source files, as listed above, are part of the
-%% same distribution. (The sources need not necessarily be
-%% in the same archive or directory.)
-%%
-%%
-%% Commands for TeXCount
-%TC:macro \cite [option:text,text]
-%TC:macro \citep [option:text,text]
-%TC:macro \citet [option:text,text]
-%TC:envir table 0 1
-%TC:envir table* 0 1
-%TC:envir tabular [ignore] word
-%TC:envir displaymath 0 word
-%TC:envir math 0 word
-%TC:envir comment 0 0
-%%
-%% The first command in your LaTeX source must be the \documentclass
-%% command.
-%%
-%% For submission and review of your manuscript please change the
-%% command to \documentclass[manuscript, screen, review]{acmart}.
-%%
-%% When submitting camera ready or to TAPS, please change the command
-%% to \documentclass[sigconf]{acmart} or whichever template is required
-%% for your publication.
-%%
-%%
-\documentclass[sigconf]{acmart}
+%% This is file `sample-acmsmall.tex'
+\documentclass[acmsmall]{acmart}
 %%
 %% \BibTeX command to typeset BibTeX logo in the docs
 \AtBeginDocument{%
   \providecommand\BibTeX{{%
     Bib\TeX}}}
+
+
+%% Rights management information.  This information is sent to you
+%% when you complete the rights form.  These commands have SAMPLE
+%% values in them; it is your responsibility as an author to replace
+%% the commands and values with those provided to you when you
+%% complete the rights form.
+\setcopyright{acmlicensed}
+\copyrightyear{2018}
+\acmYear{2018}
+\acmDOI{XXXXXXX.XXXXXXX}
+
+%%
+%% These commands are for a JOURNAL article.
+\acmJournal{TOPC}
+\acmVolume{37}
+\acmNumber{4}
+\acmArticle{12}
+\acmMonth{8}
+
+
 
 
 \let\Bbbk\relax
@@ -134,29 +111,30 @@
 \definecolor{pastelgreen}{rgb}{0.47, 0.87, 0.47}
 \definecolor{pastelred}{rgb}{1.0, 0.41, 0.38}
 
+\pgfplotsset{compat=1.16}
 
 \graphicspath{{Figs/}{./}} % Specifies where to look for included images (trailing slash required)
 
 
-%% Rights management information.  This information is sent to you
-%% when you complete the rights form.  These commands have SAMPLE
-%% values in them; it is your responsibility as an author to replace
-%% the commands and values with those provided to you when you
-%% complete the rights form.
-\setcopyright{acmlicensed}
-\copyrightyear{2026}
-\acmYear{2026}
-\acmDOI{XXXXXXX.XXXXXXX}
-%% These commands are for a PROCEEDINGS abstract or paper.
-\acmConference[SPAA '26]{Communication Lower Bounds for Symmetric Matricized-Tensor Times Khatri-Rao Product}{July 06--10,
-  2026}{London, UK}
-%%
-%%  Uncomment \acmBooktitle if the title of the proceedings is different
-%%  from ``Proceedings of ...''!
-%%
-%%\acmBooktitle{Woodstock '18: ACM Symposium on Neural Gaze Detection,
-%%  June 03--05, 2018, Woodstock, NY}
-\acmISBN{978-1-4503-XXXX-X/2018/06}
+%%% Rights management information.  This information is sent to you
+%%% when you complete the rights form.  These commands have SAMPLE
+%%% values in them; it is your responsibility as an author to replace
+%%% the commands and values with those provided to you when you
+%%% complete the rights form.
+%\setcopyright{acmlicensed}
+%\copyrightyear{2026}
+%\acmYear{2026}
+%\acmDOI{XXXXXXX.XXXXXXX}
+%%% These commands are for a PROCEEDINGS abstract or paper.
+%\acmConference[SPAA '26]{Communication Lower Bounds for Symmetric Matricized-Tensor Times Khatri-Rao Product}{July 06--10,
+%  2026}{London, UK}
+%%%
+%%%  Uncomment \acmBooktitle if the title of the proceedings is different
+%%%  from ``Proceedings of ...''!
+%%%
+%%%\acmBooktitle{Woodstock '18: ACM Symposium on Neural Gaze Detection,
+%%%  June 03--05, 2018, Woodstock, NY}
+%\acmISBN{978-1-4503-XXXX-X/2018/06}
 
 
 %%
@@ -201,32 +179,56 @@
 %% allowing the author to define a "short title" to be used in page headers.
 \title[Communication Lower Bounds for Symmetric MTTKRP]{Communication Lower Bounds for Symmetric Matricized-Tensor Times Khatri-Rao Product}
 
-%%
-%% The "author" command and its associated commands are used to define
-%% the authors and their affiliations.
-%% Of note is the shared affiliation of the first two authors, and the
-%% "authornote" and "authornotemark" commands
-%% used to denote shared contribution to the research.
-%\author{Ben Trovato}
+\author{Author1}
 %\authornote{Both authors contributed equally to this research.}
-%\email{trovato@corporation.com}
-%\orcid{1234-5678-9012}
-%\author{G.K.M. Tobin}
+\email{trovato@corporation.com}
+\orcid{1234-5678-9012}
+\author{Author2}
 %\authornotemark[1]
-%\email{webmaster@marysville-ohio.com}
-%\affiliation{%
-%  \institution{Institute for Clarity in Documentation}
-%  \city{Dublin}
-%  \state{Ohio}
-%  \country{USA}
-%}
+\email{webmaster@marysville-ohio.com}
+\affiliation{%
+	\institution{Institute for Clarity in Documentation}
+	\city{Dublin}
+	\state{Ohio}
+	\country{USA}
+}
 %
 %\author{Lars Th{\o}rv{\"a}ld}
 %\affiliation{%
-%  \institution{The Th{\o}rv{\"a}ld Group}
-%  \city{Hekla}
-%  \country{Iceland}}
+%	\institution{The Th{\o}rv{\"a}ld Group}
+%	\city{Hekla}
+%	\country{Iceland}}
 %\email{larst@affiliation.org}
+%
+%\author{Valerie B\'eranger}
+%\affiliation{%
+%	\institution{Inria Paris-Rocquencourt}
+%	\city{Rocquencourt}
+%	\country{France}
+%}
+%
+%\author{Aparna Patel}
+%\affiliation{%
+%	\institution{Rajiv Gandhi University}
+%	\city{Doimukh}
+%	\state{Arunachal Pradesh}
+%	\country{India}}
+%
+%\author{Huifen Chan}
+%\affiliation{%
+%	\institution{Tsinghua University}
+%	\city{Haidian Qu}
+%	\state{Beijing Shi}
+%	\country{China}}
+%
+%\author{Charles Palmer}
+%\affiliation{%
+%	\institution{Palmer Research Laboratories}
+%	\city{San Antonio}
+%	\state{Texas}
+%	\country{USA}}
+%\email{cpalmer@prl.com}
+
 
 %%
 %% By default, the full list of authors will be used in the page
@@ -241,11 +243,6 @@
 %% article.
 \begin{abstract}
 TODO....
-
-
-%Al Daas et al.~\cite{} 
-
-
 
 \end{abstract}
 
@@ -371,7 +368,7 @@ We present a direct way to perform symmetric MTTKRP in \Cref{alg:symmMTTKRP:naiv
 	\begin{algorithmic}
 		\Require $\T{X}\in \Real^{n\times n\times n}$ is a symmetric tensor and $\M{U}\in \Real^{n\times R}$ is a matrix.
 		\Ensure $\M{V}\in \Real^{n\times R}$ such that  $\M{V} = \M{X_{(1)}} (\M{U}\odot \M{U})$.
-		\State Initialize vector $\M{V}$ to $0$
+		\State Initialize matrix $\M{V}$ to $0$
 		\For{$i=1 \text{ to } n$}
 		\For{$j=1 \text{ to } i$}
 		\For{$k=1 \text{ to } j$}
@@ -634,6 +631,109 @@ We now extend \Cref{lem:simplifiedHBL}  for a symmetric set of points correspond
 
 \section{Parallel Algorithms}
 \label{sec:algorithms}
+
+{\footnotesize
+\begin{algorithm}
+	\caption{$3$-dimensional Parallel symmetric MTTKRP computation}
+	\label{alg:mttkrp}
+	\begin{algorithmic}[1]
+		\Require $q$ is a prime power
+		\Require $m=q^2+1$, $b = n/m$ is the block size.
+		\Require $\Pi$ is a set of $3$-dimensional processors with $|\Pi|=P=q(q^2+1)$.
+		\Require $\T{X} \in \Real^{n\times n\times n}$ is a symmetric tensor.
+		\Require $\T{X}[{T}_{p}] = \{ \T{X}[i][j][k]: i>j>k \in R_p \} \cup \{\T{X}[i][i][k]: (i,i,k)\in N_p\} \cup \{\T{X}[i][k][k]: (i,k,k)\in N_p\} \cup \{\T{X}[i][i][i]: (i,i,i)\in D_p\}$ is extended tetrahedral block owned by processor $p$.
+		\Require $\M{U}\in \Real^{n\times R}$ is evenly divided into $m$ row blocks, and each row block $\M{U}[i]$ is evenly divided across a set of $q(q+1)$ processors $Q_i$ with $\M{U}[i]^{(p)}$ owned by processor $p$ so that $\M{U}[R_p]^{(p)} = \{\M{U}[i]^{(p)}: i \in R_p\}$ is a set of data blocks of $\M{U}$ owned by processor $p$. Similarly, $\M{V}[R_p]^{(p)}$ is defined and it is owned by processor  $p$.
+%		\Ensure $\V{y} = \T{A}\times_2 \V{x} \times_3 \V{x}$ with $\V{y}[R_p]^{(p)}$ owned by processor $p$.
+		\Ensure $\M{V}\in \Real^{n\times R}$ such that  $\M{V} = \M{X_{(1)}} (\M{U}\odot \M{U})$.
+		
+		
+		\Function{$\M{V}[R_p]^{(p)} = \text{MTTKRP}$}{$\T{X}[{T}_{p}], \M{U}[R_p]^{(p)}, \Pi$}
+		\State $p = \Call{MyRank}{\Pi}$			
+		\Statex\Comment{Store its own data of a row in $q(q+1) -1 $ blocks}
+		\State Allocate array $\bar{\M{U}}$ of $2P$ blocks, each of size $\frac{bR}{q(q+1)}$ \label{line:mttkrp:startcommU}
+		\ForAll{$i \in R_p$}
+		\ForAll{$p' \in Q_i \backslash \{p\}$}
+		\State $\bar{\M{U}}[p'] = \M{U}[i]^{(p)}$
+		\EndFor
+		\EndFor
+		\State $\bar{\M{U}}$ = \Call{All-to-All}{$\bar{\M{U}},\Pi$}\label{line:mttkrp:AlltoAllx}
+		\ForAll{$i \in R_p$}
+		\ForAll{$p' \in Q_i \backslash \{p\}$}
+		\State Store $\bar{\M{U}}[p']$ into $\M{U}[i]$
+		\EndFor
+		\EndFor \label{line:mttkrp:stopcommx}
+		\Statex\Comment{Perform local computations}
+		\State Initialize portions of row blocks of $\M{V}$ own by $p$ to $0$
+		\ForAll{$\T{X}[i][j][k] \in \T{X}[{T}_{p}]$} \label{line:mttkrp:startcomp}
+		
+%		\For{$r\in\{1,\ldots,r\}$}\Comment{Use $\T{X}[i][j][k]$ for each $r$ }
+		
+		\If{$i\neq j \neq k$}
+		\State $\M{V}[i] = 2\M{X[i][j][k]_{(1)}} (\M{U}[k] \odot \M{U}[j]))$
+		\State $\M{V}[j] = 2\M{X[i][j][k]_{(2)}} (\M{U}[k] \odot \M{U}[i]))$
+		\State $\M{V}[k] = 2\M{X[i][j][k]_{(3)}} (\M{U}[j] \odot \M{U}[i]))$
+
+%		\State $\V{y}[i] = 2\T{A}[i][j][k] \times_2 \V{x}[j] \times_3 \V{x}[k]$
+%		\State $\V{y}[j] = 2\T{A}[i][j][k] \times_1 \V{x}[i] \times_3 \V{x}[k]$ 
+%		\State $\V{y}[k] = 2\T{A}[i][j][k] \times_1 \V{x}[i] \times_2 \V{x}[j]$  
+		\ElsIf{$i==j$ and $j\neq k$}
+		\State $\M{V}[i] = 2\M{X[i][j][k]_{(1)}} (\M{U}[k] \odot \M{U}[i]))$
+		\State $\M{V}[k] = \M{X[i][j][k]_{(3)}} (\M{U}[i] \odot \M{U}[i]))$
+		
+%		\State $\V{y}[i] = 2\T{A}[i][i][k] \times_2 \V{x}[i] \times_3 \V{x}[k]$; $\ \V{y}[k] = \T{A}[i][i][k] \times_1 \V{x}[i] \times_2 \V{x}[i]$
+		\ElsIf{$i\neq j$ and $j == k$}
+		\State $\M{V}[i] = \M{X[i][j][k]_{(1)}} (\M{U}[j] \odot \M{U}[j]))$
+		\State $\M{V}[k] = 2\M{X[i][j][k]_{(3)}} (\M{U}[j] \odot \M{U}[i])) $
+%		\State $\V{y}[i] = \T{A}[i][k][k] \times_2 \V{x}[k] \times_3 \V{x}[k]$; $\ \V{y}[k] = 2\T{A}[i][k][k] \times_1 \V{x}[i] \times_2 \V{x}[k]$
+		\Else
+		\State $\M{V}[i] = \M{X[i][j][k]_{(1)}} (\M{U}[i] \odot \M{U}[i]))$
+%		\State $\V{y}[i] = \T{A}[i][i][i] \times_2 \V{x}[i] \times_3 \V{x}[i]$
+		\EndIf
+%		\EndFor
+		
+		\EndFor \label{line:mttkrp:stopcomp}
+		\Statex\Comment{Distribute and reduce results for each row block set}
+		\State Allocate array $\bar{\M{V}}$ of $2P$ blocks, each of size $\frac{bR}{q(q+1)}$\label{line:mttkrp:startcommV}
+		\ForAll{$i \in R_p$}
+		\ForAll{$p' \in Q_i \backslash \{p\}$}
+		\State $\bar{\M{V}}[p'] = \M{V}[i]^{(p')}$
+		\EndFor
+		\EndFor
+		\State $\bar{\M{V}}$ = \Call{All-to-All}{$\bar{\M{V}},\Pi$}\label{line:mttkrp:AlltoAllV}
+		\ForAll{$i \in R_p$}
+%		\State $\M{V}[i]^{(p)} \pluseq \tilde{\M{V}}[i]^{(p)}$
+		\ForAll{$p' \in Q_i \backslash \{p\}$}
+		\State $\M{V}[i]^{(p)} \pluseq \bar{\M{V}}[p']$\label{line:mttkrp:reduceVi}
+		\EndFor
+		\EndFor\label{line:mttkrp:stopcommV}
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+}
+
+
+
+\begin{algorithm}
+	\caption{4D symmetric MTTKRP computation}
+	\label{alg:4Dmttkrp}
+	\begin{algorithmic}[1]
+		\Require $\Pi$ is a $p_1\times p_2$ grid of processors where $p_1=q(q^2+1)$ for some prime power $q$.
+		\Require $\T{X}_{{T}_{p}} = \{ \T{X}[i][j][k]: i>j>k \in R_p \} \cup \{\T{X}[i][i][k]: (i,i,k)\in N_p\} \cup \{\T{X}[i][k][k]: (i,k,k)\in N_p\} \cup \{\T{X}[i][i][i]: (i,i,i)\in D_p\}$ is extended tetrahedral block distributed across processor ranks $(p,*)$ with $\T{X}_{{T}_{p}}^{(\ell)}$ owned by processor rank $(p,\ell)$. 
+		
+		\Require $\M{U}$ is evenly divided into a $(q^2+1) \times p_2$ grid of blocks, and each block $\M{U}_{i\ell}$ is evenly divided across  set of $q(q+1)$ processors $Q_i \times \{\ell\}$  with $\M{U}_{i\ell}^{(p)}$ owned by processor rank $(p,\ell)$ so that $\M{U}_{R_p\ell}^{(p)} = \{\M{U}_{i\ell}^{(p)}: i \in R_p\}$ is a set of data blocks of $\M{U}$ owned by processor rank $(p,\ell)$. Similarly, $\M{V}_{R_p\ell}^{(p)}$ is defined and it is owned by processor rank $(p,\ell)$.
+		
+		\Ensure $\M{V} = \M{X_{(1)}} (\M{U}\odot \M{U})$ with $\M{V}_{R_p\ell}^{(p)}$ owned by processor rank $(p,\ell)$.
+		\Function{$\M{V}_{R_p\ell}^{(p)} =$ 4D-SymmetricMTTKRP}{$\T{X}_{{T}_{p}}^{(\ell)}, \M{U}_{R_p\ell}^{(p)}, \Pi$}
+		\State $(p,\ell) = \Call{MyRank}{\Pi}$	
+				
+		\State $\T{X}_{{T}_{p}} = \Call{All-Gather}{\T{X}_{{T}_{p}}^{(\ell)}, \Pi_{p*}}$ \label{line:4Dmttkrp:all-gather}
+		\State $\M{V}_{R_p\ell}^{(p)} = \Call{3D-SymmetricMTTKRP}{\T{X}_{{T}_{p}}, \M{U}_{R_p\ell}^{(p)}, \Pi_{*\ell}}$ \label{line:4Dmttkrp:3Dmttkrp}
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+
+
 \section{Conclusion}
 \label{sec:conclusion}
 
@@ -703,4 +803,4 @@ We now extend \Cref{lem:simplifiedHBL}  for a symmetric set of points correspond
 \end{document}
 \endinput
 %%
-%% End of file `sample-sigconf.tex'.
+%% End of file `sample-acmsmall.tex'.
