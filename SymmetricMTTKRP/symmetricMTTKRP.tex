@@ -641,52 +641,52 @@ We now extend \Cref{lem:simplifiedHBL}  for a symmetric set of points correspond
 		\Require $m=q^2+1$, $b = n/m$ is the block size.
 		\Require $\Pi$ is a set of $3$-dimensional processors with $|\Pi|=P=q(q^2+1)$.
 		\Require $\T{X} \in \Real^{n\times n\times n}$ is a symmetric tensor.
-		\Require $\T{X}[{T}_{p}] = \{ \T{X}[i][j][k]: i>j>k \in R_p \} \cup \{\T{X}[i][i][k]: (i,i,k)\in N_p\} \cup \{\T{X}[i][k][k]: (i,k,k)\in N_p\} \cup \{\T{X}[i][i][i]: (i,i,i)\in D_p\}$ is extended tetrahedral block owned by processor $p$.
-		\Require $\M{U}\in \Real^{n\times R}$ is evenly divided into $m$ row blocks, and each row block $\M{U}[i]$ is evenly divided across a set of $q(q+1)$ processors $Q_i$ with $\M{U}[i]^{(p)}$ owned by processor $p$ so that $\M{U}[R_p]^{(p)} = \{\M{U}[i]^{(p)}: i \in R_p\}$ is a set of data blocks of $\M{U}$ owned by processor $p$. Similarly, $\M{V}[R_p]^{(p)}$ is defined and it is owned by processor  $p$.
+		\Require $\T{X}_{{T}_{p}} = \{ \T{X}[i][j][k]: i>j>k \in R_p \} \cup \{\T{X}[i][i][k]: (i,i,k)\in N_p\} \cup \{\T{X}[i][k][k]: (i,k,k)\in N_p\} \cup \{\T{X}[i][i][i]: (i,i,i)\in D_p\}$ is extended tetrahedral block owned by processor $p$.
+		\Require $\M{U}\in \Real^{n\times R}$ is evenly divided into $m$ row blocks, and each row block $\M{U}_i$ is evenly divided across a set of $q(q+1)$ processors $Q_i$ with $\M{U}_{i}^{(p)}$ owned by processor $p$ so that $\M{U}_{R_p}^{(p)} = \{\M{U}_{i}^{(p)}: i \in R_p\}$ is a set of data blocks of $\M{U}$ owned by processor $p$. Similarly, $\M{V}_{R_p}^{(p)}$ is defined and it is owned by processor $p$.
 %		\Ensure $\V{y} = \T{A}\times_2 \V{x} \times_3 \V{x}$ with $\V{y}[R_p]^{(p)}$ owned by processor $p$.
 		\Ensure $\M{V}\in \Real^{n\times R}$ such that  $\M{V} = \M{X_{(1)}} (\M{U}\odot \M{U})$.
 		
 		
-		\Function{$\M{V}[R_p]^{(p)} = \text{MTTKRP}$}{$\T{X}[{T}_{p}], \M{U}[R_p]^{(p)}, \Pi$}
+		\Function{$\M{V}_{R_p}^{(p)} = \text{4D-SymmetricMTTKRP}$}{$\T{X}_{{T}_{p}}, \M{U}_{R_p}^{(p)}, \Pi$}
 		\State $p = \Call{MyRank}{\Pi}$			
 		\Statex\Comment{Store its own data of a row in $q(q+1) -1 $ blocks}
 		\State Allocate array $\bar{\M{U}}$ of $2P$ blocks, each of size $\frac{bR}{q(q+1)}$ \label{line:mttkrp:startcommU}
 		\ForAll{$i \in R_p$}
 		\ForAll{$p' \in Q_i \backslash \{p\}$}
-		\State $\bar{\M{U}}[p'] = \M{U}[i]^{(p)}$
+		\State $\bar{\M{U}}_{p'} = \M{U}_{i}^{(p)}$
 		\EndFor
 		\EndFor
 		\State $\bar{\M{U}}$ = \Call{All-to-All}{$\bar{\M{U}},\Pi$}\label{line:mttkrp:AlltoAllx}
 		\ForAll{$i \in R_p$}
 		\ForAll{$p' \in Q_i \backslash \{p\}$}
-		\State Store $\bar{\M{U}}[p']$ into $\M{U}[i]$
+		\State Store $\bar{\M{U}}_{p'}$ into $\M{U}_{i}$
 		\EndFor
 		\EndFor \label{line:mttkrp:stopcommx}
 		\Statex\Comment{Perform local computations}
 		\State Initialize portions of row blocks of $\M{V}$ own by $p$ to $0$
-		\ForAll{$\T{X}[i][j][k] \in \T{X}[{T}_{p}]$} \label{line:mttkrp:startcomp}
+		\ForAll{$\T{X}[i][j][k] \in \T{X}_{{T}_{p}}$} \label{line:mttkrp:startcomp}
 		
 %		\For{$r\in\{1,\ldots,r\}$}\Comment{Use $\T{X}[i][j][k]$ for each $r$ }
 		
 		\If{$i\neq j \neq k$}
-		\State $\M{V}[i] = 2\M{X[i][j][k]_{(1)}} (\M{U}[k] \odot \M{U}[j]))$
-		\State $\M{V}[j] = 2\M{X[i][j][k]_{(2)}} (\M{U}[k] \odot \M{U}[i]))$
-		\State $\M{V}[k] = 2\M{X[i][j][k]_{(3)}} (\M{U}[j] \odot \M{U}[i]))$
+		\State $\M{V}_{i} = 2\M{X[i][j][k]_{(1)}} (\M{U}_{k} \odot \M{U}_{j}))$
+		\State $\M{V}_{j} = 2\M{X[i][j][k]_{(2)}} (\M{U}_{k} \odot \M{U}_{i}))$
+		\State $\M{V}_{k} = 2\M{X[i][j][k]_{(3)}} (\M{U}_{j} \odot \M{U}_{i}))$
 
 %		\State $\V{y}[i] = 2\T{A}[i][j][k] \times_2 \V{x}[j] \times_3 \V{x}[k]$
 %		\State $\V{y}[j] = 2\T{A}[i][j][k] \times_1 \V{x}[i] \times_3 \V{x}[k]$ 
 %		\State $\V{y}[k] = 2\T{A}[i][j][k] \times_1 \V{x}[i] \times_2 \V{x}[j]$  
 		\ElsIf{$i==j$ and $j\neq k$}
-		\State $\M{V}[i] = 2\M{X[i][j][k]_{(1)}} (\M{U}[k] \odot \M{U}[i]))$
-		\State $\M{V}[k] = \M{X[i][j][k]_{(3)}} (\M{U}[i] \odot \M{U}[i]))$
+		\State $\M{V}_{i} = 2\M{X[i][j][k]_{(1)}} (\M{U}_{k} \odot \M{U}_{i}))$
+		\State $\M{V}_{k} = \M{X[i][j][k]_{(3)}} (\M{U}_{i} \odot \M{U}_{i}))$
 		
 %		\State $\V{y}[i] = 2\T{A}[i][i][k] \times_2 \V{x}[i] \times_3 \V{x}[k]$; $\ \V{y}[k] = \T{A}[i][i][k] \times_1 \V{x}[i] \times_2 \V{x}[i]$
 		\ElsIf{$i\neq j$ and $j == k$}
-		\State $\M{V}[i] = \M{X[i][j][k]_{(1)}} (\M{U}[j] \odot \M{U}[j]))$
-		\State $\M{V}[k] = 2\M{X[i][j][k]_{(3)}} (\M{U}[j] \odot \M{U}[i])) $
+		\State $\M{V}_{i} = \M{X[i][j][k]_{(1)}} (\M{U}_{j} \odot \M{U}_{j}))$
+		\State $\M{V}_{j} = 2\M{X[i][j][k]_{(3)}} (\M{U}_{j} \odot \M{U}_{i})) $
 %		\State $\V{y}[i] = \T{A}[i][k][k] \times_2 \V{x}[k] \times_3 \V{x}[k]$; $\ \V{y}[k] = 2\T{A}[i][k][k] \times_1 \V{x}[i] \times_2 \V{x}[k]$
 		\Else
-		\State $\M{V}[i] = \M{X[i][j][k]_{(1)}} (\M{U}[i] \odot \M{U}[i]))$
+		\State $\M{V}_{i} = \M{X[i][j][k]_{(1)}} (\M{U}_{i} \odot \M{U}_{i}))$
 %		\State $\V{y}[i] = \T{A}[i][i][i] \times_2 \V{x}[i] \times_3 \V{x}[i]$
 		\EndIf
 %		\EndFor
@@ -696,14 +696,14 @@ We now extend \Cref{lem:simplifiedHBL}  for a symmetric set of points correspond
 		\State Allocate array $\bar{\M{V}}$ of $2P$ blocks, each of size $\frac{bR}{q(q+1)}$\label{line:mttkrp:startcommV}
 		\ForAll{$i \in R_p$}
 		\ForAll{$p' \in Q_i \backslash \{p\}$}
-		\State $\bar{\M{V}}[p'] = \M{V}[i]^{(p')}$
+		\State $\bar{\M{V}}_{p'} = \M{V}_{i}^{(p')}$
 		\EndFor
 		\EndFor
 		\State $\bar{\M{V}}$ = \Call{All-to-All}{$\bar{\M{V}},\Pi$}\label{line:mttkrp:AlltoAllV}
 		\ForAll{$i \in R_p$}
 %		\State $\M{V}[i]^{(p)} \pluseq \tilde{\M{V}}[i]^{(p)}$
 		\ForAll{$p' \in Q_i \backslash \{p\}$}
-		\State $\M{V}[i]^{(p)} \pluseq \bar{\M{V}}[p']$\label{line:mttkrp:reduceVi}
+		\State $\M{V}_{i}^{(p)} \pluseq \bar{\M{V}}_{p'}$\label{line:mttkrp:reduceVi}
 		\EndFor
 		\EndFor\label{line:mttkrp:stopcommV}
 		\EndFunction
