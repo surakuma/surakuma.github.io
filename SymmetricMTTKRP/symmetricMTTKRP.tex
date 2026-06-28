@@ -631,8 +631,24 @@ We now extend \Cref{lem:simplifiedHBL}  for a symmetric set of points correspond
 
 \section{Parallel Algorithms}
 \label{sec:algorithms}
+\begin{algorithm}
+	\caption{1D symmetric MTTKRP computation}
+	\label{alg:1Dmttkrp}
+	\begin{algorithmic}[1]
+		\Require $\Pi$ is a set of $P$ processors.
+		\Require $\T{X}$ is evenly distributed across $\Pi$ with $\T{X}^{(\ell)}$ owned by processor $\ell$.
+		\Require $\M{U}$ is evenly column distributed across $\Pi$ with $\M{U}_{*\ell}$ is a set of columns owned by processor $\ell$. Similarly, $\M{V}_{*\ell}$ is defined and it is owned by processor $\ell$.
+		\Ensure $\M{V} = \M{X_{(1)}} (\M{U}\odot \M{U})$ with $\M{V}_{*\ell}$ owned by processor $\ell$.
+		\Function{$\M{V}_{*\ell}=$1D-SymmetricMTTKRP}{$\T{X}^{(\ell)}, \M{U}_{*\ell}, \Pi$}
+		\State $\ell = \Call{MyRank}{\Pi}$			
+		\State $\T{X} = \Call{All-Gather}{\T{X}^{(\ell)}, \Pi}$ \label{line:1Dmttkrp:all-gather}
+		\State $\M{V}_{*\ell} = \M{X_{(1)}} (\M{U}_{*\ell}\odot \M{U}_{*\ell})$ \label{line:1D:local-mttkrp} \Comment{Local MTTKRP computation}
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
 
-{\footnotesize
+
+{\small
 \begin{algorithm}
 	\caption{$3$-dimensional Parallel symmetric MTTKRP computation}
 	\label{alg:mttkrp}
@@ -731,6 +747,10 @@ We now extend \Cref{lem:simplifiedHBL}  for a symmetric set of points correspond
 		\EndFunction
 	\end{algorithmic}
 \end{algorithm}
+
+
+
+
 
 
 
