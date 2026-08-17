@@ -1,0 +1,150 @@
+\documentclass[11pt,a4]{article}
+\usepackage[francais]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphics}
+
+\textheight=17cm
+\sloppy
+\usepackage{wallpaper}
+\usepackage{hyperref}
+\usepackage[margin=1in,footskip=0.25in]{geometry}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+
+\begin{document}
+\CenterWallPaper{1}{Modelecourrier2012.pdf}
+
+%Bonjour les amis.
+\medskip
+\medskip
+\vspace*{0.35cm}
+%\noindent\textbf{Internship subject}: \emph{Tensor computations on GPUs}\newline
+%\textbf{Advisors}: \href{https://surakuma.github.io}{Suraj kumar} and \href{https://perso.ens-lyon.fr/bora.ucar}{Bora Uçar}\newline
+\textbf{Internship duration}: 5-6 months \newline
+\textbf{Location}: ROMA team, LIP, ENS Lyon, France
+
+\section*{Objective}
+\begin{itemize}
+	\item Study bounds on the minimum number of cache misses on a sequential machine for binary search and design approaches that achieve the obtained bounds
+	\item Design an approach to store elements of an array that improves the cache utilization for binary search on a sequential machine
+\end{itemize}
+\section*{Context}
+Each element of an array may not be accessed with the same probability in binary search. Let us consider the following array $A$ with $n=15$ elements, 1 through 15.
+\[
+\begin{array}{|*{15}{c|}}
+\hline
+1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 \\
+\hline
+\end{array}
+\] 
+
+\begin{algorithmic}
+	\Require $A$ is an array with $n$ elements and the search element is $key$.
+	\Ensure If $key$ is found in $A$ then its position, otherwise $-1$.
+	\State start = $0$
+	\State end = $n-1$
+	\While{start $\leq$ end}
+	\State mid = (start+end)/2
+	\If{A[mid]== key}
+	\State key is found, \Return mid
+	\ElsIf{A[mid]$\ge$ key}
+	\State end = mid-1
+	\Else
+	\State start = mid +1
+	\EndIf
+	\EndWhile
+	\State \Return -1
+\end{algorithmic}
+
+
+\begin{tikzpicture}[
+level distance=1.2cm,
+level 1/.style={sibling distance=7cm},
+level 2/.style={sibling distance=3.5cm},
+level 3/.style={sibling distance=1.7cm},
+every node/.style={circle, draw, minimum size=7mm}
+]
+\node {8}
+child {node {4}
+	child {node {2}
+		child {node {1}}
+		child {node {3}}
+	}
+	child {node {6}
+		child {node {5}}
+		child {node {7}}
+	}
+}
+child {node {12}
+	child {node {10}
+		child {node {9}}
+		child {node {11}}
+	}
+	child {node {14}
+		child {node {13}}
+		child {node {15}}
+	}
+};
+\end{tikzpicture}
+
+
+The element $8$ is always accessed irrespective of the $key$ element. Probability of accessing element $4$ is $probability(key\ne 8)\frac{1}{2}$. The element $12$ is accessed with the same probability. Similarly, the elements $2,6,10,14$ have same probability of getting accessed. The elements $1,3,5,7,9,11,13,15$ are accessed with minimum probability.
+
+
+\section*{Approach to improve cache utilization}
+When $i$th element is accessed and it is not equal to the $key$ then the sum of probabilities of accessing the elements $i-(k/4+1)$ and $i+(k/4+1)$ is $1$. Here $k$ is the number of active (non-discarded) elements in the current search space. For example, when the element $12$ is accessed and it is not equal to the key, then $k=6$ and the sum of probabilities to access $10$ and $14$ is $1$. We can make better utilization of cache by storing the elements $i$, $i-(k/4+1)$ and $i+(k/4+1)$ together.  
+\section*{Main Activities}
+
+We will perform the following activities:
+\begin{itemize}
+	\item Determine the bound on the minimum number of cache misses in the worst case for binary search
+	\item Design an approach and/or a data structure that achieves the lower bound for all inputs
+\end{itemize}
+
+\section*{Example}
+Let us assume that the cache is empty in the beginning and each cache line can contain $3$ elements. 
+
+There are 5 cache lines for our example. If we store elements contiguously, then there are $3$ cache misses in the worst case scenario.  
+
+\[
+\begin{array}{|c|c|c|}
+\hline
+1 & 2 & 3 \\ \hline
+4 & 5 & 6 \\ \hline
+7 & 8 & 9 \\ \hline
+10 & 11 & 12 \\ \hline
+13 & 14 & 15 \\ \hline
+\end{array}
+\]
+
+If the $key=15$, then $3$ cache lines will be accessed. Hence the total number of cache misses is $3$.
+
+
+Now consider the following cache lines.
+\[
+\begin{array}{|c|c|c|}
+\hline
+8 & 4 & 12 \\ \hline
+2 & 1 & 3 \\ \hline
+6 & 5 & 7 \\ \hline
+10 & 9 & 11 \\ \hline
+14 & 15 & 16 \\ \hline
+\end{array}
+\]
+The number of cache misses for any $key$ is at max $2$.  
+
+
+
+
+
+
+\section*{Skills}
+Familiarity with tree data structure will be much appreciated. 
+
+\bibliographystyle{plain}
+%\footnotesize \bibliography{mttkrp-gpu}
+
+
+
+
+\end{document}
