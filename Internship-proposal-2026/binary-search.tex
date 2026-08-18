@@ -18,15 +18,16 @@
 \medskip
 \medskip
 \vspace*{0.35cm}
-%\noindent\textbf{Internship subject}: \emph{Tensor computations on GPUs}\newline
+\noindent\textbf{Internship subject}: \emph{Cache efficient binary search}\newline
 %\textbf{Advisors}: \href{https://surakuma.github.io}{Suraj kumar} and \href{https://perso.ens-lyon.fr/bora.ucar}{Bora Uçar}\newline
 \textbf{Internship duration}: 5-6 months \newline
 \textbf{Location}: ROMA team, LIP, ENS Lyon, France
 
-\section*{Objective}
+\section*{Objectives}
 \begin{itemize}
-	\item Study bounds on the minimum number of cache misses on a sequential machine for binary search and design approaches that achieve the obtained bounds
-	\item Design an approach to store elements of an array that improves the cache utilization for binary search on a sequential machine
+	\item[$\bullet$] Study bounds on the minimum number of cache misses on a sequential machine for binary search
+%	 and design approaches that achieve the obtained bounds
+	\item[$\bullet$] Design an approach to store elements of an array that improves the cache utilization for binary search on a sequential machine
 \end{itemize}
 \section*{Context}
 Each element of an array may not be accessed with the same probability in binary search. Let us consider the following array $A$ with $n=15$ elements, 1 through 15.
@@ -37,10 +38,14 @@ Each element of an array may not be accessed with the same probability in binary
 \hline
 \end{array}
 \] 
-
 \begin{algorithmic}
 	\Require $A$ is an array with $n$ elements and the search element is $key$.
 	\Ensure If $key$ is found in $A$ then its position, otherwise $-1$.
+\end{algorithmic}
+\begin{minipage}{0.4\linewidth}
+\begin{algorithmic}
+%	\Require $A$ is an array with $n$ elements and the search element is $key$.
+%	\Ensure If $key$ is found in $A$ then its position, otherwise $-1$.
 	\State start = $0$
 	\State end = $n-1$
 	\While{start $\leq$ end}
@@ -55,14 +60,16 @@ Each element of an array may not be accessed with the same probability in binary
 	\EndWhile
 	\State \Return -1
 \end{algorithmic}
-
-
+\end{minipage}
+$\quad$
+\begin{minipage}{0.56\linewidth}
 \begin{tikzpicture}[
+scale=0.625,
 level distance=1.2cm,
 level 1/.style={sibling distance=7cm},
 level 2/.style={sibling distance=3.5cm},
 level 3/.style={sibling distance=1.7cm},
-every node/.style={circle, draw, minimum size=7mm}
+every node/.style={circle, draw, minimum size=7mm, transform shape}
 ]
 \node {8}
 child {node {4}
@@ -86,10 +93,13 @@ child {node {12}
 	}
 };
 \end{tikzpicture}
+\end{minipage}
 
+\medskip
 
-The element $8$ is always accessed irrespective of the $key$ element. Probability of accessing element $4$ is $probability(key\ne 8)\frac{1}{2}$. The element $12$ is accessed with the same probability. Similarly, the elements $2,6,10,14$ have same probability of getting accessed. The elements $1,3,5,7,9,11,13,15$ are accessed with minimum probability.
+The element $8$ is always accessed irrespective of the $key$ element. Probability of accessing the element $4$ is $probability(key\ne 8)\cdot\frac{1}{2}$. The element $12$ is also accessed with the same probability. Similarly, the elements $2,6,10,14$ have same probability of getting accessed. The elements $1,3,5,7,9,11,13,15$ are accessed with minimum probability.
 
+\newpage
 
 \section*{Approach to improve cache utilization}
 When $i$th element is accessed and it is not equal to the $key$ then the sum of probabilities of accessing the elements $i-(k/4+1)$ and $i+(k/4+1)$ is $1$. Here $k$ is the number of active (non-discarded) elements in the current search space. For example, when the element $12$ is accessed and it is not equal to the key, then $k=6$ and the sum of probabilities to access $10$ and $14$ is $1$. We can make better utilization of cache by storing the elements $i$, $i-(k/4+1)$ and $i+(k/4+1)$ together.  
@@ -97,14 +107,14 @@ When $i$th element is accessed and it is not equal to the $key$ then the sum of 
 
 We will perform the following activities:
 \begin{itemize}
-	\item Determine the bound on the minimum number of cache misses in the worst case for binary search
-	\item Design an approach and/or a data structure that achieves the lower bound for all inputs
+	\item[$\bullet$] Determine the bound on the minimum number of cache misses in the worst case for binary search
+	\item[$\bullet$] Design an approach and/or a data structure that achieves the lower bound for all inputs
 \end{itemize}
 
 \section*{Example}
 Let us assume that the cache is empty in the beginning and each cache line can contain $3$ elements. 
 
-There are 5 cache lines for our example. If we store elements contiguously, then there are $3$ cache misses in the worst case scenario.  
+There are 5 cache lines for our example. If we store elements contiguously, then there are $3$ cache misses in the worst case scenario. If the $key=15$, then $3$ cache lines will be accessed. Hence the total number of cache misses is $3$. 
 
 \[
 \begin{array}{|c|c|c|}
@@ -117,10 +127,10 @@ There are 5 cache lines for our example. If we store elements contiguously, then
 \end{array}
 \]
 
-If the $key=15$, then $3$ cache lines will be accessed. Hence the total number of cache misses is $3$.
 
 
-Now consider the following cache lines.
+
+Now consider the following cache lines. The number of cache misses for any $key$ is at max $2$.  
 \[
 \begin{array}{|c|c|c|}
 \hline
@@ -131,7 +141,7 @@ Now consider the following cache lines.
 14 & 15 & 16 \\ \hline
 \end{array}
 \]
-The number of cache misses for any $key$ is at max $2$.  
+
 
 
 
