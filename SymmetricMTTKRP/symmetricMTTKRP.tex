@@ -507,7 +507,7 @@ We now extend \Cref{lem:simplifiedHBL}  for a symmetric set of points correspond
 
 
 \section{Symmetric MTTKRP Lower Bounds}
-\label{sec:symmMTTKRP}
+\label{sec:lb:symmMTTKRP}
 
 
 \begin{lemma}
@@ -631,6 +631,75 @@ We now extend \Cref{lem:simplifiedHBL}  for a symmetric set of points correspond
 
 \section{Parallel Algorithms}
 \label{sec:algorithms}
+We present three algorithms whose communication costs exactly match the leading order terms of the lower bounds of \Cref{sec:lb:symmMTTKRP}. We call the algorithms 1D, 3D, or 4D based on the number of dimensions of the iteration space that are partitioned. A 1D algorithm partitions the computation only in the dimension of size $r$ with a 1D processor grid. Similarly, a 3D algorithm partitions the computation in all dimensions of $n$ using a 3D processor grid. A 4D algorithm partitions all dimensions using a 4D processor grid, and employs the corresponding 3D algorithm multiple times for different subsets of the $r$ dimension. We select the algorithm and processor grid based on the relative sizes of $n$, $r$, and $P$ to attain communication optimality. In all our algorithms, each processor stores roughly $1/P$th of each input at the beginning of the computation and $1/P$th of the output at the end. Each algorithm works with a chunk of contiguous elements to maximize local data reuse.   
+
+
+%In this section, we present three families of parallel algorithms where the communication costs
+%exactly match the leading order terms of the lower bounds of § 5. Each family extends one of the
+%algorithms for SYRK given by Al Daas et al. [4]. The families are defined by how they partition
+%the 3-dimensional iteration space of the full computations, and each family contains an algorithm
+%for every computation. Following [4], we call the families of algorithms 1D, 2D, or 3D algorithms
+%based upon the number of dimensions of the iteration space that are partitioned. Extending the
+%1D algorithm for SYRK in [4], the 1D family of algorithms all partition the computations only in
+%the dimension of size 𝑛 2 (§ 8.1) with 1D processor grids. Similarly, the 2D family of algorithms
+%all partition the computations in both dimensions of size 𝑛 1 (§ 8.2). We also employ 1D processor
+%grids for our 2D algorithms, but they are indexed differently. A processor index is associated with
+%a block from the affine triangle block construction (see Section 6.4, Figure 4). The 3D family of
+%algorithms partition all 3 dimensions (§ 8.3) using a 2D processor grid, and employ the corresponding
+%2D algorithms multiple times for different subsets of the 𝑛 2 dimension. To achieve the optimal
+%communication cost for each computation, we select the algorithm and processor grid based on the
+%relative sizes of 𝑛 1 , 𝑛 2 , and 𝑃. In all algorithms presented, each processor stores roughly 1/Pth of each
+%input in the beginning of the computation and 1/Pth of the output at the end of the computation.
+%As mentioned in § 6.4, we will work with a chunk of contiguous elements instead of an individual
+%element in our parallel algorithms.
+%
+%
+%We present in this section three algorithms that attain the lower
+%bounds of Theorem 1 in each of its three cases, matching the leading
+%order constants exactly. We classify the algorithms as 1D, 2D, and
+%3D algorithms, following the terminology of Al Daas et al. [3]. If we
+%consider the 3D iteration space of a SYRK algorithm (a triangular
+%prism), a 1D algorithm partitions the computation in only 1 of the
+%dimensions, a 2D algorithm partitions the computation in exactly 2
+%dimensions, and a 3D algorithm partitions all 3 dimensions. Our
+%1D algorithm (§ 5.1) partitions only the n 2 dimension, and our 2D
+%algorithm (§ 5.2) partitions the two n 1 dimensions. The 1D and 2D
+%algorithms both utilize a 1D processor grid, though their indexing
+%schemes differ, as the 2D algorithm uses triangle blocking (see
+%§ 5.2.1) for the distribution of C. The 3D algorithm (§ 5.3) uses a 2D
+%processor grid and also uses triangle blocking.
+%The choice of algorithm to attain optimality depends on the
+%relative sizes of n 1 , n 2 , and P. First, consider the case n 1 ≤ n 2 . This
+%implies that A is short and wide and that C is a smaller matrix than
+%A. If P is relatively small, then the 1D algorithm is optimal. When
+%
+%P is sufficiently large, we switch to the 3D algorithm to maintain
+%optimality. In the case that n 1 > n 2 , A is tall and skinny and C is a
+%bigger matrix than A. For small P, we use the 2D algorithm. When P
+%is sufficiently large, we again switch to the 3D algorithm to maintain
+%optimality. In § 5.4, we detail the values of P for switching from
+%1D to 3D or from 2D to 3D and show that by choosing appropriate
+%processor grid dimensions, we attain optimality in all cases.
+%Throughout this section, we use Π to denote the set of all pro-
+%cessors, with |Π| = P. For the 2D processor grid used by the 3D
+%algorithm, we will let P = p 1 p 2 and index processors by the pair
+%(k, ℓ) ∈ Π with 0 ≤ k < p 1 and 0 ≤ ℓ < p 2 . In the case of the
+%1D algorithm, we consider p 1 = 1 and p 2 = P, and in that case
+%processors will be indexed only by 0 ≤ ℓ < P. In the case of the
+%2D algorithm, we consider p 1 = P and p 1 = 1, and in that case
+%processors will be indexed only by 0 ≤ k < P. When p 1 > 1, we
+%will assume that p 1 = c(c + 1) for some prime number c. This as-
+%sumption is a sufficient but not necessary condition for the triangle
+%block distribution we use for the 2D and 3D algorithms.
+
+\subsection{1D Parallel Algorithms}
+\label{sec:algorithms:1d}
+
+\begin{itemize}
+	\item 1D data distributions, optimality
+	\item 3D data distributions, an example, algorithm and optimality 
+	\item 4D algorithm and optimality
+\end{itemize}
 \begin{algorithm}
 	\caption{1D symmetric MTTKRP computation}
 	\label{alg:1Dmttkrp}
